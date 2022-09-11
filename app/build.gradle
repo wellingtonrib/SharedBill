@@ -1,0 +1,103 @@
+plugins {
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android"
+    id "kotlin-kapt"
+    id "dagger.hilt.android.plugin"
+    id "com.google.gms.google-services"
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "br.com.jwar.sharedbill"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+        buildConfigField "String", "FIREBASE_WEB_CLIENT_ID", "\"${properties.getProperty("FIREBASE_WEB_CLIENT_ID")}\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+}
+
+dependencies {
+
+    //Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    //AndroidX
+    implementation "androidx.core:core-ktx:$kotlin_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$livedata_version"
+
+    //Compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose_version"
+
+    //Material
+    implementation "com.google.android.material:material:$material_version"
+
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    //Firebase
+    implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
+    implementation "com.google.firebase:firebase-auth-ktx"
+    implementation "com.google.firebase:firebase-firestore-ktx"
+
+    //Play Services
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$play_services_version"
+    implementation "com.google.android.gms:play-services-auth:$play_services_auth_version"
+
+    //Accompanist
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
+
+    //Tests
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+    testImplementation "io.mockk:mockk:$mockk_version"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    androidTestImplementation "androidx.test.ext:junit:1.1.3"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+
+    //Debug
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+}
