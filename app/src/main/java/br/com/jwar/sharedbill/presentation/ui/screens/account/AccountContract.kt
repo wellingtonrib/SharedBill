@@ -1,11 +1,11 @@
-package br.com.jwar.sharedbill.presentation.ui.screens.home
+package br.com.jwar.sharedbill.presentation.ui.screens.account
 
 import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.presentation.core.UiEffect
 import br.com.jwar.sharedbill.presentation.core.UiEvent
 import br.com.jwar.sharedbill.presentation.core.UiState
 
-class HomeContract {
+class AccountContract {
     sealed class Event: UiEvent {
         object GetUser : Event()
         object SignOut : Event()

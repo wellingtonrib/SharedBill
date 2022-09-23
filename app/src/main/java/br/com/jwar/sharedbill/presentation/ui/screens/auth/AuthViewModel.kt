@@ -48,7 +48,7 @@ class AuthViewModel @Inject constructor(
             when(resource) {
                 is Loading -> setState { it.copy(isAuthenticating = true) }
                 is Success -> sendEffect { Effect.LaunchSignInResult(resource.data) }
-                is Failure -> sendEffect { Effect.ShowError(resource.throwable.localizedMessage.orEmpty()) }
+                is Failure -> handleException(resource.throwable)
             }
         }
     }
@@ -58,11 +58,13 @@ class AuthViewModel @Inject constructor(
             when(resource) {
                 is Loading -> setState { it.copy(isAuthenticating = true) }
                 is Success -> sendEffect { Effect.GoToHome }
-                is Failure -> {
-                    setState { it.copy(isAuthenticating = false) }
-                    sendEffect { Effect.ShowError(resource.throwable.localizedMessage.orEmpty()) }
-                }
+                is Failure -> handleException(resource.throwable)
             }
         }
+    }
+
+    private fun handleException(throwable: Throwable) {
+        setState { it.copy(isAuthenticating = false) }
+        sendEffect { Effect.ShowError(throwable.localizedMessage.orEmpty()) }
     }
 }

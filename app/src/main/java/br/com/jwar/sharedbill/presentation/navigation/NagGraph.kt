@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import br.com.jwar.sharedbill.presentation.navigation.AppScreen.Auth
 import br.com.jwar.sharedbill.presentation.navigation.AppScreen.Home
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthScreen
-import br.com.jwar.sharedbill.presentation.ui.screens.home.HomeScreen
+import br.com.jwar.sharedbill.presentation.ui.screens.account.HomeScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 

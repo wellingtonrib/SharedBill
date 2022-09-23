@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.ui.screens.home
+package br.com.jwar.sharedbill.presentation.ui.screens.account
 
 import br.com.jwar.sharedbill.CoroutinesTestRule
 import br.com.jwar.sharedbill.Fakes
@@ -20,15 +20,15 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class HomeViewModelTest {
+internal class AccountViewModelTest {
 
     @get:Rule
     val coroutineTestRule = CoroutinesTestRule()
 
     private val signOutUseCase = mockk<SignOutUseCase>()
     private val getUserUseCase = mockk<GetUserUseCase>()
-    private val viewModel: HomeViewModel by lazy {
-        HomeViewModel(
+    private val viewModel: AccountViewModel by lazy {
+        AccountViewModel(
             getUserUseCase = getUserUseCase,
             signOutUseCase = signOutUseCase
         )
@@ -39,7 +39,7 @@ internal class HomeViewModelTest {
         //GIVEN
         coEvery { getUserUseCase() } returns flowOf()
         //WHEN
-        viewModel.emitEvent { HomeContract.Event.GetUser }
+        viewModel.emitEvent { AccountContract.Event.GetUser }
         //THEN
         coVerify { getUserUseCase() }
     }
@@ -49,9 +49,9 @@ internal class HomeViewModelTest {
         //GIVEN
         coEvery { getUserUseCase() } returns flowOf(Resource.Loading)
         //WHEN
-        viewModel.emitEvent { HomeContract.Event.GetUser }
+        viewModel.emitEvent { AccountContract.Event.GetUser }
         //THEN
-        val state = viewModel.uiState.value as? HomeContract.State.Loading
+        val state = viewModel.uiState.value as? AccountContract.State.Loading
         assertNotNull(state)
     }
 
@@ -61,9 +61,9 @@ internal class HomeViewModelTest {
         val user = Fakes.user
         coEvery { getUserUseCase() } returns flowOf(Resource.Success(user))
         //WHEN
-        viewModel.emitEvent { HomeContract.Event.GetUser }
+        viewModel.emitEvent { AccountContract.Event.GetUser }
         //THEN
-        val state = viewModel.uiState.value as? HomeContract.State.Loaded
+        val state = viewModel.uiState.value as? AccountContract.State.Loaded
         assertNotNull(state)
         assertEquals(user, state.user)
     }
@@ -74,9 +74,9 @@ internal class HomeViewModelTest {
         val exception = Exception("Generic Exception")
         coEvery { getUserUseCase() } returns flowOf(Resource.Failure(exception))
         //WHEN
-        viewModel.emitEvent { HomeContract.Event.GetUser }
+        viewModel.emitEvent { AccountContract.Event.GetUser }
         //THEN
-        val state = viewModel.uiState.value as? HomeContract.State.Error
+        val state = viewModel.uiState.value as? AccountContract.State.Error
         assertNotNull(state)
         assertEquals(exception.message, state.message)
     }
@@ -87,10 +87,10 @@ internal class HomeViewModelTest {
         val exception = UserNotFoundException()
         coEvery { getUserUseCase() } returns flowOf(Resource.Failure(exception))
         //WHEN
-        viewModel.emitEvent { HomeContract.Event.GetUser }
+        viewModel.emitEvent { AccountContract.Event.GetUser }
         //THEN
         coroutineTestRule.scope.launch {
-            assertEquals(HomeContract.Effect.GoToAuth, viewModel.uiEffect.last())
+            assertEquals(AccountContract.Effect.GoToAuth, viewModel.uiEffect.last())
         }
     }
 
@@ -99,7 +99,7 @@ internal class HomeViewModelTest {
         //GIVEN
         coEvery { signOutUseCase() } returns flowOf()
         //WHEN
-        viewModel.emitEvent { HomeContract.Event.SignOut }
+        viewModel.emitEvent { AccountContract.Event.SignOut }
         //THEN
         coVerify { signOutUseCase() }
     }
@@ -109,9 +109,9 @@ internal class HomeViewModelTest {
         //GIVEN
         coEvery { signOutUseCase() } returns flowOf(Resource.Loading)
         //WHEN
-        viewModel.emitEvent { HomeContract.Event.SignOut }
+        viewModel.emitEvent { AccountContract.Event.SignOut }
         //THEN
-        val state = viewModel.uiState.value as? HomeContract.State.Loading
+        val state = viewModel.uiState.value as? AccountContract.State.Loading
         assertNotNull(state)
     }
 
@@ -120,10 +120,10 @@ internal class HomeViewModelTest {
         //GIVEN
         coEvery { signOutUseCase() } returns flowOf(Resource.Success(true))
         //WHEN
-        viewModel.emitEvent { HomeContract.Event.SignOut }
+        viewModel.emitEvent { AccountContract.Event.SignOut }
         //THEN
         coroutineTestRule.scope.launch {
-            assertEquals(HomeContract.Effect.GoToAuth, viewModel.uiEffect.last())
+            assertEquals(AccountContract.Effect.GoToAuth, viewModel.uiEffect.last())
         }
     }
 }

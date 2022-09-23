@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.ui.screens.home
+package br.com.jwar.sharedbill.presentation.ui.screens.account
 
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.exceptions.UserNotFoundException
@@ -8,15 +8,15 @@ import br.com.jwar.sharedbill.domain.model.Resource.Success
 import br.com.jwar.sharedbill.domain.usecases.GetUserUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignOutUseCase
 import br.com.jwar.sharedbill.presentation.core.BaseViewModel
-import br.com.jwar.sharedbill.presentation.ui.screens.home.HomeContract.Effect
-import br.com.jwar.sharedbill.presentation.ui.screens.home.HomeContract.Event
-import br.com.jwar.sharedbill.presentation.ui.screens.home.HomeContract.State
+import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Effect
+import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Event
+import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class AccountViewModel @Inject constructor(
     private val signOutUseCase: SignOutUseCase,
     private val getUserUseCase: GetUserUseCase,
 ): BaseViewModel<Event, State, Effect>() {

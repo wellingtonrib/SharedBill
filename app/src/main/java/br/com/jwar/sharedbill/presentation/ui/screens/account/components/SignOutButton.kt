@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.ui.screens.home.components
+package br.com.jwar.sharedbill.presentation.ui.screens.account.components
 
 import androidx.compose.material.Button
 import androidx.compose.material.Text
