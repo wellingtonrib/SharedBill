@@ -4,7 +4,7 @@ import android.app.Activity.RESULT_OK
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material.SnackbarHostState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -49,7 +49,13 @@ fun AuthScreen(
         viewModel.uiEffect.collect { action ->
             when (action) {
                 is Effect.GoToHome -> {
-                    navController.navigate(AppScreen.Home.route)
+                    navController.navigate(AppScreen.Account.route) {
+                        navController.currentBackStackEntry?.destination?.route?.let {
+                            popUpTo(it) {
+                                inclusive =  true
+                            }
+                        }
+                    }
                 }
                 is Effect.LaunchSignInResult -> {
                     launchSignInResult(action.signInResult)

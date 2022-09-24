@@ -10,7 +10,7 @@ import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Ef
 import br.com.jwar.sharedbill.presentation.ui.screens.account.components.AccountContent
 
 @Composable
-fun HomeScreen(
+fun AccountScreen(
     navController: NavController,
     viewModel: AccountViewModel = hiltViewModel()
 ) {
