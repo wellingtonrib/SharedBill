@@ -3,6 +3,7 @@ plugins {
     id "org.jetbrains.kotlin.android"
     id "dagger.hilt.android.plugin"
     id "com.google.gms.google-services"
+    id 'kotlin-parcelize'
     id "kotlin-kapt"
 }
 
@@ -39,6 +40,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+        allWarningsAsErrors = false
+        freeCompilerArgs += [
+            '-opt-in=androidx.compose.material3.ExperimentalMaterial3Api'
+        ]
     }
     buildFeatures {
         compose true
@@ -63,10 +68,12 @@ dependencies {
     //Compose
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material3:material3:$compose_material"
-
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.navigation:navigation-compose:$compose_navigaton"
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose_version"
+
+    //Accompanist
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
 
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
@@ -81,8 +88,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$play_services_version"
     implementation "com.google.android.gms:play-services-auth:$play_services_auth_version"
 
-    //Accompanist
-    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
 
     //Tests
     testImplementation "junit:junit:$junit_version"

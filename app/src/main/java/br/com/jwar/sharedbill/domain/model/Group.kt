@@ -1,0 +1,16 @@
+package br.com.jwar.sharedbill.domain.model
+
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class
+Group(
+    val id: String = "",
+    val title: String = "",
+    val owner: User = User(),
+    val members: List<User> = emptyList(),
+    val membersIds: List<String> = emptyList(),
+    val payments: List<Payment> = emptyList(),
+    val balance: Map<String, String> = emptyMap()
+) : Parcelable

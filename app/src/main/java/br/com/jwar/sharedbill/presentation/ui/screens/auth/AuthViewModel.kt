@@ -27,9 +27,9 @@ class AuthViewModel @Inject constructor(
 
     override fun handleEvent(event: Event) {
         when (event) {
-            is Event.SignIn -> onSignIn()
-            is Event.SignUp -> onSignUp()
-            is Event.SignInFirebase -> onSignInFirebase(event.data)
+            is Event.OnSignIn -> onSignIn()
+            is Event.OnSignUp -> onSignUp()
+            is Event.OnSignInFirebase -> onSignInFirebase(event.data)
         }
     }
 
@@ -38,7 +38,7 @@ class AuthViewModel @Inject constructor(
             when(resource) {
                 is Loading -> setState { it.copy(isAuthenticating = true) }
                 is Success -> sendEffect { Effect.LaunchSignInResult(resource.data) }
-                is Failure -> emitEvent { Event.SignUp }
+                is Failure -> emitEvent { Event.OnSignUp }
             }
         }
     }

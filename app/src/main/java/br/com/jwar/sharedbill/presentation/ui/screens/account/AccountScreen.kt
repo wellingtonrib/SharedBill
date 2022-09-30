@@ -18,13 +18,13 @@ fun AccountScreen(
 
     AccountContent(
         state = state,
-        onSignOutClick = { viewModel.emitEvent { AccountContract.Event.SignOut } }
+        onSignOutClick = { viewModel.emitEvent { AccountContract.Event.OnSignOut } }
     )
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { AccountContract.Event.GetUser }
-        viewModel.uiEffect.collect { action ->
-            when (action) {
+        viewModel.emitEvent { AccountContract.Event.OnGetUser }
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
                 is Effect.GoToAuth -> {
                     navController.navigate(AppScreen.Auth.route)
                 }

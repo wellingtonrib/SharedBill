@@ -8,9 +8,9 @@ import com.google.android.gms.auth.api.identity.BeginSignInResult
 
 class AuthContract {
     sealed class Event: UiEvent {
-        object SignIn : Event()
-        object SignUp : Event()
-        class SignInFirebase(val data: Intent?) : Event()
+        object OnSignIn : Event()
+        object OnSignUp : Event()
+        class OnSignInFirebase(val data: Intent?) : Event()
     }
 
     data class State(

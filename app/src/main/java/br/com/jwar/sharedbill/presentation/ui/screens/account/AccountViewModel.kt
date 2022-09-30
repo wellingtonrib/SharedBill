@@ -25,8 +25,8 @@ class AccountViewModel @Inject constructor(
 
     override fun handleEvent(event: Event) {
         when (event) {
-            is Event.GetUser -> onGetUser()
-            is Event.SignOut -> onSignOut()
+            is Event.OnGetUser -> onGetUser()
+            is Event.OnSignOut -> onSignOut()
         }
     }
 

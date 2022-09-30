@@ -28,14 +28,14 @@ fun AuthScreen(
     AuthContent(
         state = state,
         snackHostState = snackHostState,
-        onSignInClick = { viewModel.emitEvent { Event.SignIn } }
+        onSignInClick = { viewModel.emitEvent { Event.OnSignIn } }
     )
 
     val launcherForActivityResult = rememberLauncherForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
         if (result.resultCode == RESULT_OK) {
-            viewModel.emitEvent { Event.SignInFirebase(result.data) }
+            viewModel.emitEvent { Event.OnSignInFirebase(result.data) }
         }
     }
 
@@ -46,8 +46,8 @@ fun AuthScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.uiEffect.collect { action ->
-            when (action) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
                 is Effect.GoToHome -> {
                     navController.navigate(AppScreen.Account.route) {
                         navController.currentBackStackEntry?.destination?.route?.let {
@@ -58,10 +58,10 @@ fun AuthScreen(
                     }
                 }
                 is Effect.LaunchSignInResult -> {
-                    launchSignInResult(action.signInResult)
+                    launchSignInResult(effect.signInResult)
                 }
                 is Effect.ShowError -> {
-                    snackHostState.showSnackbar(action.message)
+                    snackHostState.showSnackbar(effect.message)
                 }
             }
         }

@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.presentation.di
 
+import br.com.jwar.sharedbill.domain.repositories.GroupsRepository
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
 import br.com.jwar.sharedbill.domain.services.AuthService
 import br.com.jwar.sharedbill.domain.usecases.*
@@ -7,7 +8,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -34,8 +34,22 @@ class DomainModule {
     ): SignInFirebaseUseCase = SignInFirebaseUseCaseImpl(authService)
 
     @Provides
-    @Singleton
     fun provideSignOutUseCase(
         authService: AuthService
     ): SignOutUseCase = SignOutUseCaseImpl(authService)
+
+    @Provides
+    fun provideGetAllGroupsUseCase(
+        groupsRepository: GroupsRepository
+    ): GetAllGroupsUseCase = GetAllGroupsUseCaseImpl(groupsRepository)
+
+    @Provides
+    fun providesCreateGroupUseCase(
+        groupsRepository: GroupsRepository
+    ): CreateGroupUseCase = CreateGroupUseCaseImpl(groupsRepository)
+
+    @Provides
+    fun providesGetGroupByIdUseCase(
+        groupsRepository: GroupsRepository
+    ): GetGroupByIdUseCase = GetGroupByIdUseCaseImpl(groupsRepository)
 }

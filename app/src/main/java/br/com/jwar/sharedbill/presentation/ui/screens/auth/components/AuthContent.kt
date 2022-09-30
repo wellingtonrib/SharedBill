@@ -1,38 +1,44 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.auth.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract
-import br.com.jwar.sharedbill.presentation.ui.widgets.ProgressBar
+import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
+import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
 
 @Composable
 fun AuthContent(
     state: AuthContract.State,
-    snackHostState: SnackbarHostState,
-    onSignInClick: () -> Unit
+    snackHostState: SnackbarHostState = SnackbarHostState(),
+    onSignInClick: () -> Unit = {}
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+    Box(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        contentAlignment = Alignment.Center,
     ) {
-        if (state.isAuthenticating) ProgressBar()
+        if (state.isAuthenticating) LoadingContent()
         else SignInButton(onSignInClick)
     }
     SnackbarHost(
         hostState = snackHostState,
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(Alignment.Bottom)
+        modifier = Modifier.fillMaxWidth().wrapContentHeight(Alignment.Bottom)
     )
+}
+
+@Preview
+@Composable
+fun PreviewAuthContent() {
+    SharedBillTheme {
+        Scaffold {
+            AuthContent(state = AuthContract.State(isAuthenticating = false))
+        }
+    }
 }
 
