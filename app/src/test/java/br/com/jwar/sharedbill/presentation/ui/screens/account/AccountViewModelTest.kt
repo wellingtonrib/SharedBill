@@ -39,7 +39,7 @@ internal class AccountViewModelTest {
         //GIVEN
         coEvery { getUserUseCase() } returns flowOf()
         //WHEN
-        viewModel.emitEvent { AccountContract.Event.OnGetUser }
+        viewModel.emitEvent { AccountContract.Event.OnRequestUser }
         //THEN
         coVerify { getUserUseCase() }
     }
@@ -49,7 +49,7 @@ internal class AccountViewModelTest {
         //GIVEN
         coEvery { getUserUseCase() } returns flowOf(Resource.Loading)
         //WHEN
-        viewModel.emitEvent { AccountContract.Event.OnGetUser }
+        viewModel.emitEvent { AccountContract.Event.OnRequestUser }
         //THEN
         val state = viewModel.uiState.value as? AccountContract.State.Loading
         assertNotNull(state)
@@ -61,7 +61,7 @@ internal class AccountViewModelTest {
         val user = Fakes.user
         coEvery { getUserUseCase() } returns flowOf(Resource.Success(user))
         //WHEN
-        viewModel.emitEvent { AccountContract.Event.OnGetUser }
+        viewModel.emitEvent { AccountContract.Event.OnRequestUser }
         //THEN
         val state = viewModel.uiState.value as? AccountContract.State.Loaded
         assertNotNull(state)
@@ -74,7 +74,7 @@ internal class AccountViewModelTest {
         val exception = Exception("Generic Exception")
         coEvery { getUserUseCase() } returns flowOf(Resource.Failure(exception))
         //WHEN
-        viewModel.emitEvent { AccountContract.Event.OnGetUser }
+        viewModel.emitEvent { AccountContract.Event.OnRequestUser }
         //THEN
         val state = viewModel.uiState.value as? AccountContract.State.Error
         assertNotNull(state)
@@ -87,7 +87,7 @@ internal class AccountViewModelTest {
         val exception = UserNotFoundException()
         coEvery { getUserUseCase() } returns flowOf(Resource.Failure(exception))
         //WHEN
-        viewModel.emitEvent { AccountContract.Event.OnGetUser }
+        viewModel.emitEvent { AccountContract.Event.OnRequestUser }
         //THEN
         coroutineTestRule.scope.launch {
             assertEquals(AccountContract.Effect.GoToAuth, viewModel.uiEffect.last())
@@ -99,7 +99,7 @@ internal class AccountViewModelTest {
         //GIVEN
         coEvery { signOutUseCase() } returns flowOf()
         //WHEN
-        viewModel.emitEvent { AccountContract.Event.OnSignOut }
+        viewModel.emitEvent { AccountContract.Event.OnRequestSignOut }
         //THEN
         coVerify { signOutUseCase() }
     }
@@ -109,7 +109,7 @@ internal class AccountViewModelTest {
         //GIVEN
         coEvery { signOutUseCase() } returns flowOf(Resource.Loading)
         //WHEN
-        viewModel.emitEvent { AccountContract.Event.OnSignOut }
+        viewModel.emitEvent { AccountContract.Event.OnRequestSignOut }
         //THEN
         val state = viewModel.uiState.value as? AccountContract.State.Loading
         assertNotNull(state)
@@ -120,7 +120,7 @@ internal class AccountViewModelTest {
         //GIVEN
         coEvery { signOutUseCase() } returns flowOf(Resource.Success(true))
         //WHEN
-        viewModel.emitEvent { AccountContract.Event.OnSignOut }
+        viewModel.emitEvent { AccountContract.Event.OnRequestSignOut }
         //THEN
         coroutineTestRule.scope.launch {
             assertEquals(AccountContract.Effect.GoToAuth, viewModel.uiEffect.last())

@@ -6,7 +6,7 @@ import br.com.jwar.sharedbill.domain.model.Resource.Loading
 import br.com.jwar.sharedbill.domain.model.Resource.Failure
 import br.com.jwar.sharedbill.domain.model.Resource.Success
 import br.com.jwar.sharedbill.domain.usecases.GetAllGroupsUseCase
-import br.com.jwar.sharedbill.presentation.core.BaseViewModel
+import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect
@@ -25,13 +25,15 @@ class GroupListViewModel @Inject constructor(
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnGetGroups -> onGetAllGroups(event.refresh)
-            is Event.OnNewGroup -> onNewGroup()
-            is Event.OnGroupSelected -> onOpenGroupDetails(event.group)
+            is Event.OnRequestGroups -> onRequestGroups(event.refresh)
+            is Event.OnNewGroupClick -> onNewGroupClick()
+            is Event.OnGroupSelect -> onGroupSelect(event.group)
+            is Event.OnJoinAGroupClick -> onJoinAGroupClick()
+            is Event.OnJoinClick -> onJoinClick()
         }
     }
 
-    private fun onGetAllGroups(refresh: Boolean) = viewModelScope.launch {
+    private fun onRequestGroups(refresh: Boolean) = viewModelScope.launch {
         getAllGroupsUseCase(refresh).collect { resource ->
             when(resource) {
                 is Loading -> setState { State.Loading }
@@ -41,11 +43,19 @@ class GroupListViewModel @Inject constructor(
         }
     }
 
-    private fun onNewGroup() = viewModelScope.launch {
+    private fun onNewGroupClick() = viewModelScope.launch {
         sendEffect { OpenGroupCreate }
     }
 
-    private fun onOpenGroupDetails(group: Group) {
+    private fun onGroupSelect(group: Group) {
         sendEffect { OpenGroupDetails(group.id) }
+    }
+
+    private fun onJoinClick() {
+        TODO("Not yet implemented")
+    }
+
+    private fun onJoinAGroupClick() {
+        TODO("Not yet implemented")
     }
 }

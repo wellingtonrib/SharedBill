@@ -1,6 +1,6 @@
 package br.com.jwar.sharedbill
 
-import br.com.jwar.sharedbill.presentation.core.DispatcherProvider
+import br.com.jwar.sharedbill.core.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -14,9 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class FirebaseGroupsDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
@@ -67,6 +65,7 @@ class FirebaseGroupsDataSource @Inject constructor(
             groupDoc.set(newGroup); newGroup
         }
     }
+
 
     private fun getCurrentUser() = firebaseAuth.currentUser ?: throw UserNotFoundException()
 

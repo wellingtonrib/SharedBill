@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.core
+package br.com.jwar.sharedbill.presentation.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

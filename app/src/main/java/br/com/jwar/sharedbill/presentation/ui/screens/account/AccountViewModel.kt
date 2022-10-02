@@ -7,7 +7,7 @@ import br.com.jwar.sharedbill.domain.model.Resource.Loading
 import br.com.jwar.sharedbill.domain.model.Resource.Success
 import br.com.jwar.sharedbill.domain.usecases.GetUserUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignOutUseCase
-import br.com.jwar.sharedbill.presentation.core.BaseViewModel
+import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Effect
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.State
@@ -25,12 +25,12 @@ class AccountViewModel @Inject constructor(
 
     override fun handleEvent(event: Event) {
         when (event) {
-            is Event.OnGetUser -> onGetUser()
-            is Event.OnSignOut -> onSignOut()
+            is Event.OnRequestUser -> onRequestUser()
+            is Event.OnRequestSignOut -> onRequestSignOut()
         }
     }
 
-    private fun onGetUser() = viewModelScope.launch {
+    private fun onRequestUser() = viewModelScope.launch {
         getUserUseCase().collect { resource ->
             when(resource) {
                 is Loading -> setState { State.Loading }
@@ -40,7 +40,7 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-    private fun onSignOut() = viewModelScope.launch {
+    private fun onRequestSignOut() = viewModelScope.launch {
         signOutUseCase().collect { resource ->
             when(resource) {
                 is Loading -> setState { State.Loading }

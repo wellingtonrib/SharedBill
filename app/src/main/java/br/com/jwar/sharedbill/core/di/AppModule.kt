@@ -1,9 +1,9 @@
-package br.com.jwar.sharedbill.presentation.di
+package br.com.jwar.sharedbill.core.di
 
 import android.app.Application
 import android.content.Context
-import br.com.jwar.sharedbill.presentation.core.DispatcherProvider
-import br.com.jwar.sharedbill.presentation.core.DispatcherProviderImpl
+import br.com.jwar.sharedbill.core.DispatcherProvider
+import br.com.jwar.sharedbill.core.DispatcherProviderImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

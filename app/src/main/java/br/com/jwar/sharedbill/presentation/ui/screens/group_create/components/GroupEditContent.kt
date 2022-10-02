@@ -12,19 +12,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.jwar.sharedbill.presentation.ui.screens.group_create.GroupCreateContract.State
+import br.com.jwar.sharedbill.presentation.ui.screens.group_create.GroupEditContract.State
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
 
 @Composable
-fun GroupCreateContent(
+fun GroupEditContent(
     state: State,
     snackHostState: SnackbarHostState = SnackbarHostState(),
     onCreateGroupClick: (name: String) -> Unit = {}
 ) {
     when (state) {
-        is State.Creating -> LoadingContent()
-        is State.Idle -> GroupCreateForm(onCreateGroupClick)
+        is State.Saving -> LoadingContent()
+        is State.Idle -> GroupEditForm(onCreateGroupClick)
     }
     SnackbarHost(
         hostState = snackHostState,
@@ -34,7 +34,7 @@ fun GroupCreateContent(
 
 
 @Composable
-fun GroupCreateForm(
+fun GroupEditForm(
     onCreateGroupClick: (name: String) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
@@ -56,10 +56,10 @@ fun GroupCreateForm(
 
 @Preview
 @Composable
-fun previewGroupContent() {
+fun previewGroupEditContent() {
     SharedBillTheme {
         Scaffold {
-            GroupCreateContent(state = State.Idle)
+            GroupEditContent(state = State.Idle)
         }
     }
 }

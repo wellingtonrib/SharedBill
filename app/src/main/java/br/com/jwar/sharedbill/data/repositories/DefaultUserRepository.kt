@@ -8,14 +8,12 @@ import br.com.jwar.sharedbill.domain.model.Resource.Success
 import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-@Singleton
 class DefaultUserRepository @Inject constructor(
     private val userDataSource: UserDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO

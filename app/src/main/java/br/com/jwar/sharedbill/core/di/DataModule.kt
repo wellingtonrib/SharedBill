@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.di
+package br.com.jwar.sharedbill.core.di
 
 import br.com.jwar.sharedbill.data.datasources.FirebaseGroupsDataSource
 import br.com.jwar.sharedbill.data.datasources.FirebaseUserDataSource
@@ -14,8 +14,8 @@ import br.com.jwar.sharedbill.domain.datasources.UserDataSource
 import br.com.jwar.sharedbill.domain.repositories.GroupsRepository
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
 import br.com.jwar.sharedbill.domain.services.AuthService
-import br.com.jwar.sharedbill.presentation.di.FirebaseModule.Companion.SIGN_IN_REQUEST
-import br.com.jwar.sharedbill.presentation.di.FirebaseModule.Companion.SIGN_UP_REQUEST
+import br.com.jwar.sharedbill.core.di.FirebaseModule.Companion.SIGN_IN_REQUEST
+import br.com.jwar.sharedbill.core.di.FirebaseModule.Companion.SIGN_UP_REQUEST
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.FirebaseAuth
@@ -25,12 +25,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class DataModule {
 
     @Provides
+    @Singleton
     fun provideAuthService(
         firebaseAuth: FirebaseAuth,
         signInClient: SignInClient,
@@ -48,6 +50,7 @@ class DataModule {
     )
 
     @Provides
+    @Singleton
     fun provideUserDataSource(
         firebaseAuth: FirebaseAuth,
         firestore: FirebaseFirestore,
@@ -59,6 +62,7 @@ class DataModule {
     )
 
     @Provides
+    @Singleton
     fun provideUserRepository(
         userDataSource: UserDataSource,
     ): UserRepository = DefaultUserRepository(
@@ -66,10 +70,12 @@ class DataModule {
     )
 
     @Provides
+    @Singleton
     fun provideFirebaseUserToUserMapper(): FirebaseUserToUserMapper =
         FirebaseUserToUserMapperImpl()
 
     @Provides
+    @Singleton
     fun provideGroupsDataSource(
         firebaseAuth: FirebaseAuth,
         firestore: FirebaseFirestore,
@@ -83,6 +89,7 @@ class DataModule {
     )
 
     @Provides
+    @Singleton
     fun provideGroupsRepository(
         groupsDataSource: GroupsDataSource,
     ): GroupsRepository = DefaultGroupRepository(
@@ -90,6 +97,7 @@ class DataModule {
     )
 
     @Provides
+    @Singleton
     fun provideDocumentSnapshotToGroupMapper(): DocumentSnapshotToGroupMapper =
         DocumentSnapshotToGroupMapperImpl()
 }

@@ -8,22 +8,20 @@ import br.com.jwar.sharedbill.domain.model.Resource.Failure
 import br.com.jwar.sharedbill.domain.model.Resource.Loading
 import br.com.jwar.sharedbill.domain.model.Resource.Success
 import br.com.jwar.sharedbill.domain.services.AuthService
-import br.com.jwar.sharedbill.presentation.di.FirebaseModule.Companion.SIGN_IN_REQUEST
-import br.com.jwar.sharedbill.presentation.di.FirebaseModule.Companion.SIGN_UP_REQUEST
+import br.com.jwar.sharedbill.core.di.FirebaseModule.Companion.SIGN_IN_REQUEST
+import br.com.jwar.sharedbill.core.di.FirebaseModule.Companion.SIGN_UP_REQUEST
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import javax.inject.Inject
 import javax.inject.Named
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 
-@Singleton
 class FirebaseAuthService @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private var signInClient: SignInClient,

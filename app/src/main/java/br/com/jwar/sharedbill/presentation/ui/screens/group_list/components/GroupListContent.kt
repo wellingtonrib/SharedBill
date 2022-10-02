@@ -1,11 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package br.com.jwar.sharedbill.presentation.ui.screens.group_list.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
@@ -29,20 +24,29 @@ import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
 fun GroupListContent(
     state: State,
     onNewGroupClick: () -> Unit = {},
+    onJoinGroupClick: () -> Unit = {},
     onGroupClick: (group: Group) -> Unit = {},
     onTryAgainClick: () -> Unit = {},
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = onNewGroupClick) {
-            Text(text = "New Group")
+        Row {
+            Button(onClick = onNewGroupClick) {
+                Text(text = "New Group")
+            }
+            Divider(modifier = Modifier.width(16.dp))
+            Button(onClick = onJoinGroupClick) {
+                Text(text = "Join a Group")
+            }
         }
         when(state) {
             is Loading -> LoadingContent()
             is Loaded -> if (state.groups.isNotEmpty()) GroupsList(state.groups, onGroupClick)
-                         else EmptyContent(action = onNewGroupClick)
+                         else EmptyContent(action = null, message = "No groups, create or join one")
             is Error -> ErrorContent(action = onTryAgainClick)
         }
     }
@@ -60,7 +64,9 @@ fun GroupsList(groups: List<Group>, onGroupClick: (group: Group) -> Unit) {
 @Composable
 fun GroupsListItem(group: Group, onGroupClick: (group: Group) -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
         onClick = { onGroupClick(group) }
     ) {
         Column(

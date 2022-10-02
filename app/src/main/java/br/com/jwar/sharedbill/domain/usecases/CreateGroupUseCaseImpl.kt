@@ -5,9 +5,7 @@ import br.com.jwar.sharedbill.domain.model.Resource
 import br.com.jwar.sharedbill.domain.repositories.GroupsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class CreateGroupUseCaseImpl @Inject constructor(
     private val groupRepository: GroupsRepository
 ) : CreateGroupUseCase {

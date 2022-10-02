@@ -8,7 +8,7 @@ import br.com.jwar.sharedbill.domain.model.Resource.Success
 import br.com.jwar.sharedbill.domain.usecases.SignInFirebaseUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignInUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignUpUseCase
-import br.com.jwar.sharedbill.presentation.core.BaseViewModel
+import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.Effect
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.State
@@ -27,9 +27,9 @@ class AuthViewModel @Inject constructor(
 
     override fun handleEvent(event: Event) {
         when (event) {
-            is Event.OnSignIn -> onSignIn()
-            is Event.OnSignUp -> onSignUp()
-            is Event.OnSignInFirebase -> onSignInFirebase(event.data)
+            is Event.OnRequestSignIn -> onSignIn()
+            is Event.OnRequestSignUp -> onSignUp()
+            is Event.OnRequestSignInFirebase -> onSignInFirebase(event.data)
         }
     }
 
@@ -38,7 +38,7 @@ class AuthViewModel @Inject constructor(
             when(resource) {
                 is Loading -> setState { it.copy(isAuthenticating = true) }
                 is Success -> sendEffect { Effect.LaunchSignInResult(resource.data) }
-                is Failure -> emitEvent { Event.OnSignUp }
+                is Failure -> emitEvent { Event.OnRequestSignUp }
             }
         }
     }

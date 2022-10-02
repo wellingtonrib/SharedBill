@@ -1,14 +1,14 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.account
 
 import br.com.jwar.sharedbill.domain.model.User
-import br.com.jwar.sharedbill.presentation.core.UiEffect
-import br.com.jwar.sharedbill.presentation.core.UiEvent
-import br.com.jwar.sharedbill.presentation.core.UiState
+import br.com.jwar.sharedbill.presentation.base.UiEffect
+import br.com.jwar.sharedbill.presentation.base.UiEvent
+import br.com.jwar.sharedbill.presentation.base.UiState
 
 class AccountContract {
     sealed class Event: UiEvent {
-        object OnGetUser : Event()
-        object OnSignOut : Event()
+        object OnRequestUser : Event()
+        object OnRequestSignOut : Event()
     }
 
     sealed class State : UiState  {

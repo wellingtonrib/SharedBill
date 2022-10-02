@@ -1,13 +1,15 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_details
 
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.presentation.core.UiEffect
-import br.com.jwar.sharedbill.presentation.core.UiEvent
-import br.com.jwar.sharedbill.presentation.core.UiState
+import br.com.jwar.sharedbill.presentation.base.UiEffect
+import br.com.jwar.sharedbill.presentation.base.UiEvent
+import br.com.jwar.sharedbill.presentation.base.UiState
 
 class GroupDetailsContract {
+
     sealed class Event: UiEvent {
-        class OnLoadGroup(val groupId: String) : Event()
+        class OnRequestGroup(val groupId: String) : Event()
+        object OnManageClick : Event()
     }
 
     sealed class State: UiState {
@@ -17,6 +19,7 @@ class GroupDetailsContract {
     }
 
     sealed class Effect: UiEffect {
-
+        object OpenGroupMembers: Effect()
     }
+
 }

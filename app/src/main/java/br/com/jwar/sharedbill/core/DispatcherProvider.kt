@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.core
+package br.com.jwar.sharedbill.core
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

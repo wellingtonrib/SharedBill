@@ -16,13 +16,15 @@ import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 fun EmptyContent(
     message: String = "Nothing here",
     actionMessage: String = "Create one",
-    action: () -> Unit = {}
+    action: (() -> Unit)? = null
 ) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center,){
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = message)
-            Button(onClick = { action() }) {
-                Text(text = actionMessage)
+            if (action != null) {
+                Button(onClick = { action() }) {
+                    Text(text = actionMessage)
+                }
             }
         }
     }

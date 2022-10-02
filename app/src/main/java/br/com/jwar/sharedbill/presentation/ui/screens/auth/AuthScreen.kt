@@ -28,14 +28,14 @@ fun AuthScreen(
     AuthContent(
         state = state,
         snackHostState = snackHostState,
-        onSignInClick = { viewModel.emitEvent { Event.OnSignIn } }
+        onSignInClick = { viewModel.emitEvent { Event.OnRequestSignIn } }
     )
 
     val launcherForActivityResult = rememberLauncherForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
         if (result.resultCode == RESULT_OK) {
-            viewModel.emitEvent { Event.OnSignInFirebase(result.data) }
+            viewModel.emitEvent { Event.OnRequestSignInFirebase(result.data) }
         }
     }
 

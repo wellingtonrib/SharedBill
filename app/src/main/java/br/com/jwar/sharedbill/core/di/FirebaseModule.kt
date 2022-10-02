@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.di
+package br.com.jwar.sharedbill.core.di
 
 import android.app.Application
 import android.content.Context
@@ -15,6 +15,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -26,17 +27,21 @@ class FirebaseModule {
     }
 
     @Provides
+    @Singleton
     fun provideFirebaseAuth() = Firebase.auth
 
     @Provides
+    @Singleton
     fun provideFirebaseFirestore() = Firebase.firestore
 
     @Provides
+    @Singleton
     fun provideSignInClient(
         context: Context
     ) = Identity.getSignInClient(context)
 
     @Provides
+    @Singleton
     @Named(SIGN_IN_REQUEST)
     fun provideSignInRequest() = BeginSignInRequest.builder()
         .setGoogleIdTokenRequestOptions(
@@ -49,6 +54,7 @@ class FirebaseModule {
         .build()
 
     @Provides
+    @Singleton
     @Named(SIGN_UP_REQUEST)
     fun provideSignUpRequest() = BeginSignInRequest.builder()
         .setGoogleIdTokenRequestOptions(
@@ -60,6 +66,7 @@ class FirebaseModule {
         .build()
 
     @Provides
+    @Singleton
     fun provideGoogleSignInOptions() =
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(BuildConfig.FIREBASE_WEB_CLIENT_ID)
@@ -67,6 +74,7 @@ class FirebaseModule {
             .build()
 
     @Provides
+    @Singleton
     fun provideGoogleSignInClient(
         app: Application,
         options: GoogleSignInOptions
