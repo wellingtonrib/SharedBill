@@ -38,9 +38,9 @@ class GroupDetailsViewModel @Inject constructor(
     private fun onRequestGroup(group: String) = viewModelScope.launch {
         getGroupByIdUseCase(group).collect { resource ->
             when(resource) {
+                is Resource.Loading -> setState { Loading }
                 is Resource.Success -> setState { Loaded(resource.data) }
                 is Resource.Failure -> setState { Error(resource.throwable.message.orEmpty()) }
-                else -> setState { Loading }
             }
         }
     }

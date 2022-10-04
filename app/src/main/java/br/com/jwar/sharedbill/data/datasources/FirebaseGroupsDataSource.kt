@@ -6,6 +6,7 @@ import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
 import br.com.jwar.sharedbill.domain.exceptions.GroupNotFoundException
 import br.com.jwar.sharedbill.domain.exceptions.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
+import br.com.jwar.sharedbill.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -66,6 +67,18 @@ class FirebaseGroupsDataSource @Inject constructor(
         }
     }
 
+    override suspend fun addMember(user: User, group: Group): User {
+        return withContext(ioDispatcher) {
+            val snapshot = getUserGroupsQuery()
+                .whereEqualTo(GROUP_ID_FIELD, group.id)
+                .get()
+                .await()
+                .documents
+                .firstOrNull() ?: throw GroupNotFoundException()
+            // TODO
+            user
+        }
+    }
 
     private fun getCurrentUser() = firebaseAuth.currentUser ?: throw UserNotFoundException()
 

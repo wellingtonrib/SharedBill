@@ -5,16 +5,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen.GroupEdit
 import br.com.jwar.sharedbill.presentation.navigation.AppScreen.GroupDetails
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.components.GroupListContent
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event.OnNewGroupClick
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event.OnGroupSelect
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event.OnJoinAGroupClick
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event.OnRequestGroups
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect.OpenGroupDetails
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect.OpenGroupCreate
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect.OpenJoinGroup
+import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event.*
+import br.com.jwar.sharedbill.presentation.ui.screens.group_list.components.GroupListContent
 
 @Composable
 fun GroupListScreen(
@@ -25,8 +20,8 @@ fun GroupListScreen(
 
     GroupListContent(
         state = state,
-        onNewGroupClick = {
-            viewModel.emitEvent { OnNewGroupClick }
+        onGroupCreate = {
+            viewModel.emitEvent { OnGroupCreate(it) }
         },
         onJoinGroupClick = {
             viewModel.emitEvent { OnJoinAGroupClick }
@@ -45,9 +40,6 @@ fun GroupListScreen(
             when(effect) {
                 is OpenGroupDetails ->
                     navController.navigate(route = GroupDetails.createRoute(effect.groupId))
-                is OpenGroupCreate -> {
-                    navController.navigate(route = GroupEdit.route)
-                }
                 is OpenJoinGroup -> {
                     TODO("Not yet implemented")
                 }

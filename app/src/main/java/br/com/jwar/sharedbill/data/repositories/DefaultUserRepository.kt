@@ -18,11 +18,22 @@ class DefaultUserRepository @Inject constructor(
     private val userDataSource: UserDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): UserRepository {
+
     override suspend fun getUser(): Flow<Resource<User>> = flow {
         emit(Loading)
         try {
             val user = userDataSource.getUser()
             emit(Success(user))
+        } catch (exception: Exception) {
+            emit(Failure(exception))
+        }
+    }.flowOn(ioDispatcher)
+
+    override suspend fun createUser(user: User): Flow<Resource<User>> = flow {
+        emit(Loading)
+        try {
+            val savedUser = userDataSource.createUser(user)
+            emit(Success(savedUser))
         } catch (exception: Exception) {
             emit(Failure(exception))
         }

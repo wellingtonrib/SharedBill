@@ -29,7 +29,7 @@ fun GroupDetailsScreen(
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.OpenGroupMembers -> {
-                    navController.navigate(AppScreen.GroupMembers.createRoute(groupId))
+                    navController.navigate(AppScreen.GroupEdit.createRoute(groupId))
                 }
             }
         }

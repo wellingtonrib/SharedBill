@@ -8,10 +8,9 @@ import androidx.navigation.NavHostController
 import br.com.jwar.sharedbill.presentation.navigation.AppScreen.*
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountScreen
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthScreen
-import br.com.jwar.sharedbill.presentation.ui.screens.group_create.GroupEditScreen
+import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditScreen
 import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsScreen
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListScreen
-import br.com.jwar.sharedbill.presentation.ui.screens.group_members.GroupMembersScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
@@ -35,21 +34,14 @@ fun NavGraph(
         composable(route = GroupList.route) {
             GroupListScreen(navController = navController)
         }
-        composable(
-            route = GroupDetails.route
-        ) { backStackEntry ->
+        composable(route = GroupDetails.route) { backStackEntry ->
             GroupDetailsScreen(
                 navController = navController,
                 groupId = backStackEntry.arguments?.getString("groupId").orEmpty()
             )
         }
-        composable(route = GroupEdit.route) {
-            GroupEditScreen(navController = navController)
-        }
-        composable(
-            route = GroupMembers.route
-        ) { backStackEntry ->
-            GroupMembersScreen(
+        composable(route = GroupEdit.route) { backStackEntry ->
+            GroupEditScreen(
                 navController = navController,
                 groupId = backStackEntry.arguments?.getString("groupId").orEmpty()
             )

@@ -62,4 +62,10 @@ class DomainModule {
         groupsRepository: GroupsRepository
     ): GetGroupByIdUseCase = GetGroupByIdUseCaseImpl(groupsRepository)
 
+    @Provides
+    @Singleton
+    fun providesGroupAddMemberUseCase(
+        userRepository: UserRepository,
+        groupsRepository: GroupsRepository
+    ): GroupAddMemberUseCase = GroupAddMemberUseCaseImpl(userRepository, groupsRepository)
 }

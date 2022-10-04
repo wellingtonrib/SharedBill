@@ -33,4 +33,12 @@ class FirebaseUserDataSource @Inject constructor(
         withContext(ioDispatcher) {
             firestore.collection(USERS_REF).document(user.uid).set(user).await()
         }
+
+    override suspend fun createUser(user: User): User {
+        return withContext(ioDispatcher) {
+            val userDoc = firestore.collection(USERS_REF).document()
+            userDoc.set(user)
+            return@withContext user.copy(uid = userDoc.id)
+        }
+    }
 }

@@ -43,6 +43,8 @@ android {
         allWarningsAsErrors = false
         freeCompilerArgs += [
             '-opt-in=androidx.compose.material3.ExperimentalMaterial3Api',
+            '-opt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi',
+            '-opt-in=androidx.compose.animation.ExperimentalAnimationApi',
             '-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi'
         ]
     }
@@ -74,6 +76,7 @@ dependencies {
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose_version"
 
     //Accompanist
+    implementation "com.google.accompanist:accompanist-navigation-material:$accompanist_version"
     implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
 
     //Hilt

@@ -1,10 +1,10 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_list.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,17 +17,29 @@ import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContra
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 import br.com.jwar.sharedbill.presentation.ui.widgets.EmptyContent
 import br.com.jwar.sharedbill.presentation.ui.widgets.ErrorContent
+import br.com.jwar.sharedbill.presentation.ui.widgets.InputDialog
 import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
 
 
 @Composable
 fun GroupListContent(
     state: State,
-    onNewGroupClick: () -> Unit = {},
+    onGroupCreate: (String) -> Unit = {},
     onJoinGroupClick: () -> Unit = {},
     onGroupClick: (group: Group) -> Unit = {},
     onTryAgainClick: () -> Unit = {},
 ) {
+    val openGroupCreateDialog = remember { mutableStateOf(false) }
+    if (openGroupCreateDialog.value) {
+        InputDialog(
+            label = "Enter a group name",
+            placeholder = "Ex. Trip",
+            action = "Save",
+            onDismiss = { openGroupCreateDialog.value = false },
+            onAction = { openGroupCreateDialog.value = false; onGroupCreate(it) }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -35,10 +47,10 @@ fun GroupListContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row {
-            Button(onClick = onNewGroupClick) {
+            Button(onClick = {  openGroupCreateDialog.value = true }) {
                 Text(text = "New Group")
             }
-            Divider(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(16.dp))
             Button(onClick = onJoinGroupClick) {
                 Text(text = "Join a Group")
             }
@@ -48,31 +60,6 @@ fun GroupListContent(
             is Loaded -> if (state.groups.isNotEmpty()) GroupsList(state.groups, onGroupClick)
                          else EmptyContent(action = null, message = "No groups, create or join one")
             is Error -> ErrorContent(action = onTryAgainClick)
-        }
-    }
-}
-
-@Composable
-fun GroupsList(groups: List<Group>, onGroupClick: (group: Group) -> Unit) {
-    LazyColumn(content = {
-        items(groups) { group ->
-            GroupsListItem(group, onGroupClick)
-        }
-    })
-}
-
-@Composable
-fun GroupsListItem(group: Group, onGroupClick: (group: Group) -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        onClick = { onGroupClick(group) }
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = group.title)
         }
     }
 }

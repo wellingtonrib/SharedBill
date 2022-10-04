@@ -1,10 +1,10 @@
 package br.com.jwar.sharedbill.data.repositories
 
 import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
-import br.com.jwar.sharedbill.domain.exceptions.GroupNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Resource
 import br.com.jwar.sharedbill.domain.model.Resource.*
+import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.domain.repositories.GroupsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -21,9 +21,10 @@ class DefaultGroupRepository @Inject constructor(
     override suspend fun getGroupById(groupId: String, refresh: Boolean): Flow<Resource<Group>> = flow {
         emit(Loading)
         try {
-            val group = if (cache.isEmpty() || refresh) {
+            val cached = cache.firstOrNull { it.id == groupId }
+            val group = if (cached == null || refresh) {
                 groupsDataSource.getGroupById(groupId).also { cache.add(it) }
-            } else cache.firstOrNull { it.id == groupId } ?: throw GroupNotFoundException()
+            } else cached
             emit(Success(group))
         } catch (exception: Exception) {
             emit(Failure(exception))
@@ -33,9 +34,10 @@ class DefaultGroupRepository @Inject constructor(
     override suspend fun getAllGroups(refresh: Boolean): Flow<Resource<List<Group>>> = flow {
         emit(Loading)
         try {
-            val groups = if (cache.isEmpty() || refresh) {
+            val cached = cache.toList()
+            val groups = if (cached.isEmpty() || refresh) {
                 groupsDataSource.getAllGroups().also { cache.addAll(it) }
-            } else cache.toList()
+            } else cached
             emit(Success(groups))
         } catch (exception: Exception) {
             emit(Failure(exception))
@@ -47,6 +49,16 @@ class DefaultGroupRepository @Inject constructor(
         try {
             val newGroup = groupsDataSource.createGroup(group)
             emit(Success(newGroup))
+        } catch (exception: Exception) {
+            emit(Failure(exception))
+        }
+    }.flowOn(ioDispatcher)
+
+    override suspend fun addMember(user: User, group: Group): Flow<Resource<User>> = flow {
+        emit(Loading)
+        try {
+            val newMember = groupsDataSource.addMember(user, group)
+            emit(Success(newMember))
         } catch (exception: Exception) {
             emit(Failure(exception))
         }

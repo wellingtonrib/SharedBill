@@ -9,7 +9,7 @@ class GroupListContract {
 
     sealed class Event: UiEvent {
         class OnRequestGroups(val refresh: Boolean) : Event()
-        object OnNewGroupClick: Event()
+        class OnGroupCreate(val title: String): Event()
         object OnJoinAGroupClick: Event()
         object OnJoinClick: Event()
         class OnGroupSelect(val group: Group): Event()
@@ -23,7 +23,6 @@ class GroupListContract {
 
     sealed class Effect: UiEffect {
         class OpenGroupDetails(val groupId: String): Effect()
-        object OpenGroupCreate: Effect()
         object OpenJoinGroup: Effect()
     }
 
