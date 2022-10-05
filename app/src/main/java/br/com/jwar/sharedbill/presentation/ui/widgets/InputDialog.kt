@@ -69,7 +69,7 @@ private fun InputDialogContent(
 
 @Preview
 @Composable
-fun PreviewGroupMemberAddContent() {
+fun PreviewInputDialogContent() {
     SharedBillTheme {
         Box(
             modifier = Modifier

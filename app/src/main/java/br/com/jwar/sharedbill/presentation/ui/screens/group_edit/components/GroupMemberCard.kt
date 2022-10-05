@@ -11,12 +11,12 @@ import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.domain.model.User
 
 @Composable
-fun GroupMemberCard(member: User, onMemberClick: (member: User) -> Unit) {
+fun GroupMemberCard(member: User, onMemberSelect: (member: User) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp),
-        onClick = { onMemberClick(member) }
+        onClick = { onMemberSelect(member) }
     ) {
         Column(
             modifier = Modifier.padding(16.dp)

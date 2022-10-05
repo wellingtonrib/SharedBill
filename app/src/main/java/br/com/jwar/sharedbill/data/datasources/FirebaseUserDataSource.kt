@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.util.UUID
 
 class FirebaseUserDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
@@ -31,14 +32,14 @@ class FirebaseUserDataSource @Inject constructor(
 
     override suspend fun saveUser(user: User): Unit =
         withContext(ioDispatcher) {
-            firestore.collection(USERS_REF).document(user.uid).set(user).await()
+            firestore.collection(USERS_REF).document(user.firebaseUserId).set(user).await()
         }
 
-    override suspend fun createUser(user: User): User {
+    override suspend fun createUser(userName: String): User {
         return withContext(ioDispatcher) {
             val userDoc = firestore.collection(USERS_REF).document()
-            userDoc.set(user)
-            return@withContext user.copy(uid = userDoc.id)
+            val user = User(uid = UUID.randomUUID().toString(), name = userName)
+            return@withContext user.also { userDoc.set(it) }
         }
     }
 }

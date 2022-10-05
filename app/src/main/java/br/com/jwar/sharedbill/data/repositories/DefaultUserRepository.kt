@@ -29,10 +29,10 @@ class DefaultUserRepository @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    override suspend fun createUser(user: User): Flow<Resource<User>> = flow {
+    override suspend fun createUser(userName: String) = flow {
         emit(Loading)
         try {
-            val savedUser = userDataSource.createUser(user)
+            val savedUser = userDataSource.createUser(userName)
             emit(Success(savedUser))
         } catch (exception: Exception) {
             emit(Failure(exception))

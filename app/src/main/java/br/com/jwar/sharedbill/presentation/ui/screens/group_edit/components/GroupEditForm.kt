@@ -16,15 +16,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.domain.model.Group
+import br.com.jwar.sharedbill.domain.model.User
+import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract
+import br.com.jwar.sharedbill.presentation.ui.widgets.InfoDialog
 import br.com.jwar.sharedbill.presentation.ui.widgets.InputDialog
 
 @Composable
 fun GroupEditForm(
-    group: Group,
+    state: GroupEditContract.State.Editing,
     onSaveGroupClick: (group: Group) -> Unit,
-    onSaveMemberClick: (String, Group) -> Unit
+    onSaveMemberClick: (String) -> Unit,
+    onMemberSelectionChange: (User?) -> Unit,
 ) {
-    var groupEdited by remember { mutableStateOf(group) }
+    var groupEdited by remember { mutableStateOf(state.group) }
 
     val openGroupAddMemberDialog = remember { mutableStateOf(false) }
     if (openGroupAddMemberDialog.value) {
@@ -33,7 +37,18 @@ fun GroupEditForm(
             placeholder = "Ex. Alex",
             action = "Save",
             onDismiss = { openGroupAddMemberDialog.value = false },
-            onAction = { openGroupAddMemberDialog.value = false; onSaveMemberClick(it, group) }
+            onAction = { openGroupAddMemberDialog.value = false; onSaveMemberClick(it) }
+        )
+    }
+
+    state.selectedMember?.let { user ->
+        InfoDialog(
+            image = R.drawable.ic_baseline_account_circle_24,
+            title = user.name,
+            message = "Invite code: ${user.inviteCode.orEmpty()}",
+            action = "Ok",
+            onDismiss = { onMemberSelectionChange(null) },
+            onAction = { onMemberSelectionChange(null) }
         )
     }
 
@@ -70,7 +85,7 @@ fun GroupEditForm(
                         .fillMaxWidth()
                         .weight(1f),
                     shape = RoundedCornerShape(16.dp),
-                    value = group.title,
+                    value = state.group.title,
                     label = { Text(text = "Group Name") },
                     placeholder = { Text(text = "Ex: Trip") },
                     onValueChange = { groupEdited = groupEdited.copy(title = it) }
@@ -83,8 +98,8 @@ fun GroupEditForm(
                 text = "Group Members"
             )
         }
-        items(group.members) { member ->
-            GroupMemberCard(member, onMemberClick = {})
+        items(state.group.members) { member ->
+            GroupMemberCard(member, onMemberSelect = { onMemberSelectionChange(it) })
         }
         item {
             Spacer(modifier = Modifier.height(16.dp))

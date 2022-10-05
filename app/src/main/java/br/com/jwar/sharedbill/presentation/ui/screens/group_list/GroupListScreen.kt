@@ -6,9 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.jwar.sharedbill.presentation.navigation.AppScreen.GroupDetails
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect.OpenGroupDetails
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect.OpenJoinGroup
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event.*
+import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.*
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.components.GroupListContent
 
 @Composable
@@ -21,26 +19,25 @@ fun GroupListScreen(
     GroupListContent(
         state = state,
         onGroupCreate = {
-            viewModel.emitEvent { OnGroupCreate(it) }
+            viewModel.emitEvent { Event.OnGroupCreate(it) }
         },
-        onJoinGroupClick = {
-            viewModel.emitEvent { OnJoinAGroupClick }
+        onGroupJoin = {
+            viewModel.emitEvent { Event.OnGroupJoin(it) }
         },
         onGroupClick = {
-            viewModel.emitEvent { OnGroupSelect(it) }
-        },
-        onTryAgainClick = {
-            viewModel.emitEvent { OnRequestGroups(true) }
+            viewModel.emitEvent { Event.OnGroupSelect(it) }
         }
-    )
+    ) {
+        viewModel.emitEvent { Event.OnRequestGroups(true) }
+    }
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { OnRequestGroups(true) }
+        viewModel.emitEvent { Event.OnRequestGroups(true) }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
-                is OpenGroupDetails ->
+                is Effect.OpenGroupDetails ->
                     navController.navigate(route = GroupDetails.createRoute(effect.groupId))
-                is OpenJoinGroup -> {
+                is Effect.OpenJoinGroup -> {
                     TODO("Not yet implemented")
                 }
             }

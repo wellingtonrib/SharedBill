@@ -3,6 +3,7 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_edit
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Resource
+import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.domain.usecases.GroupAddMemberUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
@@ -23,7 +24,15 @@ class GroupEditViewModel @Inject constructor(
         when(event) {
             is Event.OnRequestEdit -> onRequestEdit(event.groupId)
             is Event.OnSaveGroupClick -> onSaveGroupClick(event.group)
-            is Event.OnSaveMemberClick -> onSaveMemberClick(event.userName, event.group)
+            is Event.OnSaveMemberClick -> onSaveMemberClick(event.userName, event.groupId)
+            is Event.OnMemberSelectionChange -> onMemberSelect(event.user)
+        }
+    }
+
+    private fun onMemberSelect(user: User?) {
+        setState { currentState ->
+            val editing = (currentState as? State.Editing) ?: return@setState currentState
+            State.Editing(editing.group, selectedMember = user)
         }
     }
 
@@ -41,11 +50,16 @@ class GroupEditViewModel @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    private fun onSaveMemberClick(userName: String, group: Group) = viewModelScope.launch {
-        groupAddMemberUseCase(userName, group).collect { resource ->
+    private fun onSaveMemberClick(userName: String, groupId: String) = viewModelScope.launch {
+        groupAddMemberUseCase(userName, groupId).collect { resource ->
             when(resource) {
                 is Resource.Loading -> setState { State.Loading }
-                is Resource.Success -> setState { State.Editing(resource.data) }
+                is Resource.Success -> setState {
+                    State.Editing(
+                        group = resource.data,
+                        selectedMember = resource.data.members.firstOrNull { it.name == userName }
+                    )
+                }
                 is Resource.Failure -> sendEffect { Effect.ShowError(resource.throwable.message.orEmpty()) }
             }
         }

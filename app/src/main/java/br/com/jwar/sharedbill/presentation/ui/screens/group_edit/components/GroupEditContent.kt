@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.domain.model.Group
+import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.State
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
@@ -19,14 +20,16 @@ fun GroupEditContent(
     state: State,
     snackHostState: SnackbarHostState = SnackbarHostState(),
     onSaveGroupClick: (Group) -> Unit = {},
-    onSaveMemberClick: (String, Group) -> Unit = { _,_-> },
+    onSaveMemberClick: (String) -> Unit = {},
+    onMemberSelectionChange: (User?) -> Unit = {},
 ) {
     when (state) {
         is State.Loading -> LoadingContent()
         is State.Editing -> GroupEditForm(
-            group = state.group,
+            state = state,
             onSaveGroupClick = onSaveGroupClick,
             onSaveMemberClick = onSaveMemberClick,
+            onMemberSelectionChange = onMemberSelectionChange
         )
     }
 
@@ -44,7 +47,7 @@ fun previewGroupEditContent() {
     SharedBillTheme {
         Scaffold {
             GroupEditContent(
-                state = State.Editing(Group.fake())
+                state = State.Editing(Group.fake()),
             )
         }
     }

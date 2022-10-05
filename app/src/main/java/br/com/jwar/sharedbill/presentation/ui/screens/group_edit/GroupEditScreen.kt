@@ -21,11 +21,14 @@ fun GroupEditScreen(
     GroupEditContent(
         state = state,
         snackHostState = snackHostState,
-        onSaveGroupClick = {
-            viewModel.emitEvent { Event.OnSaveGroupClick(it) }
+        onSaveGroupClick = { group ->
+            viewModel.emitEvent { Event.OnSaveGroupClick(group) }
         },
-        onSaveMemberClick = { userName, group ->
-            viewModel.emitEvent { Event.OnSaveMemberClick(userName, group) }
+        onSaveMemberClick = { userName ->
+            viewModel.emitEvent { Event.OnSaveMemberClick(userName, groupId) }
+        },
+        onMemberSelectionChange = { user ->
+            viewModel.emitEvent { Event.OnMemberSelectionChange(user) }
         }
     )
 

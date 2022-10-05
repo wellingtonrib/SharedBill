@@ -10,8 +10,7 @@ class GroupListContract {
     sealed class Event: UiEvent {
         class OnRequestGroups(val refresh: Boolean) : Event()
         class OnGroupCreate(val title: String): Event()
-        object OnJoinAGroupClick: Event()
-        object OnJoinClick: Event()
+        class OnGroupJoin(val code: String): Event()
         class OnGroupSelect(val group: Group): Event()
     }
 

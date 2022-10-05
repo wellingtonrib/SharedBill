@@ -25,7 +25,7 @@ import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
 fun GroupListContent(
     state: State,
     onGroupCreate: (String) -> Unit = {},
-    onJoinGroupClick: () -> Unit = {},
+    onGroupJoin: (String) -> Unit = {},
     onGroupClick: (group: Group) -> Unit = {},
     onTryAgainClick: () -> Unit = {},
 ) {
@@ -40,6 +40,17 @@ fun GroupListContent(
         )
     }
 
+    val openGroupJoinDialog = remember { mutableStateOf(false) }
+    if (openGroupJoinDialog.value) {
+        InputDialog(
+            label = "Enter code",
+            placeholder = "",
+            action = "Verify",
+            onDismiss = { openGroupJoinDialog.value = false },
+            onAction = { openGroupJoinDialog.value = false; onGroupJoin(it) }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,7 +62,7 @@ fun GroupListContent(
                 Text(text = "New Group")
             }
             Spacer(modifier = Modifier.width(16.dp))
-            Button(onClick = onJoinGroupClick) {
+            Button(onClick = { openGroupJoinDialog.value = true }) {
                 Text(text = "Join a Group")
             }
         }

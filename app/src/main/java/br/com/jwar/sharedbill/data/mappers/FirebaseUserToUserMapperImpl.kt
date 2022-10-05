@@ -8,7 +8,7 @@ import javax.inject.Singleton
 class FirebaseUserToUserMapperImpl : FirebaseUserToUserMapper {
     override fun mapFrom(from: FirebaseUser) = with(from) {
         User(
-            uid = uid,
+            firebaseUserId = uid,
             name = displayName.orEmpty(),
             email =  email.orEmpty(),
             photoUrl = photoUrl?.toString()

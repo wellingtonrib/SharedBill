@@ -7,10 +7,9 @@ import br.com.jwar.sharedbill.domain.model.Resource.Failure
 import br.com.jwar.sharedbill.domain.model.Resource.Success
 import br.com.jwar.sharedbill.domain.usecases.CreateGroupUseCase
 import br.com.jwar.sharedbill.domain.usecases.GetAllGroupsUseCase
+import br.com.jwar.sharedbill.domain.usecases.GroupJoinUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect
+import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class GroupListViewModel @Inject constructor(
     private val getAllGroupsUseCase: GetAllGroupsUseCase,
-    private val createGroupUseCase: CreateGroupUseCase
+    private val createGroupUseCase: CreateGroupUseCase,
+    private val groupJoinUseCase: GroupJoinUseCase
 ): BaseViewModel<Event, State, Effect>() {
 
     override fun getInitialState(): State = State.Loading
@@ -28,8 +28,7 @@ class GroupListViewModel @Inject constructor(
             is Event.OnRequestGroups -> onRequestGroups(event.refresh)
             is Event.OnGroupCreate -> onGroupCreate(event.title)
             is Event.OnGroupSelect -> onGroupSelect(event.group)
-            is Event.OnJoinAGroupClick -> onJoinAGroupClick()
-            is Event.OnJoinClick -> onJoinClick()
+            is Event.OnGroupJoin -> onGroupJoin(event.code)
         }
     }
 
@@ -53,15 +52,17 @@ class GroupListViewModel @Inject constructor(
         }
     }
 
+    private fun onGroupJoin(code: String) = viewModelScope.launch {
+        groupJoinUseCase(code).collect { resource ->
+            when(resource) {
+                is Loading -> setState { State.Loading }
+                is Success -> onGroupSelect(resource.data)
+                is Failure -> setState { State.Error(resource.throwable.message) }
+            }
+        }
+    }
+
     private fun onGroupSelect(group: Group) {
         sendEffect { Effect.OpenGroupDetails(group.id) }
-    }
-
-    private fun onJoinClick() {
-        TODO("Not yet implemented")
-    }
-
-    private fun onJoinAGroupClick() {
-        TODO("Not yet implemented")
     }
 }
