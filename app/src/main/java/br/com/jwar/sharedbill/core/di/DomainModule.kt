@@ -73,4 +73,10 @@ class DomainModule {
     fun providesGroupJoinUseCase(
         groupsRepository: GroupsRepository
     ): GroupJoinUseCase = GroupJoinUseCaseImpl(groupsRepository)
+
+    @Provides
+    @Singleton
+    fun providesSendPaymentUseCase(
+        groupsRepository: GroupsRepository
+    ): SendPaymentUseCase = SendPaymentUseCaseImpl(groupsRepository)
 }

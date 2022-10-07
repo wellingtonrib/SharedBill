@@ -6,7 +6,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.jwar.sharedbill.presentation.navigation.AppScreen.GroupDetails
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.*
+import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect
+import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.components.GroupListContent
 
 @Composable
@@ -26,10 +27,11 @@ fun GroupListScreen(
         },
         onGroupClick = {
             viewModel.emitEvent { Event.OnGroupSelect(it) }
+        },
+        onTryAgainClick = {
+            viewModel.emitEvent { Event.OnRequestGroups(true) }
         }
-    ) {
-        viewModel.emitEvent { Event.OnRequestGroups(true) }
-    }
+    )
 
     LaunchedEffect(Unit) {
         viewModel.emitEvent { Event.OnRequestGroups(true) }

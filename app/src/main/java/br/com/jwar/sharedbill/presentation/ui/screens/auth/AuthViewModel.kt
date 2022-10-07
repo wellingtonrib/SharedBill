@@ -36,7 +36,7 @@ class AuthViewModel @Inject constructor(
     private fun onSignIn() = viewModelScope.launch {
         signInUseCase().collect { resource ->
             when(resource) {
-                is Loading -> setState { it.copy(isAuthenticating = true) }
+                is Loading -> setState { State(isAuthenticating = true) }
                 is Success -> sendEffect { Effect.LaunchSignInResult(resource.data) }
                 is Failure -> emitEvent { Event.OnRequestSignUp }
             }
@@ -46,7 +46,7 @@ class AuthViewModel @Inject constructor(
     private fun onSignUp() = viewModelScope.launch {
         signUpUseCase().collect { resource ->
             when(resource) {
-                is Loading -> setState { it.copy(isAuthenticating = true) }
+                is Loading -> setState { State(isAuthenticating = true) }
                 is Success -> sendEffect { Effect.LaunchSignInResult(resource.data) }
                 is Failure -> handleException(resource.throwable)
             }
@@ -56,7 +56,7 @@ class AuthViewModel @Inject constructor(
     private fun onSignInFirebase(data: Intent?) = viewModelScope.launch {
         signInFirebaseUseCase(data).collect { resource ->
             when(resource) {
-                is Loading -> setState { it.copy(isAuthenticating = true) }
+                is Loading -> setState { State(isAuthenticating = true) }
                 is Success -> sendEffect { Effect.GoToHome }
                 is Failure -> handleException(resource.throwable)
             }
@@ -64,7 +64,7 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun handleException(throwable: Throwable) {
-        setState { it.copy(isAuthenticating = false) }
+        setState { State(isAuthenticating = false) }
         sendEffect { Effect.ShowError(throwable.localizedMessage.orEmpty()) }
     }
 }

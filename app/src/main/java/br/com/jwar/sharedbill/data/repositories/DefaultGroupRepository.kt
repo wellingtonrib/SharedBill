@@ -2,13 +2,16 @@ package br.com.jwar.sharedbill.data.repositories
 
 import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Resource.*
+import br.com.jwar.sharedbill.domain.model.Payment
+import br.com.jwar.sharedbill.domain.model.Resource.Failure
+import br.com.jwar.sharedbill.domain.model.Resource.Loading
+import br.com.jwar.sharedbill.domain.model.Resource.Success
 import br.com.jwar.sharedbill.domain.repositories.GroupsRepository
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 class DefaultGroupRepository @Inject constructor(
     private val groupsDataSource: GroupsDataSource,
@@ -46,7 +49,7 @@ class DefaultGroupRepository @Inject constructor(
     override suspend fun createGroup(group: Group) = flow {
         emit(Loading)
         try {
-            val newGroup = groupsDataSource.createGroup(group)
+            val newGroup = groupsDataSource.createGroup(group).also { cache.add(it) }
             emit(Success(newGroup))
         } catch (exception: Exception) {
             emit(Failure(exception))
@@ -56,8 +59,8 @@ class DefaultGroupRepository @Inject constructor(
     override suspend fun addMember(userName: String, groupId: String) = flow {
         emit(Loading)
         try {
-            val newMember = groupsDataSource.addMember(userName, groupId)
-            emit(Success(newMember))
+            val groupUpdated = groupsDataSource.addMember(userName, groupId).also { cache.add(it) }
+            emit(Success(groupUpdated))
         } catch (exception: Exception) {
             emit(Failure(exception))
         }
@@ -66,11 +69,20 @@ class DefaultGroupRepository @Inject constructor(
     override suspend fun joinGroup(code: String) = flow {
         emit(Loading)
         try {
-            val newMember = groupsDataSource.joinGroup(code)
-            emit(Success(newMember))
+            val groupUpdated = groupsDataSource.joinGroup(code).also { cache.add(it) }
+            emit(Success(groupUpdated))
         } catch (exception: Exception) {
             emit(Failure(exception))
         }
     }.flowOn(ioDispatcher)
 
+    override suspend fun sendPayment(payment: Payment, group: Group) = flow {
+        emit(Loading)
+        try {
+            val groupUpdated = groupsDataSource.sendPayment(payment, group).also { cache.add(it) }
+            emit(Success(groupUpdated))
+        } catch (exception: Exception) {
+            emit(Failure(exception))
+        }
+    }.flowOn(ioDispatcher)
 }

@@ -1,6 +1,11 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_details.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -51,7 +56,7 @@ fun GroupPaymentCard(payment: Payment) {
                 Divider(modifier = Modifier.width(16.dp), color = Color.Transparent)
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = payment.description)
-                    Text(text = "Paid by ${payment.paidBy}", fontSize = 10.sp)
+                    Text(text = "Paid by ${payment.paidBy.name}", fontSize = 10.sp)
                 }
                 Divider(modifier = Modifier.width(16.dp), color = Color.Transparent)
                 Text(text = payment.value.toCurrency())

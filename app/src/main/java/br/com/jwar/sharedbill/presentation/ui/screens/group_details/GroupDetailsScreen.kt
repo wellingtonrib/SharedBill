@@ -6,9 +6,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.jwar.sharedbill.presentation.navigation.AppScreen
-import br.com.jwar.sharedbill.presentation.ui.screens.group_details.components.GroupDetailsContent
-import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.Effect
+import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.Event
+import br.com.jwar.sharedbill.presentation.ui.screens.group_details.components.GroupDetailsContent
 
 @Composable
 fun GroupDetailsScreen(
@@ -20,8 +20,12 @@ fun GroupDetailsScreen(
 
     GroupDetailsContent(
         state = state,
-        onNewExpenseClick = {},
-        onManageClick = { viewModel.emitEvent { Event.OnManageClick } }
+        onNewPaymentClick = { group ->
+            viewModel.emitEvent { Event.OnNewPaymentClick(group.id) }
+        },
+        onManageClick = {
+            viewModel.emitEvent { Event.OnManageClick }
+        }
     )
 
     LaunchedEffect(Unit) {
@@ -30,6 +34,9 @@ fun GroupDetailsScreen(
             when(effect) {
                 is Effect.OpenGroupMembers -> {
                     navController.navigate(AppScreen.GroupEdit.createRoute(groupId))
+                }
+                is Effect.OpenNewPayment -> {
+                    navController.navigate(AppScreen.Payment.createRoute(groupId))
                 }
             }
         }

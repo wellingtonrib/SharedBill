@@ -1,16 +1,16 @@
-package br.com.jwar.sharedbill.presentation.ui.screens.group_details
+package br.com.jwar.sharedbill.presentation.ui.screens.payment
 
 import br.com.jwar.sharedbill.domain.model.Group
+import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.presentation.base.UiEffect
 import br.com.jwar.sharedbill.presentation.base.UiEvent
 import br.com.jwar.sharedbill.presentation.base.UiState
 
-class GroupDetailsContract {
+class PaymentContract {
 
     sealed class Event: UiEvent {
-        class OnRequestGroup(val groupId: String) : Event()
-        object OnManageClick : Event()
-        class OnNewPaymentClick(val groupId: String) : Event()
+        class OnRequestGroup(val groupId: String): Event()
+        class SendPayment(val payment: Payment, val group: Group): Event()
     }
 
     sealed class State: UiState {
@@ -20,8 +20,7 @@ class GroupDetailsContract {
     }
 
     sealed class Effect: UiEffect {
-        object OpenGroupMembers: Effect()
-        class OpenNewPayment(val groupId: String): Effect()
+        object Finish: Effect()
     }
 
 }

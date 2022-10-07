@@ -1,7 +1,14 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_list.components
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -11,9 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State
+import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State.Error
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State.Loaded
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State.Loading
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State.Error
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 import br.com.jwar.sharedbill.presentation.ui.widgets.EmptyContent
 import br.com.jwar.sharedbill.presentation.ui.widgets.ErrorContent
@@ -70,7 +77,7 @@ fun GroupListContent(
             is Loading -> LoadingContent()
             is Loaded -> if (state.groups.isNotEmpty()) GroupsList(state.groups, onGroupClick)
                          else EmptyContent(action = null, message = "No groups, create or join one")
-            is Error -> ErrorContent(action = onTryAgainClick)
+            is Error -> ErrorContent(message = state.message.orEmpty(), action = onTryAgainClick)
         }
     }
 }

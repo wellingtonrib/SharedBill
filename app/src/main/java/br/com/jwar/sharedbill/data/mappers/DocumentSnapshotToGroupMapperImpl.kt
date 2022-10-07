@@ -14,7 +14,7 @@ class DocumentSnapshotToGroupMapperImpl : DocumentSnapshotToGroupMapper {
                 title = getString("title").orEmpty(),
                 owner = get("owner", User::class.java) ?: User(),
                 members = emptyList(),
-                membersIds = emptyList(),
+                firebaseMembersIds = emptyList(),
                 payments = emptyList(),
                 balance = emptyMap()
             )

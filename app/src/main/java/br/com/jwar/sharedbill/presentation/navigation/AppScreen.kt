@@ -5,6 +5,7 @@ const val ACCOUNT_SCREEN = "account"
 const val GROUP_LIST_SCREEN = "group_list"
 const val GROUP_DETAILS_SCREEN = "group_details/{groupId}"
 const val GROUP_EDIT_SCREEN = "group_edit/{groupId}"
+const val PAYMENT_SCREEN = "group_payment/{groupId}"
 
 sealed class AppScreen(val route: String) {
     object Auth: AppScreen(AUTH_SCREEN)
@@ -15,5 +16,8 @@ sealed class AppScreen(val route: String) {
     }
     object GroupEdit: AppScreen(GROUP_EDIT_SCREEN) {
         fun createRoute(groupId: String) = "group_edit/$groupId"
+    }
+    object Payment: AppScreen(PAYMENT_SCREEN) {
+        fun createRoute(groupId: String) = "group_payment/$groupId"
     }
 }
