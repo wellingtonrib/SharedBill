@@ -16,3 +16,6 @@ fun BigDecimal?.orZero(): BigDecimal =
 
 fun BigDecimal?.toCurrency(): String =
     NumberFormat.getCurrencyInstance().format(this?.orZero()?.toDouble()).orEmpty()
+
+fun Boolean?.orFalse() =
+    this ?: false
