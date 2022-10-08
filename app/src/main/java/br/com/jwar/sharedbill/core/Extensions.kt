@@ -2,6 +2,7 @@ package br.com.jwar.sharedbill.core
 
 import com.google.firebase.Timestamp
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -20,13 +21,15 @@ fun String.parse(pattern: String = DATE_FORMAT_DEFAULT, default: Date = Date()):
     SimpleDateFormat(pattern).parse(this) ?: default
 
 fun String.toCurrency() =
-    NumberFormat.getCurrencyInstance().format(this.toDouble()).orEmpty()
+    this.toBigDecimal().toCurrency()
 
 fun BigDecimal?.orZero(): BigDecimal =
     this ?: BigDecimal.ZERO
 
 fun BigDecimal?.toCurrency(): String =
-    NumberFormat.getCurrencyInstance().format(this?.orZero()?.toDouble()).orEmpty()
+    NumberFormat.getCurrencyInstance().format(
+        this?.orZero()?.setScale(2, RoundingMode.CEILING)
+    ).orEmpty()
 
 fun Boolean?.orFalse() =
     this ?: false

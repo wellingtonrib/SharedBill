@@ -1,9 +1,12 @@
 package br.com.jwar.sharedbill.domain.usecases
 
+import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
+import br.com.jwar.sharedbill.domain.model.Resource
 import br.com.jwar.sharedbill.domain.repositories.GroupsRepository
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract
 import com.google.firebase.Timestamp
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SendPaymentUseCaseImpl @Inject constructor(
@@ -11,8 +14,8 @@ class SendPaymentUseCaseImpl @Inject constructor(
 ): SendPaymentUseCase {
     override suspend fun invoke(
         params: PaymentContract.Event.SendPaymentParams
-    ) =
-        groupsRepository.sendPayment(
+    ): Flow<Resource<Group>> {
+        return groupsRepository.sendPayment(
             with(params) {
                 Payment(
                     description = description,
@@ -24,4 +27,5 @@ class SendPaymentUseCaseImpl @Inject constructor(
             },
             group = params.group
         )
+    }
 }

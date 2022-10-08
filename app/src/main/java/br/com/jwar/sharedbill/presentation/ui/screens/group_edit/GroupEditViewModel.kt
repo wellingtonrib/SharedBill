@@ -37,7 +37,7 @@ class GroupEditViewModel @Inject constructor(
     }
 
     private fun onRequestEdit(groupId: String) = viewModelScope.launch {
-        getGroupByIdUseCase(groupId).collect { resource ->
+        getGroupByIdUseCase(groupId, true).collect { resource ->
             when(resource) {
                 is Resource.Loading -> setState { State.Loading }
                 is Resource.Success -> setState { State.Editing(resource.data) }

@@ -20,7 +20,7 @@ import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 
 interface Selectable {
-    fun getLabel(): String
+    val selectableLabel: String
 }
 
 @Composable
@@ -104,7 +104,7 @@ private fun <T : Selectable> SelectOption(
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = item.getLabel(), modifier = Modifier.weight(1f))
+        Text(text = item.selectableLabel, modifier = Modifier.weight(1f))
         if (isMultiChoice) {
             Checkbox(
                 checked = checkedState.value,

@@ -12,6 +12,10 @@ import java.math.BigDecimal
 
 @Composable
 fun GroupBalance(group: Group) {
+    if (group.balance.isEmpty()) {
+        Text("No expenses")
+        return
+    }
     Column {
         Text(
             text = "Group Balance:",
@@ -34,8 +38,11 @@ fun GroupBalance(group: Group) {
 
 @Composable
 private fun getBalanceText(balance: BigDecimal) =
-    if (balance > BigDecimal.ZERO) "Owes ${balance.toCurrency()}"
-    else "Is owned ${balance.abs().toCurrency()}"
+    when {
+        balance > BigDecimal.ZERO -> "Owes ${balance.toCurrency()}"
+        balance < BigDecimal.ZERO -> "Is owned ${balance.abs().toCurrency()}"
+        else -> "Settled up"
+    }
 
 @Composable
 private fun getBalanceColor(balance: BigDecimal) =

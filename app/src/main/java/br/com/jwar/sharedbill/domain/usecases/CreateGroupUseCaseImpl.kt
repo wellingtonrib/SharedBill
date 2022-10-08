@@ -10,7 +10,7 @@ class CreateGroupUseCaseImpl @Inject constructor(
     private val groupRepository: GroupsRepository
 ) : CreateGroupUseCase {
     override suspend fun invoke(title: String): Flow<Resource<Group>> {
-        return groupRepository.createGroup(Group(title))
+        return groupRepository.createGroup(Group(title = title))
     }
 
 }

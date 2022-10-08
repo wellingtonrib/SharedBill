@@ -2,8 +2,6 @@ package br.com.jwar.sharedbill.core.di
 
 import br.com.jwar.sharedbill.data.datasources.FirebaseGroupsDataSource
 import br.com.jwar.sharedbill.data.datasources.FirebaseUserDataSource
-import br.com.jwar.sharedbill.data.mappers.DocumentSnapshotToGroupMapper
-import br.com.jwar.sharedbill.data.mappers.DocumentSnapshotToGroupMapperImpl
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapperImpl
 import br.com.jwar.sharedbill.data.repositories.DefaultGroupRepository
@@ -79,12 +77,10 @@ class DataModule {
     fun provideGroupsDataSource(
         firebaseAuth: FirebaseAuth,
         firestore: FirebaseFirestore,
-        documentSnapshotToGroupMapper: DocumentSnapshotToGroupMapper,
         firebaseUserToUserMapper: FirebaseUserToUserMapper
     ): GroupsDataSource = FirebaseGroupsDataSource(
         firebaseAuth = firebaseAuth,
         firestore = firestore,
-        documentSnapshotToGroupMapper = documentSnapshotToGroupMapper,
         firebaseUserToUserMapper = firebaseUserToUserMapper
     )
 
@@ -95,9 +91,4 @@ class DataModule {
     ): GroupsRepository = DefaultGroupRepository(
         groupsDataSource = groupsDataSource
     )
-
-    @Provides
-    @Singleton
-    fun provideDocumentSnapshotToGroupMapper(): DocumentSnapshotToGroupMapper =
-        DocumentSnapshotToGroupMapperImpl()
 }

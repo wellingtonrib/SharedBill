@@ -10,7 +10,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import br.com.jwar.sharedbill.presentation.util.CurrencyVisualTransformation
 
 @Composable
 fun PaymentValueField(value: MutableState<String>) {
@@ -21,11 +20,8 @@ fun PaymentValueField(value: MutableState<String>) {
         label = { Text(text = "Value") },
         placeholder = { Text(text = "R$0,00") },
         onValueChange = { value.value = it },
-        visualTransformation = CurrencyVisualTransformation(
-            fixedCursorAtTheEnd = true
-        ),
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.NumberPassword
+            keyboardType = KeyboardType.Decimal
         )
     )
 }
