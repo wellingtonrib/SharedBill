@@ -1,6 +1,7 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_list
 
 import androidx.lifecycle.viewModelScope
+import br.com.jwar.sharedbill.domain.exceptions.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Resource.Failure
 import br.com.jwar.sharedbill.domain.model.Resource.Loading
@@ -39,7 +40,7 @@ class GroupListViewModel @Inject constructor(
             when(resource) {
                 is Loading -> setState { State.Loading }
                 is Success -> setState { State.Loaded(resource.data) }
-                is Failure -> setState { State.Error(resource.throwable.message) }
+                is Failure -> handleError(resource.throwable)
             }
         }
     }
@@ -49,7 +50,7 @@ class GroupListViewModel @Inject constructor(
             when(resource) {
                 is Loading -> setState { State.Loading }
                 is Success -> onGroupSelect(resource.data)
-                is Failure -> setState { State.Error(resource.throwable.message) }
+                is Failure -> handleError(resource.throwable)
             }
         }
     }
@@ -59,8 +60,15 @@ class GroupListViewModel @Inject constructor(
             when(resource) {
                 is Loading -> setState { State.Loading }
                 is Success -> onGroupSelect(resource.data)
-                is Failure -> setState { State.Error(resource.throwable.message) }
+                is Failure -> handleError(resource.throwable)
             }
+        }
+    }
+
+    private fun handleError(throwable: Throwable) {
+        setState { State.Error(throwable.message) }
+        if (throwable is UserNotFoundException) {
+            sendEffect { Effect.GoToAuth }
         }
     }
 

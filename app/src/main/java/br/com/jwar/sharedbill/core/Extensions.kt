@@ -6,15 +6,17 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 
-const val DEFAULT_DATE_FORMAT = "dd/MM/yyyy"
+const val DATE_FORMAT_SMALL = "dd/MM"
+const val DATE_FORMAT_DEFAULT = "dd/MM/yyyy"
+const val DATE_FORMAT_FULL = "dd/MM/yyyy HH:mm"
 
-fun Timestamp.format(pattern: String = DEFAULT_DATE_FORMAT): String =
+fun Timestamp.format(pattern: String = DATE_FORMAT_DEFAULT): String =
     this.toDate().format(pattern)
 
-fun Date.format(pattern: String = DEFAULT_DATE_FORMAT): String =
+fun Date.format(pattern: String = DATE_FORMAT_DEFAULT): String =
     SimpleDateFormat(pattern).format(this)
 
-fun String.parse(pattern: String = DEFAULT_DATE_FORMAT, default: Date = Date()): Date =
+fun String.parse(pattern: String = DATE_FORMAT_DEFAULT, default: Date = Date()): Date =
     SimpleDateFormat(pattern).parse(this) ?: default
 
 fun String.toCurrency() =

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package br.com.jwar.sharedbill.presentation.ui.widgets
+package br.com.jwar.sharedbill.presentation.ui.generic_components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

@@ -15,7 +15,7 @@ import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.St
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.State.Error
 
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
+import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 
 @Composable
 fun AccountContent(

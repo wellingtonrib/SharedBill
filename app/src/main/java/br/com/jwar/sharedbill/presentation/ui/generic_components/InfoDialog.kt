@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.ui.widgets
+package br.com.jwar.sharedbill.presentation.ui.generic_components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,7 +17,7 @@ import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 
 @Composable
 fun InfoDialog(
-    image: Int = R.drawable.ic_baseline_info_24,
+    image: Int? = R.drawable.ic_baseline_info_24,
     title: String,
     message: String,
     action: String = "Ok",
@@ -39,7 +39,7 @@ fun InfoDialog(
 
 @Composable
 private fun InfoDialogContent(
-    image: Int,
+    image: Int?,
     title: String,
     message: String,
     action: String,
@@ -55,11 +55,13 @@ private fun InfoDialogContent(
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                modifier = Modifier.size(100.dp),
-                painter = painterResource(image),
-                contentDescription = "Image Info"
-            )
+            if (image != null) {
+                Image(
+                    modifier = Modifier.size(100.dp),
+                    painter = painterResource(image),
+                    contentDescription = "Image Info"
+                )
+            }
             Text(text = title, style = MaterialTheme.typography.titleLarge)
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = message)

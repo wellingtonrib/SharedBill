@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.ui.widgets
+package br.com.jwar.sharedbill.presentation.ui.generic_components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

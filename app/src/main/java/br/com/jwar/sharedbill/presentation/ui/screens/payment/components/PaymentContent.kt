@@ -1,39 +1,22 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.payment.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.jwar.sharedbill.core.format
-import br.com.jwar.sharedbill.core.parse
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.State
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.widgets.ErrorContent
-import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
-import br.com.jwar.sharedbill.presentation.ui.widgets.SelectDialog
-import java.util.Date
+import br.com.jwar.sharedbill.presentation.ui.generic_components.ErrorContent
+import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 
 @Composable
 fun PaymentContent(
@@ -42,10 +25,7 @@ fun PaymentContent(
     snackHostState: SnackbarHostState = SnackbarHostState(),
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize().padding(16.dp)
     ) {
         when(state) {
             is State.Loading -> LoadingContent()
@@ -57,140 +37,6 @@ fun PaymentContent(
         hostState = snackHostState,
         modifier = Modifier.fillMaxWidth().wrapContentHeight(Alignment.Bottom)
     )
-}
-
-@Composable
-fun PaymentForm(
-    group: Group,
-    onSendPaymentClick: (Event.SendPaymentParams) -> Unit
-) {
-
-    val description = remember { mutableStateOf("") }
-    val value = remember { mutableStateOf("") }
-    val date = remember { mutableStateOf(Date()) }
-
-    val paidBySelection = remember { mutableStateOf(group.members.first()) }
-    val isPaidBySelecting = PaymentPaidBySelector(group, paidBySelection)
-
-    val paidToSelection = remember { mutableStateOf(group.members) }
-    val isPaidToSelecting = PaymentPaidToSelector(group, paidToSelection)
-
-    Column {
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            value = description.value,
-            label = { Text(text = "Description") },
-            placeholder = { Text(text = "Ex. Hotel") },
-            onValueChange = { description.value = it }
-        )
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            value = value.value,
-            label = { Text(text = "Value") },
-            placeholder = { Text(text = "R$0,00") },
-            onValueChange = { value.value = it }
-        )
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            value = date.value.format(),
-            label = { Text(text = "Date") },
-            placeholder = { Text(text = "dd/mm/yyyy") },
-            onValueChange = { date.value = it.parse() }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Row (verticalAlignment = Alignment.CenterVertically){
-            Text(text = "Paid by: ")
-            Button(
-                onClick = { isPaidBySelecting.value = true },
-                modifier = Modifier.weight(1f))
-            {
-                Text(text = paidBySelection.value.name)
-            }
-        }
-        Row (verticalAlignment = Alignment.CenterVertically){
-           Text(text = "Paid to: ")
-            Button(
-                onClick = { isPaidToSelecting.value = true },
-                modifier = Modifier.weight(1f))
-            {
-                Text(text = getPaidToSelectionDescription(paidToSelection, group))
-            }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {
-            onSendPaymentClick(
-                Event.SendPaymentParams(
-                    description = description.value,
-                    value = value.value,
-                    paidBy = paidBySelection.value,
-                    paidTo = paidToSelection.value,
-                    date = date.value,
-                    group = group
-                )
-            )
-        }) {
-            Text(text = "Send payment")
-        }
-    }
-}
-
-@Composable
-private fun getPaidToSelectionDescription(
-    paidToSelection: MutableState<List<User>>,
-    group: Group
-) = if (paidToSelection.value.size == group.members.size) { "All" }
-    else paidToSelection.value.joinToString(", ") { it.name }
-
-@Composable
-private fun PaymentPaidToSelector(
-    group: Group,
-    paidToSelection: MutableState<List<User>>
-): MutableState<Boolean> {
-    val isPaidToSelecting = remember { mutableStateOf(false) }
-    if (isPaidToSelecting.value) {
-        SelectDialog(
-            title = "Paid To",
-            message = "Select the members",
-            options = group.members.associateWith { true },
-            onDismiss = {
-                isPaidToSelecting.value = false
-            },
-            onSelect = {
-                isPaidToSelecting.value = false
-                paidToSelection.value = it
-            }
-        )
-    }
-    return isPaidToSelecting
-}
-
-@Composable
-private fun PaymentPaidBySelector(
-    group: Group,
-    paidBySelection: MutableState<User>
-): MutableState<Boolean> {
-    val isPaidBySelecting = remember { mutableStateOf(false) }
-    if (isPaidBySelecting.value) {
-        SelectDialog(
-            title = "Paid By",
-            message = "Select the payer",
-            options = group.members.associateWith { it == group.members.first() },
-            isMultiChoice = false,
-            onDismiss = {
-                isPaidBySelecting.value = false
-            },
-            onSelect = {
-                isPaidBySelecting.value = false
-                paidBySelection.value = it.first()
-            }
-        )
-    }
-    return isPaidBySelecting
 }
 
 @Preview

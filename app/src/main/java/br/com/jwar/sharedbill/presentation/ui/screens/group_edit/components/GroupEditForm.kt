@@ -18,8 +18,8 @@ import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract
-import br.com.jwar.sharedbill.presentation.ui.widgets.InfoDialog
-import br.com.jwar.sharedbill.presentation.ui.widgets.InputDialog
+import br.com.jwar.sharedbill.presentation.ui.generic_components.InfoDialog
+import br.com.jwar.sharedbill.presentation.ui.generic_components.InputDialog
 
 @Composable
 fun GroupEditForm(

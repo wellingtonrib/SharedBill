@@ -1,7 +1,7 @@
 package br.com.jwar.sharedbill.domain.model
 
 import android.os.Parcelable
-import br.com.jwar.sharedbill.presentation.ui.widgets.Selectable
+import br.com.jwar.sharedbill.presentation.ui.generic_components.Selectable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

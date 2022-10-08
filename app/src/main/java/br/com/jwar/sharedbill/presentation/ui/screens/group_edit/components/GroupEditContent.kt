@@ -13,7 +13,7 @@ import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.State
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
+import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 
 @Composable
 fun GroupEditContent(

@@ -22,7 +22,7 @@ class GroupListContract {
 
     sealed class Effect: UiEffect {
         class OpenGroupDetails(val groupId: String): Effect()
-        object OpenJoinGroup: Effect()
+        object GoToAuth : Effect()
     }
 
 }

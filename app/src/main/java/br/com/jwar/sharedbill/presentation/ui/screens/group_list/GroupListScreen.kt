@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import br.com.jwar.sharedbill.presentation.navigation.AppScreen
 import br.com.jwar.sharedbill.presentation.navigation.AppScreen.GroupDetails
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event
@@ -38,9 +39,10 @@ fun GroupListScreen(
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.OpenGroupDetails ->
-                    navController.navigate(route = GroupDetails.createRoute(effect.groupId))
-                is Effect.OpenJoinGroup -> {
-                    TODO("Not yet implemented")
+                    navController.navigate(GroupDetails.createRoute(effect.groupId))
+                is Effect.GoToAuth -> {
+                    navController.popBackStack()
+                    navController.navigate(AppScreen.Auth.route)
                 }
             }
         }

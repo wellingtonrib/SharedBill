@@ -24,11 +24,20 @@ fun GroupBalance(group: Group) {
                 val balance = entry.value.toBigDecimal()
                 Text(text = "${member?.name ?: "Unknown"}: ")
                 Text(
-                    text = balance.toCurrency(),
-                    color = if (balance > BigDecimal.ZERO) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.error
+                    text = getBalanceText(balance),
+                    color = getBalanceColor(balance)
                 )
             }
         }
     }
 }
+
+@Composable
+private fun getBalanceText(balance: BigDecimal) =
+    if (balance > BigDecimal.ZERO) "Owes ${balance.toCurrency()}"
+    else "Is owned ${balance.abs().toCurrency()}"
+
+@Composable
+private fun getBalanceColor(balance: BigDecimal) =
+    if (balance > BigDecimal.ZERO) MaterialTheme.colorScheme.error
+    else MaterialTheme.colorScheme.primary

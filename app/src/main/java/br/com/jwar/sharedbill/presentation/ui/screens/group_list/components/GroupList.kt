@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.domain.model.Group
 
 @Composable
-fun GroupsList(
+fun GroupList(
     groups: List<Group>,
     onGroupClick: (group: Group) -> Unit,
 ) {

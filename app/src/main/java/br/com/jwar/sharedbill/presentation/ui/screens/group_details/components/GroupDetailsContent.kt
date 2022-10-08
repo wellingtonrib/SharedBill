@@ -14,8 +14,8 @@ import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetails
 import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.State.Loaded
 import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.State.Loading
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.widgets.EmptyContent
-import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
+import br.com.jwar.sharedbill.presentation.ui.generic_components.EmptyContent
+import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 
 @Composable
 fun GroupDetailsContent(

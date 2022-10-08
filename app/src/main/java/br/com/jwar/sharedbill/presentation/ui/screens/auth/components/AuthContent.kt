@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
+import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 
 @Composable
 fun AuthContent(

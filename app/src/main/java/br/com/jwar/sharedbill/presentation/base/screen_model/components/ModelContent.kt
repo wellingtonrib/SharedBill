@@ -6,9 +6,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.presentation.base.screen_model.ModelContract.State
-import br.com.jwar.sharedbill.presentation.ui.widgets.EmptyContent
-import br.com.jwar.sharedbill.presentation.ui.widgets.ErrorContent
-import br.com.jwar.sharedbill.presentation.ui.widgets.LoadingContent
+import br.com.jwar.sharedbill.presentation.ui.generic_components.EmptyContent
+import br.com.jwar.sharedbill.presentation.ui.generic_components.ErrorContent
+import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 
 @Composable
 fun ModelContent(
