@@ -4,9 +4,18 @@ import com.google.firebase.Timestamp
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import java.util.Date
 
-fun Timestamp.format(pattern: String = "dd/MM/yyyy"): String =
-    SimpleDateFormat(pattern).format(this.toDate())
+const val DEFAULT_DATE_FORMAT = "dd/MM/yyyy"
+
+fun Timestamp.format(pattern: String = DEFAULT_DATE_FORMAT): String =
+    this.toDate().format(pattern)
+
+fun Date.format(pattern: String = DEFAULT_DATE_FORMAT): String =
+    SimpleDateFormat(pattern).format(this)
+
+fun String.parse(pattern: String = DEFAULT_DATE_FORMAT, default: Date = Date()): Date =
+    SimpleDateFormat(pattern).parse(this) ?: default
 
 fun String.toCurrency() =
     NumberFormat.getCurrencyInstance().format(this.toDouble()).orEmpty()

@@ -1,10 +1,10 @@
 package br.com.jwar.sharedbill.domain.usecases
 
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.model.Resource
+import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract
 import kotlinx.coroutines.flow.Flow
 
 interface SendPaymentUseCase {
-    suspend operator fun invoke(payment: Payment, group: Group): Flow<Resource<Group>>
+    suspend operator fun invoke(params: PaymentContract.Event.SendPaymentParams): Flow<Resource<Group>>
 }

@@ -2,17 +2,19 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_list
 
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Resource.Loading
 import br.com.jwar.sharedbill.domain.model.Resource.Failure
+import br.com.jwar.sharedbill.domain.model.Resource.Loading
 import br.com.jwar.sharedbill.domain.model.Resource.Success
 import br.com.jwar.sharedbill.domain.usecases.CreateGroupUseCase
 import br.com.jwar.sharedbill.domain.usecases.GetAllGroupsUseCase
 import br.com.jwar.sharedbill.domain.usecases.GroupJoinUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.*
+import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect
+import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event
+import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class GroupListViewModel @Inject constructor(
@@ -43,7 +45,7 @@ class GroupListViewModel @Inject constructor(
     }
 
     private fun onGroupCreate(title: String) = viewModelScope.launch {
-        createGroupUseCase(Group(title = title)).collect { resource ->
+        createGroupUseCase(title).collect { resource ->
             when(resource) {
                 is Loading -> setState { State.Loading }
                 is Success -> onGroupSelect(resource.data)

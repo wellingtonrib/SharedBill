@@ -5,6 +5,7 @@ import br.com.jwar.sharedbill.data.mappers.DocumentSnapshotToGroupMapper
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
 import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
 import br.com.jwar.sharedbill.domain.exceptions.GroupNotFoundException
+import br.com.jwar.sharedbill.domain.exceptions.PaymentInvalidException
 import br.com.jwar.sharedbill.domain.exceptions.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
@@ -127,6 +128,9 @@ class FirebaseGroupsDataSource @Inject constructor(
 
     override suspend fun sendPayment(payment: Payment, group: Group): Group {
         return withContext(ioDispatcher) {
+            if (payment.description.isEmpty()) throw PaymentInvalidException("Empty description")
+            if (payment.value.isEmpty()) throw PaymentInvalidException("Empty value")
+
             val groupDoc = firestore.document("$GROUPS_REF/${group.id}")
             val total = payment.value.toBigDecimal().orZero().setScale(2, RoundingMode.CEILING)
             val shared = total.div(payment.paidTo.size.toBigDecimal()).setScale(2, RoundingMode.CEILING)

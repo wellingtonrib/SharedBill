@@ -6,42 +6,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.jwar.sharedbill.core.format
 import br.com.jwar.sharedbill.core.toCurrency
-import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
-
-@Composable
-fun GroupPaymentsList(
-    group: Group,
-    onNewExpenseClick: () -> Unit
-) {
-    Column {
-        LazyColumn {
-            items(group.payments) {
-                GroupPaymentCard(it)
-            }
-        }
-        Button(
-            onClick = onNewExpenseClick,
-            modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
-        ) {
-            Text(text = "New expense")
-        }
-    }
-}
 
 @Composable
 fun GroupPaymentCard(payment: Payment) {

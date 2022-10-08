@@ -1,8 +1,6 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.payment
 
 import androidx.lifecycle.viewModelScope
-import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.model.Resource
 import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.domain.usecases.SendPaymentUseCase
@@ -25,16 +23,19 @@ class PaymentViewModel @Inject constructor(
     override fun handleEvent(event: Event) {
         when(event) {
             is Event.OnRequestGroup -> onRequestGroup(event.groupId)
-            is Event.SendPayment -> onSendPayment(event.payment, event.group)
+            is Event.SendPayment -> onSendPayment(event.params)
         }
     }
 
-    private fun onSendPayment(payment: Payment, group: Group) = viewModelScope.launch {
-        sendPaymentUseCase(payment, group).collect { resource ->
+    private fun onSendPayment(params: Event.SendPaymentParams) = viewModelScope.launch {
+        sendPaymentUseCase(params).collect { resource ->
             when(resource) {
                 is Resource.Loading -> setState { State.Loading }
                 is Resource.Success -> sendEffect { Effect.Finish }
-                is Resource.Failure -> setState { State.Error(resource.throwable.message.orEmpty()) }
+                is Resource.Failure -> {
+                    setState { State.Editing(params.group) }
+                    sendEffect { Effect.ShowError(resource.throwable.message.orEmpty()) }
+                }
             }
         }
     }
@@ -43,7 +44,7 @@ class PaymentViewModel @Inject constructor(
         getGroupByIdUseCase(groupId, true).collect { resource ->
             when(resource) {
                 is Resource.Loading -> setState { State.Loading }
-                is Resource.Success -> setState { State.Loaded(resource.data) }
+                is Resource.Success -> setState { State.Editing(resource.data) }
                 is Resource.Failure -> setState { State.Error(resource.throwable.message.orEmpty()) }
             }
         }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.font.FontWeight
 import br.com.jwar.sharedbill.core.toCurrency
 import br.com.jwar.sharedbill.domain.model.Group
 import java.math.BigDecimal
@@ -12,6 +13,11 @@ import java.math.BigDecimal
 @Composable
 fun GroupBalance(group: Group) {
     Column {
+        Text(
+            text = "Group Balance:",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
         group.balance.forEach { entry ->
             Row {
                 val member = group.findMemberById(entry.key)
