@@ -131,6 +131,7 @@ class FirebaseGroupsDataSource @Inject constructor(
             val total = payment.value.toBigDecimal().orZero().setScale(2, RoundingMode.CEILING)
             val shared = total.div(payment.paidTo.size.toBigDecimal()).setScale(2, RoundingMode.CEILING)
 
+            // TODO: Calculate online
             val balance = group.balance.toMutableMap()
             payment.paidTo.forEach { member ->
                 balance[member.uid] = balance[member.uid]?.toBigDecimal().orZero().plus(shared).toString()
