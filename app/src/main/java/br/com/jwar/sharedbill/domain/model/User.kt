@@ -4,8 +4,8 @@ import android.os.Parcelable
 import br.com.jwar.sharedbill.presentation.ui.generic_components.Selectable
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import java.util.*
 
 @Parcelize
 @IgnoreExtraProperties
@@ -22,7 +22,14 @@ data class User(
             val characters = ('A'..'Z') + ('a'..'z') + ('0'..'9')
             return characters.shuffled().takeLast(4).joinToString("") + groupId.takeLast(2)
         }
+        fun fake() = User(
+            uid = UUID.randomUUID().toString(),
+            name = "User One"
+        )
     }
+
+    val firstName: String
+        get() = name.split(" ").first()
 
     @get:Exclude
     val joinInfo: String

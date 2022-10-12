@@ -14,14 +14,20 @@ data class Payment(
     val value: String = "",
     val paidBy: User = User(),
     val paidTo: List<User> = emptyList(),
-    val createdAt: Timestamp = Timestamp(Date())
+    val createdAt: Timestamp = Timestamp(Date()),
+    val createdBy: User = User()
 ) : Parcelable {
     fun getDetail() = with(StringBuilder()) {
         append("Description: $description\n")
         append("Value: ${value.toCurrency()}\n")
-        append("Paid by: ${paidBy.name}\n")
-        append("Paid to: ${paidTo.joinToString(", "){ it.name }}\n")
-        append("Create at: ${createdAt.format(DATE_FORMAT_FULL)}")
+        append("Paid by: ${paidBy.firstName}\n")
+        append("Paid to: ${paidTo.joinToString(", "){ it.firstName }}\n")
+        append("Created by: ${createdBy.firstName}\n")
+        append("Created at: ${createdAt.format(DATE_FORMAT_FULL)}")
         toString()
     }
+
+    fun paidToDescription(group: Group) =
+        if (paidTo.size == group.members.size) "All"
+        else paidTo.joinToString(", ") { it.firstName }
 }

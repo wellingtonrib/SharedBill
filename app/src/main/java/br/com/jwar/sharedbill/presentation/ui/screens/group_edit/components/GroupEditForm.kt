@@ -5,10 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.DismissValue
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.SwipeToDismiss
-import androidx.compose.material.rememberDismissState
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -32,7 +28,7 @@ fun GroupEditForm(
     onSaveGroupClick: (group: Group) -> Unit,
     onSaveMemberClick: (String) -> Unit,
     onMemberSelectionChange: (User?) -> Unit,
-    onMemberDeleteRequest: (String) -> Unit,
+    onMemberDeleteClick: (String) -> Unit,
 ) {
     SelectedMemberDialog(state, onMemberSelectionChange)
     LazyColumn(
@@ -51,7 +47,7 @@ fun GroupEditForm(
             GroupMemberCard(
                 member = member,
                 onMemberSelect = { onMemberSelectionChange(it) },
-                onMemberDelete = { onMemberDeleteRequest(it) }
+                onMemberDelete = { onMemberDeleteClick(it) }
             )
         }
         item {

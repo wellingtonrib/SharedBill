@@ -17,7 +17,9 @@ Group(
     val balance: Map<String, String> = emptyMap()
 ) : Parcelable {
 
-    fun findMemberById(memberId: String) = members.firstOrNull { it.uid == memberId }
+    fun findMemberByUid(uid: String) = members.firstOrNull { it.uid == uid }
+
+    fun findMemberByFirebaseId(firebaseId: String) = members.firstOrNull { it.firebaseUserId == firebaseId }
 
     companion object {
         fun fake() = Group(

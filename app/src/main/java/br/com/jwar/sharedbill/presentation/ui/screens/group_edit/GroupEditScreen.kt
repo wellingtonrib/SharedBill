@@ -30,8 +30,8 @@ fun GroupEditScreen(
         onMemberSelectionChange = { user ->
             viewModel.emitEvent { Event.OnMemberSelectionChange(user) }
         },
-        onMemberDeleteRequest = { userId ->
-            viewModel.emitEvent { Event.OnMemberDeleteRequest(userId, groupId) }
+        onMemberDeleteClick = { userId ->
+            viewModel.emitEvent { Event.OnMemberDeleteClick(userId, groupId) }
         },
     )
 

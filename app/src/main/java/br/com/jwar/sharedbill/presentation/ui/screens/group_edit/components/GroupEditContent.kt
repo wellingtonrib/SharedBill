@@ -22,7 +22,7 @@ fun GroupEditContent(
     onSaveGroupClick: (Group) -> Unit = {},
     onSaveMemberClick: (String) -> Unit = {},
     onMemberSelectionChange: (User?) -> Unit = {},
-    onMemberDeleteRequest: (String) -> Unit = {},
+    onMemberDeleteClick: (String) -> Unit = {},
 ) {
     when (state) {
         is State.Loading -> LoadingContent()
@@ -31,7 +31,7 @@ fun GroupEditContent(
             onSaveGroupClick = onSaveGroupClick,
             onSaveMemberClick = onSaveMemberClick,
             onMemberSelectionChange = onMemberSelectionChange,
-            onMemberDeleteRequest = onMemberDeleteRequest
+            onMemberDeleteClick = onMemberDeleteClick
         )
     }
 

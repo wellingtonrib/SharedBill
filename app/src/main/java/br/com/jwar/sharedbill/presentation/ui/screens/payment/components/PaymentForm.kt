@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import br.com.jwar.sharedbill.domain.model.Group
+import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract
 import br.com.jwar.sharedbill.presentation.ui.generic_components.VerticalSpacerMedium
 import java.util.*
@@ -15,12 +16,13 @@ import java.util.*
 @Composable
 fun PaymentForm(
     group: Group,
+    currentMember: User,
     onSendPaymentClick: (PaymentContract.Event.SendPaymentParams) -> Unit
 ) {
     val description = remember { mutableStateOf("") }
     val value = remember { mutableStateOf("") }
     val date = remember { mutableStateOf(Date()) }
-    val paidBySelection = remember { mutableStateOf(group.members.first()) }
+    val paidBySelection = remember { mutableStateOf(currentMember) }
     val paidToSelection = remember { mutableStateOf(group.members) }
 
     Column {
@@ -44,7 +46,8 @@ fun PaymentForm(
                         paidBy = paidBySelection.value,
                         paidTo = paidToSelection.value,
                         date = date.value,
-                        group = group
+                        group = group,
+                        currentMember = currentMember
                     )
                 )
             }

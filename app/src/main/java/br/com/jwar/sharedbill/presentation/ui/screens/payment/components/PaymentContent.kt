@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.domain.model.Group
+import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.State
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
@@ -29,7 +30,7 @@ fun PaymentContent(
     ) {
         when(state) {
             is State.Loading -> LoadingContent()
-            is State.Editing -> PaymentForm(state.group, onSendPaymentClick)
+            is State.Editing -> PaymentForm(state.group, state.currentMember, onSendPaymentClick)
             is State.Error -> ErrorContent(state.message)
         }
     }
@@ -44,7 +45,7 @@ fun PaymentContent(
 fun PreviewPaymentContent() {
     SharedBillTheme {
         Scaffold {
-            PaymentContent(state = State.Editing(Group.fake()))
+            PaymentContent(state = State.Editing(Group.fake(), User.fake()))
         }
     }
 }

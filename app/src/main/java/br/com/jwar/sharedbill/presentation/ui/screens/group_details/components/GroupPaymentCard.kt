@@ -21,11 +21,15 @@ import androidx.compose.ui.unit.sp
 import br.com.jwar.sharedbill.core.DATE_FORMAT_SMALL
 import br.com.jwar.sharedbill.core.format
 import br.com.jwar.sharedbill.core.toCurrency
+import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.presentation.ui.generic_components.InfoDialog
 
 @Composable
-fun GroupPaymentCard(payment: Payment) {
+fun GroupPaymentCard(
+    payment: Payment,
+    group: Group
+) {
     val showingPaymentInfo = PaymentInfoDialog(payment)
     Column {
         Card(modifier = Modifier
@@ -42,7 +46,7 @@ fun GroupPaymentCard(payment: Payment) {
                 Divider(modifier = Modifier.width(16.dp), color = Color.Transparent)
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = payment.description)
-                    Text(text = "Paid by ${payment.paidBy.name}", fontSize = 10.sp)
+                    Text(text = "Paid by ${payment.paidBy.firstName} to ${payment.paidToDescription(group)}", fontSize = 10.sp)
                 }
                 Divider(modifier = Modifier.width(16.dp), color = Color.Transparent)
                 Text(text = payment.value.toCurrency())

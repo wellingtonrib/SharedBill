@@ -39,7 +39,10 @@ class GroupListViewModel @Inject constructor(
         getAllGroupsUseCase(refresh).collect { resource ->
             when(resource) {
                 is Loading -> setState { State.Loading }
-                is Success -> setState { State.Loaded(resource.data) }
+                is Success -> setState {
+                    if (resource.data.isEmpty()) State.Empty
+                    else State.Loaded(resource.data)
+                }
                 is Failure -> handleError(resource.throwable)
             }
         }

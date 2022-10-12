@@ -15,7 +15,7 @@ import br.com.jwar.sharedbill.presentation.ui.generic_components.SelectDialog
 @Composable
 fun PaymentPaidByField(
     paidBySelection: MutableState<User>,
-    members: List<User>
+    members: List<User>,
 ) {
     val isPaidBySelecting = remember { mutableStateOf(false) }
     if (isPaidBySelecting.value) {

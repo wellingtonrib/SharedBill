@@ -91,4 +91,11 @@ class DomainModule {
     fun providesSendPaymentUseCase(
         groupRepository: GroupRepository
     ): SendPaymentUseCase = SendPaymentUseCaseImpl(groupRepository)
+
+    @Provides
+    @Singleton
+    fun providesGetGroupByIdWithCurrentMemberUseCase(
+        userRepository: UserRepository,
+        groupRepository: GroupRepository
+    ): GetGroupByIdWithCurrentMemberUseCase = GetGroupByIdWithCurrentMemberUseCaseImpl(userRepository, groupRepository)
 }

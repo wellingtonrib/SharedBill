@@ -13,7 +13,7 @@ class GroupEditContract {
         class OnSaveGroupClick(val group: Group) : Event()
         class OnSaveMemberClick(val userName: String, val groupId: String) : Event()
         class OnMemberSelectionChange(val user: User?) : Event()
-        class OnMemberDeleteRequest(val userId: String, val groupId: String) : Event()
+        class OnMemberDeleteClick(val userId: String, val groupId: String) : Event()
     }
 
     sealed class State: UiState {

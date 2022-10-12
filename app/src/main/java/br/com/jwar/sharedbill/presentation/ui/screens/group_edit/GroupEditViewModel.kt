@@ -30,7 +30,7 @@ class GroupEditViewModel @Inject constructor(
             is Event.OnSaveGroupClick -> onSaveGroupClick(event.group)
             is Event.OnSaveMemberClick -> onSaveMemberClick(event.userName, event.groupId)
             is Event.OnMemberSelectionChange -> onMemberSelect(event.user)
-            is Event.OnMemberDeleteRequest -> onMemberDeleteRequest(event.userId, event.groupId)
+            is Event.OnMemberDeleteClick -> onMemberDeleteClick(event.userId, event.groupId)
         }
     }
 
@@ -76,7 +76,7 @@ class GroupEditViewModel @Inject constructor(
         }
     }
 
-    private fun onMemberDeleteRequest(userId: String, groupId: String) = viewModelScope.launch {
+    private fun onMemberDeleteClick(userId: String, groupId: String) = viewModelScope.launch {
         groupRemoveMemberUseCase(userId, groupId).collect { resource ->
             when(resource) {
                 is Resource.Loading -> setState { State.Loading }

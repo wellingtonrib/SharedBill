@@ -24,7 +24,7 @@ fun GroupBalance(group: Group) {
         )
         group.balance.forEach { entry ->
             Row {
-                val member = group.findMemberById(entry.key)
+                val member = group.findMemberByUid(entry.key)
                 val balance = entry.value.toBigDecimal()
                 Text(text = "${member?.name ?: "Unknown"}: ")
                 Text(

@@ -1,10 +1,6 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_details.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -21,7 +17,7 @@ import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 fun GroupsDetails(
     group: Group,
     onNewPaymentClick: ()-> Unit = {},
-    onManageClick: ()-> Unit = {}
+    onManageClick: ()-> Unit = {},
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.weight(1f)) {
@@ -33,8 +29,8 @@ fun GroupsDetails(
                 GroupBalance(group)
                 Spacer(modifier = Modifier.height(16.dp))
             }
-            items(group.payments) {
-                GroupPaymentCard(it)
+            items(group.payments) { payment ->
+                GroupPaymentCard(payment, group)
             }
         }
         NewExpenseButton(onNewPaymentClick)

@@ -154,11 +154,14 @@ class FirebaseGroupDataSource @Inject constructor(
             if (payment.description.isEmpty()) throw PaymentInvalidException("Empty description")
             if (payment.value.isEmpty()) throw PaymentInvalidException("Empty value")
 
+            val createdBy = group.findMemberByFirebaseId(getCurrentUser().uid)
+                ?: throw PaymentInvalidException("Current user not found in group")
+
             val groupDoc = firestore.document("$GROUPS_REF/${group.id}")
             val total = payment.value.toBigDecimal().orZero().setScale(2, RoundingMode.CEILING)
             val shared = total.div(payment.paidTo.size.toBigDecimal()).setScale(2, RoundingMode.CEILING)
 
-            // TODO: Calculate online
+            // TODO: Send payments to be processed online to avoid balance divergences between members
             val balance = group.balance.toMutableMap()
             payment.paidTo.forEach { member ->
                 balance[member.uid] = balance[member.uid]?.toBigDecimal().orZero().plus(shared).toString()
@@ -166,7 +169,7 @@ class FirebaseGroupDataSource @Inject constructor(
             balance[payment.paidBy.uid] = balance[payment.paidBy.uid]?.toBigDecimal()?.minus(total).toString()
 
             groupDoc.update(mapOf(
-                GROUP_PAYMENTS_FIELD to  FieldValue.arrayUnion(payment),
+                GROUP_PAYMENTS_FIELD to FieldValue.arrayUnion(payment.copy(createdBy = createdBy)),
                 GROUP_BALANCE_FIELD to balance
             ))
             return@withContext getGroupById(group.id)

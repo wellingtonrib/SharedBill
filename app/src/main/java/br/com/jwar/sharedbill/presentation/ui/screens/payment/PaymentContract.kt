@@ -19,13 +19,14 @@ class PaymentContract {
             val paidBy: User?,
             val paidTo: List<User>,
             val date: Date,
-            val group: Group
+            val group: Group,
+            val currentMember: User
         )
     }
 
     sealed class State: UiState {
         object Loading: State()
-        class Editing(val group: Group): State()
+        class Editing(val group: Group, val currentMember: User): State()
         class Error(val message: String): State()
     }
 
