@@ -11,6 +11,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -25,17 +26,7 @@ import br.com.jwar.sharedbill.presentation.ui.generic_components.InfoDialog
 
 @Composable
 fun GroupPaymentCard(payment: Payment) {
-    val showingPaymentInfo = remember { mutableStateOf(false) }
-    if (showingPaymentInfo.value) {
-        InfoDialog(
-            image = null,
-            title = "Payment Detail",
-            message = payment.getDetail(),
-            onDismiss = { showingPaymentInfo.value = false },
-            onAction = { showingPaymentInfo.value = false }
-        )
-    }
-
+    val showingPaymentInfo = PaymentInfoDialog(payment)
     Column {
         Card(modifier = Modifier
             .fillMaxWidth()
@@ -59,4 +50,19 @@ fun GroupPaymentCard(payment: Payment) {
         }
         Divider(modifier = Modifier.height(16.dp), color = Color.Transparent)
     }
+}
+
+@Composable
+private fun PaymentInfoDialog(payment: Payment): MutableState<Boolean> {
+    val showingPaymentInfo = remember { mutableStateOf(false) }
+    if (showingPaymentInfo.value) {
+        InfoDialog(
+            image = null,
+            title = "Payment Detail",
+            message = payment.getDetail(),
+            onDismiss = { showingPaymentInfo.value = false },
+            onAction = { showingPaymentInfo.value = false }
+        )
+    }
+    return showingPaymentInfo
 }

@@ -16,6 +16,7 @@ class GroupListContract {
 
     sealed class State: UiState {
         object Loading: State()
+        object Empty: State()
         class Loaded(val groups: List<Group>): State()
         class Error(val message: String?): State()
     }

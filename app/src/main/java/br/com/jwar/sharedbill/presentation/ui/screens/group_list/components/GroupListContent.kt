@@ -11,9 +11,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State.Error
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State.Loaded
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State.Loading
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 import br.com.jwar.sharedbill.presentation.ui.generic_components.EmptyContent
 import br.com.jwar.sharedbill.presentation.ui.generic_components.ErrorContent
@@ -35,10 +32,10 @@ fun GroupListContent(
     ) {
         GroupListHeader(onGroupCreate, onGroupJoin)
         when(state) {
-            is Loading -> LoadingContent()
-            is Loaded -> if (state.groups.isNotEmpty()) GroupList(state.groups, onGroupClick)
-                         else EmptyContent(message = "No groups, create or join one")
-            is Error -> ErrorContent(message = state.message.orEmpty(), action = onTryAgainClick)
+            is State.Loading -> LoadingContent()
+            is State.Empty -> EmptyContent(message = "No groups, create or join one")
+            is State.Loaded -> GroupList(state.groups, onGroupClick)
+            is State.Error -> ErrorContent(message = state.message.orEmpty(), action = onTryAgainClick)
         }
     }
 }
@@ -49,7 +46,7 @@ fun PreviewGroupListContent() {
     SharedBillTheme {
         Scaffold {
             GroupListContent(
-                state = Loaded(listOf(
+                state = State.Loaded(listOf(
                     Group(title = "Group One"),
                     Group(title = "Group Two"),
                     Group(title = "Group Three")

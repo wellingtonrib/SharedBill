@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -17,27 +18,8 @@ fun GroupListHeader(
     onGroupCreate: (String) -> Unit = {},
     onGroupJoin: (String) -> Unit = {},
 ) {
-    val openGroupCreateDialog = remember { mutableStateOf(false) }
-    if (openGroupCreateDialog.value) {
-        InputDialog(
-            label = "Enter a group name",
-            placeholder = "Ex. Trip",
-            action = "Save",
-            onDismiss = { openGroupCreateDialog.value = false },
-            onAction = { openGroupCreateDialog.value = false; onGroupCreate(it) }
-        )
-    }
-
-    val openGroupJoinDialog = remember { mutableStateOf(false) }
-    if (openGroupJoinDialog.value) {
-        InputDialog(
-            label = "Enter code",
-            placeholder = "",
-            action = "Verify",
-            onDismiss = { openGroupJoinDialog.value = false },
-            onAction = { openGroupJoinDialog.value = false; onGroupJoin(it) }
-        )
-    }
+    val openGroupCreateDialog = GroupCreateDialog(onGroupCreate)
+    val openGroupJoinDialog = GroupJoinDialog(onGroupJoin)
 
     Row {
         Button(onClick = { openGroupCreateDialog.value = true }) {
@@ -48,4 +30,34 @@ fun GroupListHeader(
             Text(text = "Join a Group")
         }
     }
+}
+
+@Composable
+private fun GroupJoinDialog(onGroupJoin: (String) -> Unit): MutableState<Boolean> {
+    val openGroupJoinDialog = remember { mutableStateOf(false) }
+    if (openGroupJoinDialog.value) {
+        InputDialog(
+            label = "Enter code",
+            placeholder = "",
+            action = "Verify",
+            onDismiss = { openGroupJoinDialog.value = false },
+            onAction = { openGroupJoinDialog.value = false; onGroupJoin(it) }
+        )
+    }
+    return openGroupJoinDialog
+}
+
+@Composable
+private fun GroupCreateDialog(onGroupCreate: (String) -> Unit): MutableState<Boolean> {
+    val openGroupCreateDialog = remember { mutableStateOf(false) }
+    if (openGroupCreateDialog.value) {
+        InputDialog(
+            label = "Enter a group name",
+            placeholder = "Ex. Trip",
+            action = "Save",
+            onDismiss = { openGroupCreateDialog.value = false },
+            onAction = { openGroupCreateDialog.value = false; onGroupCreate(it) }
+        )
+    }
+    return openGroupCreateDialog
 }

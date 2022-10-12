@@ -37,12 +37,17 @@ fun GroupsDetails(
                 GroupPaymentCard(it)
             }
         }
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = onNewPaymentClick,
-        ) {
-            Text(text = "New expense")
-        }
+        NewExpenseButton(onNewPaymentClick)
+    }
+}
+
+@Composable
+private fun NewExpenseButton(onNewPaymentClick: () -> Unit) {
+    Button(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = onNewPaymentClick,
+    ) {
+        Text(text = "New expense")
     }
 }
 

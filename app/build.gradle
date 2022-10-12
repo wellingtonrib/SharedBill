@@ -43,6 +43,7 @@ android {
         allWarningsAsErrors = false
         freeCompilerArgs += [
             '-opt-in=androidx.compose.material3.ExperimentalMaterial3Api',
+            '-opt-in=androidx.compose.material.ExperimentalMaterialApi',
             '-opt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi',
             '-opt-in=androidx.compose.animation.ExperimentalAnimationApi',
             '-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi'
@@ -71,6 +72,7 @@ dependencies {
     //Compose
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material3:material3:$compose_material"
+    implementation "androidx.compose.material:material:$compose_material"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.navigation:navigation-compose:$compose_navigaton"
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose_version"

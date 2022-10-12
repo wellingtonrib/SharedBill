@@ -1,6 +1,6 @@
 package br.com.jwar.sharedbill.core.di
 
-import br.com.jwar.sharedbill.domain.repositories.GroupsRepository
+import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
 import br.com.jwar.sharedbill.domain.services.AuthService
 import br.com.jwar.sharedbill.domain.usecases.*
@@ -47,36 +47,48 @@ class DomainModule {
     @Provides
     @Singleton
     fun provideGetAllGroupsUseCase(
-        groupsRepository: GroupsRepository
-    ): GetAllGroupsUseCase = GetAllGroupsUseCaseImpl(groupsRepository)
+        groupRepository: GroupRepository
+    ): GetAllGroupsUseCase = GetAllGroupsUseCaseImpl(groupRepository)
 
     @Provides
     @Singleton
     fun providesCreateGroupUseCase(
-        groupsRepository: GroupsRepository
-    ): CreateGroupUseCase = CreateGroupUseCaseImpl(groupsRepository)
+        groupRepository: GroupRepository
+    ): CreateGroupUseCase = CreateGroupUseCaseImpl(groupRepository)
+
+    @Provides
+    @Singleton
+    fun providesSaveGroupUseCase(
+        groupRepository: GroupRepository
+    ): SaveGroupUseCase = SaveGroupUseCaseImpl(groupRepository)
 
     @Provides
     @Singleton
     fun providesGetGroupByIdUseCase(
-        groupsRepository: GroupsRepository
-    ): GetGroupByIdUseCase = GetGroupByIdUseCaseImpl(groupsRepository)
+        groupRepository: GroupRepository
+    ): GetGroupByIdUseCase = GetGroupByIdUseCaseImpl(groupRepository)
 
     @Provides
     @Singleton
     fun providesGroupAddMemberUseCase(
-        groupsRepository: GroupsRepository
-    ): GroupAddMemberUseCase = GroupAddMemberUseCaseImpl(groupsRepository)
+        groupRepository: GroupRepository
+    ): GroupAddMemberUseCase = GroupAddMemberUseCaseImpl(groupRepository)
+
+    @Provides
+    @Singleton
+    fun providesGroupRemoveMemberUseCase(
+        groupRepository: GroupRepository
+    ): GroupRemoveMemberUseCase = GroupRemoveMemberUseCaseImpl(groupRepository)
 
     @Provides
     @Singleton
     fun providesGroupJoinUseCase(
-        groupsRepository: GroupsRepository
-    ): GroupJoinUseCase = GroupJoinUseCaseImpl(groupsRepository)
+        groupRepository: GroupRepository
+    ): GroupJoinUseCase = GroupJoinUseCaseImpl(groupRepository)
 
     @Provides
     @Singleton
     fun providesSendPaymentUseCase(
-        groupsRepository: GroupsRepository
-    ): SendPaymentUseCase = SendPaymentUseCaseImpl(groupsRepository)
+        groupRepository: GroupRepository
+    ): SendPaymentUseCase = SendPaymentUseCaseImpl(groupRepository)
 }

@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.User
-import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract
 import br.com.jwar.sharedbill.presentation.ui.generic_components.InfoDialog
 import br.com.jwar.sharedbill.presentation.ui.generic_components.InputDialog
 import br.com.jwar.sharedbill.presentation.ui.generic_components.VerticalSpacerMedium
+import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract
 
 @Composable
 fun GroupEditForm(
@@ -28,17 +28,9 @@ fun GroupEditForm(
     onSaveGroupClick: (group: Group) -> Unit,
     onSaveMemberClick: (String) -> Unit,
     onMemberSelectionChange: (User?) -> Unit,
+    onMemberDeleteRequest: (String) -> Unit,
 ) {
-    state.selectedMember?.let { user ->
-        InfoDialog(
-            image = R.drawable.ic_baseline_account_circle_24,
-            title = user.name,
-            message = user.joinInfo,
-            action = "Ok",
-            onDismiss = { onMemberSelectionChange(null) },
-            onAction = { onMemberSelectionChange(null) }
-        )
-    }
+    SelectedMemberDialog(state, onMemberSelectionChange)
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,14 +44,33 @@ fun GroupEditForm(
             GroupEditMembersHeader()
         }
         items(state.group.members) { member ->
-            GroupMemberCard(member) {
-                onMemberSelectionChange(it)
-            }
+            GroupMemberCard(
+                member = member,
+                onMemberSelect = { onMemberSelectionChange(it) },
+                onMemberDelete = { onMemberDeleteRequest(it) }
+            )
         }
         item {
             VerticalSpacerMedium()
             GroupEditFooter(onSaveMemberClick)
         }
+    }
+}
+
+@Composable
+private fun SelectedMemberDialog(
+    state: GroupEditContract.State.Editing,
+    onMemberSelectionChange: (User?) -> Unit
+) {
+    state.selectedMember?.let { user ->
+        InfoDialog(
+            image = R.drawable.ic_baseline_account_circle_24,
+            title = user.name,
+            message = user.joinInfo,
+            action = "Ok",
+            onDismiss = { onMemberSelectionChange(null) },
+            onAction = { onMemberSelectionChange(null) }
+        )
     }
 }
 
