@@ -6,7 +6,8 @@ import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.model.Resource.Failure
 import br.com.jwar.sharedbill.domain.model.Resource.Loading
 import br.com.jwar.sharedbill.domain.model.Resource.Success
-import br.com.jwar.sharedbill.domain.repositories.GroupsRepository
+import br.com.jwar.sharedbill.domain.model.User
+import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.flowOn
 class DefaultGroupRepository @Inject constructor(
     private val groupsDataSource: GroupsDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-): GroupsRepository {
+): GroupRepository {
 
     private val cache = mutableSetOf<Group>()
 
@@ -56,10 +57,20 @@ class DefaultGroupRepository @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    override suspend fun addMember(userName: String, groupId: String) = flow {
+    override suspend fun addMember(user: User, groupId: String) = flow {
         emit(Loading)
         try {
-            val groupUpdated = groupsDataSource.addMember(userName, groupId).also { cache.add(it) }
+            val groupUpdated = groupsDataSource.addMember(user, groupId).also { cache.add(it) }
+            emit(Success(groupUpdated))
+        } catch (exception: Exception) {
+            emit(Failure(exception))
+        }
+    }.flowOn(ioDispatcher)
+
+    override suspend fun removeMember(userId: String, groupId: String) = flow {
+        emit(Loading)
+        try {
+            val groupUpdated = groupsDataSource.removeMember(userId, groupId).also { cache.add(it) }
             emit(Success(groupUpdated))
         } catch (exception: Exception) {
             emit(Failure(exception))
@@ -80,6 +91,16 @@ class DefaultGroupRepository @Inject constructor(
         emit(Loading)
         try {
             val groupUpdated = groupsDataSource.sendPayment(payment, group).also { cache.add(it) }
+            emit(Success(groupUpdated))
+        } catch (exception: Exception) {
+            emit(Failure(exception))
+        }
+    }.flowOn(ioDispatcher)
+
+    override suspend fun saveGroup(group: Group) = flow {
+        emit(Loading)
+        try {
+            val groupUpdated = groupsDataSource.saveGroup(group).also { cache.add(it) }
             emit(Success(groupUpdated))
         } catch (exception: Exception) {
             emit(Failure(exception))

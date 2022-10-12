@@ -1,11 +1,11 @@
 package br.com.jwar.sharedbill.domain.usecases
 
-import br.com.jwar.sharedbill.domain.repositories.GroupsRepository
+import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import javax.inject.Inject
 
 class GroupJoinUseCaseImpl @Inject constructor(
-    private val groupsRepository: GroupsRepository
+    private val groupRepository: GroupRepository
 ): GroupJoinUseCase {
     override suspend fun invoke(code: String) =
-        groupsRepository.joinGroup(code)
+        groupRepository.joinGroup(code)
 }

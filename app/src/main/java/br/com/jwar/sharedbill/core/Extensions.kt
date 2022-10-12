@@ -11,6 +11,8 @@ const val DATE_FORMAT_SMALL = "dd/MM"
 const val DATE_FORMAT_DEFAULT = "dd/MM/yyyy"
 const val DATE_FORMAT_FULL = "dd/MM/yyyy HH:mm"
 
+const val ZERO = "0"
+
 fun Timestamp.format(pattern: String = DATE_FORMAT_DEFAULT): String =
     this.toDate().format(pattern)
 
@@ -22,6 +24,12 @@ fun String.parse(pattern: String = DATE_FORMAT_DEFAULT, default: Date = Date()):
 
 fun String.toCurrency() =
     this.toBigDecimal().toCurrency()
+
+fun String?.orZero() =
+    this.ifNullOrBlank { ZERO }
+
+fun String?.ifNullOrBlank(block: () -> String) =
+    if (this.isNullOrBlank()) block() else this
 
 fun BigDecimal?.orZero(): BigDecimal =
     this ?: BigDecimal.ZERO
