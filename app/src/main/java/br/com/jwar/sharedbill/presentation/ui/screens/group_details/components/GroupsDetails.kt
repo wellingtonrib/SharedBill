@@ -1,6 +1,9 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_details.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -8,14 +11,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import br.com.jwar.sharedbill.domain.model.Group
+import br.com.jwar.sharedbill.R
+import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
+import br.com.jwar.sharedbill.presentation.ui.theme.verticalSpaceMedium
 
 @Composable
 fun GroupsDetails(
-    group: Group,
+    group: GroupUiModel,
     onNewPaymentClick: ()-> Unit = {},
     onManageClick: ()-> Unit = {},
 ) {
@@ -23,11 +28,11 @@ fun GroupsDetails(
         LazyColumn(modifier = Modifier.weight(1f)) {
             item {
                 GroupInfo(group, onManageClick)
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.verticalSpaceMedium())
             }
             item {
                 GroupBalance(group)
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.verticalSpaceMedium())
             }
             items(group.payments) { payment ->
                 GroupPaymentCard(payment, group)
@@ -43,7 +48,7 @@ private fun NewExpenseButton(onNewPaymentClick: () -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         onClick = onNewPaymentClick,
     ) {
-        Text(text = "New expense")
+        Text(text = stringResource(R.string.label_new_expense))
     }
 }
 
@@ -52,7 +57,7 @@ private fun NewExpenseButton(onNewPaymentClick: () -> Unit) {
 fun PreviewGroupDetails() {
     SharedBillTheme {
         Scaffold {
-            GroupsDetails(Group.fake())
+            GroupsDetails(GroupUiModel.sample())
         }
     }
 }

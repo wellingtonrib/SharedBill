@@ -29,8 +29,8 @@ fun GroupDetailsScreen(
     ) {
         GroupDetailsContent(
             state = state,
-            onNewPaymentClick = { group ->
-                viewModel.emitEvent { Event.OnNewPaymentClick(group.id) }
+            onNewPaymentClick = { groupId ->
+                viewModel.emitEvent { Event.OnNewPaymentClick(groupId) }
             },
             onManageClick = {
                 viewModel.emitEvent { Event.OnManageClick }

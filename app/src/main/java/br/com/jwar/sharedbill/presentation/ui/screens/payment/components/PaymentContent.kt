@@ -45,7 +45,7 @@ fun PaymentContent(
 fun PreviewPaymentContent() {
     SharedBillTheme {
         Scaffold {
-            PaymentContent(state = State.Editing(Group.fake(), User.fake()))
+            PaymentContent(state = State.Editing(Group.sample(), User.fake()))
         }
     }
 }

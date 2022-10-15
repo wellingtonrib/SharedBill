@@ -49,7 +49,7 @@ fun previewGroupEditContent() {
     SharedBillTheme {
         Scaffold {
             GroupEditContent(
-                state = State.Editing(Group.fake()),
+                state = State.Editing(Group.sample()),
             )
         }
     }

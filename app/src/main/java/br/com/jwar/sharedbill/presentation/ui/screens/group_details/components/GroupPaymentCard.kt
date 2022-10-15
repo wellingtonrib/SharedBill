@@ -3,67 +3,63 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_details.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import br.com.jwar.sharedbill.core.DATE_FORMAT_SMALL
-import br.com.jwar.sharedbill.core.format
-import br.com.jwar.sharedbill.core.toCurrency
-import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Payment
+import androidx.compose.ui.res.stringResource
+import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.ui.generic_components.InfoDialog
+import br.com.jwar.sharedbill.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.presentation.models.PaymentUiModel
+import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
+import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.horizontalSpaceMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.verticalSpaceMedium
 
 @Composable
 fun GroupPaymentCard(
-    payment: Payment,
-    group: Group
+    payment: PaymentUiModel,
+    group: GroupUiModel
 ) {
     val showingPaymentInfo = PaymentInfoDialog(payment)
     Column {
         Card(modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-                showingPaymentInfo.value = true
-            }) {
+            .clickable { showingPaymentInfo.value = true }) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
+                modifier = Modifier.fillMaxWidthPaddingMedium()
             ) {
-                Text(text = payment.createdAt.format(DATE_FORMAT_SMALL))
-                Divider(modifier = Modifier.width(16.dp), color = Color.Transparent)
+                Text(text = payment.createdAt)
+                Spacer(modifier = Modifier.horizontalSpaceMedium())
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = payment.description)
-                    Text(text = "Paid by ${payment.paidBy.firstName} to ${payment.paidToDescription(group)}", fontSize = 10.sp)
+                    Text(
+                        text = payment.getMessage(group),
+                        style = AppTheme.typo.labelSmall
+                    )
                 }
-                Divider(modifier = Modifier.width(16.dp), color = Color.Transparent)
-                Text(text = payment.value.toCurrency())
+                Spacer(modifier = Modifier.horizontalSpaceMedium())
+                Text(text = payment.value)
             }
         }
-        Divider(modifier = Modifier.height(16.dp), color = Color.Transparent)
+        Spacer(modifier = Modifier.verticalSpaceMedium())
     }
 }
 
 @Composable
-private fun PaymentInfoDialog(payment: Payment): MutableState<Boolean> {
+private fun PaymentInfoDialog(payment: PaymentUiModel): MutableState<Boolean> {
     val showingPaymentInfo = remember { mutableStateOf(false) }
     if (showingPaymentInfo.value) {
         InfoDialog(
             image = null,
-            title = "Payment Detail",
-            message = payment.getDetail(),
+            title = stringResource(R.string.label_payment_detail),
+            message = payment.getInfo(),
             onDismiss = { showingPaymentInfo.value = false },
             onAction = { showingPaymentInfo.value = false }
         )

@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
@@ -20,7 +19,7 @@ fun AuthContent(
     onSignInClick: () -> Unit = {}
 ) {
     Box(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
         if (state.isAuthenticating) LoadingContent()

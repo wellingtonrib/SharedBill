@@ -8,6 +8,7 @@ import br.com.jwar.sharedbill.domain.model.Resource.Success
 import br.com.jwar.sharedbill.domain.usecases.GetUserUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignOutUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
+import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Effect
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.State
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 class AccountViewModel @Inject constructor(
     private val signOutUseCase: SignOutUseCase,
     private val getUserUseCase: GetUserUseCase,
+    private val userToUserUiModelMapper: UserToUserUiModelMapper
 ): BaseViewModel<Event, State, Effect>() {
 
     override fun getInitialState() = State.Loading
@@ -34,7 +36,7 @@ class AccountViewModel @Inject constructor(
         getUserUseCase().collect { resource ->
             when(resource) {
                 is Loading -> setState { State.Loading }
-                is Success -> setState { State.Loaded(resource.data) }
+                is Success -> setState { State.Loaded(userToUserUiModelMapper.mapFrom(resource.data)) }
                 is Failure -> handleException(resource.throwable)
             }
         }

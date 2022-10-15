@@ -2,49 +2,39 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_details.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import br.com.jwar.sharedbill.core.toCurrency
-import br.com.jwar.sharedbill.domain.model.Group
-import java.math.BigDecimal
+import br.com.jwar.sharedbill.R
+import br.com.jwar.sharedbill.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.presentation.ui.theme.horizontalSpaceSmall
 
 @Composable
-fun GroupBalance(group: Group) {
+fun GroupBalance(group: GroupUiModel) {
     if (group.balance.isEmpty()) {
-        Text("No expenses")
+        Text(stringResource(R.string.message_no_expenses))
         return
     }
     Column {
         Text(
-            text = "Group Balance:",
+            text = stringResource(R.string.label_group_balance),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold
         )
         group.balance.forEach { entry ->
             Row {
-                val member = group.findMemberByUid(entry.key)
-                val balance = entry.value.toBigDecimal()
-                Text(text = "${member?.name ?: "Unknown"}: ")
+                val (member, value) = entry
+                Text(text = member)
+                Spacer(modifier = Modifier.horizontalSpaceSmall())
                 Text(
-                    text = getBalanceText(balance),
-                    color = getBalanceColor(balance)
+                    text = group.getBalanceTextFromValue(value),
+                    color = group.getBalanceColorFromValue(value)
                 )
             }
         }
     }
 }
-
-@Composable
-private fun getBalanceText(balance: BigDecimal) =
-    when {
-        balance > BigDecimal.ZERO -> "Owes ${balance.toCurrency()}"
-        balance < BigDecimal.ZERO -> "Is owned ${balance.abs().toCurrency()}"
-        else -> "Settled up"
-    }
-
-@Composable
-private fun getBalanceColor(balance: BigDecimal) =
-    if (balance > BigDecimal.ZERO) MaterialTheme.colorScheme.error
-    else MaterialTheme.colorScheme.primary

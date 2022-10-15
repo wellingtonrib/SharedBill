@@ -22,7 +22,7 @@ Group(
     fun findMemberByFirebaseId(firebaseId: String) = members.firstOrNull { it.firebaseUserId == firebaseId }
 
     companion object {
-        fun fake() = Group(
+        fun sample() = Group(
             id = UUID.randomUUID().toString(),
             title = "My Fake Group",
             owner = User(

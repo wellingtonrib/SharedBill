@@ -31,6 +31,9 @@ fun String?.orZero() =
 fun String?.ifNullOrBlank(block: () -> String) =
     if (this.isNullOrBlank()) block() else this
 
+fun String.replaceIf(replacement: String, predicate: () -> Boolean) =
+    if (predicate()) replacement else this
+
 fun BigDecimal?.orZero(): BigDecimal =
     this ?: BigDecimal.ZERO
 
