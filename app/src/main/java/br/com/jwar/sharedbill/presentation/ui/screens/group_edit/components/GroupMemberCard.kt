@@ -2,7 +2,6 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_edit.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.DismissState
 import androidx.compose.material.DismissValue
 import androidx.compose.material.SwipeToDismiss
@@ -11,16 +10,21 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import br.com.jwar.sharedbill.domain.model.User
+import androidx.compose.ui.res.stringResource
+import br.com.jwar.sharedbill.R
+import br.com.jwar.sharedbill.presentation.models.UserUiModel
+import br.com.jwar.sharedbill.presentation.ui.theme.paddingMedium
 import kotlinx.coroutines.launch
 
 @Composable
 fun GroupMemberCard(
-    member: User,
-    onMemberSelect: (member: User) -> Unit,
+    member: UserUiModel,
+    onMemberSelect: (member: UserUiModel) -> Unit,
     onMemberDelete: (userId: String) -> Unit
 ) {
     val userDeletionState = GetUserDeletionState(member, onMemberDelete)
@@ -30,13 +34,11 @@ fun GroupMemberCard(
         background = {}
     ) {
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
+            modifier = Modifier.fillMaxWidth(),
             onClick = { onMemberSelect(member) }
         ) {
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.paddingMedium()
             ) {
                 Text(text = member.name)
             }
@@ -46,7 +48,7 @@ fun GroupMemberCard(
 
 @Composable
 private fun GetUserDeletionState(
-    member: User,
+    member: UserUiModel,
     onMemberDelete: (userId: String) -> Unit
 ): DismissState {
     val scope = rememberCoroutineScope()
@@ -63,8 +65,8 @@ private fun GetUserDeletionState(
     if (confirmUserDeletion.value) {
         AlertDialog(
             onDismissRequest = { confirmUserDeletion.value = false },
-            title = { Text("Confirm deletion") },
-            text = { Text("Are you sure?") },
+            title = { Text(stringResource(R.string.label_confirm)) },
+            text = { Text(stringResource(R.string.message_confirm_member_deletion)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -72,7 +74,7 @@ private fun GetUserDeletionState(
                         confirmUserDeletion.value = false
                     }
                 ) {
-                    Text("Yes")
+                    Text(stringResource(R.string.label_yes))
                 }
             },
             dismissButton = {
@@ -82,7 +84,7 @@ private fun GetUserDeletionState(
                         confirmUserDeletion.value = false
                     }
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.label_cancel))
                 }
             }
         )

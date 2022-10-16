@@ -20,7 +20,8 @@ class PresentationModule {
 
     @Provides
     fun provideGroupToGroupUiModelMapper(
-        paymentToPaymentUiModelMapper: PaymentToPaymentUiModelMapper
+        paymentToPaymentUiModelMapper: PaymentToPaymentUiModelMapper,
+        userToUserUiModelMapper: UserToUserUiModelMapper
     ): GroupToGroupUiModelMapper =
-        GroupToGroupUiModelMapperImpl(paymentToPaymentUiModelMapper)
+        GroupToGroupUiModelMapperImpl(paymentToPaymentUiModelMapper, userToUserUiModelMapper)
 }

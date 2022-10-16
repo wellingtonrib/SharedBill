@@ -40,7 +40,7 @@ fun GroupInfo(
         Row {
             Text(text = stringResource(R.string.label_group_members), fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.horizontalSpaceSmall())
-            Text(text = group.members)
+            Text(text = group.membersNames)
         }
     }
 }

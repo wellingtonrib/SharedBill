@@ -18,6 +18,9 @@ class Dimensions(
     val space_8: Dp,
     val space_9: Dp,
     val space_10: Dp,
+    val size_1: Dp,
+    val size_2: Dp,
+    val size_3: Dp
 )
 
 val DefaultDimens  = Dimensions(
@@ -31,6 +34,9 @@ val DefaultDimens  = Dimensions(
     space_8 = 16.dp,
     space_9 = 32.dp,
     space_10 = 42.dp,
+    size_1 = 20.dp,
+    size_2 = 40.dp,
+    size_3 = 80.dp
 )
 
 val SmallDimens = Dimensions(
@@ -44,11 +50,14 @@ val SmallDimens = Dimensions(
     space_8 = 14.dp,
     space_9 = 28.dp,
     space_10 = 36.dp,
+    size_1 = 10.dp,
+    size_2 = 20.dp,
+    size_3 = 60.dp
 )
 
 @Composable
-fun ProvideDimens(dimensions: Dimensions,content: @Composable () -> Unit) {
-    val dimensionSet = remember { dimensions }
+fun ProvideDimens(dimens: Dimensions, content: @Composable () -> Unit) {
+    val dimensionSet = remember { dimens }
     CompositionLocalProvider(LocalAppDimens provides dimensionSet, content = content)
 }
 

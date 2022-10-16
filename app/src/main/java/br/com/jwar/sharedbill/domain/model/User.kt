@@ -32,10 +32,6 @@ data class User(
         get() = name.split(" ").first()
 
     @get:Exclude
-    val joinInfo: String
-        get() = if (inviteCode.isNullOrBlank()) "Joined" else "Invite code: $inviteCode"
-
-    @get:Exclude
     override val selectableLabel: String
         get() = name
 }

@@ -78,13 +78,13 @@ class FirebaseGroupDataSource @Inject constructor(
         }
     }
 
-    override suspend fun saveGroup(group: Group): Group {
+    override suspend fun saveGroup(groupId: String, title: String): Group {
         return withContext(ioDispatcher) {
-            val groupDoc = firestore.document("$GROUPS_REF/${group.id}")
+            val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
             groupDoc.update(mapOf(
-                GROUP_TITLE_FIELD to group.title,
+                GROUP_TITLE_FIELD to title,
             ))
-            return@withContext getGroupById(group.id)
+            return@withContext getGroupById(groupId)
         }
     }
 

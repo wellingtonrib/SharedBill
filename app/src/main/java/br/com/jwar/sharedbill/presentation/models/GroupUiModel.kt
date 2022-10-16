@@ -11,7 +11,8 @@ import java.util.*
 data class GroupUiModel(
     val id: String = "",
     val title: String = "",
-    val members: String = "",
+    val membersNames: String = "",
+    val members: List<UserUiModel> = emptyList(),
     val payments: List<PaymentUiModel> = emptyList(),
     val balance: Map<String, BigDecimal> = mapOf()
 ) {
@@ -37,7 +38,7 @@ data class GroupUiModel(
         fun sample() = GroupUiModel(
             id = UUID.randomUUID().toString(),
             title = "Group Sample",
-            members = "Member One, Member Two, Member Three",
+            membersNames = "Member One, Member Two, Member Three",
             payments = listOf(
                 PaymentUiModel.sample(),
                 PaymentUiModel.sample(),

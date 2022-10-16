@@ -1,40 +1,38 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_edit.components
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
-import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.User
+import br.com.jwar.sharedbill.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.ui.generic_components.InfoDialog
 import br.com.jwar.sharedbill.presentation.ui.generic_components.InputDialog
 import br.com.jwar.sharedbill.presentation.ui.generic_components.VerticalSpacerMedium
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract
+import br.com.jwar.sharedbill.presentation.ui.theme.*
 
 @Composable
 fun GroupEditForm(
     state: GroupEditContract.State.Editing,
-    onSaveGroupClick: (group: Group) -> Unit,
-    onSaveMemberClick: (String) -> Unit,
-    onMemberSelectionChange: (User?) -> Unit,
-    onMemberDeleteClick: (String) -> Unit,
+    onSaveGroupClick: (group: GroupUiModel) -> Unit = {},
+    onSaveMemberClick: (String) -> Unit = {},
+    onMemberSelectionChange: (UserUiModel?) -> Unit = {},
+    onMemberDeleteClick: (String) -> Unit = {},
 ) {
     SelectedMemberDialog(state, onMemberSelectionChange)
     LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier = Modifier.fillMaxWidthPaddingMedium(),
     ) {
         item {
             GroupEditHeader(state.group, onSaveGroupClick)
@@ -44,6 +42,7 @@ fun GroupEditForm(
             GroupEditMembersHeader()
         }
         items(state.group.members) { member ->
+            VerticalSpacerMedium()
             GroupMemberCard(
                 member = member,
                 onMemberSelect = { onMemberSelectionChange(it) },
@@ -60,14 +59,14 @@ fun GroupEditForm(
 @Composable
 private fun SelectedMemberDialog(
     state: GroupEditContract.State.Editing,
-    onMemberSelectionChange: (User?) -> Unit
+    onMemberSelectionChange: (UserUiModel?) -> Unit
 ) {
     state.selectedMember?.let { user ->
         InfoDialog(
             image = R.drawable.ic_baseline_account_circle_24,
             title = user.name,
-            message = user.joinInfo,
-            action = "Ok",
+            message = user.getJoinInfo(),
+            action = stringResource(R.string.label_ok),
             onDismiss = { onMemberSelectionChange(null) },
             onAction = { onMemberSelectionChange(null) }
         )
@@ -77,15 +76,15 @@ private fun SelectedMemberDialog(
 @Composable
 private fun GroupEditMembersHeader() {
     Text(
-        style = MaterialTheme.typography.titleMedium,
-        text = "Group Members"
+        style = MaterialTheme.typography.titleLarge,
+        text = stringResource(R.string.label_group_members)
     )
 }
 
 @Composable
 private fun GroupEditHeader(
-    group: Group,
-    onSaveGroupClick: (group: Group) -> Unit
+    group: GroupUiModel,
+    onSaveGroupClick: (group: GroupUiModel) -> Unit
 ) {
     var groupEdited by remember { mutableStateOf(group) }
 
@@ -93,30 +92,34 @@ private fun GroupEditHeader(
         Text(
             modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.titleLarge,
-            text = "Group Info"
+            text = stringResource(R.string.label_group_info)
         )
         Button(onClick = { onSaveGroupClick(groupEdited) }) {
-            Text(text = "Save")
+            Text(text = stringResource(R.string.label_save))
         }
     }
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Image(
-            modifier = Modifier
-                .width(80.dp)
-                .height(80.dp)
-                .padding(12.dp),
-            painter = painterResource(id = R.drawable.ic_baseline_groups_24),
-            contentDescription = "Group Image"
-        )
-        Spacer(modifier = Modifier.width(16.dp))
+        Box(modifier = Modifier
+            .sizeLarge()
+            .background(AppTheme.colors.primary),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                modifier = Modifier.sizeMedium(),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_baseline_groups_24),
+                tint = Color.White,
+                contentDescription = stringResource(R.string.description_group_image)
+            )
+        }
+        Spacer(modifier = Modifier.width(AppTheme.dimens.space_8))
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            shape = RoundedCornerShape(16.dp),
+            shape = MaterialTheme.shapes.medium,
             value = groupEdited.title,
-            label = { Text(text = "Group Name") },
-            placeholder = { Text(text = "Ex: Trip") },
+            label = { Text(text = stringResource(R.string.label_group_title)) },
+            placeholder = { Text(text = stringResource(R.string.placeholder_group_title)) },
             onValueChange = { groupEdited = groupEdited.copy(title = it) }
         )
     }
@@ -127,9 +130,9 @@ private fun GroupEditFooter(onSaveMemberClick: (String) -> Unit,) {
     val openGroupAddMemberDialog = remember { mutableStateOf(false) }
     if (openGroupAddMemberDialog.value) {
         InputDialog(
-            label = "Enter user name",
-            placeholder = "Ex. Alex",
-            action = "Save",
+            label = stringResource(R.string.label_add_member_name),
+            placeholder = stringResource(R.string.placeholder_add_member_name),
+            action = stringResource(R.string.label_save),
             onDismiss = { openGroupAddMemberDialog.value = false },
             onAction = { openGroupAddMemberDialog.value = false; onSaveMemberClick(it) }
         )
@@ -137,11 +140,23 @@ private fun GroupEditFooter(onSaveMemberClick: (String) -> Unit,) {
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
         Button(onClick = { openGroupAddMemberDialog.value = true }) {
-            Text(text = "Add Member")
+            Text(text = stringResource(R.string.label_add_member))
         }
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.horizontalSpaceMedium())
         Button(onClick = { }) {
-            Text(text = "Invite Link")
+            Text(text = stringResource(R.string.label_invite_link))
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewGroupEditForm() {
+    MaterialTheme {
+        GroupEditForm(
+            state = GroupEditContract.State.Editing(
+                group = GroupUiModel.sample()
+            )
+        )
     }
 }

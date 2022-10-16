@@ -1,11 +1,7 @@
 package br.com.jwar.sharedbill.presentation.ui.theme
 
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
@@ -28,11 +24,5 @@ val LightColorScheme = lightColorScheme(
     secondary = PurpleGrey40,
     tertiary = Pink40
 )
-
-@Composable
-fun ProvideAppColors(colors: ColorScheme, content: @Composable () -> Unit) {
-    val colorPalette = remember { colors }
-    CompositionLocalProvider(LocalAppColors provides colorPalette, content = content)
-}
 
 val LocalAppColors = staticCompositionLocalOf { LightColorScheme }

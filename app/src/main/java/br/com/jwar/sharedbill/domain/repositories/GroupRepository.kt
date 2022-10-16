@@ -10,7 +10,7 @@ interface GroupRepository {
     suspend fun getGroupById(groupId: String, refresh: Boolean = false): Flow<Resource<Group>>
     suspend fun getAllGroups(refresh: Boolean = false): Flow<Resource<List<Group>>>
     suspend fun createGroup(group: Group): Flow<Resource<Group>>
-    suspend fun saveGroup(group: Group): Flow<Resource<Group>>
+    suspend fun saveGroup(groupId: String, title: String): Flow<Resource<Group>>
     suspend fun addMember(user: User, groupId: String): Flow<Resource<Group>>
     suspend fun removeMember(userId: String, groupId: String): Flow<Resource<Group>>
     suspend fun joinGroup(code: String): Flow<Resource<Group>>

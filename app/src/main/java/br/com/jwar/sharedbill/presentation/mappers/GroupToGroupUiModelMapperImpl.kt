@@ -6,13 +6,15 @@ import java.math.BigDecimal
 import javax.inject.Inject
 
 class GroupToGroupUiModelMapperImpl @Inject constructor(
-    private val paymentToPaymentUiModelMapper: PaymentToPaymentUiModelMapper
+    private val paymentToPaymentUiModelMapper: PaymentToPaymentUiModelMapper,
+    private val userToUserUiModelMapper: UserToUserUiModelMapper
 ) : GroupToGroupUiModelMapper {
     override fun mapFrom(from: Group) =
         GroupUiModel(
             id = from.id,
             title = from.title,
-            members = from.members.joinToString(", ") { it.firstName },
+            membersNames = from.members.joinToString(", ") { it.firstName },
+            members = from.members.map { userToUserUiModelMapper.mapFrom(it) },
             payments = from.payments.map { paymentToPaymentUiModelMapper.mapFrom(it) },
             balance = mapBalance(from)
         )

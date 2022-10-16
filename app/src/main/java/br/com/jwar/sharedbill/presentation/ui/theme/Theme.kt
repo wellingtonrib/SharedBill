@@ -29,7 +29,7 @@ fun SharedBillTheme(
     }
 
     val configuration = LocalConfiguration.current
-    val dimensions = if (configuration.screenWidthDp <= 360) SmallDimens else DefaultDimens
+    val dimens = if (configuration.screenWidthDp <= 360) SmallDimens else DefaultDimens
     val typography = if (configuration.screenWidthDp <= 360) SmallTypography else DefaultTypography
 
     val view = LocalView.current
@@ -41,16 +41,12 @@ fun SharedBillTheme(
         }
     }
 
-    ProvideDimens(dimensions = dimensions) {
-        ProvideAppColors(colors = colorScheme) {
-            ProvideTypo(typography = typography) {
-                MaterialTheme(
-                    colorScheme = colorScheme,
-                    typography = typography,
-                    content = content
-                )
-            }
-        }
+    ProvideDimens(dimens = dimens) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = typography,
+            content = content,
+        )
     }
 }
 

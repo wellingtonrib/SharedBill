@@ -9,6 +9,7 @@ class UserToUserUiModelMapperImpl @Inject constructor(): UserToUserUiModelMapper
         UserUiModel(
             uid = from.uid,
             name = from.name,
-            firstName = from.name.split(" ").first()
+            firstName = from.name.split(" ").first(),
+            inviteCode = from.inviteCode
         )
 }

@@ -97,10 +97,10 @@ class DefaultGroupRepository @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    override suspend fun saveGroup(group: Group) = flow {
+    override suspend fun saveGroup(groupId: String, title: String) = flow {
         emit(Loading)
         try {
-            val groupUpdated = groupsDataSource.saveGroup(group).also { cache.add(it) }
+            val groupUpdated = groupsDataSource.saveGroup(groupId, title).also { cache.add(it) }
             emit(Success(groupUpdated))
         } catch (exception: Exception) {
             emit(Failure(exception))

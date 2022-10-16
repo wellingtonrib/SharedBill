@@ -29,7 +29,7 @@ class PaymentUiModel(
     fun getMessage(group: GroupUiModel) = stringResource(
         R.string.message_payment_detail,
         paidBy, paidTo.replaceIf(stringResource(R.string.message_paid_to_all)) {
-            paidTo.split(",").size == group.members.split(",").size
+            paidTo.split(",").size == group.membersNames.split(",").size
         }
     )
 
