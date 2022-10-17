@@ -14,5 +14,5 @@ interface GroupRepository {
     suspend fun addMember(user: User, groupId: String): Flow<Resource<Group>>
     suspend fun removeMember(userId: String, groupId: String): Flow<Resource<Group>>
     suspend fun joinGroup(code: String): Flow<Resource<Group>>
-    suspend fun sendPayment(payment: Payment, group: Group): Flow<Resource<Group>>
+    suspend fun sendPayment(payment: Payment, groupId: String): Flow<Resource<Group>>
 }

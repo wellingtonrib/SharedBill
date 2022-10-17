@@ -12,5 +12,5 @@ interface GroupsDataSource {
     suspend fun addMember(user: User, groupId: String): Group
     suspend fun removeMember(userId: String, groupId: String): Group
     suspend fun joinGroup(code: String): Group
-    suspend fun sendPayment(payment: Payment, group: Group): Group
+    suspend fun sendPayment(payment: Payment, groupId: String): Group
 }

@@ -3,14 +3,15 @@ package br.com.jwar.sharedbill.presentation.models
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import br.com.jwar.sharedbill.R
-import java.util.*
+import br.com.jwar.sharedbill.presentation.ui.generic_components.Selectable
+import java.util.UUID
 
 class UserUiModel(
     val uid: String = "",
     val name: String = "",
     val firstName: String = "",
     val inviteCode: String?
-) {
+) : Selectable {
 
     companion object {
         fun sample() = UserUiModel(
@@ -25,4 +26,7 @@ class UserUiModel(
     fun getJoinInfo() =
         if (inviteCode.isNullOrBlank()) stringResource(R.string.label_joined)
         else stringResource(R.string.message_invite_code)
+
+    override val selectableLabel: String
+        get() = name
 }

@@ -13,6 +13,8 @@ const val DATE_FORMAT_FULL = "dd/MM/yyyy HH:mm"
 
 const val ZERO = "0"
 
+fun Any?.isNotNull() = this != null
+
 fun Timestamp.format(pattern: String = DATE_FORMAT_DEFAULT): String =
     this.toDate().format(pattern)
 

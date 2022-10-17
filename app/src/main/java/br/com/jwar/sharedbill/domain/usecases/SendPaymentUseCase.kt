@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface SendPaymentUseCase {
     suspend operator fun invoke(
-        params: PaymentContract.Event.SendPaymentParams
+        params: PaymentContract.SendPaymentParams
     ): Flow<Resource<Group>>
 }

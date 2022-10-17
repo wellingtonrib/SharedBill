@@ -1,21 +1,20 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_list.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import br.com.jwar.sharedbill.domain.model.Group
+import br.com.jwar.sharedbill.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.paddingMedium
 
 @Composable
 fun GroupList(
-    groups: List<Group>,
-    onGroupClick: (group: Group) -> Unit,
+    groups: List<GroupUiModel>,
+    onGroupClick: (groupId: String) -> Unit,
 ) {
     LazyColumn(content = {
         items(groups) { group ->
@@ -25,15 +24,13 @@ fun GroupList(
 }
 
 @Composable
-fun GroupsListItem(group: Group, onGroupClick: (group: Group) -> Unit) {
+fun GroupsListItem(group: GroupUiModel, onGroupClick: (groupId: String) -> Unit) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        onClick = { onGroupClick(group) }
+        modifier = Modifier.fillMaxWidthPaddingMedium(),
+        onClick = { onGroupClick(group.id) }
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.paddingMedium()
         ) {
             Text(text = group.title)
         }

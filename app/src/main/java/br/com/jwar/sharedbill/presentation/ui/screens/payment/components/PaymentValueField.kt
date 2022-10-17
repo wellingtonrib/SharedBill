@@ -1,24 +1,25 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.payment.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
+import br.com.jwar.sharedbill.R
 
 @Composable
 fun PaymentValueField(value: MutableState<String>) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.shapes.medium,
         value = value.value,
-        label = { Text(text = "Value") },
-        placeholder = { Text(text = "R$0,00") },
+        label = { Text(text = stringResource(id = R.string.label_payment_value)) },
+        placeholder = { Text(text = stringResource(id = R.string.placeholder_payment_value)) },
         onValueChange = { value.value = it },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal

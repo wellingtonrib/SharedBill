@@ -9,21 +9,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 
 @Composable
 fun EmptyContent(
-    message: String = "Nothing here",
-    actionMessage: String = "Create one",
-    action: (() -> Unit)? = null
+    message: String = stringResource(id = R.string.message_empty_content),
+    action: String? = null,
+    onAction: (() -> Unit)? = null
 ) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center,){
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = message)
-            if (action != null) {
-                Button(onClick = { action() }) {
-                    Text(text = actionMessage)
+            if (onAction != null && action != null) {
+                Button(onClick = { onAction() }) {
+                    Text(text = action)
                 }
             }
         }

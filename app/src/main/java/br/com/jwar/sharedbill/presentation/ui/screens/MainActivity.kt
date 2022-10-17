@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             navController = rememberAnimatedNavController(bottomSheetNavigator)
             SharedBillTheme {
+                //TODO Top bar
                 Scaffold(
                     bottomBar = { BottomNav(navController = navController) }
                 ) {

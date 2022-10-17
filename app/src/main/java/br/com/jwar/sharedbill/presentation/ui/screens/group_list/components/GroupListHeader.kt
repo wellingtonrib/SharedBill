@@ -2,7 +2,6 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_list.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,8 +9,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.ui.generic_components.InputDialog
+import br.com.jwar.sharedbill.presentation.ui.theme.horizontalSpaceMedium
 
 @Composable
 fun GroupListHeader(
@@ -23,11 +24,11 @@ fun GroupListHeader(
 
     Row {
         Button(onClick = { openGroupCreateDialog.value = true }) {
-            Text(text = "New Group")
+            Text(text = stringResource(R.string.label_group_new))
         }
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.horizontalSpaceMedium())
         Button(onClick = { openGroupJoinDialog.value = true }) {
-            Text(text = "Join a Group")
+            Text(text = stringResource(R.string.label_group_join))
         }
     }
 }
@@ -37,9 +38,8 @@ private fun GroupJoinDialog(onGroupJoin: (String) -> Unit): MutableState<Boolean
     val openGroupJoinDialog = remember { mutableStateOf(false) }
     if (openGroupJoinDialog.value) {
         InputDialog(
-            label = "Enter code",
-            placeholder = "",
-            action = "Verify",
+            label = stringResource(R.string.label_group_invite_code),
+            action = stringResource(R.string.label_verify),
             onDismiss = { openGroupJoinDialog.value = false },
             onAction = { openGroupJoinDialog.value = false; onGroupJoin(it) }
         )
@@ -52,9 +52,9 @@ private fun GroupCreateDialog(onGroupCreate: (String) -> Unit): MutableState<Boo
     val openGroupCreateDialog = remember { mutableStateOf(false) }
     if (openGroupCreateDialog.value) {
         InputDialog(
-            label = "Enter a group name",
-            placeholder = "Ex. Trip",
-            action = "Save",
+            label = stringResource(R.string.label_group_title),
+            placeholder = stringResource(R.string.placeholder_group_title),
+            action = stringResource(R.string.label_save),
             onDismiss = { openGroupCreateDialog.value = false },
             onAction = { openGroupCreateDialog.value = false; onGroupCreate(it) }
         )

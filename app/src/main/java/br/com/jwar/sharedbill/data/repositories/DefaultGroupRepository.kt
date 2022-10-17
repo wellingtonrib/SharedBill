@@ -87,10 +87,10 @@ class DefaultGroupRepository @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    override suspend fun sendPayment(payment: Payment, group: Group) = flow {
+    override suspend fun sendPayment(payment: Payment, groupId: String) = flow {
         emit(Loading)
         try {
-            val groupUpdated = groupsDataSource.sendPayment(payment, group).also { cache.add(it) }
+            val groupUpdated = groupsDataSource.sendPayment(payment, groupId).also { cache.add(it) }
             emit(Success(groupUpdated))
         } catch (exception: Exception) {
             emit(Failure(exception))

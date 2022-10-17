@@ -1,11 +1,24 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_edit.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,9 +31,13 @@ import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.ui.generic_components.InfoDialog
 import br.com.jwar.sharedbill.presentation.ui.generic_components.InputDialog
-import br.com.jwar.sharedbill.presentation.ui.generic_components.VerticalSpacerMedium
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract
-import br.com.jwar.sharedbill.presentation.ui.theme.*
+import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
+import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.horizontalSpaceMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.sizeLarge
+import br.com.jwar.sharedbill.presentation.ui.theme.sizeMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.verticalSpaceMedium
 
 @Composable
 fun GroupEditForm(
@@ -38,11 +55,11 @@ fun GroupEditForm(
             GroupEditHeader(state.group, onSaveGroupClick)
         }
         item {
-            VerticalSpacerMedium()
+            Spacer(modifier = Modifier.verticalSpaceMedium())
             GroupEditMembersHeader()
         }
         items(state.group.members) { member ->
-            VerticalSpacerMedium()
+            Spacer(modifier = Modifier.verticalSpaceMedium())
             GroupMemberCard(
                 member = member,
                 onMemberSelect = { onMemberSelectionChange(it) },
@@ -50,7 +67,7 @@ fun GroupEditForm(
             )
         }
         item {
-            VerticalSpacerMedium()
+            Spacer(modifier = Modifier.verticalSpaceMedium())
             GroupEditFooter(onSaveMemberClick)
         }
     }
@@ -130,7 +147,7 @@ private fun GroupEditFooter(onSaveMemberClick: (String) -> Unit,) {
     val openGroupAddMemberDialog = remember { mutableStateOf(false) }
     if (openGroupAddMemberDialog.value) {
         InputDialog(
-            label = stringResource(R.string.label_add_member_name),
+            label = stringResource(R.string.label_user_name),
             placeholder = stringResource(R.string.placeholder_add_member_name),
             action = stringResource(R.string.label_save),
             onDismiss = { openGroupAddMemberDialog.value = false },
@@ -140,11 +157,11 @@ private fun GroupEditFooter(onSaveMemberClick: (String) -> Unit,) {
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
         Button(onClick = { openGroupAddMemberDialog.value = true }) {
-            Text(text = stringResource(R.string.label_add_member))
+            Text(text = stringResource(R.string.label_group_add_member))
         }
         Spacer(modifier = Modifier.horizontalSpaceMedium())
         Button(onClick = { }) {
-            Text(text = stringResource(R.string.label_invite_link))
+            Text(text = stringResource(R.string.label_group_invite_link))
         }
     }
 }

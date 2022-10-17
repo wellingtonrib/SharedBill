@@ -3,7 +3,7 @@ package br.com.jwar.sharedbill.presentation.ui.screens.payment.components
 import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,10 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.core.format
 import br.com.jwar.sharedbill.core.parse
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun PaymentDateField(date: MutableState<Date>) {
@@ -40,10 +42,10 @@ fun PaymentDateField(date: MutableState<Date>) {
                     focusManager.clearFocus()
                 }
             },
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.shapes.medium,
         value = date.value.format(),
-        label = { Text(text = "Date") },
-        placeholder = { Text(text = "dd/mm/yyyy") },
+        label = { Text(text = stringResource(R.string.label_date)) },
+        placeholder = { Text(text = stringResource(R.string.placeholder_payment_date)) },
         onValueChange = { date.value = it.parse() }
     )
 }
