@@ -48,7 +48,7 @@ private fun NewExpenseButton(onNewPaymentClick: () -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         onClick = onNewPaymentClick,
     ) {
-        Text(text = stringResource(R.string.label_new_expense))
+        Text(text = stringResource(R.string.label_payment_new))
     }
 }
 

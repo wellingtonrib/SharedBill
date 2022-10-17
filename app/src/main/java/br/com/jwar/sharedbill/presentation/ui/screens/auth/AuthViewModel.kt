@@ -12,6 +12,7 @@ import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.Effect
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.State
+import com.google.android.gms.auth.api.identity.BeginSignInResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -36,9 +37,9 @@ class AuthViewModel @Inject constructor(
     private fun onSignIn() = viewModelScope.launch {
         signInUseCase().collect { resource ->
             when(resource) {
-                is Loading -> setState { State(isAuthenticating = true) }
-                is Success -> sendEffect { Effect.LaunchSignInResult(resource.data) }
-                is Failure -> emitEvent { Event.OnRequestSignUp }
+                is Loading -> setAuthenticatingState()
+                is Success -> sendSignedInEffect(resource)
+                is Failure -> emitOnRequestSignUpEvent()
             }
         }
     }
@@ -46,9 +47,9 @@ class AuthViewModel @Inject constructor(
     private fun onSignUp() = viewModelScope.launch {
         signUpUseCase().collect { resource ->
             when(resource) {
-                is Loading -> setState { State(isAuthenticating = true) }
-                is Success -> sendEffect { Effect.LaunchSignInResult(resource.data) }
-                is Failure -> handleException(resource.throwable)
+                is Loading -> setAuthenticatingState()
+                is Success -> sendSignedInEffect(resource)
+                is Failure -> setErrorState(resource.throwable)
             }
         }
     }
@@ -56,15 +57,26 @@ class AuthViewModel @Inject constructor(
     private fun onSignInFirebase(data: Intent?) = viewModelScope.launch {
         signInFirebaseUseCase(data).collect { resource ->
             when(resource) {
-                is Loading -> setState { State(isAuthenticating = true) }
-                is Success -> sendEffect { Effect.GoToHome }
-                is Failure -> handleException(resource.throwable)
+                is Loading -> setAuthenticatingState()
+                is Success -> sendGoHomeEffect()
+                is Failure -> setErrorState(resource.throwable)
             }
         }
     }
 
-    private fun handleException(throwable: Throwable) {
+    private fun setAuthenticatingState() = setState { State(isAuthenticating = true) }
+
+    private fun sendSignedInEffect(resource: Success<BeginSignInResult>) =
+        sendEffect { Effect.LaunchSignInResult(resource.data) }
+
+    private fun setErrorState(throwable: Throwable) {
         setState { State(isAuthenticating = false) }
         sendEffect { Effect.ShowError(throwable.localizedMessage.orEmpty()) }
     }
+
+    private fun sendGoHomeEffect() =
+        sendEffect { Effect.GoToHome }
+
+    private fun emitOnRequestSignUpEvent() =
+        emitEvent { Event.OnRequestSignUp }
 }

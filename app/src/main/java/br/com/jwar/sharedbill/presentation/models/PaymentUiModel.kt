@@ -17,12 +17,12 @@ class PaymentUiModel(
 ) {
     @Composable
     fun getInfo() = StringBuilder().apply {
-        append(stringResource(R.string.label_payment_description, description + "\n"))
-        append(stringResource(R.string.label_payment_value, value + "\n"))
-        append(stringResource(R.string.label_payment_paid_by, paidBy) + "\n")
-        append(stringResource(R.string.label_payment_paid_to, paidTo) + "\n")
-        append(stringResource(R.string.label_payment_created_by, createdBy) + "\n")
-        append(stringResource(R.string.label_payment_created_at, createdAt))
+        append(stringResource(R.string.message_payment_description, description + "\n"))
+        append(stringResource(R.string.message_payment_value, value + "\n"))
+        append(stringResource(R.string.message_payment_paid_by, paidBy) + "\n")
+        append(stringResource(R.string.message_payment_paid_to, paidTo) + "\n")
+        append(stringResource(R.string.message_payment_created_by, createdBy) + "\n")
+        append(stringResource(R.string.message_payment_created_at, createdAt))
     }.toString()
 
     @Composable

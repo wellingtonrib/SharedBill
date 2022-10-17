@@ -1,23 +1,30 @@
 package br.com.jwar.sharedbill.presentation.ui.generic_components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import br.com.jwar.sharedbill.domain.model.User
+import br.com.jwar.sharedbill.R
+import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
+import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
 
 interface Selectable {
     val selectableLabel: String
@@ -28,7 +35,7 @@ fun <T: Selectable> SelectDialog(
     title: String,
     message: String,
     options: Map<T, Boolean>,
-    action: String = "Ok",
+    action: String = stringResource(id = R.string.label_ok),
     isMultiChoice: Boolean = true,
     onDismiss: () -> Unit,
     onSelect: (List<T>) -> Unit
@@ -60,12 +67,10 @@ private fun <T: Selectable> SelectDialogContent(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.medium,
     ) {
         LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidthPaddingMedium(),
             content = {
             item {
                 Text(text = title, style = MaterialTheme.typography.titleLarge)
@@ -129,20 +134,14 @@ private fun <T : Selectable> SelectOption(
 @Composable
 fun PreviewSelectDialogContent() {
     SharedBillTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(20.dp),
-            contentAlignment = Alignment.Center,
-        ) {
+        Scaffold {
             SelectDialogContent(
                 title = "Title",
                 message = "Select a user",
                 options = mapOf(
-                    User(name = "User One") to true,
-                    User(name = "User Two") to false,
-                    User(name = "User Three") to false,
+                    UserUiModel.sample() to true,
+                    UserUiModel.sample() to true,
+                    UserUiModel.sample() to false,
                 ),
                 action = "Ok",
                 isMultiChoice = true

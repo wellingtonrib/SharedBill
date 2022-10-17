@@ -6,8 +6,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import br.com.jwar.sharedbill.presentation.base.screen_model.ModelContract.Event
 import br.com.jwar.sharedbill.presentation.base.screen_model.ModelContract.Effect
+import br.com.jwar.sharedbill.presentation.base.screen_model.ModelContract.Event
 import br.com.jwar.sharedbill.presentation.base.screen_model.components.ModelContent
 
 @ExperimentalMaterial3Api
@@ -20,16 +20,14 @@ fun ModelScreen(
 
     ModelContent(
         state = state,
-        onClickSomething = { TODO("Not yet implemented") }
+        onClickSomething = {}
     )
 
     LaunchedEffect(Unit) {
         viewModel.emitEvent { Event.OnLoad }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
-                is Effect.OpenNext -> {
-                    TODO("Not yet implemented")
-                }
+                is Effect.OpenNext -> {}
             }
         }
     }

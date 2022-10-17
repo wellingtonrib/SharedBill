@@ -16,12 +16,12 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import java.math.RoundingMode
+import java.util.UUID
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.*
 
 class FirebaseGroupDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
@@ -149,15 +149,17 @@ class FirebaseGroupDataSource @Inject constructor(
         }
     }
 
-    override suspend fun sendPayment(payment: Payment, group: Group): Group {
+    override suspend fun sendPayment(payment: Payment, groupId: String): Group {
         return withContext(ioDispatcher) {
             if (payment.description.isEmpty()) throw PaymentInvalidException("Empty description")
             if (payment.value.isEmpty()) throw PaymentInvalidException("Empty value")
 
+            val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
+            val group = groupDoc.get().await().toObject(Group::class.java)
+                ?: throw GroupNotFoundException()
             val createdBy = group.findMemberByFirebaseId(getCurrentUser().uid)
                 ?: throw PaymentInvalidException("Current user not found in group")
 
-            val groupDoc = firestore.document("$GROUPS_REF/${group.id}")
             val total = payment.value.toBigDecimal().orZero().setScale(2, RoundingMode.CEILING)
             val shared = total.div(payment.paidTo.size.toBigDecimal()).setScale(2, RoundingMode.CEILING)
 
@@ -172,7 +174,7 @@ class FirebaseGroupDataSource @Inject constructor(
                 GROUP_PAYMENTS_FIELD to FieldValue.arrayUnion(payment.copy(createdBy = createdBy)),
                 GROUP_BALANCE_FIELD to balance
             ))
-            return@withContext getGroupById(group.id)
+            return@withContext getGroupById(groupId)
         }
     }
 

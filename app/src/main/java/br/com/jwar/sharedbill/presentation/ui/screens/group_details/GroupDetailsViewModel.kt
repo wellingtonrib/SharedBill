@@ -1,6 +1,7 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_details
 
 import androidx.lifecycle.viewModelScope
+import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Resource
 import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
@@ -28,19 +29,27 @@ class GroupDetailsViewModel @Inject constructor(
         }
     }
 
+    private fun onRequestGroup(groupId: String) = viewModelScope.launch {
+        getGroupByIdUseCase(groupId, true).collect { resource ->
+            when(resource) {
+                is Resource.Loading -> setLoadingState()
+                is Resource.Success -> setLoadedState(resource)
+                is Resource.Failure -> setErrorState(resource)
+            }
+        }
+    }
+
+    private fun setLoadingState() = setState { State.Loading }
+
+    private fun setErrorState(resource: Resource.Failure) =
+        setState { State.Error(resource.throwable.message.orEmpty()) }
+
+    private fun setLoadedState(resource: Resource.Success<Group>) =
+        setState { State.Loaded(groupToGroupUiModelMapper.mapFrom(resource.data)) }
+
     private fun onNewPaymentClick(groupId: String) =
         sendEffect { Effect.OpenNewPayment(groupId) }
 
     private fun onManageClick() =
         sendEffect { Effect.OpenGroupMembers }
-
-    private fun onRequestGroup(groupId: String) = viewModelScope.launch {
-        getGroupByIdUseCase(groupId, true).collect { resource ->
-            when(resource) {
-                is Resource.Loading -> setState { State.Loading }
-                is Resource.Success -> setState { State.Loaded(groupToGroupUiModelMapper.mapFrom(resource.data)) }
-                is Resource.Failure -> setState { State.Error(resource.throwable.message.orEmpty()) }
-            }
-        }
-    }
 }
