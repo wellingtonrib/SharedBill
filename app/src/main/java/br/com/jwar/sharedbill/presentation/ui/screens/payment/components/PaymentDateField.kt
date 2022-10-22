@@ -7,7 +7,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
@@ -16,16 +15,22 @@ import androidx.compose.ui.res.stringResource
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.core.format
 import br.com.jwar.sharedbill.core.parse
+import br.com.jwar.sharedbill.presentation.models.PaymentUiError
+import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract
 import java.util.Calendar
-import java.util.Date
 
 @Composable
-fun PaymentDateField(date: MutableState<Date>) {
+fun PaymentDateField(
+    params: PaymentContract.SendPaymentParams,
+    onPaymentParamsChange: (PaymentContract.SendPaymentParams) -> Unit
+) {
     val calendar = Calendar.getInstance()
     val datePickerDialog = DatePickerDialog(
         LocalContext.current,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            date.value = "$dayOfMonth/${month + 1}/$year".parse()
+            onPaymentParamsChange(
+                params.copy(date = "$dayOfMonth/${month + 1}/$year".parse())
+            )
         },
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
@@ -43,9 +48,10 @@ fun PaymentDateField(date: MutableState<Date>) {
                 }
             },
         shape = MaterialTheme.shapes.medium,
-        value = date.value.format(),
+        value = params.date.format(),
         label = { Text(text = stringResource(R.string.label_date)) },
         placeholder = { Text(text = stringResource(R.string.placeholder_payment_date)) },
-        onValueChange = { date.value = it.parse() }
+        onValueChange = {},
+        isError = params.error is PaymentUiError.EmptyDateError
     )
 }

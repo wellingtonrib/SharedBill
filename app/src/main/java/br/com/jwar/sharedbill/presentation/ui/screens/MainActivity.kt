@@ -4,8 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Scaffold
-import androidx.navigation.NavHostController
-import br.com.jwar.sharedbill.presentation.navigation.BottomNav
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
+import br.com.jwar.sharedbill.presentation.navigation.AppBottomBar
 import br.com.jwar.sharedbill.presentation.navigation.NavGraph
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -15,19 +17,18 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private lateinit var navController: NavHostController
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val bottomSheetNavigator = rememberBottomSheetNavigator()
-            navController = rememberAnimatedNavController(bottomSheetNavigator)
+            val snackbarHostState = remember { SnackbarHostState() }
+            val navController = rememberAnimatedNavController(bottomSheetNavigator)
             SharedBillTheme {
-                //TODO Top bar
                 Scaffold(
-                    bottomBar = { BottomNav(navController = navController) }
+                    snackbarHost = { SnackbarHost(snackbarHostState) },
+                    bottomBar = { AppBottomBar(navController = navController) }
                 ) {
-                    NavGraph(navController)
+                    NavGraph(navController = navController, snackbarHostState = snackbarHostState)
                 }
             }
         }

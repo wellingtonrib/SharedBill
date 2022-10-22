@@ -5,7 +5,7 @@ import br.com.jwar.sharedbill.core.di.FirebaseModule.Companion.SIGN_IN_REQUEST
 import br.com.jwar.sharedbill.core.di.FirebaseModule.Companion.SIGN_UP_REQUEST
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
 import br.com.jwar.sharedbill.domain.datasources.UserDataSource
-import br.com.jwar.sharedbill.domain.exceptions.UserNotFoundException
+import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Resource.Failure
 import br.com.jwar.sharedbill.domain.model.Resource.Loading
 import br.com.jwar.sharedbill.domain.model.Resource.Success
@@ -60,7 +60,7 @@ class FirebaseAuthService @Inject constructor(
             val signInCredential = signInClient.getSignInCredentialFromIntent(data)
             val authCredential = GoogleAuthProvider.getCredential(signInCredential.googleIdToken, null)
             val authResult = firebaseAuth.signInWithCredential(authCredential).await()
-            val firebaseUser = authResult.user ?: throw UserNotFoundException()
+            val firebaseUser = authResult.user ?: throw UserNotFoundException
 
             firebaseUserToUserMapper.mapFrom(firebaseUser).run {
                 userDataSource.saveUser(this)

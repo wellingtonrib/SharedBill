@@ -19,14 +19,12 @@ import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
 fun GroupDetailsContent(
     state: State,
     onNewPaymentClick: (String)-> Unit = {},
-    onManageClick: ()-> Unit = {},
 ) {
     Column(modifier = Modifier.fillMaxWidthPaddingMedium()) {
         when(state) {
             is Loading -> LoadingContent()
             is Loaded -> GroupsDetails(
                 group = state.group,
-                onManageClick = onManageClick,
                 onNewPaymentClick = { onNewPaymentClick(state.group.id) }
             )
             is Error -> EmptyContent()

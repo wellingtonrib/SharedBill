@@ -1,13 +1,8 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.payment.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
@@ -22,22 +17,17 @@ import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
 @Composable
 fun PaymentContent(
     state: State,
-    onSendPaymentClick: (SendPaymentParams) -> Unit = {},
-    snackHostState: SnackbarHostState = SnackbarHostState(),
+    onPaymentParamsChange: (SendPaymentParams) -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxWidthPaddingMedium()
     ) {
         when(state) {
             is State.Loading -> LoadingContent()
-            is State.Editing -> PaymentForm(state.params, onSendPaymentClick)
+            is State.Editing -> PaymentForm(state.params, onPaymentParamsChange)
             is State.Error -> ErrorContent(state.message)
         }
     }
-    SnackbarHost(
-        hostState = snackHostState,
-        modifier = Modifier.fillMaxWidth().wrapContentHeight(Alignment.Bottom)
-    )
 }
 
 @Preview

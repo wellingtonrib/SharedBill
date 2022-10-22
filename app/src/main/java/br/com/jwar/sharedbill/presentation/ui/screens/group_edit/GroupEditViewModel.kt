@@ -32,10 +32,11 @@ class GroupEditViewModel @Inject constructor(
     override fun handleEvent(event: Event) {
         when(event) {
             is Event.OnRequestEdit -> onRequestEdit(event.groupId)
-            is Event.OnSaveGroupClick -> onSaveGroupClick(event.group)
+            is Event.OnSaveGroupClick -> onSaveGroupClick()
             is Event.OnSaveMemberClick -> onSaveMemberClick(event.userName, event.groupId)
             is Event.OnMemberSelectionChange -> onMemberSelect(event.user)
             is Event.OnMemberDeleteClick -> onMemberDeleteClick(event.userId, event.groupId)
+            is Event.OnGroupUpdated -> onGroupUpdated(event.group)
         }
     }
 
@@ -49,7 +50,8 @@ class GroupEditViewModel @Inject constructor(
         }
     }
 
-    private fun onSaveGroupClick(group: GroupUiModel) = viewModelScope.launch {
+    private fun onSaveGroupClick() = viewModelScope.launch {
+        val group = getEditingGroup() ?: return@launch
         saveGroupUseCase(group.id, group.title).collect { resource ->
             when(resource) {
                 is Resource.Loading -> setLoadingState()
@@ -84,8 +86,16 @@ class GroupEditViewModel @Inject constructor(
     private fun setEditingState(group: Group, selectedMemberName: String? = null) =
         setState {
             with(groupToGroupUiModelMapper.mapFrom(group)) {
-                State.Editing(group = this, selectedMember = this.members.firstOrNull { it.name == selectedMemberName })
+                State.Editing(
+                    group = this,
+                    selectedMember = this.members.firstOrNull { it.name == selectedMemberName }
+                )
             }
+        }
+
+    private fun setEditingState(group: GroupUiModel) =
+        setState {
+            State.Editing(group = group)
         }
 
     private fun setErrorState(groupId: String, throwable: Throwable) {
@@ -95,10 +105,14 @@ class GroupEditViewModel @Inject constructor(
         }
     }
 
+    private fun onGroupUpdated(group: GroupUiModel) = setEditingState(group)
+
     private fun onMemberSelect(user: UserUiModel?) {
-        setState { currentState ->
-            val editing = (currentState as? State.Editing) ?: return@setState currentState
-            State.Editing(editing.group, selectedMember = user)
+        val group = getEditingGroup() ?: return
+        setState {
+            State.Editing(group = group, selectedMember = user)
         }
     }
+
+    private fun getEditingGroup() = (uiState.value as? State.Editing)?.group
 }

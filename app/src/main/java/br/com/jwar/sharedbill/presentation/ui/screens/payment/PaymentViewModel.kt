@@ -5,24 +5,21 @@ import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Resource
 import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdWithCurrentMemberUseCase
+import br.com.jwar.sharedbill.domain.usecases.GetPaymentParamsUseCase
 import br.com.jwar.sharedbill.domain.usecases.SendPaymentUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
-import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
-import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
-import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.Effect
-import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.Event
-import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.SendPaymentParams
-import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.State
+import br.com.jwar.sharedbill.presentation.models.PaymentUiError
+import br.com.jwar.sharedbill.presentation.ui.generic_components.UiText
+import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
     private val sendPaymentUseCase: SendPaymentUseCase,
     private val getGroupByIdWithCurrentMemberUseCase: GetGroupByIdWithCurrentMemberUseCase,
-    private val groupUiModelMapper: GroupToGroupUiModelMapper,
-    private val userToUserUiModelMapper: UserToUserUiModelMapper
+    private val getPaymentParamsUseCase: GetPaymentParamsUseCase
 ): BaseViewModel<Event, State, Effect>() {
 
     override fun getInitialState(): State = State.Loading
@@ -30,12 +27,13 @@ class PaymentViewModel @Inject constructor(
     override fun handleEvent(event: Event) {
         when(event) {
             is Event.OnRequestGroup -> onRequestGroup(event.groupId)
-            is Event.SendPayment -> onSendPayment(event.params)
+            is Event.SendPayment -> onSendPayment()
+            is Event.OnPaymentParamsChange -> onPaymentParamsChange(event.params)
         }
     }
 
-    private fun onSendPayment(params: SendPaymentParams) = viewModelScope.launch {
-        //TODO: Handle fields validations
+    private fun onSendPayment() = viewModelScope.launch {
+        val params = getEditingPaymentParams() ?: return@launch
         sendPaymentUseCase(params).collect { resource ->
             when(resource) {
                 is Resource.Loading -> setLoadingState()
@@ -59,12 +57,7 @@ class PaymentViewModel @Inject constructor(
 
     private fun setEditingState(group: Group, user: User) =
         setState {
-            val groupUiModel = groupUiModelMapper.mapFrom(group)
-            val userUiModel = userToUserUiModelMapper.mapFrom(user)
-            val membersUiModels = groupUiModel.members
-            State.Editing(
-                SendPaymentParams(group = groupUiModel, paidBy = userUiModel, paidTo = membersUiModels)
-            )
+            State.Editing(getPaymentParamsUseCase(group, user))
         }
 
     private fun setEditingState(params: SendPaymentParams) = setState { State.Editing(params) }
@@ -72,13 +65,19 @@ class PaymentViewModel @Inject constructor(
     private fun setErrorState(throwable: Throwable) =
         setState { State.Error(throwable.message.orEmpty()) }
 
-    private fun sendErrorEffect(throwable: Throwable) =
-        sendEffect { Effect.ShowError(throwable.message.orEmpty()) }
+    private fun sendErrorEffect(uiText: UiText) =
+        sendEffect { Effect.ShowError(uiText) }
 
     private fun handlePaymentError(params: SendPaymentParams, throwable: Throwable) {
-        setEditingState(params)
-        sendErrorEffect(throwable)
+        val paymentError = PaymentUiError.mapFrom(throwable)
+        setEditingState(params.copy(error = paymentError))
+        sendErrorEffect(paymentError.message)
     }
 
     private fun sendFinishEffect() = sendEffect { Effect.Finish }
+
+    private fun onPaymentParamsChange(params: SendPaymentParams) =
+        setState { State.Editing(params) }
+
+    private fun getEditingPaymentParams() = (uiState.value as? State.Editing)?.params
 }

@@ -22,12 +22,11 @@ import br.com.jwar.sharedbill.presentation.ui.theme.verticalSpaceMedium
 fun GroupsDetails(
     group: GroupUiModel,
     onNewPaymentClick: ()-> Unit = {},
-    onManageClick: ()-> Unit = {},
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.weight(1f)) {
             item {
-                GroupInfo(group, onManageClick)
+                GroupInfo(group)
                 Spacer(modifier = Modifier.verticalSpaceMedium())
             }
             item {

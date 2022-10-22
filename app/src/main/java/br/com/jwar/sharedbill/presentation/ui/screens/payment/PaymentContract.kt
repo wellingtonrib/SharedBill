@@ -4,14 +4,17 @@ import br.com.jwar.sharedbill.presentation.base.UiEffect
 import br.com.jwar.sharedbill.presentation.base.UiEvent
 import br.com.jwar.sharedbill.presentation.base.UiState
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
+import br.com.jwar.sharedbill.presentation.ui.generic_components.UiText
 import java.util.Date
 
 class PaymentContract {
 
     sealed class Event: UiEvent {
         class OnRequestGroup(val groupId: String): Event()
-        class SendPayment(val params: SendPaymentParams) : Event()
+        class OnPaymentParamsChange(val params: SendPaymentParams) : Event()
+        object SendPayment : Event()
     }
 
     sealed class State: UiState {
@@ -22,7 +25,7 @@ class PaymentContract {
 
     sealed class Effect: UiEffect {
         object Finish: Effect()
-        class ShowError(val message: String): Effect()
+        class ShowError(val text: UiText): Effect()
     }
 
     data class SendPaymentParams(
@@ -32,5 +35,6 @@ class PaymentContract {
         val paidTo: List<UserUiModel> = emptyList(),
         val date: Date = Date(),
         val group: GroupUiModel,
+        val error: PaymentUiError? = null
     )
 }

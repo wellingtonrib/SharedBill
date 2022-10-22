@@ -1,7 +1,7 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_list
 
 import androidx.lifecycle.viewModelScope
-import br.com.jwar.sharedbill.domain.exceptions.UserNotFoundException
+import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Resource.Failure
 import br.com.jwar.sharedbill.domain.model.Resource.Loading
@@ -71,10 +71,10 @@ class GroupListViewModel @Inject constructor(
 
     private fun setLoadedState(resource: Success<List<Group>>) {
         setState {
-            if (resource.data.isEmpty()) State.Empty
-            else State.Loaded(
-                resource.data.map { groupToGroupUiModelMapper.mapFrom(it) }
-            )
+            if (resource.data.isEmpty())
+                State.Empty
+            else
+                State.Loaded(resource.data.map { groupToGroupUiModelMapper.mapFrom(it) })
         }
     }
 

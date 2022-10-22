@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -14,11 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +37,7 @@ import br.com.jwar.sharedbill.presentation.ui.theme.verticalSpaceMedium
 @Composable
 fun GroupEditForm(
     state: GroupEditContract.State.Editing,
-    onSaveGroupClick: (group: GroupUiModel) -> Unit = {},
+    onGroupUpdated: (GroupUiModel) -> Unit = {},
     onSaveMemberClick: (String) -> Unit = {},
     onMemberSelectionChange: (UserUiModel?) -> Unit = {},
     onMemberDeleteClick: (String) -> Unit = {},
@@ -52,7 +47,7 @@ fun GroupEditForm(
         modifier = Modifier.fillMaxWidthPaddingMedium(),
     ) {
         item {
-            GroupEditHeader(state.group, onSaveGroupClick)
+            GroupEditHeader(state.group, onGroupUpdated)
         }
         item {
             Spacer(modifier = Modifier.verticalSpaceMedium())
@@ -101,20 +96,8 @@ private fun GroupEditMembersHeader() {
 @Composable
 private fun GroupEditHeader(
     group: GroupUiModel,
-    onSaveGroupClick: (group: GroupUiModel) -> Unit
+    onGroupUpdated: (GroupUiModel) -> Unit,
 ) {
-    var groupEdited by remember { mutableStateOf(group) }
-
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.titleLarge,
-            text = stringResource(R.string.label_group_info)
-        )
-        Button(onClick = { onSaveGroupClick(groupEdited) }) {
-            Text(text = stringResource(R.string.label_save))
-        }
-    }
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(modifier = Modifier
             .sizeLarge()
@@ -128,16 +111,16 @@ private fun GroupEditHeader(
                 contentDescription = stringResource(R.string.description_group_image)
             )
         }
-        Spacer(modifier = Modifier.width(AppTheme.dimens.space_8))
+        Spacer(modifier = Modifier.horizontalSpaceMedium())
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
             shape = MaterialTheme.shapes.medium,
-            value = groupEdited.title,
+            value = group.title,
             label = { Text(text = stringResource(R.string.label_group_title)) },
             placeholder = { Text(text = stringResource(R.string.placeholder_group_title)) },
-            onValueChange = { groupEdited = groupEdited.copy(title = it) }
+            onValueChange = { onGroupUpdated(group.copy(title = it)) }
         )
     }
 }

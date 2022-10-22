@@ -1,6 +1,6 @@
 package br.com.jwar.sharedbill.domain.usecases
 
-import br.com.jwar.sharedbill.domain.exceptions.PaymentInvalidException
+import br.com.jwar.sharedbill.domain.exceptions.PaymentException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.model.Resource
@@ -29,12 +29,11 @@ class SendPaymentUseCaseImpl @Inject constructor(
         params: SendPaymentParams,
         group: Group
     ): Flow<Resource<Group>> = with(params) {
-        //TODO Make errors messages as resources
         val paidBy = group.findMemberByUid(paidBy.uid)
-            ?: throw PaymentInvalidException("Payer not found")
+            ?: return flowOf(Resource.Failure(PaymentException.PayerNotInGroupException))
         val paidTo = group.members.filter { member ->
             paidTo.map { it.uid }.contains(member.uid)
-        }.ifEmpty { throw PaymentInvalidException("Related members not found") }
+        }
 
         return groupRepository.sendPayment(
             payment = Payment(

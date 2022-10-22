@@ -24,6 +24,7 @@
     <string name="label_group_new">New Group</string>
     <string name="label_group_join">Join group</string>
     <string name="label_group_invite_code">Enter invite code</string>
+    <string name="label_group_edit">Edit group</string>
     <string name="label_payment_detail">Payment Detail</string>
     <string name="label_payment_new">New expense</string>
     <string name="label_payment_description">Description</string>
@@ -34,6 +35,8 @@
     <string name="label_payment_created_by">Created by</string>
     <string name="label_user_name">Enter user name</string>
     <string name="label_joined">Joined</string>
+    <string name="label_groups">Groups</string>
+    <string name="label_account">Account</string>
 
     <string name="message_welcome">Welcome %1$s</string>
     <string name="message_empty_content">Nothing here</string>
@@ -63,4 +66,18 @@
     <string name="placeholder_payment_date">dd/mm/yyyy</string>
 
     <string name="description_group_image">Group Image</string>
+    <string name="description_back">Back action</string>
+    <string name="description_close">Close action</string>
+    <string name="description_done">Done action</string>
+
+    <string name="error_generic">Something went wrong</string>
+    <string name="error_payment_user_not_in_group">You are not in this group anymore</string>
+    <string name="error_payment_payer_not_in_group">The selected payer is not in the group anymore</string>
+    <string name="error_payment_description_empty">Please provide a description</string>
+    <string name="error_payment_value_empty">Please provide a value</string>
+    <string name="error_payment_date_empty">Please provide a date</string>
+    <string name="error_payment_empty_related_members">Please select some related members</string>
+
+    <string name="empty"/>
+
 </resources>

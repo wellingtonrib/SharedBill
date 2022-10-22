@@ -9,7 +9,6 @@ import java.util.UUID
 class UserUiModel(
     val uid: String = "",
     val name: String = "",
-    val firstName: String = "",
     val inviteCode: String?
 ) : Selectable {
 
@@ -17,7 +16,6 @@ class UserUiModel(
         fun sample() = UserUiModel(
             uid = UUID.randomUUID().toString(),
             name = "User One",
-            firstName = "User",
             inviteCode = "",
         )
     }
@@ -25,7 +23,7 @@ class UserUiModel(
     @Composable
     fun getJoinInfo() =
         if (inviteCode.isNullOrBlank()) stringResource(R.string.label_joined)
-        else stringResource(R.string.message_invite_code)
+        else stringResource(R.string.message_invite_code, inviteCode)
 
     override val selectableLabel: String
         get() = name

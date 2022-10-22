@@ -3,6 +3,7 @@ package br.com.jwar.sharedbill.presentation.navigation
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
@@ -21,10 +22,13 @@ import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
+const val GROUP_ID_ARG = "groupId"
+
 @Composable
 @ExperimentalAnimationApi
 fun NavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    snackbarHostState: SnackbarHostState
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -33,7 +37,7 @@ fun NavGraph(
         exitTransition = { ExitTransition.None }
     ) {
         composable(route = Auth.route) {
-            AuthScreen(navController = navController)
+            AuthScreen(navController = navController, snackbarHostState = snackbarHostState)
         }
         composable(route = Account.route) {
             AccountScreen(navController = navController)
@@ -45,12 +49,12 @@ fun NavGraph(
             GroupDetailsScreen(navController = navController, groupId = backStackEntry.getGroupId())
         }
         composable(route = GroupEdit.route) { backStackEntry ->
-            GroupEditScreen(navController = navController, groupId = backStackEntry.getGroupId())
+            GroupEditScreen(navController = navController, snackbarHostState = snackbarHostState, groupId = backStackEntry.getGroupId())
         }
         composable(route = Payment.route) { backStackEntry ->
-            PaymentScreen(navController = navController, groupId = backStackEntry.getGroupId())
+            PaymentScreen(navController = navController, snackbarHostState = snackbarHostState, groupId = backStackEntry.getGroupId())
         }
     }
 }
 
-private fun NavBackStackEntry.getGroupId() = arguments?.getString("groupId").orEmpty()
+private fun NavBackStackEntry.getGroupId() = arguments?.getString(GROUP_ID_ARG).orEmpty()

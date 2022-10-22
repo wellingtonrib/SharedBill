@@ -11,10 +11,11 @@ class GroupEditContract {
 
     sealed class Event: UiEvent {
         class OnRequestEdit(val groupId: String) : Event()
-        class OnSaveGroupClick(val group: GroupUiModel) : Event()
         class OnSaveMemberClick(val userName: String, val groupId: String) : Event()
         class OnMemberSelectionChange(val user: UserUiModel?) : Event()
         class OnMemberDeleteClick(val userId: String, val groupId: String) : Event()
+        class OnGroupUpdated(val group: GroupUiModel) : Event()
+        object OnSaveGroupClick: Event()
     }
 
     sealed class State: UiState {
