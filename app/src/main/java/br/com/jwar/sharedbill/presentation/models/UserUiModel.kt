@@ -9,6 +9,8 @@ import java.util.UUID
 class UserUiModel(
     val uid: String = "",
     val name: String = "",
+    val email: String = "",
+    val imageUrl: String = "",
     val inviteCode: String?
 ) : Selectable {
 
@@ -16,6 +18,8 @@ class UserUiModel(
         fun sample() = UserUiModel(
             uid = UUID.randomUUID().toString(),
             name = "User One",
+            email = "user@email.com",
+            imageUrl = "",
             inviteCode = "",
         )
     }

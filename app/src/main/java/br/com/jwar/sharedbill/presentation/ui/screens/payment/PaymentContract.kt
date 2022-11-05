@@ -6,7 +6,7 @@ import br.com.jwar.sharedbill.presentation.base.UiState
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
-import br.com.jwar.sharedbill.presentation.ui.generic_components.UiText
+import br.com.jwar.sharedbill.presentation.ui.util.UiText
 import java.util.Date
 
 class PaymentContract {

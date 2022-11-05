@@ -9,7 +9,7 @@ import br.com.jwar.sharedbill.domain.usecases.GetPaymentParamsUseCase
 import br.com.jwar.sharedbill.domain.usecases.SendPaymentUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.models.PaymentUiError
-import br.com.jwar.sharedbill.presentation.ui.generic_components.UiText
+import br.com.jwar.sharedbill.presentation.ui.util.UiText
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

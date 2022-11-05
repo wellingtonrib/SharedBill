@@ -21,6 +21,7 @@ buildscript {
         accompanist_version = "0.26.0-alpha"
         hilt_version = "2.43.2"
         hilt_navigation_compose_version = "1.0.0"
+        coil_version = "2.2.2"
 
         mockk_version = "1.12.7"
         junit_version = "4.13.2"

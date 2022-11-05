@@ -9,6 +9,8 @@ class UserToUserUiModelMapperImpl @Inject constructor(): UserToUserUiModelMapper
         UserUiModel(
             uid = from.uid,
             name = from.name,
+            email = from.email,
+            imageUrl = from.photoUrl.orEmpty(),
             inviteCode = from.inviteCode
         )
 }

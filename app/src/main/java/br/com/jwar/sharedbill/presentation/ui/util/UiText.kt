@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.ui.generic_components
+package br.com.jwar.sharedbill.presentation.ui.util
 
 import android.content.Context
 import androidx.annotation.StringRes
