@@ -5,8 +5,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.presentation.models.GroupUiModel
-import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.ui.generic_components.ErrorContent
 import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.SendPaymentParams
@@ -36,12 +34,7 @@ fun PreviewPaymentContent() {
     SharedBillTheme {
         Scaffold {
             PaymentContent(
-                state = State.Editing(
-                    SendPaymentParams(
-                        group = GroupUiModel.sample(),
-                        paidBy = UserUiModel.sample()
-                    )
-                )
+                state = State.Editing(SendPaymentParams.sample())
             )
         }
     }

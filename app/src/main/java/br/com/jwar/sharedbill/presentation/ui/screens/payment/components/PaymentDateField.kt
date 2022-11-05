@@ -12,17 +12,19 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.core.format
 import br.com.jwar.sharedbill.core.parse
 import br.com.jwar.sharedbill.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract
-import java.util.Calendar
+import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
+import java.util.*
 
 @Composable
 fun PaymentDateField(
     params: PaymentContract.SendPaymentParams,
-    onPaymentParamsChange: (PaymentContract.SendPaymentParams) -> Unit
+    onPaymentParamsChange: (PaymentContract.SendPaymentParams) -> Unit = {}
 ) {
     val calendar = Calendar.getInstance()
     val datePickerDialog = DatePickerDialog(
@@ -54,4 +56,14 @@ fun PaymentDateField(
         onValueChange = {},
         isError = params.error is PaymentUiError.EmptyDateError
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewPaymentDateField() {
+    SharedBillTheme {
+        PaymentDateField(
+            PaymentContract.SendPaymentParams.sample()
+        )
+    }
 }

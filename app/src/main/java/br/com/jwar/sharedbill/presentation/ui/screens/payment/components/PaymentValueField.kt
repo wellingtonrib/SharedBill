@@ -9,14 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract
+import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 
 @Composable
 fun PaymentValueField(
     params: PaymentContract.SendPaymentParams,
-    onPaymentParamsChange: (PaymentContract.SendPaymentParams) -> Unit
+    onPaymentParamsChange: (PaymentContract.SendPaymentParams) -> Unit = {}
 ) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -30,4 +32,12 @@ fun PaymentValueField(
         ),
         isError = params.error is PaymentUiError.EmptyValueError
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewPaymentValueField() {
+    SharedBillTheme {
+        PaymentValueField(PaymentContract.SendPaymentParams.sample())
+    }
 }

@@ -33,8 +33,7 @@ fun AccountContent(
         )
         {
             when(state) {
-                is Loading ->
-                    LoadingContent()
+                is Loading -> LoadingContent()
                 is Loaded -> {
                     Text(text = stringResource(R.string.message_welcome, state.user.name))
                     SignOutButton(onSignOutClick)

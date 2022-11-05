@@ -7,10 +7,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 import br.com.jwar.sharedbill.presentation.ui.theme.horizontalSpaceSmall
-import org.w3c.dom.Text
 
 @Composable
 fun GroupBalance(group: GroupUiModel) {
@@ -30,5 +31,13 @@ fun GroupBalance(group: GroupUiModel) {
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewGroupBalance() {
+    SharedBillTheme {
+        GroupBalance(group = GroupUiModel.sample())
     }
 }

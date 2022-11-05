@@ -39,6 +39,11 @@ data class GroupUiModel(
             id = UUID.randomUUID().toString(),
             title = "Group Sample",
             membersNames = "Member One, Member Two, Member Three",
+            members = listOf(
+                UserUiModel.sample(),
+                UserUiModel.sample(),
+                UserUiModel.sample(),
+            ),
             payments = listOf(
                 PaymentUiModel.sample(),
                 PaymentUiModel.sample(),

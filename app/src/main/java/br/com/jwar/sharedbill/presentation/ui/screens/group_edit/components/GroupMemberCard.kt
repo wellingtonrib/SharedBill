@@ -1,31 +1,42 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_edit.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.DismissState
 import androidx.compose.material.DismissValue
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.rememberDismissState
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
-import br.com.jwar.sharedbill.presentation.ui.theme.paddingMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
+import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.horizontalSpaceMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.sizeMedium
 import kotlinx.coroutines.launch
 
 @Composable
 fun GroupMemberCard(
     member: UserUiModel,
-    onMemberSelect: (member: UserUiModel) -> Unit,
-    onMemberDelete: (userId: String) -> Unit
+    onMemberSelect: (member: UserUiModel) -> Unit = {},
+    onMemberDelete: (userId: String) -> Unit = {}
 ) {
     val userDeletionState = GetUserDeletionState(member, onMemberDelete)
 
@@ -34,13 +45,28 @@ fun GroupMemberCard(
         background = {}
     ) {
         Card(
-            modifier = Modifier.fillMaxWidth(),
             onClick = { onMemberSelect(member) }
         ) {
-            Column(
-                modifier = Modifier.paddingMedium()
+            Row(
+                modifier = Modifier.fillMaxWidthPaddingMedium(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = member.name)
+                Box(
+                    modifier = Modifier
+                        .sizeMedium()
+                        .clip(CircleShape)
+                        .background(AppTheme.colors.primary),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_baseline_person_24),
+                        contentDescription = stringResource(R.string.description_group_image),
+                        colorFilter = ColorFilter.tint(color = AppTheme.colors.onPrimary),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+                Spacer(modifier = Modifier.horizontalSpaceMedium())
+                Text(text = member.name, style = AppTheme.typo.titleMedium)
             }
         }
     }
@@ -90,5 +116,13 @@ private fun GetUserDeletionState(
         )
     }
     return userDeletionDismissState
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GroupMemberCard() {
+    MaterialTheme {
+        GroupMemberCard(UserUiModel.sample())
+    }
 }
 

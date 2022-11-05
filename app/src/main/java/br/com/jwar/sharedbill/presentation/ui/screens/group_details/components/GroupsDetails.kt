@@ -42,7 +42,6 @@ fun GroupsDetails(
         ) {
             item {
                 GroupTitle(group)
-                Spacer(modifier = Modifier.verticalSpaceMedium())
             }
             item {
                 GroupBalance(group)

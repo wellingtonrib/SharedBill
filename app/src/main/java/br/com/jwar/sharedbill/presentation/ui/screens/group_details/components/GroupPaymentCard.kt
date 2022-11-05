@@ -13,14 +13,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.ui.generic_components.InfoDialog
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.models.PaymentUiModel
-import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
-import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
-import br.com.jwar.sharedbill.presentation.ui.theme.horizontalSpaceMedium
-import br.com.jwar.sharedbill.presentation.ui.theme.verticalSpaceMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.*
 
 @Composable
 fun GroupPaymentCard(
@@ -65,4 +63,12 @@ private fun PaymentInfoDialog(payment: PaymentUiModel): MutableState<Boolean> {
         )
     }
     return showingPaymentInfo
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewGroupPaymentCard(){
+    SharedBillTheme {
+        GroupPaymentCard(payment = PaymentUiModel.sample(), group = GroupUiModel.sample())
+    }
 }

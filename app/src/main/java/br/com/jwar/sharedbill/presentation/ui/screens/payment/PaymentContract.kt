@@ -36,5 +36,17 @@ class PaymentContract {
         val date: Date = Date(),
         val group: GroupUiModel,
         val error: PaymentUiError? = null
-    )
+    ) {
+        companion object {
+            fun sample() = SendPaymentParams(
+                group = GroupUiModel.sample(),
+                paidBy = UserUiModel.sample(),
+                paidTo = listOf(
+                    UserUiModel.sample(),
+                    UserUiModel.sample(),
+                    UserUiModel.sample(),
+                )
+            )
+        }
+    }
 }
