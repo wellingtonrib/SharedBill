@@ -1,6 +1,10 @@
 package br.com.jwar.sharedbill.presentation.ui.theme
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -19,6 +23,10 @@ fun Modifier.paddingMedium() =
 @Composable
 fun Modifier.paddingLarge() =
     Modifier.padding(AppTheme.dimens.space_10)
+
+@Composable
+fun Modifier.verticalPaddingMedium() =
+    Modifier.padding(top = AppTheme.dimens.space_8, bottom = AppTheme.dimens.space_8)
 
 @Composable
 fun Modifier.horizontalSpaceSmall() =

@@ -13,7 +13,7 @@
     <string name="label_verify">Verify</string>
     <string name="label_date">Date</string>
     <string name="label_try_again">Try again</string>
-    <string name="label_group_balance">Group Balance</string>
+    <string name="label_group_balance">Balance</string>
     <string name="label_group_details">Group Details</string>
     <string name="label_group_title">Title</string>
     <string name="label_group_manage">Manage</string>
@@ -37,6 +37,7 @@
     <string name="label_joined">Joined</string>
     <string name="label_groups">Groups</string>
     <string name="label_account">Account</string>
+    <string name="label_group_members_count">%1$d members</string>
 
     <string name="message_welcome">Welcome %1$s</string>
     <string name="message_empty_content">Nothing here</string>

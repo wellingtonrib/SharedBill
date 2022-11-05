@@ -3,15 +3,14 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_details.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.ui.theme.horizontalSpaceSmall
+import org.w3c.dom.Text
 
 @Composable
 fun GroupBalance(group: GroupUiModel) {
@@ -20,11 +19,6 @@ fun GroupBalance(group: GroupUiModel) {
         return
     }
     Column {
-        Text(
-            text = stringResource(R.string.label_group_balance),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
-        )
         group.balance.forEach { entry ->
             Row {
                 val (member, value) = entry

@@ -1,21 +1,30 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_edit.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -42,28 +51,31 @@ fun GroupEditForm(
     onMemberSelectionChange: (UserUiModel?) -> Unit = {},
     onMemberDeleteClick: (String) -> Unit = {},
 ) {
+    val listState = rememberLazyListState()
     SelectedMemberDialog(state, onMemberSelectionChange)
-    LazyColumn(
-        modifier = Modifier.fillMaxWidthPaddingMedium(),
+    Scaffold(
+        floatingActionButton = { GroupEditFooter(listState, onSaveMemberClick) },
+        floatingActionButtonPosition = FabPosition.End,
     ) {
-        item {
-            GroupEditHeader(state.group, onGroupUpdated)
-        }
-        item {
-            Spacer(modifier = Modifier.verticalSpaceMedium())
-            GroupEditMembersHeader()
-        }
-        items(state.group.members) { member ->
-            Spacer(modifier = Modifier.verticalSpaceMedium())
-            GroupMemberCard(
-                member = member,
-                onMemberSelect = { onMemberSelectionChange(it) },
-                onMemberDelete = { onMemberDeleteClick(it) }
-            )
-        }
-        item {
-            Spacer(modifier = Modifier.verticalSpaceMedium())
-            GroupEditFooter(onSaveMemberClick)
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxWidthPaddingMedium(),
+        ) {
+            item {
+                GroupEditHeader(state.group, onGroupUpdated)
+            }
+            item {
+                Spacer(modifier = Modifier.verticalSpaceMedium())
+                GroupEditMembersHeader()
+            }
+            items(state.group.members) { member ->
+                Spacer(modifier = Modifier.verticalSpaceMedium())
+                GroupMemberCard(
+                    member = member,
+                    onMemberSelect = { onMemberSelectionChange(it) },
+                    onMemberDelete = { onMemberDeleteClick(it) }
+                )
+            }
         }
     }
 }
@@ -99,9 +111,11 @@ private fun GroupEditHeader(
     onGroupUpdated: (GroupUiModel) -> Unit,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(modifier = Modifier
-            .sizeLarge()
-            .background(AppTheme.colors.primary),
+        Box(
+            modifier = Modifier
+                .sizeLarge()
+                .background(AppTheme.colors.primary)
+                .clip(RoundedCornerShape(AppTheme.dimens.space_6)),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -114,8 +128,7 @@ private fun GroupEditHeader(
         Spacer(modifier = Modifier.horizontalSpaceMedium())
         OutlinedTextField(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
+                .fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
             value = group.title,
             label = { Text(text = stringResource(R.string.label_group_title)) },
@@ -126,7 +139,7 @@ private fun GroupEditHeader(
 }
 
 @Composable
-private fun GroupEditFooter(onSaveMemberClick: (String) -> Unit,) {
+private fun GroupEditFooter(listState: LazyListState, onSaveMemberClick: (String) -> Unit,) {
     val openGroupAddMemberDialog = remember { mutableStateOf(false) }
     if (openGroupAddMemberDialog.value) {
         InputDialog(
@@ -137,16 +150,12 @@ private fun GroupEditFooter(onSaveMemberClick: (String) -> Unit,) {
             onAction = { openGroupAddMemberDialog.value = false; onSaveMemberClick(it) }
         )
     }
-
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        Button(onClick = { openGroupAddMemberDialog.value = true }) {
-            Text(text = stringResource(R.string.label_group_add_member))
-        }
-        Spacer(modifier = Modifier.horizontalSpaceMedium())
-        Button(onClick = { }) {
-            Text(text = stringResource(R.string.label_group_invite_link))
-        }
-    }
+    ExtendedFloatingActionButton(
+        onClick = { openGroupAddMemberDialog.value = true },
+        expanded = listState.firstVisibleItemIndex == 0,
+        icon = { Icon(Icons.Filled.Add, stringResource(R.string.label_group_add_member)) },
+        text = { Text(text = stringResource(R.string.label_group_add_member)) },
+    )
 }
 
 @Preview(showBackground = true)

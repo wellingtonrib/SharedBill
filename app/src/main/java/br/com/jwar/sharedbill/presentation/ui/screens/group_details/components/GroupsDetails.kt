@@ -1,12 +1,14 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_details.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,10 +25,23 @@ fun GroupsDetails(
     group: GroupUiModel,
     onNewPaymentClick: ()-> Unit = {},
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(modifier = Modifier.weight(1f)) {
+    val listState = rememberLazyListState()
+    Scaffold(
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = { onNewPaymentClick() },
+                expanded = listState.firstVisibleItemIndex == 0,
+                icon = { Icon(Icons.Filled.Add, stringResource(R.string.label_payment_new)) },
+                text = { Text(text = stringResource(R.string.label_payment_new)) },
+            )
+        },
+        floatingActionButtonPosition = FabPosition.End,
+    ) {
+        LazyColumn(
+            state = listState
+        ) {
             item {
-                GroupInfo(group)
+                GroupTitle(group)
                 Spacer(modifier = Modifier.verticalSpaceMedium())
             }
             item {
@@ -37,17 +52,6 @@ fun GroupsDetails(
                 GroupPaymentCard(payment, group)
             }
         }
-        NewExpenseButton(onNewPaymentClick)
-    }
-}
-
-@Composable
-private fun NewExpenseButton(onNewPaymentClick: () -> Unit) {
-    Button(
-        modifier = Modifier.fillMaxWidth(),
-        onClick = onNewPaymentClick,
-    ) {
-        Text(text = stringResource(R.string.label_payment_new))
     }
 }
 
