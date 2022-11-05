@@ -1,13 +1,15 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.account
 
 import androidx.lifecycle.viewModelScope
-import br.com.jwar.sharedbill.domain.exceptions.UserNotFoundException
+import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Resource.Failure
 import br.com.jwar.sharedbill.domain.model.Resource.Loading
 import br.com.jwar.sharedbill.domain.model.Resource.Success
+import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.domain.usecases.GetUserUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignOutUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
+import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Effect
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.State
@@ -19,6 +21,7 @@ import kotlinx.coroutines.launch
 class AccountViewModel @Inject constructor(
     private val signOutUseCase: SignOutUseCase,
     private val getUserUseCase: GetUserUseCase,
+    private val userToUserUiModelMapper: UserToUserUiModelMapper
 ): BaseViewModel<Event, State, Effect>() {
 
     override fun getInitialState() = State.Loading
@@ -33,28 +36,40 @@ class AccountViewModel @Inject constructor(
     private fun onRequestUser() = viewModelScope.launch {
         getUserUseCase().collect { resource ->
             when(resource) {
-                is Loading -> setState { State.Loading }
-                is Success -> setState { State.Loaded(resource.data) }
+                is Loading -> setLoadingState()
+                is Success -> setLoadedState(resource)
                 is Failure -> handleException(resource.throwable)
             }
         }
+    }
+
+    private fun setLoadedState(resource: Success<User>) {
+        setState { State.Loaded(userToUserUiModelMapper.mapFrom(resource.data)) }
     }
 
     private fun onRequestSignOut() = viewModelScope.launch {
         signOutUseCase().collect { resource ->
             when(resource) {
-                is Loading -> setState { State.Loading }
-                is Success -> sendEffect { Effect.GoToAuth }
+                is Loading -> setLoadingState()
+                is Success -> sendGoAuthEffect()
                 is Failure -> handleException(resource.throwable)
             }
         }
     }
 
+    private fun setLoadingState() = setState { State.Loading }
+
+    private fun sendGoAuthEffect() =
+        sendEffect { Effect.GoToAuth }
+
     private fun handleException(throwable: Throwable) {
         if (throwable is UserNotFoundException) {
-            sendEffect { Effect.GoToAuth }
+            sendGoAuthEffect()
         } else {
-            setState { State.Error(throwable.message.orEmpty()) }
+            setErrorState(throwable)
         }
     }
+
+    private fun setErrorState(throwable: Throwable) =
+        setState { State.Error(throwable.message.orEmpty()) }
 }

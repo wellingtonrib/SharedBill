@@ -1,47 +1,22 @@
 package br.com.jwar.sharedbill.presentation.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
 import android.app.Activity
 import android.os.Build
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.SideEffect
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
-)
 
 @Composable
 fun SharedBillTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -52,6 +27,11 @@ fun SharedBillTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+
+    val configuration = LocalConfiguration.current
+    val dimens = if (configuration.screenWidthDp <= 360) SmallDimens else DefaultDimens
+    val typography = if (configuration.screenWidthDp <= 360) SmallTypography else DefaultTypography
+
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -61,9 +41,25 @@ fun SharedBillTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    ProvideDimens(dimens = dimens) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = typography,
+            content = content,
+        )
+    }
+}
+
+object AppTheme {
+    val colors: ColorScheme
+        @Composable
+        get() = LocalAppColors.current
+
+    val typo: Typography
+        @Composable
+        get() = LocalAppTypo.current
+
+    val dimens: Dimensions
+        @Composable
+        get() = LocalAppDimens.current
 }

@@ -1,147 +1,63 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_edit.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import br.com.jwar.sharedbill.R
-import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.User
-import br.com.jwar.sharedbill.presentation.ui.generic_components.InfoDialog
-import br.com.jwar.sharedbill.presentation.ui.generic_components.InputDialog
-import br.com.jwar.sharedbill.presentation.ui.generic_components.VerticalSpacerMedium
+import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.sharedbill.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract
+import br.com.jwar.sharedbill.presentation.ui.theme.*
 
 @Composable
 fun GroupEditForm(
     state: GroupEditContract.State.Editing,
-    onSaveGroupClick: (group: Group) -> Unit,
-    onSaveMemberClick: (String) -> Unit,
-    onMemberSelectionChange: (User?) -> Unit,
-    onMemberDeleteClick: (String) -> Unit,
+    onGroupUpdated: (GroupUiModel) -> Unit = {},
+    onSaveMemberClick: (String) -> Unit = {},
+    onMemberSelectionChange: (UserUiModel?) -> Unit = {},
+    onMemberDeleteClick: (String) -> Unit = {},
 ) {
+    val listState = rememberLazyListState()
     SelectedMemberDialog(state, onMemberSelectionChange)
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+    Scaffold(
+        floatingActionButton = { GroupEditFooter(listState, onSaveMemberClick) },
+        floatingActionButtonPosition = FabPosition.End,
     ) {
-        item {
-            GroupEditHeader(state.group, onSaveGroupClick)
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxWidthPaddingMedium(),
+        ) {
+            item {
+                GroupEditHeader(state.group, onGroupUpdated)
+                Spacer(modifier = Modifier.verticalSpaceMedium())
+            }
+            item {
+                GroupEditMembersHeader()
+            }
+            items(state.group.members) { member ->
+                Spacer(modifier = Modifier.verticalSpaceMedium())
+                GroupMemberCard(
+                    member = member,
+                    onMemberSelect = { onMemberSelectionChange(it) },
+                    onMemberDelete = { onMemberDeleteClick(it) }
+                )
+            }
         }
-        item {
-            VerticalSpacerMedium()
-            GroupEditMembersHeader()
-        }
-        items(state.group.members) { member ->
-            GroupMemberCard(
-                member = member,
-                onMemberSelect = { onMemberSelectionChange(it) },
-                onMemberDelete = { onMemberDeleteClick(it) }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewGroupEditForm() {
+    MaterialTheme {
+        GroupEditForm(
+            state = GroupEditContract.State.Editing(
+                group = GroupUiModel.sample()
             )
-        }
-        item {
-            VerticalSpacerMedium()
-            GroupEditFooter(onSaveMemberClick)
-        }
-    }
-}
-
-@Composable
-private fun SelectedMemberDialog(
-    state: GroupEditContract.State.Editing,
-    onMemberSelectionChange: (User?) -> Unit
-) {
-    state.selectedMember?.let { user ->
-        InfoDialog(
-            image = R.drawable.ic_baseline_account_circle_24,
-            title = user.name,
-            message = user.joinInfo,
-            action = "Ok",
-            onDismiss = { onMemberSelectionChange(null) },
-            onAction = { onMemberSelectionChange(null) }
         )
-    }
-}
-
-@Composable
-private fun GroupEditMembersHeader() {
-    Text(
-        style = MaterialTheme.typography.titleMedium,
-        text = "Group Members"
-    )
-}
-
-@Composable
-private fun GroupEditHeader(
-    group: Group,
-    onSaveGroupClick: (group: Group) -> Unit
-) {
-    var groupEdited by remember { mutableStateOf(group) }
-
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.titleLarge,
-            text = "Group Info"
-        )
-        Button(onClick = { onSaveGroupClick(groupEdited) }) {
-            Text(text = "Save")
-        }
-    }
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Image(
-            modifier = Modifier
-                .width(80.dp)
-                .height(80.dp)
-                .padding(12.dp),
-            painter = painterResource(id = R.drawable.ic_baseline_groups_24),
-            contentDescription = "Group Image"
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            shape = RoundedCornerShape(16.dp),
-            value = groupEdited.title,
-            label = { Text(text = "Group Name") },
-            placeholder = { Text(text = "Ex: Trip") },
-            onValueChange = { groupEdited = groupEdited.copy(title = it) }
-        )
-    }
-}
-
-@Composable
-private fun GroupEditFooter(onSaveMemberClick: (String) -> Unit,) {
-    val openGroupAddMemberDialog = remember { mutableStateOf(false) }
-    if (openGroupAddMemberDialog.value) {
-        InputDialog(
-            label = "Enter user name",
-            placeholder = "Ex. Alex",
-            action = "Save",
-            onDismiss = { openGroupAddMemberDialog.value = false },
-            onAction = { openGroupAddMemberDialog.value = false; onSaveMemberClick(it) }
-        )
-    }
-
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        Button(onClick = { openGroupAddMemberDialog.value = true }) {
-            Text(text = "Add Member")
-        }
-        Spacer(modifier = Modifier.width(16.dp))
-        Button(onClick = { }) {
-            Text(text = "Invite Link")
-        }
     }
 }

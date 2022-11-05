@@ -1,6 +1,6 @@
 package br.com.jwar.sharedbill.domain.usecases
 
-import br.com.jwar.sharedbill.domain.exceptions.UserNotFoundException
+import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Resource
 import br.com.jwar.sharedbill.domain.model.User
@@ -38,5 +38,5 @@ class GetGroupByIdWithCurrentMemberUseCaseImpl @Inject constructor(
     private fun processSuccessResources(group: Group, user: User) =
         group.findMemberByFirebaseId(user.firebaseUserId)?.let { currentMember ->
             Resource.Success(Pair(group, currentMember))
-        }?: Resource.Failure(UserNotFoundException())
+        }?: Resource.Failure(UserNotFoundException)
 }

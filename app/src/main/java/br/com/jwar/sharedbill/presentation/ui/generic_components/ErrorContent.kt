@@ -12,19 +12,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 
 @Composable
 fun ErrorContent(
-    message: String = "An error occurred",
-    action: () -> Unit = {}
+    message: String = stringResource(id = R.string.message_error_content),
+    action: String = stringResource(id = R.string.label_try_again),
+    onAction: () -> Unit = {}
 ) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = message)
-            Button(onClick = { action() }) {
-                Text(text = "Try Again")
+            Button(onClick = { onAction() }) {
+                Text(text = action)
             }
         }
     }

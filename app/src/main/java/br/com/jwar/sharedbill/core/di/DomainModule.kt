@@ -4,6 +4,8 @@ import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
 import br.com.jwar.sharedbill.domain.services.AuthService
 import br.com.jwar.sharedbill.domain.usecases.*
+import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
+import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -98,4 +100,11 @@ class DomainModule {
         userRepository: UserRepository,
         groupRepository: GroupRepository
     ): GetGroupByIdWithCurrentMemberUseCase = GetGroupByIdWithCurrentMemberUseCaseImpl(userRepository, groupRepository)
+
+    @Provides
+    @Singleton
+    fun providesGetPaymentParamsUseCase(
+        userToUserUiModelMapper: UserToUserUiModelMapper,
+        groupToGroupUiModelMapper: GroupToGroupUiModelMapper
+    ): GetPaymentParamsUseCase = GetPaymentParamsUseCaseImpl(groupToGroupUiModelMapper, userToUserUiModelMapper)
 }

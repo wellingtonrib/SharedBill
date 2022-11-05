@@ -5,5 +5,5 @@ import br.com.jwar.sharedbill.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface SaveGroupUseCase {
-    suspend operator fun invoke(group: Group): Flow<Resource<Group>>
+    suspend operator fun invoke(groupId: String, title: String): Flow<Resource<Group>>
 }

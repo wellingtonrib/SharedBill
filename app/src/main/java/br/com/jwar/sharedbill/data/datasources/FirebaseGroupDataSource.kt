@@ -4,10 +4,10 @@ import br.com.jwar.sharedbill.core.ZERO
 import br.com.jwar.sharedbill.core.orZero
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
 import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
-import br.com.jwar.sharedbill.domain.exceptions.GroupBalanceException
-import br.com.jwar.sharedbill.domain.exceptions.GroupNotFoundException
-import br.com.jwar.sharedbill.domain.exceptions.PaymentInvalidException
-import br.com.jwar.sharedbill.domain.exceptions.UserNotFoundException
+import br.com.jwar.sharedbill.domain.exceptions.GroupException.GroupNotFoundException
+import br.com.jwar.sharedbill.domain.exceptions.GroupException.RemoveMemberWithNonZeroBalanceException
+import br.com.jwar.sharedbill.domain.exceptions.PaymentException
+import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.model.User
@@ -16,12 +16,12 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import java.math.RoundingMode
+import java.util.UUID
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.*
 
 class FirebaseGroupDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
@@ -48,7 +48,7 @@ class FirebaseGroupDataSource @Inject constructor(
                 .get()
                 .await()
                 .documents
-                .firstOrNull()?.toObject(Group::class.java) ?: throw GroupNotFoundException()
+                .firstOrNull()?.toObject(Group::class.java) ?: throw GroupNotFoundException
         }
     }
 
@@ -78,13 +78,13 @@ class FirebaseGroupDataSource @Inject constructor(
         }
     }
 
-    override suspend fun saveGroup(group: Group): Group {
+    override suspend fun saveGroup(groupId: String, title: String): Group {
         return withContext(ioDispatcher) {
-            val groupDoc = firestore.document("$GROUPS_REF/${group.id}")
+            val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
             groupDoc.update(mapOf(
-                GROUP_TITLE_FIELD to group.title,
+                GROUP_TITLE_FIELD to title,
             ))
-            return@withContext getGroupById(group.id)
+            return@withContext getGroupById(groupId)
         }
     }
 
@@ -106,11 +106,11 @@ class FirebaseGroupDataSource @Inject constructor(
                 .get()
                 .await()
                 .documents
-                .firstOrNull()?.toObject(Group::class.java) ?: throw GroupNotFoundException()
-            val user = group.members.firstOrNull { it.uid == userId } ?: throw UserNotFoundException()
+                .firstOrNull()?.toObject(Group::class.java) ?: throw GroupNotFoundException
+            val user = group.members.firstOrNull { it.uid == userId } ?: throw UserNotFoundException
 
             if (group.balance[userId].orZero() != ZERO)
-                throw GroupBalanceException("User still have balance, please settle up him first")
+                throw RemoveMemberWithNonZeroBalanceException
 
             val groupDoc = firestore.document("$GROUPS_REF/${group.id}")
             groupDoc.update(mapOf(
@@ -128,9 +128,9 @@ class FirebaseGroupDataSource @Inject constructor(
                 .get()
                 .await()
                 .documents
-                .firstOrNull()?.toObject(Group::class.java) ?: throw GroupNotFoundException()
+                .firstOrNull()?.toObject(Group::class.java) ?: throw GroupNotFoundException
 
-            val invitedUser = group.members.firstOrNull { it.inviteCode == code } ?: throw UserNotFoundException()
+            val invitedUser = group.members.firstOrNull { it.inviteCode == code } ?: throw UserNotFoundException
             val firebaseUser = getCurrentUser()
             val joinedUser = invitedUser.copy(
                 firebaseUserId = firebaseUser.uid,
@@ -149,15 +149,18 @@ class FirebaseGroupDataSource @Inject constructor(
         }
     }
 
-    override suspend fun sendPayment(payment: Payment, group: Group): Group {
+    override suspend fun sendPayment(payment: Payment, groupId: String): Group {
         return withContext(ioDispatcher) {
-            if (payment.description.isEmpty()) throw PaymentInvalidException("Empty description")
-            if (payment.value.isEmpty()) throw PaymentInvalidException("Empty value")
+            if (payment.description.isEmpty()) throw PaymentException.EmptyDescriptionException
+            if (payment.value.isEmpty()) throw PaymentException.EmptyValueException
+            if (payment.paidTo.isEmpty()) throw PaymentException.EmptyRelatedMembersException
 
+            val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
+            val group = groupDoc.get().await().toObject(Group::class.java)
+                ?: throw GroupNotFoundException
             val createdBy = group.findMemberByFirebaseId(getCurrentUser().uid)
-                ?: throw PaymentInvalidException("Current user not found in group")
+                ?: throw PaymentException.CurrentUserNotInGroupException
 
-            val groupDoc = firestore.document("$GROUPS_REF/${group.id}")
             val total = payment.value.toBigDecimal().orZero().setScale(2, RoundingMode.CEILING)
             val shared = total.div(payment.paidTo.size.toBigDecimal()).setScale(2, RoundingMode.CEILING)
 
@@ -172,11 +175,11 @@ class FirebaseGroupDataSource @Inject constructor(
                 GROUP_PAYMENTS_FIELD to FieldValue.arrayUnion(payment.copy(createdBy = createdBy)),
                 GROUP_BALANCE_FIELD to balance
             ))
-            return@withContext getGroupById(group.id)
+            return@withContext getGroupById(groupId)
         }
     }
 
-    private fun getCurrentUser() = firebaseAuth.currentUser ?: throw UserNotFoundException()
+    private fun getCurrentUser() = firebaseAuth.currentUser ?: throw UserNotFoundException
 
     private fun getUserGroupsQuery(): Query {
         val firebaseUser = getCurrentUser()

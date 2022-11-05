@@ -1,22 +1,30 @@
 package br.com.jwar.sharedbill.presentation.ui.generic_components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
+import br.com.jwar.sharedbill.presentation.ui.theme.paddingMedium
 
 @Composable
 fun InputDialog(
     label: String = "",
     placeholder: String = "",
-    action: String = "Save",
+    action: String = stringResource(id = R.string.label_save),
     onDismiss: () -> Unit,
     onAction: (string: String) -> Unit
 ) {
@@ -44,15 +52,14 @@ private fun InputDialogContent(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.medium,
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.paddingMedium()
         ) {
             OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.medium,
                 value = input,
                 label = { Text(text = label) },
                 placeholder = { Text(text = placeholder) },
@@ -67,24 +74,16 @@ private fun InputDialogContent(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewInputDialogContent() {
     SharedBillTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(20.dp),
-            contentAlignment = Alignment.Center,
+        InputDialogContent(
+            label = "Label",
+            placeholder = "Placeholder",
+            action = "Action"
         ) {
-            InputDialogContent(
-                label = "Label",
-                placeholder = "Placeholder",
-                action = "Action"
-            ) {
 
-            }
         }
     }
 }

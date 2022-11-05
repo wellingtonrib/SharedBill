@@ -8,7 +8,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.jwar.sharedbill.presentation.navigation.AppScreen
@@ -20,14 +19,13 @@ import com.google.android.gms.auth.api.identity.BeginSignInResult
 @Composable
 fun AuthScreen(
     navController: NavController,
+    snackbarHostState: SnackbarHostState,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
     val state = viewModel.uiState.collectAsState().value
-    val snackHostState = remember { SnackbarHostState() }
 
     AuthContent(
         state = state,
-        snackHostState = snackHostState,
         onSignInClick = { viewModel.emitEvent { Event.OnRequestSignIn } }
     )
 
@@ -61,7 +59,7 @@ fun AuthScreen(
                     launchSignInResult(effect.signInResult)
                 }
                 is Effect.ShowError -> {
-                    snackHostState.showSnackbar(effect.message)
+                    snackbarHostState.showSnackbar(effect.message)
                 }
             }
         }

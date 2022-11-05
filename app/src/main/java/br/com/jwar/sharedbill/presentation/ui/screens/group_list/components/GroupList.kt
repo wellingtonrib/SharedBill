@@ -1,41 +1,45 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_list.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import br.com.jwar.sharedbill.domain.model.Group
+import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.sharedbill.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
+import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
+import br.com.jwar.sharedbill.presentation.ui.theme.verticalPaddingMedium
 
 @Composable
 fun GroupList(
-    groups: List<Group>,
-    onGroupClick: (group: Group) -> Unit,
+    groups: List<GroupUiModel>,
+    onGroupClick: (groupId: String) -> Unit = {},
 ) {
-    LazyColumn(content = {
-        items(groups) { group ->
-            GroupsListItem(group, onGroupClick)
+    LazyColumn(
+        modifier = Modifier.verticalPaddingMedium(),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
+        content = {
+            items(groups) { group ->
+                GroupsListItem(group, onGroupClick)
+            }
         }
-    })
+    )
 }
 
+@Preview
 @Composable
-fun GroupsListItem(group: Group, onGroupClick: (group: Group) -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        onClick = { onGroupClick(group) }
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = group.title)
+fun PreviewGroupList() {
+    SharedBillTheme {
+        Scaffold {
+            GroupList(
+                listOf(
+                    GroupUiModel.sample(),
+                    GroupUiModel.sample(),
+                    GroupUiModel.sample(),
+                )
+            )
         }
     }
 }

@@ -1,26 +1,36 @@
 package br.com.jwar.sharedbill.presentation.navigation
 
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import br.com.jwar.sharedbill.R
+
+enum class AppBottomBarItem(val title: Int, val icon: Int, val route: String) {
+    Groups(R.string.label_groups, R.drawable.ic_baseline_groups_24, GROUP_LIST_SCREEN),
+    Account(R.string.label_account, R.drawable.ic_baseline_account_circle_24, ACCOUNT_SCREEN)
+}
 
 @Composable
-fun BottomNav(navController: NavController) {
-    val navItems = BottomNavItem.values()
+fun AppBottomBar(navController: NavController) {
+    val bottomBarItems = AppBottomBarItem.values()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val showBottomBar = currentRoute in navItems.map { it.route }
+    val showBottomBar = currentRoute in bottomBarItems.map { it.route }
 
     if (!showBottomBar) return
 
     NavigationBar {
-        navItems.forEach { item ->
+        bottomBarItems.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
-                label = { Text(text = item.title) },
+                icon = { Icon(painterResource(id = item.icon), contentDescription = stringResource(id = item.title)) },
+                label = { Text(text = stringResource(id = item.title)) },
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
