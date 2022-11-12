@@ -66,11 +66,12 @@
     <string name="placeholder_payment_value">$0.00</string>
     <string name="placeholder_payment_date">dd/mm/yyyy</string>
 
-    <string name="description_group_image">Group Image</string>
+    <string name="description_group_image">Group image</string>
     <string name="description_back">Back action</string>
     <string name="description_close">Close action</string>
     <string name="description_done">Done action</string>
     <string name="description_user_image">User image</string>
+    <string name="description_delete">Delete button</string>
 
     <string name="error_generic">Something went wrong</string>
     <string name="error_payment_user_not_in_group">You are not in this group anymore</string>

@@ -65,7 +65,7 @@ class GroupEditViewModel @Inject constructor(
         groupAddMemberUseCase(userName, groupId).collect { resource ->
             when(resource) {
                 is Resource.Loading -> setLoadingState()
-                is Resource.Success -> setEditingState(resource.data, userName)
+                is Resource.Success -> setEditingState(resource.data)
                 is Resource.Failure -> setErrorState(groupId, resource.throwable)
             }
         }
@@ -83,20 +83,10 @@ class GroupEditViewModel @Inject constructor(
 
     private fun setLoadingState() = setState { State.Loading }
 
-    private fun setEditingState(group: Group, selectedMemberName: String? = null) =
-        setState {
-            with(groupToGroupUiModelMapper.mapFrom(group)) {
-                State.Editing(
-                    group = this,
-                    selectedMember = this.members.firstOrNull { it.name == selectedMemberName }
-                )
-            }
-        }
+    private fun setEditingState(group: Group) =
+        setState { State.Editing(group = groupToGroupUiModelMapper.mapFrom(group)) }
 
-    private fun setEditingState(group: GroupUiModel) =
-        setState {
-            State.Editing(group = group)
-        }
+    private fun setEditingState(group: GroupUiModel) = setState { State.Editing(group = group) }
 
     private fun setErrorState(groupId: String, throwable: Throwable) {
         sendEffect {
@@ -109,10 +99,10 @@ class GroupEditViewModel @Inject constructor(
 
     private fun onMemberSelect(user: UserUiModel?) {
         val group = getEditingGroup() ?: return
-        setState {
-            State.Editing(group = group, selectedMember = user)
-        }
+        setState { State.Editing(group = group, selectedMember = user) }
     }
 
-    private fun getEditingGroup() = (uiState.value as? State.Editing)?.group
+    private fun getEditingState() = (uiState.value as? State.Editing)
+
+    private fun getEditingGroup() = getEditingState()?.group
 }

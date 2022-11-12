@@ -5,12 +5,22 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.DismissDirection
 import androidx.compose.material.DismissState
 import androidx.compose.material.DismissValue
+import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.SwipeToDismiss
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.rememberDismissState
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +39,7 @@ import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
 import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
 import br.com.jwar.sharedbill.presentation.ui.theme.horizontalSpaceMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.paddingMedium
 import br.com.jwar.sharedbill.presentation.ui.theme.sizeMedium
 import kotlinx.coroutines.launch
 
@@ -42,7 +53,22 @@ fun GroupMemberCard(
 
     SwipeToDismiss(
         state = userDeletionState,
-        background = {}
+        directions = setOf(DismissDirection.EndToStart),
+        dismissThresholds = { FractionalThreshold(0.2f) },
+        background = {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(AppTheme.colors.primary)
+                    .paddingMedium(),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                Icon(
+                    Icons.Default.Delete,
+                    contentDescription = stringResource(id = R.string.description_delete)
+                )
+            }
+        }
     ) {
         Card(
             onClick = { onMemberSelect(member) }
@@ -60,7 +86,7 @@ fun GroupMemberCard(
                 ) {
                     Image(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_baseline_person_24),
-                        contentDescription = stringResource(R.string.description_group_image),
+                        contentDescription = stringResource(R.string.description_user_image),
                         colorFilter = ColorFilter.tint(color = AppTheme.colors.onPrimary),
                         contentScale = ContentScale.Crop
                     )
