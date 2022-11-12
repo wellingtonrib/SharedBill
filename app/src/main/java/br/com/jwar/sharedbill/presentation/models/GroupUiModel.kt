@@ -6,7 +6,7 @@ import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.core.toCurrency
 import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
 import java.math.BigDecimal
-import java.util.*
+import java.util.UUID
 
 data class GroupUiModel(
     val id: String = "",

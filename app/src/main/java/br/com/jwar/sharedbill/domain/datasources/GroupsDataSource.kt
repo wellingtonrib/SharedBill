@@ -2,9 +2,12 @@ package br.com.jwar.sharedbill.domain.datasources
 
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
+import br.com.jwar.sharedbill.domain.model.Resource
 import br.com.jwar.sharedbill.domain.model.User
+import kotlinx.coroutines.flow.Flow
 
 interface GroupsDataSource {
+    fun getGroupByIdFlow(groupId: String): Flow<Resource<Group>>
     suspend fun getGroupById(groupId: String): Group
     suspend fun getAllGroups(): List<Group>
     suspend fun createGroup(group: Group): Group

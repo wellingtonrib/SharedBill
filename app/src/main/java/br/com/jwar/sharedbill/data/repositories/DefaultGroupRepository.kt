@@ -34,6 +34,9 @@ class DefaultGroupRepository @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
+    override suspend fun getGroupByIdFlow(groupId: String, refresh: Boolean) =
+        groupsDataSource.getGroupByIdFlow(groupId).flowOn(ioDispatcher)
+
     override suspend fun getAllGroups(refresh: Boolean) = flow {
         emit(Loading)
         try {

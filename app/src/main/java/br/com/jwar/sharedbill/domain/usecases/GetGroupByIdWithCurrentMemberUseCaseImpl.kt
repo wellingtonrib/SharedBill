@@ -6,10 +6,10 @@ import br.com.jwar.sharedbill.domain.model.Resource
 import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 
 class GetGroupByIdWithCurrentMemberUseCaseImpl @Inject constructor(
     private val userRepository: UserRepository,
@@ -19,7 +19,7 @@ class GetGroupByIdWithCurrentMemberUseCaseImpl @Inject constructor(
         groupId: String,
         refresh: Boolean
     ): Flow<Resource<Pair<Group, User>>> {
-        return userRepository.getUser().zip(groupRepository.getGroupById(groupId, refresh)) {
+        return userRepository.getUser().combine(groupRepository.getGroupById(groupId, refresh)) {
             userResource, groupResource -> Pair(userResource, groupResource)
         }.map {
             val (userResource, groupResource) = it
