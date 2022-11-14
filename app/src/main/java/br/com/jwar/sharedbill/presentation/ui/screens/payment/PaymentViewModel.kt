@@ -44,7 +44,7 @@ class PaymentViewModel @Inject constructor(
     }
 
     private fun onRequestGroup(groupId: String) = viewModelScope.launch {
-        getGroupByIdWithCurrentMemberUseCase(groupId, true).collect { resource ->
+        getGroupByIdWithCurrentMemberUseCase(groupId).collect { resource ->
             when(resource) {
                 is Resource.Loading -> setLoadingState()
                 is Resource.Success -> setEditingState(resource.data.first, resource.data.second)

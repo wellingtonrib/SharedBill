@@ -25,15 +25,18 @@ class GetGroupByIdWithCurrentMemberUseCaseImpl @Inject constructor(
             val (userResource, groupResource) = it
             when {
                 userResource is Resource.Failure ->
-                    Resource.Failure(userResource.throwable)
+                    processFailureResources(userResource.throwable)
                 groupResource is Resource.Failure ->
-                    Resource.Failure(groupResource.throwable)
+                    processFailureResources(groupResource.throwable)
                 userResource is Resource.Success && groupResource is Resource.Success ->
                     processSuccessResources(groupResource.data, userResource.data)
                 else -> Resource.Loading
             }
         }
     }
+
+    private fun processFailureResources(throwable: Throwable) =
+        Resource.Failure(throwable)
 
     private fun processSuccessResources(group: Group, user: User) =
         group.findMemberByFirebaseId(user.firebaseUserId)?.let { currentMember ->

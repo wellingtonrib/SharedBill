@@ -13,5 +13,6 @@ data class Payment(
     val paidBy: User = User(),
     val paidTo: List<User> = emptyList(),
     val createdAt: Timestamp = Timestamp(Date()),
-    val createdBy: User = User()
+    val createdBy: User = User(),
+    val processed: Boolean = false
 ) : Parcelable

@@ -6,6 +6,6 @@ import br.com.jwar.sharedbill.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface GetGroupByIdWithCurrentMemberUseCase {
-    suspend operator fun invoke(groupId: String, refresh: Boolean = false):
+    suspend operator fun invoke(groupId: String, refresh: Boolean = true):
             Flow<Resource<Pair<Group, User>>>
 }

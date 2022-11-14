@@ -1,6 +1,7 @@
 package br.com.jwar.sharedbill.data.datasources
 
 import br.com.jwar.sharedbill.core.ZERO
+
 import br.com.jwar.sharedbill.core.orZero
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
 import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
@@ -13,10 +14,7 @@ import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.model.Resource
 import br.com.jwar.sharedbill.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.snapshots
 import java.math.RoundingMode
 import java.util.UUID
@@ -55,15 +53,18 @@ class FirebaseGroupDataSource @Inject constructor(
                 .get()
                 .await()
                 .documents
-                .firstOrNull()?.toObject(Group::class.java) ?: throw GroupNotFoundException
+                .map { getGroupFromSnapshot(it) }
+                .first()
         }
     }
 
     override fun getGroupByIdFlow(groupId: String): Flow<Resource<Group>> {
         return getUserGroupsQuery()
             .whereEqualTo(GROUP_ID_FIELD, groupId)
-            .snapshots().map { snapshot -> snapshot.toObjects(Group::class.java) }
-            .map { Resource.Success(it.first()) }
+            .snapshots()
+            .map { snapshot ->
+                Resource.Success(getGroupFromSnapshot(snapshot.documents.firstOrNull()))
+            }
     }
 
     override suspend fun getAllGroups(): List<Group> {
@@ -170,37 +171,38 @@ class FirebaseGroupDataSource @Inject constructor(
             if (payment.paidTo.isEmpty()) throw PaymentException.EmptyRelatedMembersException
 
             val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
-            val group = groupDoc.get().await().toObject(Group::class.java)
-                ?: throw GroupNotFoundException
-            val createdBy = group.findMemberByFirebaseId(getCurrentUser().uid)
-                ?: throw PaymentException.CurrentUserNotInGroupException
-            val paymentId = UUID.randomUUID().toString()
+            val groupSnapshot = groupDoc.get().await()
+            val group = groupSnapshot.toObject(Group::class.java) ?: throw GroupNotFoundException
             val unprocessedPaymentDoc = firestore.document("$UNPROCESSED_PAYMENTS_REF/${groupId}")
 
-            payment.copy(id = paymentId, createdBy = createdBy).let {
-                val unprocessedPaymentData = mapOf(PAYMENTS_IDS_FIELD to FieldValue.arrayUnion(it.id))
-                unprocessedPaymentDoc.set(unprocessedPaymentData, SetOptions.merge())
-                val groupData = mapOf(GROUP_PAYMENTS_FIELD to FieldValue.arrayUnion(it))
-                groupDoc.update(groupData)
-            }
+            val unprocessedPaymentData = mapOf(PAYMENTS_IDS_FIELD to FieldValue.arrayUnion(payment.id))
+            unprocessedPaymentDoc.set(unprocessedPaymentData, SetOptions.merge())
+
+            val groupData = mapOf(GROUP_PAYMENTS_FIELD to FieldValue.arrayUnion(payment))
+            groupDoc.update(groupData)
+
             return@withContext group
         }
     }
 
-    private fun getUpdatedBalance(
-        payment: Payment,
-        group: Group
-    ): MutableMap<String, String> {
-        val total = payment.value.toBigDecimal().orZero().setScale(2, RoundingMode.CEILING)
-        val shared = total.div(payment.paidTo.size.toBigDecimal()).setScale(2, RoundingMode.CEILING)
-        val balance = group.balance.toMutableMap()
-        payment.paidTo.forEach { member ->
-            balance[member.uid] =
-                balance[member.uid]?.toBigDecimal().orZero().plus(shared).toString()
+    private fun getGroupFromSnapshot(snapshot: DocumentSnapshot?): Group {
+        val group = snapshot?.toObject(Group::class.java) ?: throw GroupNotFoundException
+        return group.withUpdatedBalanceOffline()
+    }
+
+    private fun Group.withUpdatedBalanceOffline(): Group {
+        val balance = this.balance.toMutableMap()
+        this.payments.filter { it.processed.not() }.forEach { payment ->
+            val total = payment.value.toBigDecimal().orZero().setScale(2, RoundingMode.CEILING)
+            val shared = total.div(payment.paidTo.size.toBigDecimal()).setScale(2, RoundingMode.CEILING)
+
+            payment.paidTo.forEach { member ->
+                balance[member.uid] =
+                    balance[member.uid]?.toBigDecimal().orZero().plus(shared).toString()
+            }
+            balance[payment.paidBy.uid] = balance[payment.paidBy.uid]?.toBigDecimal()?.minus(total).toString()
         }
-        balance[payment.paidBy.uid] =
-            balance[payment.paidBy.uid]?.toBigDecimal()?.minus(total).toString()
-        return balance
+        return this.copy(balance = balance)
     }
 
     private fun getCurrentUser() = firebaseAuth.currentUser ?: throw UserNotFoundException
