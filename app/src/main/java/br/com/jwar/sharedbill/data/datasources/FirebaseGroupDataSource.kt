@@ -42,8 +42,7 @@ class FirebaseGroupDataSource @Inject constructor(
         const val GROUP_INVITES_FIELD = "invites"
         const val GROUP_PAYMENTS_FIELD = "payments"
         const val UNPROCESSED_PAYMENTS_REF = "unprocessedPayments"
-        const val PAYMENTS_IDS_FIELD = "paymentsIds"
-        const val GROUP_BALANCE_FIELD = "balance"
+        const val PAYMENT_GROUP_ID_FIELD = "groupId"
     }
 
     override suspend fun getGroupById(groupId: String): Group {
@@ -170,29 +169,25 @@ class FirebaseGroupDataSource @Inject constructor(
             if (payment.value.isEmpty()) throw PaymentException.EmptyValueException
             if (payment.paidTo.isEmpty()) throw PaymentException.EmptyRelatedMembersException
 
-            val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
-            val groupSnapshot = groupDoc.get().await()
-            val group = groupSnapshot.toObject(Group::class.java) ?: throw GroupNotFoundException
-            val unprocessedPaymentDoc = firestore.document("$UNPROCESSED_PAYMENTS_REF/${groupId}")
-
-            val unprocessedPaymentData = mapOf(PAYMENTS_IDS_FIELD to FieldValue.arrayUnion(payment.id))
-            unprocessedPaymentDoc.set(unprocessedPaymentData, SetOptions.merge())
-
-            val groupData = mapOf(GROUP_PAYMENTS_FIELD to FieldValue.arrayUnion(payment))
-            groupDoc.update(groupData)
-
-            return@withContext group
+            firestore.document("$GROUPS_REF/${groupId}")
+                .update(mapOf(GROUP_PAYMENTS_FIELD to FieldValue.arrayUnion(payment)))
+            firestore.collection(UNPROCESSED_PAYMENTS_REF).document(payment.id).set(payment)
+            return@withContext getGroupById(groupId) //TODO: Is really necessary to retrieve group again?
         }
     }
 
-    private fun getGroupFromSnapshot(snapshot: DocumentSnapshot?): Group {
+    private suspend fun getGroupFromSnapshot(snapshot: DocumentSnapshot?): Group {
         val group = snapshot?.toObject(Group::class.java) ?: throw GroupNotFoundException
-        return group.withUpdatedBalanceOffline()
+        val groupUnprocessedPayments = firestore.collection(UNPROCESSED_PAYMENTS_REF)
+            .whereEqualTo(PAYMENT_GROUP_ID_FIELD, group.id).get().await().toObjects(Payment::class.java)
+        return if (groupUnprocessedPayments.isNotEmpty())
+            group.byProcessingPayments(groupUnprocessedPayments)
+        else group
     }
 
-    private fun Group.withUpdatedBalanceOffline(): Group {
+    private fun Group.byProcessingPayments(groupUnprocessedPayments: List<Payment>): Group {
         val balance = this.balance.toMutableMap()
-        this.payments.filter { it.processed.not() }.forEach { payment ->
+        groupUnprocessedPayments.forEach { payment ->
             val total = payment.value.toBigDecimal().orZero().setScale(2, RoundingMode.CEILING)
             val shared = total.div(payment.paidTo.size.toBigDecimal()).setScale(2, RoundingMode.CEILING)
 

@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Payment(
+    val groupId: String = "",
     val id: String = "",
     val description: String = "",
     val value: String = "",
@@ -14,5 +15,4 @@ data class Payment(
     val paidTo: List<User> = emptyList(),
     val createdAt: Timestamp = Timestamp(Date()),
     val createdBy: User = User(),
-    val processed: Boolean = false
 ) : Parcelable

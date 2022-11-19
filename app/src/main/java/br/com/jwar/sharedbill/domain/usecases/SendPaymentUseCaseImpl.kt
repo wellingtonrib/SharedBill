@@ -44,14 +44,14 @@ class SendPaymentUseCaseImpl @Inject constructor(
 
         return groupRepository.sendPayment(
             payment = Payment(
+                groupId = group.id,
                 id = UUID.randomUUID().toString(),
                 description = description,
                 value = value,
                 paidBy = paidBy,
                 paidTo = paidTo,
                 createdAt = Timestamp(date),
-                createdBy = createdBy,
-                processed = false
+                createdBy = createdBy
             ),
             groupId = group.id
         )
