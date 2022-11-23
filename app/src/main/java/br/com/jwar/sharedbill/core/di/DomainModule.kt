@@ -4,8 +4,6 @@ import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
 import br.com.jwar.sharedbill.domain.services.AuthService
 import br.com.jwar.sharedbill.domain.usecases.*
-import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
-import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,19 +48,20 @@ class DomainModule {
     @Singleton
     fun provideGetAllGroupsUseCase(
         groupRepository: GroupRepository
-    ): GetAllGroupsUseCase = GetAllGroupsUseCaseImpl(groupRepository)
+    ): GetGroupsStreamUseCase = GetGroupsStreamUseCaseImpl(groupRepository)
 
     @Provides
     @Singleton
     fun providesCreateGroupUseCase(
-        groupRepository: GroupRepository
-    ): CreateGroupUseCase = CreateGroupUseCaseImpl(groupRepository)
+        groupRepository: GroupRepository,
+        userRepository: UserRepository
+    ): CreateGroupUseCase = CreateGroupUseCaseImpl(groupRepository, userRepository)
 
     @Provides
     @Singleton
     fun providesSaveGroupUseCase(
         groupRepository: GroupRepository
-    ): SaveGroupUseCase = SaveGroupUseCaseImpl(groupRepository)
+    ): UpdateGroupUseCase = UpdateGroupUseCaseImpl(groupRepository)
 
     @Provides
     @Singleton
@@ -85,27 +84,19 @@ class DomainModule {
     @Provides
     @Singleton
     fun providesGroupJoinUseCase(
-        groupRepository: GroupRepository
-    ): GroupJoinUseCase = GroupJoinUseCaseImpl(groupRepository)
+        groupRepository: GroupRepository,
+        userRepository: UserRepository
+    ): GroupJoinUseCase = GroupJoinUseCaseImpl(groupRepository, userRepository)
 
     @Provides
     @Singleton
     fun providesSendPaymentUseCase(
-        groupRepository: GroupRepository,
-        getGroupByIdWithCurrentMemberUseCase: GetGroupByIdWithCurrentMemberUseCase
-    ): SendPaymentUseCase = SendPaymentUseCaseImpl(groupRepository, getGroupByIdWithCurrentMemberUseCase)
-
-    @Provides
-    @Singleton
-    fun providesGetGroupByIdWithCurrentMemberUseCase(
-        userRepository: UserRepository,
         groupRepository: GroupRepository
-    ): GetGroupByIdWithCurrentMemberUseCase = GetGroupByIdWithCurrentMemberUseCaseImpl(userRepository, groupRepository)
+    ): SendPaymentUseCase = SendPaymentUseCaseImpl(groupRepository)
 
     @Provides
     @Singleton
-    fun providesGetPaymentParamsUseCase(
-        userToUserUiModelMapper: UserToUserUiModelMapper,
-        groupToGroupUiModelMapper: GroupToGroupUiModelMapper
-    ): GetPaymentParamsUseCase = GetPaymentParamsUseCaseImpl(groupToGroupUiModelMapper, userToUserUiModelMapper)
+    fun providesCreatePaymentUseCase(
+        groupRepository: GroupRepository
+    ): CreatePaymentUseCase = CreatePaymentUseCaseImpl(groupRepository)
 }

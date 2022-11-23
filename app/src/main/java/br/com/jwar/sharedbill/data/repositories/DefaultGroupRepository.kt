@@ -1,18 +1,13 @@
 package br.com.jwar.sharedbill.data.repositories
 
 import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
-import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Payment
-import br.com.jwar.sharedbill.domain.model.Resource.Failure
-import br.com.jwar.sharedbill.domain.model.Resource.Loading
-import br.com.jwar.sharedbill.domain.model.Resource.Success
-import br.com.jwar.sharedbill.domain.model.User
+import br.com.jwar.sharedbill.domain.model.*
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onEach
 
 class DefaultGroupRepository @Inject constructor(
     private val groupsDataSource: GroupsDataSource,
@@ -21,92 +16,51 @@ class DefaultGroupRepository @Inject constructor(
 
     private val cache = mutableSetOf<Group>()
 
-    override suspend fun getGroupById(groupId: String, refresh: Boolean) = flow {
-        emit(Loading)
-        try {
-            val cached = cache.firstOrNull { it.id == groupId }
-            val group = if (cached == null || refresh) {
-                groupsDataSource.getGroupById(groupId).also { cache.add(it) }
-            } else cached
-            emit(Success(group))
-        } catch (exception: Exception) {
-            emit(Failure(exception))
-        }
-    }.flowOn(ioDispatcher)
+    override suspend fun getGroupsStream() =
+        groupsDataSource.getGroupsStream()
+            .onEach { result -> if (result is Result.Success) result.data.forEach { setGroupCache(it) } }
+            .flowOn(ioDispatcher)
 
-    override suspend fun getGroupByIdFlow(groupId: String, refresh: Boolean) =
-        groupsDataSource.getGroupByIdFlow(groupId).flowOn(ioDispatcher)
+    override suspend fun getGroupById(groupId: String, refresh: Boolean): Result<Group> {
+        val cached = getGroupFromCache(groupId)
+        return if (cached == null || refresh) {
+            groupsDataSource.getGroupById(groupId)
+                .onSuccess { setGroupCache(it) }
+        } else Result.Success(cached)
+    }
 
-    override suspend fun getAllGroups(refresh: Boolean) = flow {
-        emit(Loading)
-        try {
-            val cached = cache.toList()
-            val groups = if (cached.isEmpty() || refresh) {
-                groupsDataSource.getAllGroups().also { cache.addAll(it) }
-            } else cached
-            emit(Success(groups))
-        } catch (exception: Exception) {
-            emit(Failure(exception))
-        }
-    }.flowOn(ioDispatcher)
+    override suspend fun getGroupByInviteCode(inviteCode: String) =
+        groupsDataSource.getGroupByInviteCode(inviteCode)
 
-    override suspend fun createGroup(group: Group) = flow {
-        emit(Loading)
-        try {
-            val newGroup = groupsDataSource.createGroup(group).also { cache.add(it) }
-            emit(Success(newGroup))
-        } catch (exception: Exception) {
-            emit(Failure(exception))
-        }
-    }.flowOn(ioDispatcher)
+    override suspend fun createGroup(group: Group) =
+        groupsDataSource.createGroup(group)
+            .onSuccess { setGroupCache(it) }
 
-    override suspend fun addMember(user: User, groupId: String) = flow {
-        emit(Loading)
-        try {
-            val groupUpdated = groupsDataSource.addMember(user, groupId).also { cache.add(it) }
-            emit(Success(groupUpdated))
-        } catch (exception: Exception) {
-            emit(Failure(exception))
-        }
-    }.flowOn(ioDispatcher)
+    override suspend fun updateGroup(groupId: String, title: String) =
+        groupsDataSource.updateGroup(groupId, title)
+            .onSuccess { setGroupCache(it) }
 
-    override suspend fun removeMember(userId: String, groupId: String) = flow {
-        emit(Loading)
-        try {
-            val groupUpdated = groupsDataSource.removeMember(userId, groupId).also { cache.add(it) }
-            emit(Success(groupUpdated))
-        } catch (exception: Exception) {
-            emit(Failure(exception))
-        }
-    }.flowOn(ioDispatcher)
+    override suspend fun joinGroup(groupId: String, invitedUser: User, joinedUser: User) =
+        groupsDataSource.joinGroup(groupId, invitedUser, joinedUser)
+            .onSuccess { setGroupCache(it) }
 
-    override suspend fun joinGroup(code: String) = flow {
-        emit(Loading)
-        try {
-            val groupUpdated = groupsDataSource.joinGroup(code).also { cache.add(it) }
-            emit(Success(groupUpdated))
-        } catch (exception: Exception) {
-            emit(Failure(exception))
-        }
-    }.flowOn(ioDispatcher)
+    override suspend fun addMember(user: User, groupId: String) =
+        groupsDataSource.addMember(user, groupId)
+            .onSuccess { setGroupCache(it) }
 
-    override suspend fun sendPayment(payment: Payment, groupId: String) = flow {
-        emit(Loading)
-        try {
-            val groupUpdated = groupsDataSource.sendPayment(payment, groupId).also { cache.add(it) }
-            emit(Success(groupUpdated))
-        } catch (exception: Exception) {
-            emit(Failure(exception))
-        }
-    }.flowOn(ioDispatcher)
+    override suspend fun removeMember(user: User, groupId: String) =
+        groupsDataSource.removeMember(user, groupId)
+            .onSuccess { setGroupCache(it) }
 
-    override suspend fun saveGroup(groupId: String, title: String) = flow {
-        emit(Loading)
-        try {
-            val groupUpdated = groupsDataSource.saveGroup(groupId, title).also { cache.add(it) }
-            emit(Success(groupUpdated))
-        } catch (exception: Exception) {
-            emit(Failure(exception))
-        }
-    }.flowOn(ioDispatcher)
+    override suspend fun sendPayment(payment: Payment) =
+        groupsDataSource.sendPayment(payment)
+            .onSuccess { setGroupCache(it) }
+
+    private fun getGroupFromCache(groupId: String) =
+        cache.firstOrNull { it.id == groupId }
+
+    private fun setGroupCache(group: Group) {
+        getGroupFromCache(group.id)?.let { cache.remove(it) }
+        cache.add(group)
+    }
 }

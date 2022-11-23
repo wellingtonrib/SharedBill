@@ -37,14 +37,14 @@ class DataModule {
         @Named(SIGN_UP_REQUEST) signUpRequest: BeginSignInRequest,
         @Named(SIGN_IN_REQUEST) signInRequest: BeginSignInRequest,
         firebaseUserToUserMapper: FirebaseUserToUserMapper,
-        userDataSource: UserDataSource
+        userRepository: UserRepository
     ): AuthService = FirebaseAuthService(
         firebaseAuth = firebaseAuth,
         signInClient = signInClient,
         signInRequest = signUpRequest,
         signUpRequest = signInRequest,
         firebaseUserToUserMapper = firebaseUserToUserMapper,
-        userDataSource = userDataSource,
+        userRepository = userRepository,
     )
 
     @Provides
@@ -77,11 +77,9 @@ class DataModule {
     fun provideGroupsDataSource(
         firebaseAuth: FirebaseAuth,
         firestore: FirebaseFirestore,
-        firebaseUserToUserMapper: FirebaseUserToUserMapper
     ): GroupsDataSource = FirebaseGroupDataSource(
         firebaseAuth = firebaseAuth,
-        firestore = firestore,
-        firebaseUserToUserMapper = firebaseUserToUserMapper
+        firestore = firestore
     )
 
     @Provides

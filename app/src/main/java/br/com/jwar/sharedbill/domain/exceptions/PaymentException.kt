@@ -1,6 +1,7 @@
 package br.com.jwar.sharedbill.domain.exceptions
 
 sealed class PaymentException : Exception() {
+    object GroupNotFound: PaymentException()
     object PayerNotInGroupException: PaymentException()
     object CurrentUserNotInGroupException: PaymentException()
     object EmptyDescriptionException: PaymentException()

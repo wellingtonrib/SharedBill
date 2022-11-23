@@ -3,15 +3,15 @@ package br.com.jwar.sharedbill.data.datasources
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
 import br.com.jwar.sharedbill.domain.datasources.UserDataSource
 import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
+import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.UUID
+import javax.inject.Inject
 
 class FirebaseUserDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
@@ -24,22 +24,21 @@ class FirebaseUserDataSource @Inject constructor(
         const val USERS_REF = "users"
     }
 
-    override suspend fun getUser(): User =
+    override suspend fun getUser(): Result<User> =
         withContext(ioDispatcher) {
-            val firebaseUser = firebaseAuth.currentUser ?: throw UserNotFoundException
-            return@withContext firebaseUserToUserMapper.mapFrom(firebaseUser)
+            val firebaseUser = firebaseAuth.currentUser ?: return@withContext Result.Error(UserNotFoundException)
+            return@withContext Result.Success(firebaseUserToUserMapper.mapFrom(firebaseUser))
         }
 
-    override suspend fun saveUser(user: User): Unit =
+    override suspend fun createUser(userName: String): Unit =
+        withContext(ioDispatcher) {
+            val userDoc = firestore.collection(USERS_REF).document()
+            val user = User(id = userDoc.id, name = userName)
+            userDoc.set(user)
+        }
+
+    override suspend fun updateUser(user: User): Unit =
         withContext(ioDispatcher) {
             firestore.collection(USERS_REF).document(user.firebaseUserId).set(user).await()
         }
-
-    override suspend fun createUser(userName: String): User {
-        return withContext(ioDispatcher) {
-            val userDoc = firestore.collection(USERS_REF).document()
-            val user = User(uid = UUID.randomUUID().toString(), name = userName)
-            return@withContext user.also { userDoc.set(it) }
-        }
-    }
 }

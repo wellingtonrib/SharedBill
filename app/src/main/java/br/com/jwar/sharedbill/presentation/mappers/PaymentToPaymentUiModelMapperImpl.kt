@@ -12,9 +12,9 @@ class PaymentToPaymentUiModelMapperImpl @Inject constructor(): PaymentToPaymentU
         PaymentUiModel(
             description = from.description,
             value = from.value.toCurrency(),
-            paidBy = from.paidBy.getFirstName(),
-            paidTo = from.paidTo.joinToString(", ") { it.getFirstName() },
+            paidBy = from.paidBy.firstName,
+            paidTo = from.paidTo.joinToString(", ") { it.firstName },
             createdAt = from.createdAt.format(DATE_FORMAT_SMALL),
-            createdBy = from.createdBy.getFirstName()
+            createdBy = from.createdBy.firstName
         )
 }

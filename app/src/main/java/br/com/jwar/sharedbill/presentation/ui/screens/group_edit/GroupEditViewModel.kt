@@ -2,11 +2,8 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_edit
 
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Resource
-import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdUseCase
-import br.com.jwar.sharedbill.domain.usecases.GroupAddMemberUseCase
-import br.com.jwar.sharedbill.domain.usecases.GroupRemoveMemberUseCase
-import br.com.jwar.sharedbill.domain.usecases.SaveGroupUseCase
+import br.com.jwar.sharedbill.domain.model.Result
+import br.com.jwar.sharedbill.domain.usecases.*
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
@@ -22,16 +19,16 @@ import kotlinx.coroutines.launch
 class GroupEditViewModel @Inject constructor(
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
     private val groupAddMemberUseCase: GroupAddMemberUseCase,
-    private val saveGroupUseCase: SaveGroupUseCase,
+    private val updateGroupUseCase: UpdateGroupUseCase,
     private val groupRemoveMemberUseCase: GroupRemoveMemberUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper
 ): BaseViewModel<Event, State, Effect>() {
 
-    override fun getInitialState(): State = State.Loading
+    override fun getInitialState(): State = State(isLoading = true)
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnRequestEdit -> onRequestEdit(event.groupId)
+            is Event.OnInit -> onInit(event.groupId)
             is Event.OnSaveGroupClick -> onSaveGroupClick()
             is Event.OnSaveMemberClick -> onSaveMemberClick(event.userName, event.groupId)
             is Event.OnMemberSelectionChange -> onMemberSelect(event.user)
@@ -40,79 +37,60 @@ class GroupEditViewModel @Inject constructor(
         }
     }
 
-    private fun onRequestEdit(groupId: String, refresh: Boolean = true) = viewModelScope.launch {
-        getGroupByIdUseCase(groupId, refresh).collect { resource ->
-            when(resource) {
-                is Resource.Loading -> setLoadingState()
-                is Resource.Success -> setEditingState(resource.data)
-                is Resource.Failure -> setErrorState(groupId, resource.throwable)
-            }
+    private fun onInit(groupId: String) = viewModelScope.launch {
+        setLoadingState()
+        when (val result = getGroupByIdUseCase(groupId, false)) {
+            is Result.Success -> setEditingGroup(result.data)
+            is Result.Error -> sendErrorEffect(result.exception)
         }
     }
 
     private fun onSaveGroupClick() = viewModelScope.launch {
-        val group = getEditingGroup() ?: return@launch
-        saveGroupUseCase(group.id, group.title).collect { resource ->
-            when(resource) {
-                is Resource.Loading -> setLoadingState()
-                is Resource.Success -> setEditingState(resource.data)
-                is Resource.Failure -> setErrorState(group.id, resource.throwable)
-            }
+        setLoadingState()
+        val group = getEditingGroup()
+        when (val result = updateGroupUseCase(group.id, group.title)) {
+            is Result.Success -> setEditingGroup(result.data)
+            is Result.Error -> sendErrorEffect(result.exception)
         }
     }
 
     private fun onSaveMemberClick(userName: String, groupId: String) = viewModelScope.launch {
-        groupAddMemberUseCase(userName, groupId).collect { resource ->
-            when(resource) {
-                is Resource.Loading -> setLoadingState()
-                is Resource.Success -> setEditingState(resource.data, userName)
-                is Resource.Failure -> setErrorState(groupId, resource.throwable)
-            }
+        setLoadingState()
+        when (val result = groupAddMemberUseCase(userName, groupId)) {
+            is Result.Success -> setEditingGroup(result.data, userName)
+            is Result.Error -> sendErrorEffect(result.exception)
         }
     }
 
     private fun onMemberDeleteClick(userId: String, groupId: String) = viewModelScope.launch {
-        groupRemoveMemberUseCase(userId, groupId).collect { resource ->
-            when(resource) {
-                is Resource.Loading -> setLoadingState()
-                is Resource.Success -> setEditingState(resource.data)
-                is Resource.Failure -> setErrorState(groupId, resource.throwable)
-            }
+        setLoadingState()
+        when (val result = groupRemoveMemberUseCase(userId, groupId)) {
+            is Result.Success -> setEditingGroup(result.data)
+            is Result.Error -> sendErrorEffect(result.exception)
         }
     }
 
-    private fun setLoadingState() = setState { State.Loading }
+    private fun setLoadingState() = setState { it.copy(isLoading = true) }
 
-    private fun setEditingState(group: Group, selectedMemberName: String? = null) =
+    private fun getEditingGroup() = uiState.value.group ?: GroupUiModel()
+
+    private fun setEditingGroup(group: Group, selectedMemberName: String? = null) =
         setState {
             with(groupToGroupUiModelMapper.mapFrom(group)) {
-                State.Editing(
+                it.copy(
+                    isLoading = false,
                     group = this,
                     selectedMember = this.members.firstOrNull { it.name == selectedMemberName }
                 )
             }
         }
 
-    private fun setEditingState(group: GroupUiModel) =
-        setState {
-            State.Editing(group = group)
-        }
+    private fun setEditingGroup(group: GroupUiModel) = setState { it.copy(group = group) }
 
-    private fun setErrorState(groupId: String, throwable: Throwable) {
-        sendEffect {
-            onRequestEdit(groupId, false)
-            Effect.ShowError(throwable.message.orEmpty())
-        }
-    }
+    private fun sendErrorEffect(throwable: Throwable) =
+        sendEffect { Effect.ShowError(throwable.message.orEmpty()) }
 
-    private fun onGroupUpdated(group: GroupUiModel) = setEditingState(group)
+    private fun onGroupUpdated(group: GroupUiModel) = setEditingGroup(group)
 
-    private fun onMemberSelect(user: UserUiModel?) {
-        val group = getEditingGroup() ?: return
-        setState {
-            State.Editing(group = group, selectedMember = user)
-        }
-    }
-
-    private fun getEditingGroup() = (uiState.value as? State.Editing)?.group
+    private fun onMemberSelect(user: UserUiModel?) = setState { it.copy(selectedMember = user) }
 }

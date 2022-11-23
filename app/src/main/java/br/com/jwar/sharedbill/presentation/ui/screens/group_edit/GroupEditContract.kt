@@ -10,7 +10,7 @@ import br.com.jwar.sharedbill.presentation.models.UserUiModel
 class GroupEditContract {
 
     sealed class Event: UiEvent {
-        class OnRequestEdit(val groupId: String) : Event()
+        class OnInit(val groupId: String) : Event()
         class OnSaveMemberClick(val userName: String, val groupId: String) : Event()
         class OnMemberSelectionChange(val user: UserUiModel?) : Event()
         class OnMemberDeleteClick(val userId: String, val groupId: String) : Event()
@@ -18,13 +18,11 @@ class GroupEditContract {
         object OnSaveGroupClick: Event()
     }
 
-    sealed class State: UiState {
-        object Loading: State()
-        data class Editing(
-            val group: GroupUiModel,
-            val selectedMember: UserUiModel? = null
-        ): State()
-    }
+    data class State(
+        val isLoading: Boolean = false,
+        val group: GroupUiModel? = null,
+        val selectedMember: UserUiModel? = null
+    ): UiState
 
     sealed class Effect: UiEffect {
         class OpenGroupSaved(val group: Group): Effect()

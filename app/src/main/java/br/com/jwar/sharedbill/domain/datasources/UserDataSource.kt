@@ -1,9 +1,10 @@
 package br.com.jwar.sharedbill.domain.datasources
 
+import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.model.User
 
 interface UserDataSource {
-    suspend fun getUser(): User
-    suspend fun saveUser(user: User)
-    suspend fun createUser(userName: String): User
+    suspend fun getUser(): Result<User>
+    suspend fun createUser(userName: String)
+    suspend fun updateUser(user: User)
 }

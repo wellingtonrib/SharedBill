@@ -59,7 +59,7 @@ fun GroupEditScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { Event.OnRequestEdit(groupId) }
+        viewModel.emitEvent { Event.OnInit(groupId) }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.OpenGroupSaved -> {

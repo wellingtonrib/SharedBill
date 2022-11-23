@@ -2,20 +2,16 @@ package br.com.jwar.sharedbill.presentation.ui.screens.auth
 
 import android.content.Intent
 import androidx.lifecycle.viewModelScope
-import br.com.jwar.sharedbill.domain.model.Resource.Failure
-import br.com.jwar.sharedbill.domain.model.Resource.Loading
-import br.com.jwar.sharedbill.domain.model.Resource.Success
+import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.usecases.SignInFirebaseUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignInUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignUpUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
-import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.Effect
-import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.Event
-import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.State
+import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.*
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -35,48 +31,40 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun onSignIn() = viewModelScope.launch {
-        signInUseCase().collect { resource ->
-            when(resource) {
-                is Loading -> setAuthenticatingState()
-                is Success -> sendSignedInEffect(resource)
-                is Failure -> emitOnRequestSignUpEvent()
-            }
+        setAuthenticatingState()
+        when (val result = signInUseCase()) {
+            is Result.Success -> sendSignedInEffect(result.data)
+            is Result.Error -> emitOnRequestSignUpEvent()
         }
     }
 
     private fun onSignUp() = viewModelScope.launch {
-        signUpUseCase().collect { resource ->
-            when(resource) {
-                is Loading -> setAuthenticatingState()
-                is Success -> sendSignedInEffect(resource)
-                is Failure -> setErrorState(resource.throwable)
-            }
+        setAuthenticatingState()
+        when (val result = signUpUseCase()) {
+            is Result.Success -> sendSignedInEffect(result.data)
+            is Result.Error -> setErrorState(result.exception)
         }
     }
 
     private fun onSignInFirebase(data: Intent?) = viewModelScope.launch {
-        signInFirebaseUseCase(data).collect { resource ->
-            when(resource) {
-                is Loading -> setAuthenticatingState()
-                is Success -> sendGoHomeEffect()
-                is Failure -> setErrorState(resource.throwable)
-            }
+        setAuthenticatingState()
+        when (val result = signInFirebaseUseCase(data)) {
+            is Result.Success -> sendGoHomeEffect()
+            is Result.Error -> setErrorState(result.exception)
         }
     }
 
-    private fun setAuthenticatingState() = setState { State(isAuthenticating = true) }
+    private fun setAuthenticatingState() = setState { it.copy(isAuthenticating = true) }
 
-    private fun sendSignedInEffect(resource: Success<BeginSignInResult>) =
-        sendEffect { Effect.LaunchSignInResult(resource.data) }
+    private fun sendSignedInEffect(result: BeginSignInResult) =
+        sendEffect { Effect.LaunchSignInResult(result) }
 
     private fun setErrorState(throwable: Throwable) {
-        setState { State(isAuthenticating = false) }
+        setState { it.copy(isAuthenticating = false) }
         sendEffect { Effect.ShowError(throwable.localizedMessage.orEmpty()) }
     }
 
-    private fun sendGoHomeEffect() =
-        sendEffect { Effect.GoToHome }
+    private fun sendGoHomeEffect() = sendEffect { Effect.GoToHome }
 
-    private fun emitOnRequestSignUpEvent() =
-        emitEvent { Event.OnRequestSignUp }
+    private fun emitOnRequestSignUpEvent() = emitEvent { Event.OnRequestSignUp }
 }

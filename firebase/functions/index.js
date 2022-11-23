@@ -15,11 +15,11 @@ exports.processPayment = functions.firestore.document("/unprocessedPayments/{pay
       const paymentSharedValue = Number(paymentTotalValue / (paymentData.paidTo.length || 1));
 
       paymentData.paidTo.forEach(member => {        
-        const currentPaidToKeyBalance = Number(groupCurrentBalance[member.uid] || 0);
-        groupCurrentBalance[member.uid] = String(currentPaidToKeyBalance + paymentSharedValue);
+        const currentPaidToKeyBalance = Number(groupCurrentBalance[member.id] || 0);
+        groupCurrentBalance[member.id] = String(currentPaidToKeyBalance + paymentSharedValue);
       });      
-      const currentPaidByKeyBalance = Number(groupCurrentBalance[paymentData.paidBy.uid] || 0);
-      groupCurrentBalance[paymentData.paidBy.uid] = String(currentPaidByKeyBalance - paymentTotalValue);
+      const currentPaidByKeyBalance = Number(groupCurrentBalance[paymentData.paidBy.id] || 0);
+      groupCurrentBalance[paymentData.paidBy.id] = String(currentPaidByKeyBalance - paymentTotalValue);
               
       paymentSnapshot.ref.delete();
       return groupRef.update({balance: groupCurrentBalance});

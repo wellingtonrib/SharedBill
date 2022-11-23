@@ -30,12 +30,12 @@ fun GroupListScreen(
             viewModel.emitEvent { Event.OnGroupSelect(it) }
         },
         onTryAgainClick = {
-            viewModel.emitEvent { Event.OnRequestGroups(true) }
+            viewModel.emitEvent { Event.OnInit }
         }
     )
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { Event.OnRequestGroups(true) }
+        viewModel.emitEvent { Event.OnInit }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.OpenGroupDetails ->

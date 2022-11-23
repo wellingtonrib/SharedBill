@@ -5,7 +5,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.presentation.ui.generic_components.ErrorContent
 import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.SendPaymentParams
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.State
@@ -20,10 +19,9 @@ fun PaymentContent(
     Column(
         modifier = Modifier.fillMaxWidthPaddingMedium()
     ) {
-        when(state) {
-            is State.Loading -> LoadingContent()
-            is State.Editing -> PaymentForm(state.params, onPaymentParamsChange)
-            is State.Error -> ErrorContent(state.message)
+        when {
+            state.isLoading -> LoadingContent()
+            state.params != null -> PaymentForm(state.params, onPaymentParamsChange)
         }
     }
 }
@@ -34,7 +32,7 @@ fun PreviewPaymentContent() {
     SharedBillTheme {
         Scaffold {
             PaymentContent(
-                state = State.Editing(SendPaymentParams.sample())
+                state = State(params = SendPaymentParams.sample())
             )
         }
     }

@@ -13,7 +13,7 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         GroupUiModel(
             id = from.id,
             title = from.title,
-            membersNames = from.members.joinToString(", ") { it.getFirstName() },
+            membersNames = from.members.joinToString(", ") { it.firstName },
             members = from.members.map { userToUserUiModelMapper.mapFrom(it) },
             payments = from.payments.map { paymentToPaymentUiModelMapper.mapFrom(it) },
             balance = mapBalance(from)
@@ -21,8 +21,8 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
 
     private fun mapBalance(from: Group): Map<String, BigDecimal> {
         return from.balance.map {
-            val member = from.findMemberByUid(it.key)
-            member?.getFirstName().orEmpty() to it.value.toBigDecimal()
+            val member = from.findMemberById(it.key)
+            member?.firstName.orEmpty() to it.value.toBigDecimal()
         }.associateBy({it.first}, {it.second})
     }
 }

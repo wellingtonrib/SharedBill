@@ -1,11 +1,8 @@
 package br.com.jwar.sharedbill.domain.model
 
-import android.os.Parcelable
 import com.google.firebase.Timestamp
-import java.util.Date
-import kotlinx.parcelize.Parcelize
+import java.util.*
 
-@Parcelize
 data class Payment(
     val groupId: String = "",
     val id: String = "",
@@ -15,4 +12,4 @@ data class Payment(
     val paidTo: List<User> = emptyList(),
     val createdAt: Timestamp = Timestamp(Date()),
     val createdBy: User = User(),
-) : Parcelable
+)

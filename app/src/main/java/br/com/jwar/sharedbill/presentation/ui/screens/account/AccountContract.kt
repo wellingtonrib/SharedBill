@@ -7,8 +7,8 @@ import br.com.jwar.sharedbill.presentation.models.UserUiModel
 
 class AccountContract {
     sealed class Event: UiEvent {
-        object OnRequestUser : Event()
-        object OnRequestSignOut : Event()
+        object OnInit : Event()
+        object OnSignOut : Event()
     }
 
     sealed class State : UiState  {

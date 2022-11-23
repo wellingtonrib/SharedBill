@@ -3,9 +3,9 @@ package br.com.jwar.sharedbill.domain.usecases
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import javax.inject.Inject
 
-class SaveGroupUseCaseImpl @Inject constructor(
+class UpdateGroupUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository
-) : SaveGroupUseCase {
+) : UpdateGroupUseCase {
     override suspend fun invoke(groupId: String, title: String) =
-        groupRepository.saveGroup(groupId, title)
+        groupRepository.updateGroup(groupId, title)
 }

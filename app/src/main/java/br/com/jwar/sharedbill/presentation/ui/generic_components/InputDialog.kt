@@ -66,7 +66,8 @@ private fun InputDialogContent(
                 onValueChange = { input = it }
             )
             Button(
-                onClick = { onAction(input) }
+                onClick = { onAction(input) },
+                enabled = input.isNotBlank()
             ) {
                 Text(text = action)
             }

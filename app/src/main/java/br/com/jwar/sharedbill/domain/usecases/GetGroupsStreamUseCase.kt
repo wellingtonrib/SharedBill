@@ -2,7 +2,8 @@ package br.com.jwar.sharedbill.domain.usecases
 
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Result
+import kotlinx.coroutines.flow.Flow
 
-interface GroupJoinUseCase {
-    suspend operator fun invoke(inviteCode: String): Result<Group>
+interface GetGroupsStreamUseCase {
+    suspend operator fun invoke(): Flow<Result<List<Group>>>
 }

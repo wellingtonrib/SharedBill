@@ -8,9 +8,9 @@ import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 class GroupListContract {
 
     sealed class Event: UiEvent {
-        class OnRequestGroups(val refresh: Boolean) : Event()
+        object OnInit : Event()
         class OnGroupCreate(val title: String): Event()
-        class OnGroupJoin(val code: String): Event()
+        class OnGroupJoin(val inviteCode: String): Event()
         class OnGroupSelect(val groupId: String): Event()
     }
 

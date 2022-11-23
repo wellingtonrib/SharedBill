@@ -11,7 +11,7 @@ class GroupAddMemberUseCaseImpl @Inject constructor(
     override suspend fun invoke(userName: String, groupId: String) =
         groupRepository.addMember(
             user = User(
-                uid = UUID.randomUUID().toString(),
+                id = UUID.randomUUID().toString(),
                 name = userName,
                 inviteCode = User.generateCode(groupId)
             ),
