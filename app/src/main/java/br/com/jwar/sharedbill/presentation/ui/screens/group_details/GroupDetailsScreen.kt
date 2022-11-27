@@ -42,7 +42,7 @@ fun GroupDetailsScreen(
         SwipeRefresh(
             state = rememberSwipeRefreshState(state is State.Loading),
             onRefresh = {
-                viewModel.emitEvent { Event.OnRequestGroup(groupId) }
+                viewModel.emitEvent { Event.OnInit(groupId) }
             }
         ) {
             GroupDetailsContent(
@@ -55,7 +55,7 @@ fun GroupDetailsScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { Event.OnRequestGroup(groupId) }
+        viewModel.emitEvent { Event.OnInit(groupId) }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.OpenGroupMembers -> {

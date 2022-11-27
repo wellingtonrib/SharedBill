@@ -1,11 +1,6 @@
 package br.com.jwar.sharedbill.domain.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-data class
-Group(
+data class Group(
     val id: String = "",
     val title: String = "",
     val owner: User = User(),
@@ -13,11 +8,11 @@ Group(
     val firebaseMembersIds: List<String> = emptyList(),
     val payments: List<Payment> = emptyList(),
     val balance: Map<String, String> = emptyMap()
-) : Parcelable {
+) {
 
-    fun findMemberByUid(uid: String) =
-        members.firstOrNull { it.uid == uid }
+    fun findMemberById(id: String) =
+        members.firstOrNull { it.id == id }
 
-    fun findMemberByFirebaseId(firebaseId: String) =
-        members.firstOrNull { it.firebaseUserId == firebaseId }
+    fun findCurrentUser() =
+        members.firstOrNull { it.isCurrentUser }
 }

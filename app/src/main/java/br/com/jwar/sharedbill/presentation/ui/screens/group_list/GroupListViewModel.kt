@@ -3,24 +3,20 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_list
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Resource.Failure
-import br.com.jwar.sharedbill.domain.model.Resource.Loading
-import br.com.jwar.sharedbill.domain.model.Resource.Success
 import br.com.jwar.sharedbill.domain.usecases.CreateGroupUseCase
-import br.com.jwar.sharedbill.domain.usecases.GetAllGroupsUseCase
+import br.com.jwar.sharedbill.domain.usecases.GetGroupsStreamUseCase
 import br.com.jwar.sharedbill.domain.usecases.GroupJoinUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State
+import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class GroupListViewModel @Inject constructor(
-    private val getAllGroupsUseCase: GetAllGroupsUseCase,
+    private val getGroupsStreamUseCase: GetGroupsStreamUseCase,
     private val createGroupUseCase: CreateGroupUseCase,
     private val groupJoinUseCase: GroupJoinUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper
@@ -30,53 +26,43 @@ class GroupListViewModel @Inject constructor(
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnRequestGroups -> onRequestGroups(event.refresh)
+            is Event.OnInit -> onInit()
             is Event.OnGroupCreate -> onGroupCreate(event.title)
             is Event.OnGroupSelect -> onGroupSelect(event.groupId)
-            is Event.OnGroupJoin -> onGroupJoin(event.code)
+            is Event.OnGroupJoin -> onGroupJoin(event.inviteCode)
         }
     }
 
-    private fun onRequestGroups(refresh: Boolean) = viewModelScope.launch {
-        getAllGroupsUseCase(refresh).collect { resource ->
-            when(resource) {
-                is Loading -> setLoadingState()
-                is Success -> setLoadedState(resource)
-                is Failure -> setErrorState(resource.throwable)
+    private fun onInit() = viewModelScope.launch {
+        getGroupsStreamUseCase()
+            .onStart { setLoadingState() }
+            .collect { result ->
+                result.onSuccess { setLoadedState(it) }
+                    .onFailure { setErrorState(it) }
             }
-        }
     }
 
     private fun onGroupCreate(title: String) = viewModelScope.launch {
-        createGroupUseCase(title).collect { resource ->
-            when(resource) {
-                is Loading -> setLoadingState()
-                is Success -> onGroupSelect(resource.data.id)
-                is Failure -> setErrorState(resource.throwable)
-            }
-        }
+        setLoadingState()
+        createGroupUseCase(title)
+            .onSuccess { onGroupSelect(it) }
+            .onFailure { setErrorState(it) }
     }
 
     private fun onGroupJoin(code: String) = viewModelScope.launch {
-        groupJoinUseCase(code).collect { resource ->
-            when(resource) {
-                is Loading -> setLoadingState()
-                is Success -> onGroupSelect(resource.data.id)
-                is Failure -> setErrorState(resource.throwable)
-            }
-        }
+        setLoadingState()
+        groupJoinUseCase(code)
+            .onSuccess { onGroupSelect(it) }
+            .onFailure { setErrorState(it) }
     }
 
     private fun setLoadingState() = setState { State.Loading }
 
-    private fun setLoadedState(resource: Success<List<Group>>) {
+    private fun setLoadedState(groups: List<Group>) =
         setState {
-            if (resource.data.isEmpty())
-                State.Empty
-            else
-                State.Loaded(resource.data.map { groupToGroupUiModelMapper.mapFrom(it) })
+            if (groups.isEmpty()) State.Empty
+            else State.Loaded(groups.map { groupToGroupUiModelMapper.mapFrom(it) })
         }
-    }
 
     private fun setErrorState(throwable: Throwable) {
         setState { State.Error(throwable.message) }

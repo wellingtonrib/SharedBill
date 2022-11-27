@@ -1,14 +1,14 @@
 package br.com.jwar.sharedbill.domain.usecases
 
 import android.content.Intent
-import br.com.jwar.sharedbill.domain.model.Resource
+import br.com.jwar.sharedbill.core.extensions.resultOf
 import br.com.jwar.sharedbill.domain.services.AuthService
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
 
 class SignInFirebaseUseCaseImpl @Inject constructor(
     private val authRepository: AuthService
 ): SignInFirebaseUseCase {
-    override suspend fun invoke(data: Intent?): Flow<Resource<Boolean>> =
+    override suspend fun invoke(data: Intent?) = resultOf {
         authRepository.signInFirebase(data)
+    }
 }

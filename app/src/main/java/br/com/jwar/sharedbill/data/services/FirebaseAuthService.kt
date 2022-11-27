@@ -4,23 +4,21 @@ import android.content.Intent
 import br.com.jwar.sharedbill.core.di.FirebaseModule.Companion.SIGN_IN_REQUEST
 import br.com.jwar.sharedbill.core.di.FirebaseModule.Companion.SIGN_UP_REQUEST
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
-import br.com.jwar.sharedbill.domain.datasources.UserDataSource
+import br.com.jwar.sharedbill.domain.exceptions.AuthException
 import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
-import br.com.jwar.sharedbill.domain.model.Resource.Failure
-import br.com.jwar.sharedbill.domain.model.Resource.Loading
-import br.com.jwar.sharedbill.domain.model.Resource.Success
+import br.com.jwar.sharedbill.domain.repositories.UserRepository
 import br.com.jwar.sharedbill.domain.services.AuthService
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import javax.inject.Inject
-import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Named
 
 class FirebaseAuthService @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
@@ -30,55 +28,33 @@ class FirebaseAuthService @Inject constructor(
     @Named(SIGN_UP_REQUEST)
     private var signUpRequest: BeginSignInRequest,
     private var firebaseUserToUserMapper: FirebaseUserToUserMapper,
-    private var userDataSource: UserDataSource,
+    private var userRepository: UserRepository,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): AuthService {
 
-    override suspend fun signIn() = flow {
-        emit(Loading)
-        try {
-            val result = signInClient.beginSignIn(signInRequest).await()
-            emit(Success(result))
-        } catch (e: Exception) {
-            emit(Failure(e))
+    override suspend fun signIn(): BeginSignInResult =
+        withContext(ioDispatcher) {
+            signInClient.beginSignIn(signInRequest).await() ?: throw AuthException.SignInException
         }
-    }.flowOn(ioDispatcher)
 
-    override suspend fun signUp() = flow {
-        emit(Loading)
-        try {
-            val result = signInClient.beginSignIn(signUpRequest).await()
-            emit(Success(result))
-        } catch (e: Exception) {
-            emit(Failure(e))
+    override suspend fun signUp(): BeginSignInResult =
+        withContext(ioDispatcher) {
+            signInClient.beginSignIn(signUpRequest).await() ?: throw AuthException.SignUpException
         }
-    }.flowOn(ioDispatcher)
 
-    override suspend fun signInFirebase(data: Intent?) = flow {
-        emit(Loading)
-        try {
+    override suspend fun signInFirebase(data: Intent?) =
+        withContext(ioDispatcher) {
             val signInCredential = signInClient.getSignInCredentialFromIntent(data)
             val authCredential = GoogleAuthProvider.getCredential(signInCredential.googleIdToken, null)
-            val authResult = firebaseAuth.signInWithCredential(authCredential).await()
+            val authResult = firebaseAuth.signInWithCredential(authCredential).await() ?: throw AuthException.SignInFirebaseException
             val firebaseUser = authResult.user ?: throw UserNotFoundException
-
-            firebaseUserToUserMapper.mapFrom(firebaseUser).run {
-                userDataSource.saveUser(this)
-            }
-            emit(Success(true))
-        } catch (e: Exception) {
-            emit(Failure(e))
+            val domainUser = firebaseUserToUserMapper.mapFrom(firebaseUser)
+            userRepository.saveUser(domainUser)
         }
-    }.flowOn(ioDispatcher)
 
-    override suspend fun signOut() = flow {
-        emit(Loading)
-        try {
+    override suspend fun signOut() =
+        withContext(ioDispatcher) {
             signInClient.signOut().await()
             firebaseAuth.signOut()
-            emit(Success(true))
-        } catch (e: Exception) {
-            emit(Failure(e))
         }
-    }.flowOn(ioDispatcher)
 }

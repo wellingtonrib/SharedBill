@@ -18,11 +18,11 @@ fun AccountScreen(
 
     AccountContent(
         state = state,
-        onSignOutClick = { viewModel.emitEvent { AccountContract.Event.OnRequestSignOut } }
+        onSignOutClick = { viewModel.emitEvent { AccountContract.Event.OnSignOut } }
     )
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { AccountContract.Event.OnRequestUser }
+        viewModel.emitEvent { AccountContract.Event.OnInit }
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is Effect.GoToAuth -> {

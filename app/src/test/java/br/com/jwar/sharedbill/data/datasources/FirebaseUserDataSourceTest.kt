@@ -3,7 +3,7 @@ package br.com.jwar.sharedbill.data.datasources
 import br.com.jwar.sharedbill.CoroutinesTestRule
 import br.com.jwar.sharedbill.Fakes
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
-import br.com.jwar.sharedbill.domain.exceptions.UserNotFoundException
+import br.com.jwar.sharedbill.domain.exceptions.UserException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import io.mockk.every
@@ -40,10 +40,10 @@ internal class FirebaseUserDataSourceTest {
         every { firebaseAuth.currentUser } returns mockk()
         every { firebaseUserToUserMapper.mapFrom(any()) } returns user
         //WHEN
-        val result = firebaseDataSource.getUser()
+        val result = firebaseDataSource.getCurrentUser()
         //THEN
         assertEquals(user.name, result.name)
-        assertEquals(user.uid, result.uid)
+        assertEquals(user.id, result.id)
         assertEquals(user.email, result.email)
         assertEquals(user.photoUrl, result.photoUrl)
     }
@@ -53,8 +53,8 @@ internal class FirebaseUserDataSourceTest {
         //GIVEN
         every { firebaseAuth.currentUser } returns null
         //WHEN
-        val exception = assertFails { firebaseDataSource.getUser() }
+        val exception = assertFails { firebaseDataSource.getCurrentUser() }
         //THEN
-        assertTrue(exception is UserNotFoundException)
+        assertTrue(exception is UserException.UserNotFoundException)
     }
 }

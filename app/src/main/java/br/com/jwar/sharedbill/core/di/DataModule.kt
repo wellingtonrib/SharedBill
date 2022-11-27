@@ -1,6 +1,6 @@
 package br.com.jwar.sharedbill.core.di
 
-import br.com.jwar.sharedbill.data.datasources.FirebaseGroupDataSource
+import br.com.jwar.sharedbill.data.datasources.FirebaseGroupsDataSource
 import br.com.jwar.sharedbill.data.datasources.FirebaseUserDataSource
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapperImpl
@@ -37,14 +37,14 @@ class DataModule {
         @Named(SIGN_UP_REQUEST) signUpRequest: BeginSignInRequest,
         @Named(SIGN_IN_REQUEST) signInRequest: BeginSignInRequest,
         firebaseUserToUserMapper: FirebaseUserToUserMapper,
-        userDataSource: UserDataSource
+        userRepository: UserRepository
     ): AuthService = FirebaseAuthService(
         firebaseAuth = firebaseAuth,
         signInClient = signInClient,
         signInRequest = signUpRequest,
         signUpRequest = signInRequest,
         firebaseUserToUserMapper = firebaseUserToUserMapper,
-        userDataSource = userDataSource,
+        userRepository = userRepository,
     )
 
     @Provides
@@ -77,11 +77,9 @@ class DataModule {
     fun provideGroupsDataSource(
         firebaseAuth: FirebaseAuth,
         firestore: FirebaseFirestore,
-        firebaseUserToUserMapper: FirebaseUserToUserMapper
-    ): GroupsDataSource = FirebaseGroupDataSource(
+    ): GroupsDataSource = FirebaseGroupsDataSource(
         firebaseAuth = firebaseAuth,
-        firestore = firestore,
-        firebaseUserToUserMapper = firebaseUserToUserMapper
+        firestore = firestore
     )
 
     @Provides
@@ -89,6 +87,6 @@ class DataModule {
     fun provideGroupsRepository(
         groupsDataSource: GroupsDataSource,
     ): GroupRepository = DefaultGroupRepository(
-        groupsDataSource = groupsDataSource
+        groupsDataSource = groupsDataSource,
     )
 }

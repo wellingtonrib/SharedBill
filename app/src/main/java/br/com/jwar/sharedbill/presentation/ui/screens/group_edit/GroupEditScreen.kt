@@ -59,7 +59,7 @@ fun GroupEditScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { Event.OnRequestEdit(groupId) }
+        viewModel.emitEvent { Event.OnInit(groupId) }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.OpenGroupSaved -> {
@@ -70,7 +70,7 @@ fun GroupEditScreen(
                 }
                 is Effect.ShowError ->
                     snackbarHostState.showSnackbar(
-                        effect.message.ifEmpty { context.getString(R.string.error_generic) }
+                        effect.error.asString(context)
                     )
             }
         }

@@ -11,7 +11,7 @@ class UserUiModel(
     val name: String = "",
     val email: String = "",
     val imageUrl: String = "",
-    val inviteCode: String?
+    val inviteCode: String? = null
 ) : Selectable {
 
     companion object {

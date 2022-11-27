@@ -24,10 +24,11 @@ fun GroupEditContent(
     onMemberSelectionChange: (UserUiModel?) -> Unit = {},
     onMemberDeleteClick: (String) -> Unit = {},
 ) {
-    when (state) {
-        is State.Loading -> LoadingContent()
-        is State.Editing -> GroupEditForm(
-            state = state,
+    when {
+        state.isLoading -> LoadingContent()
+        state.group != null -> GroupEditForm(
+            group = state.group,
+            selectedMember = state.selectedMember,
             onGroupUpdated = onGroupUpdated,
             onSaveMemberClick = onSaveMemberClick,
             onMemberSelectionChange = onMemberSelectionChange,
@@ -47,7 +48,7 @@ fun previewGroupEditContent() {
     SharedBillTheme {
         Scaffold {
             GroupEditContent(
-                state = State.Editing(GroupUiModel.sample()),
+                state = State(group = GroupUiModel.sample()),
             )
         }
     }

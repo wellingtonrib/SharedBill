@@ -3,14 +3,17 @@ package br.com.jwar.sharedbill.domain.datasources
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.model.User
+import kotlinx.coroutines.flow.Flow
 
 interface GroupsDataSource {
     suspend fun getGroupById(groupId: String): Group
-    suspend fun getAllGroups(): List<Group>
-    suspend fun createGroup(group: Group): Group
-    suspend fun saveGroup(groupId: String, title: String): Group
-    suspend fun addMember(user: User, groupId: String): Group
-    suspend fun removeMember(userId: String, groupId: String): Group
-    suspend fun joinGroup(code: String): Group
-    suspend fun sendPayment(payment: Payment, groupId: String): Group
+    suspend fun getGroupsStream(): Flow<List<Group>>
+    suspend fun getGroupByIdStream(groupId: String): Flow<Group>
+    suspend fun getGroupByInviteCode(inviteCode: String): Group
+    suspend fun createGroup(group: Group): String
+    suspend fun updateGroup(groupId: String, title: String)
+    suspend fun addMember(user: User, groupId: String)
+    suspend fun removeMember(user: User, groupId: String)
+    suspend fun joinGroup(groupId: String, invitedUser: User, joinedUser: User)
+    suspend fun sendPayment(payment: Payment)
 }

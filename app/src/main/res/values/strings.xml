@@ -79,6 +79,7 @@
     <string name="error_payment_value_empty">Please provide a value</string>
     <string name="error_payment_date_empty">Please provide a date</string>
     <string name="error_payment_empty_related_members">Please select some related members</string>
+    <string name="error_removing_member_with_non_zero_balance">You cannot remove this user until settle up him</string>
 
     <string name="empty"/>
 

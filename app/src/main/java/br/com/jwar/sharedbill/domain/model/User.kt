@@ -1,17 +1,16 @@
 package br.com.jwar.sharedbill.domain.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.google.firebase.firestore.Exclude
 
-@Parcelize
 data class User(
-    val uid: String = "",
+    val id: String = "",
     val firebaseUserId: String = "",
     val name: String = "",
     val email: String = "",
     val photoUrl: String? = null,
     val inviteCode: String? = null,
-) : Parcelable {
+    @get:Exclude val isCurrentUser: Boolean = false
+) {
     companion object {
         fun generateCode(groupId: String): String {
             val characters = ('A'..'Z') + ('a'..'z') + ('0'..'9')
@@ -19,5 +18,7 @@ data class User(
         }
     }
 
-    fun getFirstName() = name.split(" ").first()
+    @get:Exclude
+    val firstName
+        get() = name.split(" ").first()
 }

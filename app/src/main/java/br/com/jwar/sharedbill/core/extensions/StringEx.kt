@@ -1,19 +1,12 @@
-package br.com.jwar.sharedbill.core
+package br.com.jwar.sharedbill.core.extensions
 
 import com.google.firebase.Timestamp
-import java.math.BigDecimal
-import java.math.RoundingMode
-import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 
 const val DATE_FORMAT_SMALL = "dd/MM"
 const val DATE_FORMAT_DEFAULT = "dd/MM/yyyy"
-const val DATE_FORMAT_FULL = "dd/MM/yyyy HH:mm"
-
 const val ZERO = "0"
-
-fun Any?.isNotNull() = this != null
 
 fun Timestamp.format(pattern: String = DATE_FORMAT_DEFAULT): String =
     this.toDate().format(pattern)
@@ -35,14 +28,3 @@ fun String?.ifNullOrBlank(block: () -> String) =
 
 fun String.replaceIf(replacement: String, predicate: () -> Boolean) =
     if (predicate()) replacement else this
-
-fun BigDecimal?.orZero(): BigDecimal =
-    this ?: BigDecimal.ZERO
-
-fun BigDecimal?.toCurrency(): String =
-    NumberFormat.getCurrencyInstance().format(
-        this?.orZero()?.setScale(2, RoundingMode.CEILING)
-    ).orEmpty()
-
-fun Boolean?.orFalse() =
-    this ?: false

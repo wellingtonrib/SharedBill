@@ -3,10 +3,10 @@ package br.com.jwar.sharedbill.presentation.models
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import br.com.jwar.sharedbill.R
-import br.com.jwar.sharedbill.core.toCurrency
+import br.com.jwar.sharedbill.core.extensions.toCurrency
 import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
 import java.math.BigDecimal
-import java.util.*
+import java.util.UUID
 
 data class GroupUiModel(
     val id: String = "",

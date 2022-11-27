@@ -12,16 +12,15 @@ import java.util.Date
 class PaymentContract {
 
     sealed class Event: UiEvent {
-        class OnRequestGroup(val groupId: String): Event()
+        class OnInit(val groupId: String): Event()
         class OnPaymentParamsChange(val params: SendPaymentParams) : Event()
-        object SendPayment : Event()
+        object OnCreatePayment : Event()
     }
 
-    sealed class State: UiState {
-        object Loading: State()
-        class Editing(val params: SendPaymentParams): State()
-        class Error(val message: String): State()
-    }
+    data class State(
+        val isLoading: Boolean = false,
+        val params: SendPaymentParams? = null,
+    ): UiState
 
     sealed class Effect: UiEffect {
         object Finish: Effect()
@@ -31,10 +30,10 @@ class PaymentContract {
     data class SendPaymentParams(
         val description: String = "",
         val value: String = "",
-        val paidBy: UserUiModel,
+        val paidBy: UserUiModel = UserUiModel(),
         val paidTo: List<UserUiModel> = emptyList(),
         val date: Date = Date(),
-        val group: GroupUiModel,
+        val group: GroupUiModel = GroupUiModel(),
         val error: PaymentUiError? = null
     ) {
         companion object {

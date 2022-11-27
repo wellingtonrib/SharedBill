@@ -3,7 +3,7 @@ package br.com.jwar.sharedbill.presentation.models
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import br.com.jwar.sharedbill.R
-import br.com.jwar.sharedbill.core.*
+import br.com.jwar.sharedbill.core.extensions.replaceIf
 import java.util.*
 
 class PaymentUiModel(

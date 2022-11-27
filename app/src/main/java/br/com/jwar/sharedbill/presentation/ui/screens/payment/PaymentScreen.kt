@@ -37,7 +37,7 @@ fun PaymentScreen(
             title = stringResource(id = R.string.label_payment_new),
             actions = {
                 IconButton(onClick = {
-                    viewModel.emitEvent { Event.SendPayment }
+                    viewModel.emitEvent { Event.OnCreatePayment }
                 }) {
                     Icon(Icons.Filled.Done, stringResource(id = R.string.description_done))
                 }
@@ -50,7 +50,7 @@ fun PaymentScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { Event.OnRequestGroup(groupId) }
+        viewModel.emitEvent { Event.OnInit(groupId) }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.Finish -> {
