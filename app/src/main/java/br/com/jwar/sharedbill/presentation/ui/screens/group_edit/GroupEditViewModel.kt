@@ -12,12 +12,13 @@ import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContra
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.State
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class GroupEditViewModel @Inject constructor(
-    private val getGroupByIdUseCase: GetGroupByIdUseCase,
+    private val getGroupByIdStreamUseCase: GetGroupByIdStreamUseCase,
     private val groupAddMemberUseCase: GroupAddMemberUseCase,
     private val updateGroupUseCase: UpdateGroupUseCase,
     private val groupRemoveMemberUseCase: GroupRemoveMemberUseCase,
@@ -38,11 +39,14 @@ class GroupEditViewModel @Inject constructor(
     }
 
     private fun onInit(groupId: String) = viewModelScope.launch {
-        setLoadingState()
-        when (val result = getGroupByIdUseCase(groupId, false)) {
-            is Result.Success -> setEditingGroup(result.data)
-            is Result.Error -> sendErrorEffect(result.exception)
-        }
+        getGroupByIdStreamUseCase(groupId)
+            .onStart { setLoadingState() }
+            .collect { result ->
+                when(result) {
+                    is Result.Success -> setEditingGroup(result.data)
+                    is Result.Error -> sendErrorEffect(result.exception)
+                }
+            }
     }
 
     private fun onSaveGroupClick() = viewModelScope.launch {

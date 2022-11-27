@@ -8,7 +8,7 @@ import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 class GroupDetailsContract {
 
     sealed class Event: UiEvent {
-        class OnInit(val groupId: String, val refresh: Boolean) : Event()
+        class OnInit(val groupId: String) : Event()
         object OnManageClick : Event()
         class OnNewPaymentClick(val groupId: String) : Event()
     }

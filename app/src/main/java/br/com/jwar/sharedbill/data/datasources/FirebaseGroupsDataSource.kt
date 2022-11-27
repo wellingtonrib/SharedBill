@@ -1,7 +1,7 @@
 package br.com.jwar.sharedbill.data.datasources
 
 import br.com.jwar.sharedbill.core.orZero
-import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
+import br.com.jwar.sharedbill.domain.datasources.GroupsRemoteDataSource
 import br.com.jwar.sharedbill.domain.exceptions.GroupException.GroupNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
@@ -22,11 +22,11 @@ import kotlinx.coroutines.withContext
 import java.math.RoundingMode
 import javax.inject.Inject
 
-class FirebaseGroupDataSource @Inject constructor(
+class FirebaseGroupsDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-): GroupsDataSource {
+): GroupsRemoteDataSource {
 
     companion object {
         const val GROUPS_REF = "groups"
@@ -44,6 +44,13 @@ class FirebaseGroupDataSource @Inject constructor(
         getUserGroupsQuery()
             .snapshots()
             .map { mapResultFromSnapshots(it.documents) }
+            .flowOn(ioDispatcher)
+
+    override suspend fun getGroupByIdStream(groupId: String) =
+        getUserGroupsQuery()
+            .whereEqualTo(GROUP_ID_FIELD, groupId)
+            .snapshots()
+            .map { mapResultFromSnapshot(it.documents.first()) }
             .flowOn(ioDispatcher)
 
     override suspend fun getGroupById(groupId: String) =
@@ -68,7 +75,7 @@ class FirebaseGroupDataSource @Inject constructor(
                 .let { mapResultFromSnapshot(it) }
         }
 
-    override suspend fun createGroup(group: Group) =
+    override suspend fun saveGroup(group: Group) =
         withContext(ioDispatcher) {
             val groupDoc = firestore.collection(GROUPS_REF).document()
             val newGroup = group.copy(id = groupDoc.id)

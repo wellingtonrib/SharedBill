@@ -3,17 +3,18 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_details
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Result
-import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdUseCase
+import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdStreamUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GroupDetailsViewModel @Inject constructor(
-    private val getGroupByIdUseCase: GetGroupByIdUseCase,
+    private val getGroupByIdStreamUseCase: GetGroupByIdStreamUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper
 ): BaseViewModel<Event, State, Effect>() {
 
@@ -21,18 +22,21 @@ class GroupDetailsViewModel @Inject constructor(
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnInit -> onInit(event.groupId, event.refresh)
+            is Event.OnInit -> onInit(event.groupId)
             is Event.OnManageClick -> onManageClick()
             is Event.OnNewPaymentClick -> onNewPaymentClick(event.groupId)
         }
     }
 
-    private fun onInit(groupId: String, refresh: Boolean) = viewModelScope.launch {
-        setLoadingState()
-        when(val result = getGroupByIdUseCase(groupId, refresh)) {
-            is Result.Success -> setLoadedState(result.data)
-            is Result.Error -> setErrorState(result.exception)
-        }
+    private fun onInit(groupId: String) = viewModelScope.launch {
+        getGroupByIdStreamUseCase(groupId)
+            .onStart { setLoadingState() }
+            .collect { result ->
+                when(result) {
+                    is Result.Success -> setLoadedState(result.data)
+                    is Result.Error -> setErrorState(result.exception)
+                }
+            }
     }
 
     private fun setLoadingState() = setState { State.Loading }

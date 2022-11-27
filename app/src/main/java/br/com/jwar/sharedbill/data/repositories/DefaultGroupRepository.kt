@@ -1,7 +1,11 @@
 package br.com.jwar.sharedbill.data.repositories
 
 import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
-import br.com.jwar.sharedbill.domain.model.*
+import br.com.jwar.sharedbill.domain.datasources.GroupsRemoteDataSource
+import br.com.jwar.sharedbill.domain.model.Group
+import br.com.jwar.sharedbill.domain.model.Payment
+import br.com.jwar.sharedbill.domain.model.User
+import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -10,57 +14,63 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
 
 class DefaultGroupRepository @Inject constructor(
-    private val groupsDataSource: GroupsDataSource,
+    private val groupsRemoteDataSource: GroupsRemoteDataSource,
+    private val groupsMemoryDataSource: GroupsDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): GroupRepository {
 
-    private val cache = mutableSetOf<Group>()
-
     override suspend fun getGroupsStream() =
-        groupsDataSource.getGroupsStream()
-            .onEach { result -> if (result is Result.Success) result.data.forEach { setGroupCache(it) } }
+        groupsRemoteDataSource.getGroupsStream()
+            .onEach { result ->
+                result.getOrNull()?.let {
+                    groups -> groups.forEach { saveGroupInMemoryCache(it) }
+                }
+            }
+            .flowOn(ioDispatcher)
+
+    override suspend fun getGroupByIdStream(groupId: String) =
+        groupsRemoteDataSource.getGroupByIdStream(groupId)
+            .onEach { result ->
+                result.getOrNull()?.let {
+                    saveGroupInMemoryCache(it)
+                }
+            }
             .flowOn(ioDispatcher)
 
     override suspend fun getGroupById(groupId: String, refresh: Boolean): Result<Group> {
-        val cached = getGroupFromCache(groupId)
+        val cached = groupsMemoryDataSource.getGroupById(groupId).getOrNull()
         return if (cached == null || refresh) {
-            groupsDataSource.getGroupById(groupId)
-                .onSuccess { setGroupCache(it) }
+            groupsRemoteDataSource.getGroupById(groupId).onSuccess { saveGroupInMemoryCache(it) }
         } else Result.Success(cached)
     }
 
     override suspend fun getGroupByInviteCode(inviteCode: String) =
-        groupsDataSource.getGroupByInviteCode(inviteCode)
+        groupsRemoteDataSource.getGroupByInviteCode(inviteCode)
 
     override suspend fun createGroup(group: Group) =
-        groupsDataSource.createGroup(group)
-            .onSuccess { setGroupCache(it) }
+        groupsRemoteDataSource.saveGroup(group)
+            .onSuccess { saveGroupInMemoryCache(it) }
 
     override suspend fun updateGroup(groupId: String, title: String) =
-        groupsDataSource.updateGroup(groupId, title)
-            .onSuccess { setGroupCache(it) }
+        groupsRemoteDataSource.updateGroup(groupId, title)
+            .onSuccess { saveGroupInMemoryCache(it) }
 
     override suspend fun joinGroup(groupId: String, invitedUser: User, joinedUser: User) =
-        groupsDataSource.joinGroup(groupId, invitedUser, joinedUser)
-            .onSuccess { setGroupCache(it) }
+        groupsRemoteDataSource.joinGroup(groupId, invitedUser, joinedUser)
+            .onSuccess { saveGroupInMemoryCache(it) }
 
     override suspend fun addMember(user: User, groupId: String) =
-        groupsDataSource.addMember(user, groupId)
-            .onSuccess { setGroupCache(it) }
+        groupsRemoteDataSource.addMember(user, groupId)
+            .onSuccess { saveGroupInMemoryCache(it) }
 
     override suspend fun removeMember(user: User, groupId: String) =
-        groupsDataSource.removeMember(user, groupId)
-            .onSuccess { setGroupCache(it) }
+        groupsRemoteDataSource.removeMember(user, groupId)
+            .onSuccess { saveGroupInMemoryCache(it) }
 
     override suspend fun sendPayment(payment: Payment) =
-        groupsDataSource.sendPayment(payment)
-            .onSuccess { setGroupCache(it) }
+        groupsRemoteDataSource.sendPayment(payment)
+            .onSuccess { saveGroupInMemoryCache(it) }
 
-    private fun getGroupFromCache(groupId: String) =
-        cache.firstOrNull { it.id == groupId }
-
-    private fun setGroupCache(group: Group) {
-        getGroupFromCache(group.id)?.let { cache.remove(it) }
-        cache.add(group)
-    }
+    private suspend fun saveGroupInMemoryCache(group: Group) =
+        groupsMemoryDataSource.saveGroup(group)
 }

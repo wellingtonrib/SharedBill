@@ -71,6 +71,12 @@ class DomainModule {
 
     @Provides
     @Singleton
+    fun providesGetGroupByIdStreamUseCase(
+        groupRepository: GroupRepository
+    ): GetGroupByIdStreamUseCase = GetGroupByIdStreamUseCaseImpl(groupRepository)
+
+    @Provides
+    @Singleton
     fun providesGroupAddMemberUseCase(
         groupRepository: GroupRepository
     ): GroupAddMemberUseCase = GroupAddMemberUseCaseImpl(groupRepository)
