@@ -1,7 +1,7 @@
 package br.com.jwar.sharedbill.data.datasources
 
-import br.com.jwar.sharedbill.core.orZero
-import br.com.jwar.sharedbill.domain.datasources.GroupsRemoteDataSource
+import br.com.jwar.sharedbill.core.extensions.orZero
+import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
 import br.com.jwar.sharedbill.domain.exceptions.GroupException.GroupNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
@@ -25,7 +25,7 @@ class FirebaseGroupsDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-): GroupsRemoteDataSource {
+): GroupsDataSource {
 
     companion object {
         const val GROUPS_REF = "groups"
@@ -74,42 +74,38 @@ class FirebaseGroupsDataSource @Inject constructor(
                 .let { mapResultFromSnapshot(it) }
         }
 
-    override suspend fun saveGroup(group: Group) =
+    override suspend fun createGroup(group: Group): String =
         withContext(ioDispatcher) {
             val groupDoc = firestore.collection(GROUPS_REF).document()
             val newGroup = group.copy(id = groupDoc.id)
-            groupDoc.set(newGroup)
-            return@withContext getGroupById(groupDoc.id)
+            groupDoc.set(newGroup); newGroup.id
         }
 
-    override suspend fun updateGroup(groupId: String, title: String) =
+    override suspend fun updateGroup(groupId: String, title: String): Unit =
         withContext(ioDispatcher) {
             val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
             groupDoc.update(mapOf(GROUP_TITLE_FIELD to title,))
-            return@withContext getGroupById(groupId)
         }
 
-    override suspend fun addMember(user: User, groupId: String) =
+    override suspend fun addMember(user: User, groupId: String): Unit =
         withContext(ioDispatcher) {
             val groupDoc = firestore.document("$GROUPS_REF/$groupId")
             groupDoc.update(mapOf(
                 GROUP_MEMBERS_FIELD to FieldValue.arrayUnion(user),
                 GROUP_INVITES_FIELD to FieldValue.arrayUnion(user.inviteCode)
             ))
-            return@withContext getGroupById(groupId)
         }
 
-    override suspend fun removeMember(user: User, groupId: String) =
+    override suspend fun removeMember(user: User, groupId: String): Unit =
         withContext(ioDispatcher) {
             val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
             groupDoc.update(mapOf(
                 GROUP_MEMBERS_FIELD to FieldValue.arrayRemove(user),
                 GROUP_FIREBASE_MEMBERS_IDS_FIELD to FieldValue.arrayRemove(user.firebaseUserId),
             ))
-            return@withContext getGroupById(groupId)
         }
 
-    override suspend fun joinGroup(groupId: String, invitedUser: User, joinedUser: User) =
+    override suspend fun joinGroup(groupId: String, invitedUser: User, joinedUser: User): Unit =
         withContext(ioDispatcher) {
             val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
             groupDoc.update(mapOf(
@@ -120,15 +116,13 @@ class FirebaseGroupsDataSource @Inject constructor(
                 GROUP_MEMBERS_FIELD to FieldValue.arrayUnion(joinedUser),
                 GROUP_FIREBASE_MEMBERS_IDS_FIELD to FieldValue.arrayUnion(joinedUser.firebaseUserId)
             ))
-            return@withContext getGroupById(groupId)
         }
 
-    override suspend fun sendPayment(payment: Payment) =
+    override suspend fun sendPayment(payment: Payment): Unit =
         withContext(ioDispatcher) {
             firestore.document("$GROUPS_REF/${payment.groupId}")
                 .update(mapOf(GROUP_PAYMENTS_FIELD to FieldValue.arrayUnion(payment)))
             firestore.collection(UNPROCESSED_PAYMENTS_REF).document(payment.id).set(payment)
-            return@withContext getGroupById(payment.groupId)
         }
 
     private suspend fun mapResultFromSnapshots(snapshots: MutableList<DocumentSnapshot>) =

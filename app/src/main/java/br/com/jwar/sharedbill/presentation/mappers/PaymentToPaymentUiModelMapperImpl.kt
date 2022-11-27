@@ -1,8 +1,8 @@
 package br.com.jwar.sharedbill.presentation.mappers
 
-import br.com.jwar.sharedbill.core.DATE_FORMAT_SMALL
-import br.com.jwar.sharedbill.core.format
-import br.com.jwar.sharedbill.core.toCurrency
+import br.com.jwar.sharedbill.core.extensions.DATE_FORMAT_SMALL
+import br.com.jwar.sharedbill.core.extensions.format
+import br.com.jwar.sharedbill.core.extensions.toCurrency
 import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.presentation.models.PaymentUiModel
 import javax.inject.Inject

@@ -1,22 +1,22 @@
 package br.com.jwar.sharedbill.domain.usecases
 
-import br.com.jwar.sharedbill.core.ZERO
-import br.com.jwar.sharedbill.core.orZero
+import br.com.jwar.sharedbill.core.extensions.ZERO
+import br.com.jwar.sharedbill.core.extensions.orZero
+import br.com.jwar.sharedbill.core.extensions.resultOf
 import br.com.jwar.sharedbill.domain.exceptions.GroupException
-import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import javax.inject.Inject
 
 class GroupRemoveMemberUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository
 ) : GroupRemoveMemberUseCase {
-    override suspend fun invoke(userId: String, groupId: String): Result<Group> {
+    override suspend fun invoke(userId: String, groupId: String) = resultOf {
         val group = groupRepository.getGroupById(groupId, true).getOrNull()
-            ?: return Result.failure(GroupException.GroupNotFoundException)
+            ?: throw GroupException.GroupNotFoundException
         val member = group.findMemberById(userId)
-            ?: return Result.failure(GroupException.MemberNotFoundException)
+            ?: throw GroupException.MemberNotFoundException
         if (group.balance[userId].orZero() != ZERO)
-            return Result.failure(GroupException.RemoveMemberWithNonZeroBalanceException)
-        return groupRepository.removeMember(member, groupId)
+            throw GroupException.RemoveMemberWithNonZeroBalanceException
+        groupRepository.removeMember(member, groupId)
     }
 }

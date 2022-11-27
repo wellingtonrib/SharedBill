@@ -14,8 +14,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
-import br.com.jwar.sharedbill.core.format
-import br.com.jwar.sharedbill.core.parse
+import br.com.jwar.sharedbill.core.extensions.format
+import br.com.jwar.sharedbill.core.extensions.parse
 import br.com.jwar.sharedbill.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme

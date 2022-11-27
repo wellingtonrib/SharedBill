@@ -50,21 +50,19 @@ class GroupEditViewModel @Inject constructor(
         setLoadingState()
         val group = getEditingGroup()
         updateGroupUseCase(group.id, group.title)
-            .onSuccess { setEditingGroup(it) }
+            .onSuccess { setEditingGroup(group) }
             .onFailure { sendErrorEffect(it) }
     }
 
     private fun onSaveMemberClick(userName: String, groupId: String) = viewModelScope.launch {
         setLoadingState()
         groupAddMemberUseCase(userName, groupId)
-            .onSuccess { setEditingGroup(it, userName) }
             .onFailure { sendErrorEffect(it) }
     }
 
     private fun onMemberDeleteClick(userId: String, groupId: String) = viewModelScope.launch {
         setLoadingState()
         groupRemoveMemberUseCase(userId, groupId)
-            .onSuccess { setEditingGroup(it) }
             .onFailure { sendErrorEffect(it) }
     }
 

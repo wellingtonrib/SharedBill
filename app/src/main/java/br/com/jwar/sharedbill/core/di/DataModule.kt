@@ -7,14 +7,13 @@ import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapperImpl
 import br.com.jwar.sharedbill.data.repositories.DefaultGroupRepository
 import br.com.jwar.sharedbill.data.repositories.DefaultUserRepository
 import br.com.jwar.sharedbill.data.services.FirebaseAuthService
-import br.com.jwar.sharedbill.domain.datasources.GroupsRemoteDataSource
+import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
 import br.com.jwar.sharedbill.domain.datasources.UserDataSource
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
 import br.com.jwar.sharedbill.domain.services.AuthService
 import br.com.jwar.sharedbill.core.di.FirebaseModule.Companion.SIGN_IN_REQUEST
 import br.com.jwar.sharedbill.core.di.FirebaseModule.Companion.SIGN_UP_REQUEST
-import br.com.jwar.sharedbill.data.datasources.MemoryGroupsDataSource
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.FirebaseAuth
@@ -78,7 +77,7 @@ class DataModule {
     fun provideGroupsDataSource(
         firebaseAuth: FirebaseAuth,
         firestore: FirebaseFirestore,
-    ): GroupsRemoteDataSource = FirebaseGroupsDataSource(
+    ): GroupsDataSource = FirebaseGroupsDataSource(
         firebaseAuth = firebaseAuth,
         firestore = firestore
     )
@@ -86,10 +85,8 @@ class DataModule {
     @Provides
     @Singleton
     fun provideGroupsRepository(
-        groupsRemoteDataSource: GroupsRemoteDataSource,
-        groupsMemoryDataSource: MemoryGroupsDataSource
+        groupsDataSource: GroupsDataSource,
     ): GroupRepository = DefaultGroupRepository(
-        groupsRemoteDataSource = groupsRemoteDataSource,
-        groupsMemoryDataSource = groupsMemoryDataSource
+        groupsDataSource = groupsDataSource,
     )
 }

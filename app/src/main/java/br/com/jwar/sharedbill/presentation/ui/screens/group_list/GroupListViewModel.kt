@@ -45,14 +45,14 @@ class GroupListViewModel @Inject constructor(
     private fun onGroupCreate(title: String) = viewModelScope.launch {
         setLoadingState()
         createGroupUseCase(title)
-            .onSuccess { onGroupSelect(it.id) }
+            .onSuccess { onGroupSelect(it) }
             .onFailure { setErrorState(it) }
     }
 
     private fun onGroupJoin(code: String) = viewModelScope.launch {
         setLoadingState()
         groupJoinUseCase(code)
-            .onSuccess { onGroupSelect(it.id) }
+            .onSuccess { onGroupSelect(it) }
             .onFailure { setErrorState(it) }
     }
 
