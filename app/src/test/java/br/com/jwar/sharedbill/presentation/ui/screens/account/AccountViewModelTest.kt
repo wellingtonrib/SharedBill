@@ -4,7 +4,7 @@ import br.com.jwar.sharedbill.CoroutinesTestRule
 import br.com.jwar.sharedbill.Fakes
 import br.com.jwar.sharedbill.domain.exceptions.UserException
 import br.com.jwar.sharedbill.domain.model.User
-import br.com.jwar.sharedbill.domain.usecases.GetUserUseCase
+import br.com.jwar.sharedbill.domain.usecases.GetCurrentUserUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignOutUseCase
 import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
 import io.mockk.*
@@ -24,11 +24,11 @@ internal class AccountViewModelTest {
     val coroutineTestRule = CoroutinesTestRule()
 
     private val signOutUseCase = mockk<SignOutUseCase>()
-    private val getUserUseCase = mockk<GetUserUseCase>()
+    private val getCurrentUserUseCase = mockk<GetCurrentUserUseCase>()
     private val userToUserUiModelMapper = mockk<UserToUserUiModelMapper>()
     private val viewModel: AccountViewModel by lazy {
         AccountViewModel(
-            getUserUseCase = getUserUseCase,
+            getCurrentUserUseCase = getCurrentUserUseCase,
             signOutUseCase = signOutUseCase,
             userToUserUiModelMapper = userToUserUiModelMapper
         )
@@ -37,17 +37,17 @@ internal class AccountViewModelTest {
     @Test
     fun `GIVEN viewModel WHEN GetUser event SHOULD call getUserCase`() = runTest {
         //GIVEN
-        coEvery { getUserUseCase() } returns Result.success(User())
+        coEvery { getCurrentUserUseCase() } returns Result.success(User())
         //WHEN
         viewModel.emitEvent { AccountContract.Event.OnInit }
         //THEN
-        coVerify { getUserUseCase() }
+        coVerify { getCurrentUserUseCase() }
     }
 
     @Test
     fun `GIVEN viewModel WHEN GetUser event SHOULD update the ui state as Loading`() = runTest {
         //GIVEN
-        coEvery { getUserUseCase() } returns Result.success(User())
+        coEvery { getCurrentUserUseCase() } returns Result.success(User())
         //WHEN
         viewModel.emitEvent { AccountContract.Event.OnInit }
         //THEN
@@ -59,7 +59,7 @@ internal class AccountViewModelTest {
     fun `GIVEN there is an User WHEN GetUser event SHOULD update the ui state as Loaded with User`() = runTest {
         //GIVEN
         val user = Fakes.user
-        coEvery { getUserUseCase() } returns Result.success(user)
+        coEvery { getCurrentUserUseCase() } returns Result.success(user)
         //WHEN
         viewModel.emitEvent { AccountContract.Event.OnInit }
         //THEN
@@ -71,7 +71,7 @@ internal class AccountViewModelTest {
     fun `GIVEN there is an exception WHEN GetUser event SHOULD update the ui state as Error with message`() = runTest {
         //GIVEN
         val exception = Exception("Generic Exception")
-        coEvery { getUserUseCase() } returns Result.failure(UserException.UserNotFoundException)
+        coEvery { getCurrentUserUseCase() } returns Result.failure(UserException.UserNotFoundException)
         //WHEN
         viewModel.emitEvent { AccountContract.Event.OnInit }
         //THEN
@@ -83,7 +83,7 @@ internal class AccountViewModelTest {
     @Test
     fun `GIVEN a UserNotFoundException WHEN GetUser event SHOULD send effect GoToAuth`() = runTest {
         //GIVEN
-        coEvery { getUserUseCase() } returns Result.failure(UserException.UserNotFoundException)
+        coEvery { getCurrentUserUseCase() } returns Result.failure(UserException.UserNotFoundException)
         //WHEN
         viewModel.emitEvent { AccountContract.Event.OnInit }
         //THEN
@@ -95,7 +95,7 @@ internal class AccountViewModelTest {
     @Test
     fun `GIVEN viewModel WHEN SignOut event SHOULD call signOutUseCase`() = runTest {
         //GIVEN
-        coEvery { signOutUseCase() } just runs
+        coEvery { signOutUseCase() } returns mockk(relaxed = true)
         //WHEN
         viewModel.emitEvent { AccountContract.Event.OnSignOut }
         //THEN
@@ -105,7 +105,7 @@ internal class AccountViewModelTest {
     @Test
     fun `GIVEN successful signOut WHEN SignOut event SHOULD send effect GoToAuth`() = runTest {
         //GIVEN
-        coEvery { signOutUseCase() } just runs
+        coEvery { signOutUseCase() } returns mockk(relaxed = true)
         //WHEN
         viewModel.emitEvent { AccountContract.Event.OnSignOut }
         //THEN

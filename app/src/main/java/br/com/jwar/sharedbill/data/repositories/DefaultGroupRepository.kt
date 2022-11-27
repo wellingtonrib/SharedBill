@@ -9,6 +9,7 @@ import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
 
@@ -19,29 +20,21 @@ class DefaultGroupRepository @Inject constructor(
 
     private val cache = mutableSetOf<Group>()
 
-    override suspend fun getGroupsStream() =
+    override suspend fun getGroupsStream(): Flow<List<Group>> =
         groupsDataSource.getGroupsStream()
-            .onEach { result ->
-                result.getOrNull()?.let {
-                    groups -> groups.forEach { saveGroupInMemoryCache(it) }
-                }
-            }
+            .onEach { groups -> groups.forEach { saveGroupInMemoryCache(it) } }
             .flowOn(ioDispatcher)
 
     override suspend fun getGroupByIdStream(groupId: String) =
         groupsDataSource.getGroupByIdStream(groupId)
-            .onEach { result ->
-                result.getOrNull()?.let {
-                    saveGroupInMemoryCache(it)
-                }
-            }
+            .onEach { saveGroupInMemoryCache(it) }
             .flowOn(ioDispatcher)
 
-    override suspend fun getGroupById(groupId: String, refresh: Boolean): Result<Group> {
+    override suspend fun getGroupById(groupId: String, refresh: Boolean): Group {
         val cached = getGroupByIdFromCache(groupId).getOrNull()
         return if (cached == null || refresh) {
-            groupsDataSource.getGroupById(groupId).onSuccess { saveGroupInMemoryCache(it) }
-        } else Result.success(cached)
+            groupsDataSource.getGroupById(groupId).also { saveGroupInMemoryCache(it) }
+        } else cached
     }
 
     override suspend fun getGroupByInviteCode(inviteCode: String) =

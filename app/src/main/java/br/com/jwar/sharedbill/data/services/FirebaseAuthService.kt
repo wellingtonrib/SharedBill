@@ -32,44 +32,25 @@ class FirebaseAuthService @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): AuthService {
 
-    override suspend fun signIn(): Result<BeginSignInResult> {
-        return withContext(ioDispatcher) {
-            try {
-                val signInResult = signInClient.beginSignIn(signInRequest).await()
-                Result.success(signInResult)
-            } catch (e: Exception) {
-                Result.failure(AuthException.SignInException)
-            }
+    override suspend fun signIn(): BeginSignInResult =
+        withContext(ioDispatcher) {
+            signInClient.beginSignIn(signInRequest).await() ?: throw AuthException.SignInException
         }
-    }
 
-    override suspend fun signUp(): Result<BeginSignInResult> {
-        return withContext(ioDispatcher) {
-            try {
-                val signInResult = signInClient.beginSignIn(signUpRequest).await()
-                Result.success(signInResult)
-            } catch (e: Exception) {
-                Result.failure(AuthException.SignUpException)
-            }
+    override suspend fun signUp(): BeginSignInResult =
+        withContext(ioDispatcher) {
+            signInClient.beginSignIn(signUpRequest).await() ?: throw AuthException.SignUpException
         }
-    }
 
-    override suspend fun signInFirebase(data: Intent?): Result<Boolean> {
-        return withContext(ioDispatcher) {
-            try {
-                val signInCredential = signInClient.getSignInCredentialFromIntent(data)
-                val authCredential = GoogleAuthProvider.getCredential(signInCredential.googleIdToken, null)
-                val authResult = firebaseAuth.signInWithCredential(authCredential).await()
-                val firebaseUser = authResult.user ?: throw UserNotFoundException
-                firebaseUserToUserMapper.mapFrom(firebaseUser).run {
-                    userRepository.saveUser(this)
-                }
-                Result.success(true)
-            } catch (e: Exception) {
-                Result.failure(AuthException.SignInFirebaseException)
-            }
+    override suspend fun signInFirebase(data: Intent?) =
+        withContext(ioDispatcher) {
+            val signInCredential = signInClient.getSignInCredentialFromIntent(data)
+            val authCredential = GoogleAuthProvider.getCredential(signInCredential.googleIdToken, null)
+            val authResult = firebaseAuth.signInWithCredential(authCredential).await() ?: throw AuthException.SignInFirebaseException
+            val firebaseUser = authResult.user ?: throw UserNotFoundException
+            val domainUser = firebaseUserToUserMapper.mapFrom(firebaseUser)
+            userRepository.saveUser(domainUser)
         }
-    }
 
     override suspend fun signOut() =
         withContext(ioDispatcher) {

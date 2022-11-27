@@ -11,8 +11,7 @@ class GroupRemoveMemberUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository
 ) : GroupRemoveMemberUseCase {
     override suspend fun invoke(userId: String, groupId: String) = resultOf {
-        val group = groupRepository.getGroupById(groupId, true).getOrNull()
-            ?: throw GroupException.GroupNotFoundException
+        val group = groupRepository.getGroupById(groupId, true)
         val member = group.findMemberById(userId)
             ?: throw GroupException.MemberNotFoundException
         if (group.balance[userId].orZero() != ZERO)

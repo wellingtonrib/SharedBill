@@ -11,12 +11,10 @@ class GroupJoinUseCaseImpl @Inject constructor(
     private val userRepository: UserRepository
 ): GroupJoinUseCase {
     override suspend fun invoke(inviteCode: String) = resultOf {
-        val group = groupRepository.getGroupByInviteCode(inviteCode).getOrNull()
-            ?: throw GroupException.GroupNotFoundException
+        val group = groupRepository.getGroupByInviteCode(inviteCode)
         val invitedUser = group.members.firstOrNull { it.inviteCode == inviteCode }
             ?: throw GroupException.InvalidInviteCodeException
-        val currentUser = userRepository.getUser().getOrNull()
-            ?: throw GroupException.InvalidCurrentUser
+        val currentUser = userRepository.getCurrentUser()
         val joinedUser = invitedUser.copy(
             firebaseUserId = currentUser.firebaseUserId,
             inviteCode = "",

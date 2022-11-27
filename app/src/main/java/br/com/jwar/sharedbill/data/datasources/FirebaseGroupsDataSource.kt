@@ -14,6 +14,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.snapshots
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
@@ -39,17 +40,17 @@ class FirebaseGroupsDataSource @Inject constructor(
         const val PAYMENT_GROUP_ID_FIELD = "groupId"
     }
 
-    override suspend fun getGroupsStream() =
+    override suspend fun getGroupsStream(): Flow<List<Group>> =
         getUserGroupsQuery()
             .snapshots()
-            .map { mapResultFromSnapshots(it.documents) }
+            .map { docs -> docs.mapNotNull { mapGroupFromSnapshot(it) } }
             .flowOn(ioDispatcher)
 
     override suspend fun getGroupByIdStream(groupId: String) =
         getUserGroupsQuery()
             .whereEqualTo(GROUP_ID_FIELD, groupId)
             .snapshots()
-            .map { mapResultFromSnapshot(it.documents.first()) }
+            .map { mapGroupFromSnapshot(it.documents.first()) }
             .flowOn(ioDispatcher)
 
     override suspend fun getGroupById(groupId: String) =
@@ -60,7 +61,7 @@ class FirebaseGroupsDataSource @Inject constructor(
                 .await()
                 .documents
                 .firstOrNull()
-                .let { mapResultFromSnapshot(it) }
+                .let { mapGroupFromSnapshot(it) }
         }
 
     override suspend fun getGroupByInviteCode(inviteCode: String) =
@@ -71,7 +72,7 @@ class FirebaseGroupsDataSource @Inject constructor(
                 .await()
                 .documents
                 .firstOrNull()
-                .let { mapResultFromSnapshot(it) }
+                .let { mapGroupFromSnapshot(it) }
         }
 
     override suspend fun createGroup(group: Group): String =
@@ -125,17 +126,10 @@ class FirebaseGroupsDataSource @Inject constructor(
             firestore.collection(UNPROCESSED_PAYMENTS_REF).document(payment.id).set(payment)
         }
 
-    private suspend fun mapResultFromSnapshots(snapshots: MutableList<DocumentSnapshot>) =
-        snapshots.mapNotNull { mapGroupFromSnapshot(it) }.let { Result.success(it) }
-
-    private suspend fun mapResultFromSnapshot(snapshot: DocumentSnapshot?) =
-        mapGroupFromSnapshot(snapshot)?.let { Result.success(it) }
-            ?: kotlin.run { Result.failure(GroupNotFoundException) }
-
-    private suspend fun mapGroupFromSnapshot(snapshot: DocumentSnapshot?): Group? {
-        val group = snapshot?.toObject(Group::class.java)
-        val groupUnprocessedPayments = getUnprocessedPayments(group?.id.orEmpty())
-        return group?.byProcessingPayments(groupUnprocessedPayments)?.byHandlingCurrentUser()
+    private suspend fun mapGroupFromSnapshot(snapshot: DocumentSnapshot?): Group {
+        val group = snapshot?.toObject(Group::class.java) ?: throw GroupNotFoundException
+        val groupUnprocessedPayments = getUnprocessedPayments(group.id)
+        return group.byProcessingPayments(groupUnprocessedPayments).byHandlingCurrentUser()
     }
 
     private suspend fun getUnprocessedPayments(groupId: String) =

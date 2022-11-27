@@ -18,7 +18,7 @@ class DomainModule {
     @Singleton
     fun provideGetAuthUserUseCase(
         userRepository: UserRepository
-    ): GetUserUseCase = GetUserUseCaseImpl(userRepository)
+    ): GetCurrentUserUseCase = GetCurrentUserUseCaseImpl(userRepository)
 
     @Provides
     @Singleton

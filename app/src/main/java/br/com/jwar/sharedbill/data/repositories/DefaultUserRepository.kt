@@ -9,9 +9,9 @@ class DefaultUserRepository @Inject  constructor(
     private val userDataSource: UserDataSource,
 ): UserRepository {
 
-    override suspend fun getUser() = userDataSource.getUser()
+    override suspend fun getCurrentUser() = userDataSource.getCurrentUser()
 
-    override suspend fun saveUser(user: User) = userDataSource.updateUser(user)
+    override suspend fun saveUser(user: User) = userDataSource.saveUser(user)
 
     override suspend fun createUser(userName: String) = userDataSource.createUser(userName)
 }

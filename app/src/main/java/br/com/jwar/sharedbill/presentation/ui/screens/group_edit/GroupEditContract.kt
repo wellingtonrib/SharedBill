@@ -6,6 +6,7 @@ import br.com.jwar.sharedbill.presentation.base.UiEvent
 import br.com.jwar.sharedbill.presentation.base.UiState
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
+import br.com.jwar.sharedbill.presentation.ui.util.UiText
 
 class GroupEditContract {
 
@@ -21,12 +22,13 @@ class GroupEditContract {
     data class State(
         val isLoading: Boolean = false,
         val group: GroupUiModel? = null,
+        val shouldSelectMemberName: String? = null,
         val selectedMember: UserUiModel? = null
     ): UiState
 
     sealed class Effect: UiEffect {
         class OpenGroupSaved(val group: Group): Effect()
-        class ShowError(val message: String): Effect()
+        class ShowError(val error: UiText): Effect()
     }
 
 }

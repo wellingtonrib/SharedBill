@@ -23,10 +23,10 @@ class FirebaseUserDataSource @Inject constructor(
         const val USERS_REF = "users"
     }
 
-    override suspend fun getUser(): Result<User> =
+    override suspend fun getCurrentUser(): User =
         withContext(ioDispatcher) {
-            val firebaseUser = firebaseAuth.currentUser ?: return@withContext Result.failure(UserNotFoundException)
-            return@withContext Result.success(firebaseUserToUserMapper.mapFrom(firebaseUser))
+            val firebaseUser = firebaseAuth.currentUser ?: throw UserNotFoundException
+            firebaseUserToUserMapper.mapFrom(firebaseUser)
         }
 
     override suspend fun createUser(userName: String): Unit =
@@ -36,7 +36,7 @@ class FirebaseUserDataSource @Inject constructor(
             userDoc.set(user)
         }
 
-    override suspend fun updateUser(user: User): Unit =
+    override suspend fun saveUser(user: User): Unit =
         withContext(ioDispatcher) {
             firestore.collection(USERS_REF).document(user.firebaseUserId).set(user).await()
         }

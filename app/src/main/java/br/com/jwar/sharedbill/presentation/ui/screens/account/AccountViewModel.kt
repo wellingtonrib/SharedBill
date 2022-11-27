@@ -3,7 +3,7 @@ package br.com.jwar.sharedbill.presentation.ui.screens.account
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.User
-import br.com.jwar.sharedbill.domain.usecases.GetUserUseCase
+import br.com.jwar.sharedbill.domain.usecases.GetCurrentUserUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignOutUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class AccountViewModel @Inject constructor(
     private val signOutUseCase: SignOutUseCase,
-    private val getUserUseCase: GetUserUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val userToUserUiModelMapper: UserToUserUiModelMapper
 ): BaseViewModel<Event, State, Effect>() {
 
@@ -32,14 +32,16 @@ class AccountViewModel @Inject constructor(
 
     private fun onInit() = viewModelScope.launch {
         setLoadingState()
-        getUserUseCase()
+        getCurrentUserUseCase()
             .onSuccess { setLoadedState(it) }
             .onFailure { handleException(it) }
     }
 
     private fun onSignOut() = viewModelScope.launch {
+        setLoadingState()
         signOutUseCase()
-        sendGoAuthEffect()
+            .onSuccess { sendGoAuthEffect() }
+            .onFailure { handleException(it) }
     }
 
     private fun setLoadingState() = setState { State.Loading }

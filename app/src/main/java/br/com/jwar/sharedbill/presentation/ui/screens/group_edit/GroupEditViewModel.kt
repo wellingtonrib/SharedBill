@@ -5,6 +5,7 @@ import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.usecases.*
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
+import br.com.jwar.sharedbill.presentation.models.GroupEditingUiError
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.Effect
@@ -57,6 +58,7 @@ class GroupEditViewModel @Inject constructor(
     private fun onSaveMemberClick(userName: String, groupId: String) = viewModelScope.launch {
         setLoadingState()
         groupAddMemberUseCase(userName, groupId)
+            .onSuccess { setState { it.copy(shouldSelectMemberName = userName) } }
             .onFailure { sendErrorEffect(it) }
     }
 
@@ -70,21 +72,28 @@ class GroupEditViewModel @Inject constructor(
 
     private fun getEditingGroup() = uiState.value.group ?: GroupUiModel()
 
-    private fun setEditingGroup(group: Group, selectedMemberName: String? = null) =
+    private fun setEditingGroup(group: Group) =
         setState {
-            with(groupToGroupUiModelMapper.mapFrom(group)) {
-                it.copy(
-                    isLoading = false,
-                    group = this,
-                    selectedMember = this.members.firstOrNull { it.name == selectedMemberName }
-                )
+            val groupUiModel = groupToGroupUiModelMapper.mapFrom(group)
+            val shouldSelectMemberName = it.shouldSelectMemberName
+            val selectedMember = groupUiModel.members.firstOrNull { member ->
+                member.name == shouldSelectMemberName
             }
+            it.copy(
+                isLoading = false,
+                group = groupUiModel,
+                selectedMember = selectedMember,
+                shouldSelectMemberName = null
+            )
         }
 
     private fun setEditingGroup(group: GroupUiModel) = setState { it.copy(group = group) }
 
-    private fun sendErrorEffect(throwable: Throwable) =
-        sendEffect { Effect.ShowError(throwable.message.orEmpty()) }
+    private fun sendErrorEffect(throwable: Throwable) {
+        val error = GroupEditingUiError.mapFrom(throwable)
+        setState { it.copy(isLoading = false) }
+        sendEffect { Effect.ShowError(error.message) }
+    }
 
     private fun onGroupUpdated(group: GroupUiModel) = setEditingGroup(group)
 

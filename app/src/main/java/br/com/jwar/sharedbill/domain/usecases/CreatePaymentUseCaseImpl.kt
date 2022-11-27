@@ -16,8 +16,7 @@ class CreatePaymentUseCaseImpl(
         if (params.value.isEmpty()) throw PaymentException.EmptyValueException
         if (params.paidTo.isEmpty()) throw PaymentException.EmptyRelatedMembersException
 
-        val group = groupRepository.getGroupById(params.group.id, true).getOrNull()
-            ?: throw PaymentException.GroupNotFound
+        val group = groupRepository.getGroupById(params.group.id, true)
         val paidBy = group.findMemberById(params.paidBy.uid)
             ?: throw PaymentException.PayerNotInGroupException
         val createdBy = group.findCurrentUser()

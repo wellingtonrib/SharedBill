@@ -6,10 +6,10 @@ import br.com.jwar.sharedbill.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface GroupsDataSource {
-    suspend fun getGroupById(groupId: String): Result<Group>
-    suspend fun getGroupsStream(): Flow<Result<List<Group>>>
-    suspend fun getGroupByIdStream(groupId: String): Flow<Result<Group>>
-    suspend fun getGroupByInviteCode(inviteCode: String): Result<Group>
+    suspend fun getGroupById(groupId: String): Group
+    suspend fun getGroupsStream(): Flow<List<Group>>
+    suspend fun getGroupByIdStream(groupId: String): Flow<Group>
+    suspend fun getGroupByInviteCode(inviteCode: String): Group
     suspend fun createGroup(group: Group): String
     suspend fun updateGroup(groupId: String, title: String)
     suspend fun addMember(user: User, groupId: String)

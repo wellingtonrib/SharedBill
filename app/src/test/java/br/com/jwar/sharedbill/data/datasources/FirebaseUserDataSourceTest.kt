@@ -40,12 +40,12 @@ internal class FirebaseUserDataSourceTest {
         every { firebaseAuth.currentUser } returns mockk()
         every { firebaseUserToUserMapper.mapFrom(any()) } returns user
         //WHEN
-        val result = firebaseDataSource.getUser().getOrNull()
+        val result = firebaseDataSource.getCurrentUser()
         //THEN
-        assertEquals(user.name, result?.name)
-        assertEquals(user.id, result?.id)
-        assertEquals(user.email, result?.email)
-        assertEquals(user.photoUrl, result?.photoUrl)
+        assertEquals(user.name, result.name)
+        assertEquals(user.id, result.id)
+        assertEquals(user.email, result.email)
+        assertEquals(user.photoUrl, result.photoUrl)
     }
 
     @Test
@@ -53,7 +53,7 @@ internal class FirebaseUserDataSourceTest {
         //GIVEN
         every { firebaseAuth.currentUser } returns null
         //WHEN
-        val exception = assertFails { firebaseDataSource.getUser() }
+        val exception = assertFails { firebaseDataSource.getCurrentUser() }
         //THEN
         assertTrue(exception is UserException.UserNotFoundException)
     }

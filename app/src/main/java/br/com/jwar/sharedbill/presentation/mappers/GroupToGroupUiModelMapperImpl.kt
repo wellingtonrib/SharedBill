@@ -20,9 +20,11 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         )
 
     private fun mapBalance(from: Group): Map<String, BigDecimal> {
-        return from.balance.map {
+        return from.balance.mapNotNull {
             val member = from.findMemberById(it.key)
-            member?.firstName.orEmpty() to it.value.toBigDecimal()
+            if (member != null) {
+                member.firstName to it.value.toBigDecimal()
+            } else null
         }.associateBy({it.first}, {it.second})
     }
 }

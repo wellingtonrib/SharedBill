@@ -9,20 +9,20 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class GetUserUseCaseImplTest {
+internal class GetCurrentUserUseCaseImplTest {
 
     private val userRepository = mockk<UserRepository>()
-    private val useCase = GetUserUseCaseImpl(
+    private val useCase = GetCurrentUserUseCaseImpl(
         userRepository = userRepository
     )
 
     @Test
     fun `GIVEN GetUserUseCase WHEN invoked SHOULD call getUser from repository`() = runTest {
         //GIVEN
-        coEvery { userRepository.getUser() } returns mockk()
+        coEvery { userRepository.getCurrentUser() } returns mockk()
         //WHEN
         useCase.invoke()
         //THEN
-        coVerify { userRepository.getUser() }
+        coVerify { userRepository.getCurrentUser() }
     }
 }
