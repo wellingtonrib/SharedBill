@@ -2,7 +2,6 @@ package br.com.jwar.sharedbill.presentation.ui.screens.auth
 
 import android.content.Intent
 import androidx.lifecycle.viewModelScope
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.usecases.SignInFirebaseUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignInUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignUpUseCase
@@ -32,26 +31,23 @@ class AuthViewModel @Inject constructor(
 
     private fun onSignIn() = viewModelScope.launch {
         setAuthenticatingState()
-        when (val result = signInUseCase()) {
-            is Result.Success -> sendSignedInEffect(result.data)
-            is Result.Error -> emitOnRequestSignUpEvent()
-        }
+        signInUseCase()
+            .onSuccess { sendSignedInEffect(it) }
+            .onFailure { emitOnRequestSignUpEvent() }
     }
 
     private fun onSignUp() = viewModelScope.launch {
         setAuthenticatingState()
-        when (val result = signUpUseCase()) {
-            is Result.Success -> sendSignedInEffect(result.data)
-            is Result.Error -> setErrorState(result.exception)
-        }
+        signUpUseCase()
+            .onSuccess { sendSignedInEffect(it) }
+            .onFailure { setErrorState(it) }
     }
 
     private fun onSignInFirebase(data: Intent?) = viewModelScope.launch {
         setAuthenticatingState()
-        when (val result = signInFirebaseUseCase(data)) {
-            is Result.Success -> sendGoHomeEffect()
-            is Result.Error -> setErrorState(result.exception)
-        }
+        signInFirebaseUseCase(data)
+            .onSuccess { sendGoHomeEffect() }
+            .onFailure { setErrorState(it) }
     }
 
     private fun setAuthenticatingState() = setState { it.copy(isAuthenticating = true) }

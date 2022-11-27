@@ -3,7 +3,6 @@ package br.com.jwar.sharedbill.presentation.ui.screens.payment
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.usecases.CreatePaymentUseCase
 import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.domain.usecases.SendPaymentUseCase
@@ -37,26 +36,23 @@ class PaymentViewModel @Inject constructor(
 
     private fun onInit(groupId: String) = viewModelScope.launch {
         setLoadingState()
-        when (val result = getGroupByIdUseCase(groupId, false)) {
-            is Result.Success -> setPaymentParams(getPaymentParams(result.data))
-            is Result.Error -> handlePaymentError(result.exception)
-        }
+        getGroupByIdUseCase(groupId, false)
+            .onSuccess { setPaymentParams(getPaymentParams(it)) }
+            .onFailure { handlePaymentError(it) }
     }
 
     private fun onCreatePayment() = viewModelScope.launch {
         setLoadingState()
-        when (val result = createPaymentUseCase(getCurrentPaymentParams())) {
-            is Result.Success -> onSendPayment(result.data)
-            is Result.Error -> handlePaymentError(result.exception)
-        }
+        createPaymentUseCase(getCurrentPaymentParams())
+            .onSuccess { onSendPayment(it) }
+            .onFailure { handlePaymentError(it) }
     }
 
     private fun onSendPayment(payment: Payment) = viewModelScope.launch {
         setLoadingState()
-        when (val result = sendPaymentUseCase(payment)) {
-            is Result.Success -> sendFinishEffect()
-            is Result.Error -> handlePaymentError(result.exception)
-        }
+        sendPaymentUseCase(payment)
+            .onSuccess { sendFinishEffect() }
+            .onFailure { handlePaymentError(it) }
     }
 
     private fun getPaymentParams(group: Group): SendPaymentParams =

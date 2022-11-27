@@ -2,7 +2,6 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_details
 
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdStreamUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
@@ -32,17 +31,14 @@ class GroupDetailsViewModel @Inject constructor(
         getGroupByIdStreamUseCase(groupId)
             .onStart { setLoadingState() }
             .collect { result ->
-                when(result) {
-                    is Result.Success -> setLoadedState(result.data)
-                    is Result.Error -> setErrorState(result.exception)
-                }
+                result.onSuccess { setLoadedState(it) }.onFailure { setErrorState(it) }
             }
     }
 
     private fun setLoadingState() = setState { State.Loading }
 
-    private fun setErrorState(throwable: Exception) =
-        setState { State.Error(throwable.message.orEmpty()) }
+    private fun setErrorState(exception: Throwable) =
+        setState { State.Error(exception.message.orEmpty()) }
 
     private fun setLoadedState(group: Group) =
         setState { State.Loaded(groupToGroupUiModelMapper.mapFrom(group)) }

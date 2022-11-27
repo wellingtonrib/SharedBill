@@ -1,6 +1,5 @@
 package br.com.jwar.sharedbill.domain.repositories
 
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.model.User
 
 interface UserRepository {

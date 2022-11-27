@@ -6,7 +6,6 @@ import br.com.jwar.sharedbill.core.di.FirebaseModule.Companion.SIGN_UP_REQUEST
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
 import br.com.jwar.sharedbill.domain.exceptions.AuthException
 import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
 import br.com.jwar.sharedbill.domain.services.AuthService
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -37,9 +36,9 @@ class FirebaseAuthService @Inject constructor(
         return withContext(ioDispatcher) {
             try {
                 val signInResult = signInClient.beginSignIn(signInRequest).await()
-                Result.Success(signInResult)
+                Result.success(signInResult)
             } catch (e: Exception) {
-                Result.Error(AuthException.SignInException)
+                Result.failure(AuthException.SignInException)
             }
         }
     }
@@ -48,9 +47,9 @@ class FirebaseAuthService @Inject constructor(
         return withContext(ioDispatcher) {
             try {
                 val signInResult = signInClient.beginSignIn(signUpRequest).await()
-                Result.Success(signInResult)
+                Result.success(signInResult)
             } catch (e: Exception) {
-                Result.Error(AuthException.SignUpException)
+                Result.failure(AuthException.SignUpException)
             }
         }
     }
@@ -65,9 +64,9 @@ class FirebaseAuthService @Inject constructor(
                 firebaseUserToUserMapper.mapFrom(firebaseUser).run {
                     userRepository.saveUser(this)
                 }
-                Result.Success(true)
+                Result.success(true)
             } catch (e: Exception) {
-                Result.Error(AuthException.SignInFirebaseException)
+                Result.failure(AuthException.SignInFirebaseException)
             }
         }
     }

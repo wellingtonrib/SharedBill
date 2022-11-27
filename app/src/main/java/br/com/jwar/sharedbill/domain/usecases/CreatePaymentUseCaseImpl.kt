@@ -2,7 +2,6 @@ package br.com.jwar.sharedbill.domain.usecases
 
 import br.com.jwar.sharedbill.domain.exceptions.PaymentException
 import br.com.jwar.sharedbill.domain.model.Payment
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract
 import com.google.firebase.Timestamp
@@ -12,16 +11,16 @@ class CreatePaymentUseCaseImpl(
     private val groupRepository: GroupRepository
 ) : CreatePaymentUseCase {
     override suspend fun invoke(params: PaymentContract.SendPaymentParams): Result<Payment> {
-        if (params.description.isEmpty()) return Result.Error(PaymentException.EmptyDescriptionException)
-        if (params.value.isEmpty()) return Result.Error(PaymentException.EmptyValueException)
-        if (params.paidTo.isEmpty()) return Result.Error(PaymentException.EmptyRelatedMembersException)
+        if (params.description.isEmpty()) return Result.failure(PaymentException.EmptyDescriptionException)
+        if (params.value.isEmpty()) return Result.failure(PaymentException.EmptyValueException)
+        if (params.paidTo.isEmpty()) return Result.failure(PaymentException.EmptyRelatedMembersException)
 
         val group = groupRepository.getGroupById(params.group.id, true).getOrNull()
-            ?: return Result.Error(PaymentException.GroupNotFound)
+            ?: return Result.failure(PaymentException.GroupNotFound)
         val paidBy = group.findMemberById(params.paidBy.uid)
-            ?: return Result.Error(PaymentException.PayerNotInGroupException)
+            ?: return Result.failure(PaymentException.PayerNotInGroupException)
         val createdBy = group.findCurrentUser()
-            ?: return Result.Error(PaymentException.CurrentUserNotInGroupException)
+            ?: return Result.failure(PaymentException.CurrentUserNotInGroupException)
         val paidTo = group.members.filter { member ->
             params.paidTo.map { it.uid }.contains(member.id)
         }
@@ -35,6 +34,6 @@ class CreatePaymentUseCaseImpl(
             createdAt = Timestamp(params.date),
             createdBy = createdBy
         )
-        return Result.Success(payment)
+        return Result.success(payment)
     }
 }

@@ -2,7 +2,6 @@ package br.com.jwar.sharedbill.domain.usecases
 
 import br.com.jwar.sharedbill.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
 import javax.inject.Inject
@@ -13,11 +12,11 @@ class GroupJoinUseCaseImpl @Inject constructor(
 ): GroupJoinUseCase {
     override suspend fun invoke(inviteCode: String): Result<Group> {
         val group = groupRepository.getGroupByInviteCode(inviteCode).getOrNull()
-            ?: return Result.Error(GroupException.GroupNotFoundException)
+            ?: return Result.failure(GroupException.GroupNotFoundException)
         val invitedUser = group.members.firstOrNull { it.inviteCode == inviteCode }
-            ?: return Result.Error(GroupException.InvalidInviteCodeException)
+            ?: return Result.failure(GroupException.InvalidInviteCodeException)
         val currentUser = userRepository.getUser().getOrNull()
-            ?: return Result.Error(GroupException.InvalidCurrentUser)
+            ?: return Result.failure(GroupException.InvalidCurrentUser)
         val joinedUser = invitedUser.copy(
             firebaseUserId = currentUser.firebaseUserId,
             inviteCode = "",

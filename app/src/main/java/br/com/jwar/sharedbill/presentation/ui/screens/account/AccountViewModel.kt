@@ -2,7 +2,6 @@ package br.com.jwar.sharedbill.presentation.ui.screens.account
 
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.domain.usecases.GetUserUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignOutUseCase
@@ -33,10 +32,9 @@ class AccountViewModel @Inject constructor(
 
     private fun onInit() = viewModelScope.launch {
         setLoadingState()
-        when (val result = getUserUseCase()) {
-            is Result.Success -> setLoadedState(result.data)
-            is Result.Error -> handleException(result.exception)
-        }
+        getUserUseCase()
+            .onSuccess { setLoadedState(it) }
+            .onFailure { handleException(it) }
     }
 
     private fun onSignOut() = viewModelScope.launch {

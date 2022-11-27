@@ -3,7 +3,6 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_list
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.usecases.CreateGroupUseCase
 import br.com.jwar.sharedbill.domain.usecases.GetGroupsStreamUseCase
 import br.com.jwar.sharedbill.domain.usecases.GroupJoinUseCase
@@ -38,27 +37,23 @@ class GroupListViewModel @Inject constructor(
         getGroupsStreamUseCase()
             .onStart { setLoadingState() }
             .collect { result ->
-                when(result) {
-                    is Result.Success -> setLoadedState(result.data)
-                    is Result.Error -> setErrorState(result.exception)
-                }
+                result.onSuccess { setLoadedState(it) }
+                    .onFailure { setErrorState(it) }
             }
     }
 
     private fun onGroupCreate(title: String) = viewModelScope.launch {
         setLoadingState()
-        when (val result = createGroupUseCase(title)) {
-            is Result.Success -> onGroupSelect(result.data.id)
-            is Result.Error -> setErrorState(result.exception)
-        }
+        createGroupUseCase(title)
+            .onSuccess { onGroupSelect(it.id) }
+            .onFailure { setErrorState(it) }
     }
 
     private fun onGroupJoin(code: String) = viewModelScope.launch {
         setLoadingState()
-        when (val result = groupJoinUseCase(code)) {
-            is Result.Success -> onGroupSelect(result.data.id)
-            is Result.Error -> setErrorState(result.exception)
-        }
+        groupJoinUseCase(code)
+            .onSuccess { onGroupSelect(it.id) }
+            .onFailure { setErrorState(it) }
     }
 
     private fun setLoadingState() = setState { State.Loading }

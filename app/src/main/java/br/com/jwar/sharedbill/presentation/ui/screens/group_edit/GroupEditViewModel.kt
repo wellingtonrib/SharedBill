@@ -2,7 +2,6 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_edit
 
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.usecases.*
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
@@ -42,36 +41,31 @@ class GroupEditViewModel @Inject constructor(
         getGroupByIdStreamUseCase(groupId)
             .onStart { setLoadingState() }
             .collect { result ->
-                when(result) {
-                    is Result.Success -> setEditingGroup(result.data)
-                    is Result.Error -> sendErrorEffect(result.exception)
-                }
+                result.onSuccess { setEditingGroup(it) }
+                    .onFailure { sendErrorEffect(it) }
             }
     }
 
     private fun onSaveGroupClick() = viewModelScope.launch {
         setLoadingState()
         val group = getEditingGroup()
-        when (val result = updateGroupUseCase(group.id, group.title)) {
-            is Result.Success -> setEditingGroup(result.data)
-            is Result.Error -> sendErrorEffect(result.exception)
-        }
+        updateGroupUseCase(group.id, group.title)
+            .onSuccess { setEditingGroup(it) }
+            .onFailure { sendErrorEffect(it) }
     }
 
     private fun onSaveMemberClick(userName: String, groupId: String) = viewModelScope.launch {
         setLoadingState()
-        when (val result = groupAddMemberUseCase(userName, groupId)) {
-            is Result.Success -> setEditingGroup(result.data, userName)
-            is Result.Error -> sendErrorEffect(result.exception)
-        }
+        groupAddMemberUseCase(userName, groupId)
+            .onSuccess { setEditingGroup(it, userName) }
+            .onFailure { sendErrorEffect(it) }
     }
 
     private fun onMemberDeleteClick(userId: String, groupId: String) = viewModelScope.launch {
         setLoadingState()
-        when (val result = groupRemoveMemberUseCase(userId, groupId)) {
-            is Result.Success -> setEditingGroup(result.data)
-            is Result.Error -> sendErrorEffect(result.exception)
-        }
+        groupRemoveMemberUseCase(userId, groupId)
+            .onSuccess { setEditingGroup(it) }
+            .onFailure { sendErrorEffect(it) }
     }
 
     private fun setLoadingState() = setState { it.copy(isLoading = true) }

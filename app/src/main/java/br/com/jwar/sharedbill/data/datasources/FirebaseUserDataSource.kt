@@ -3,7 +3,6 @@ package br.com.jwar.sharedbill.data.datasources
 import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
 import br.com.jwar.sharedbill.domain.datasources.UserDataSource
 import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -26,8 +25,8 @@ class FirebaseUserDataSource @Inject constructor(
 
     override suspend fun getUser(): Result<User> =
         withContext(ioDispatcher) {
-            val firebaseUser = firebaseAuth.currentUser ?: return@withContext Result.Error(UserNotFoundException)
-            return@withContext Result.Success(firebaseUserToUserMapper.mapFrom(firebaseUser))
+            val firebaseUser = firebaseAuth.currentUser ?: return@withContext Result.failure(UserNotFoundException)
+            return@withContext Result.success(firebaseUserToUserMapper.mapFrom(firebaseUser))
         }
 
     override suspend fun createUser(userName: String): Unit =

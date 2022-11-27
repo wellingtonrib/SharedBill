@@ -5,7 +5,6 @@ import br.com.jwar.sharedbill.domain.datasources.GroupsRemoteDataSource
 import br.com.jwar.sharedbill.domain.exceptions.GroupException.GroupNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
@@ -133,11 +132,11 @@ class FirebaseGroupsDataSource @Inject constructor(
         }
 
     private suspend fun mapResultFromSnapshots(snapshots: MutableList<DocumentSnapshot>) =
-        snapshots.mapNotNull { mapGroupFromSnapshot(it) }.let { Result.Success(it) }
+        snapshots.mapNotNull { mapGroupFromSnapshot(it) }.let { Result.success(it) }
 
     private suspend fun mapResultFromSnapshot(snapshot: DocumentSnapshot?) =
-        mapGroupFromSnapshot(snapshot)?.let { Result.Success(it) }
-            ?: kotlin.run { Result.Error(GroupNotFoundException) }
+        mapGroupFromSnapshot(snapshot)?.let { Result.success(it) }
+            ?: kotlin.run { Result.failure(GroupNotFoundException) }
 
     private suspend fun mapGroupFromSnapshot(snapshot: DocumentSnapshot?): Group? {
         val group = snapshot?.toObject(Group::class.java)

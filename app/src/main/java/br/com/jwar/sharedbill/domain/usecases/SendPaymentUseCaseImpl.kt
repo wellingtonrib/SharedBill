@@ -9,5 +9,4 @@ class SendPaymentUseCaseImpl @Inject constructor(
 ): SendPaymentUseCase {
     override suspend fun invoke(payment: Payment) =
         groupRepository.sendPayment(payment)
-            .mapSuccess { payment }
     }

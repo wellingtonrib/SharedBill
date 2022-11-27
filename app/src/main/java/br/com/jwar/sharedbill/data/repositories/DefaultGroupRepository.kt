@@ -5,7 +5,6 @@ import br.com.jwar.sharedbill.domain.datasources.GroupsRemoteDataSource
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.model.User
-import br.com.jwar.sharedbill.domain.model.Result
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -41,7 +40,7 @@ class DefaultGroupRepository @Inject constructor(
         val cached = groupsMemoryDataSource.getGroupById(groupId).getOrNull()
         return if (cached == null || refresh) {
             groupsRemoteDataSource.getGroupById(groupId).onSuccess { saveGroupInMemoryCache(it) }
-        } else Result.Success(cached)
+        } else Result.success(cached)
     }
 
     override suspend fun getGroupByInviteCode(inviteCode: String) =
