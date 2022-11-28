@@ -9,34 +9,37 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import br.com.jwar.sharedbill.R
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen.GroupDetails
 import br.com.jwar.sharedbill.presentation.navigation.AppTopBar
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.Effect
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.components.GroupEditContent
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun GroupEditScreen(
-    navController: NavController,
+    navigateBack: () -> Unit = {},
     snackbarHostState: SnackbarHostState,
     viewModel: GroupEditViewModel = hiltViewModel(),
     groupId: String
 ) {
     val state = viewModel.uiState.collectAsState().value
     val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column {
         AppTopBar(
-            navController = navController,
+            navigationBack = navigateBack,
             title = stringResource(id = R.string.label_group_edit),
             actions = {
                 IconButton(onClick = {
                     viewModel.emitEvent { Event.OnSaveGroupClick }
+                    keyboardController?.hide()
                 }) {
                     Icon(Icons.Filled.Done, stringResource(id = R.string.label_group_manage))
                 }
@@ -62,15 +65,13 @@ fun GroupEditScreen(
         viewModel.emitEvent { Event.OnInit(groupId) }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
-                is Effect.OpenGroupSaved -> {
-                    with(navController) {
-                        popBackStack()
-                        navigate(GroupDetails.createRoute(effect.group.id))
-                    }
-                }
                 is Effect.ShowError ->
                     snackbarHostState.showSnackbar(
-                        effect.error.asString(context)
+                        message = effect.error.asString(context)
+                    )
+                is Effect.ShowSuccess ->
+                    snackbarHostState.showSnackbar(
+                        message = context.getString(R.string.message_group_saved_successfull)
                     )
             }
         }

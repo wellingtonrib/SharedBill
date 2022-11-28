@@ -37,24 +37,108 @@ fun NavGraph(
         exitTransition = { ExitTransition.None }
     ) {
         composable(route = Auth.route) {
-            AuthScreen(navController = navController, snackbarHostState = snackbarHostState)
+            createAuthScreenRoute(navController, snackbarHostState)
         }
         composable(route = Account.route) {
-            AccountScreen(navController = navController)
+            createAccountScreenRoute(navController)
         }
         composable(route = GroupList.route) {
-            GroupListScreen(navController = navController)
+            createGroupListScreenRoute(navController)
         }
         composable(route = GroupDetails.route) { backStackEntry ->
-            GroupDetailsScreen(navController = navController, groupId = backStackEntry.getGroupId())
+            createGroupDetailsScreenRoute(navController, backStackEntry)
         }
         composable(route = GroupEdit.route) { backStackEntry ->
-            GroupEditScreen(navController = navController, snackbarHostState = snackbarHostState, groupId = backStackEntry.getGroupId())
+            createGroupEditScreenRoute(navController, backStackEntry, snackbarHostState)
         }
         composable(route = Payment.route) { backStackEntry ->
-            PaymentScreen(navController = navController, snackbarHostState = snackbarHostState, groupId = backStackEntry.getGroupId())
+            createPaymentScreenRoute(navController, backStackEntry, snackbarHostState)
         }
     }
+}
+
+@Composable
+private fun createPaymentScreenRoute(
+    navController: NavHostController,
+    backStackEntry: NavBackStackEntry,
+    snackbarHostState: SnackbarHostState
+) {
+    PaymentScreen(
+        navigateBack = { navController.popBackStack() },
+        snackbarHostState = snackbarHostState,
+        groupId = backStackEntry.getGroupId()
+    )
+}
+
+@Composable
+private fun createGroupEditScreenRoute(
+    navController: NavHostController,
+    backStackEntry: NavBackStackEntry,
+    snackbarHostState: SnackbarHostState
+) {
+    GroupEditScreen(
+        navigateBack = { navController.popBackStack() },
+        snackbarHostState = snackbarHostState,
+        groupId = backStackEntry.getGroupId()
+    )
+}
+
+@Composable
+private fun createGroupDetailsScreenRoute(
+    navController: NavHostController,
+    backStackEntry: NavBackStackEntry
+) {
+    GroupDetailsScreen(
+        navigateBack = { navController.popBackStack() },
+        navigateToGroupEdit = { groupId ->
+            navController.navigate(GroupEdit.createRoute(groupId))
+        },
+        navigateToNewPayment = { groupId ->
+            navController.navigate(Payment.createRoute(groupId))
+        },
+        groupId = backStackEntry.getGroupId()
+    )
+}
+
+@Composable
+private fun createGroupListScreenRoute(navController: NavHostController) {
+    GroupListScreen(
+        navigateToAuth = {
+            navController.popBackStack()
+            navController.navigate(Auth.route)
+        },
+        navigateToGroupDetails = { groupId ->
+            navController.navigate(GroupDetails.createRoute(groupId))
+        }
+    )
+}
+
+@Composable
+private fun createAccountScreenRoute(navController: NavHostController) {
+    AccountScreen(
+        navigateToAuth = {
+            navController.navigate(Auth.route)
+        }
+    )
+}
+
+@Composable
+private fun createAuthScreenRoute(
+    navController: NavHostController,
+    snackbarHostState: SnackbarHostState
+) {
+    AuthScreen(
+        navigateToHome = {
+            navController.navigate(Account.route) {
+                navController.currentBackStackEntry?.destination?.route?.let {
+                    popUpTo(it) {
+                        inclusive = true
+                    }
+                }
+            }
+        },
+        snackbarHostState = snackbarHostState
+    )
 }
 
 private fun NavBackStackEntry.getGroupId() = arguments?.getString(GROUP_ID_ARG).orEmpty()

@@ -14,7 +14,8 @@ data class GroupUiModel(
     val membersNames: String = "",
     val members: List<UserUiModel> = emptyList(),
     val payments: List<PaymentUiModel> = emptyList(),
-    val balance: Map<String, BigDecimal> = mapOf()
+    val balance: Map<String, BigDecimal> = mapOf(),
+    val total: String = "",
 ) {
     @Composable
     fun getBalanceTextFromValue(value: BigDecimal) = when {
@@ -53,7 +54,8 @@ data class GroupUiModel(
                 "Member One" to BigDecimal("100"),
                 "Member Two" to BigDecimal("-100"),
                 "Member Three" to BigDecimal.ZERO,
-            )
+            ),
+            total = "$300"
         )
     }
 }

@@ -1,24 +1,18 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_details.components
 
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.theme.verticalSpaceMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.VerticalSpacerMedium
 
 @Composable
 fun GroupsDetails(
@@ -45,7 +39,7 @@ fun GroupsDetails(
             }
             item {
                 GroupBalance(group)
-                Spacer(modifier = Modifier.verticalSpaceMedium())
+                VerticalSpacerMedium()
             }
             items(group.payments) { payment ->
                 GroupPaymentCard(payment, group)

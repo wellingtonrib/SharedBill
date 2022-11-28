@@ -1,6 +1,5 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_edit
 
-import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.presentation.base.UiEffect
 import br.com.jwar.sharedbill.presentation.base.UiEvent
 import br.com.jwar.sharedbill.presentation.base.UiState
@@ -22,12 +21,12 @@ class GroupEditContract {
     data class State(
         val isLoading: Boolean = false,
         val group: GroupUiModel? = null,
-        val shouldSelectMemberName: String? = null,
+        val shouldSelectMemberByName: String? = null,
         val selectedMember: UserUiModel? = null
     ): UiState
 
     sealed class Effect: UiEffect {
-        class OpenGroupSaved(val group: Group): Effect()
+        object ShowSuccess: Effect()
         class ShowError(val error: UiText): Effect()
     }
 

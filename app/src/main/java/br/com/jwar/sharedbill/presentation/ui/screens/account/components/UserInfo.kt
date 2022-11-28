@@ -29,15 +29,17 @@ fun UserInfo(user: UserUiModel) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val placeholder = forwardingPainter(
+            painter = painterResource(R.drawable.ic_baseline_person_24),
+            colorFilter = ColorFilter.tint(AppTheme.colors.primary)
+        )
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(user.imageUrl)
                 .crossfade(true)
                 .build(),
-            placeholder = forwardingPainter(
-                painter = painterResource(R.drawable.ic_baseline_person_24),
-                colorFilter = ColorFilter.tint(AppTheme.colors.primary)
-            ),
+            placeholder = placeholder,
+            error = placeholder,
             contentDescription = stringResource(id = R.string.description_user_image),
             contentScale = ContentScale.Crop,
             modifier = Modifier

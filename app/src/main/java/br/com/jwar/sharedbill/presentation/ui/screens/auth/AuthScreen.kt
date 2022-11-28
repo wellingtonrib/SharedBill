@@ -9,8 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.Effect
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.components.AuthContent
@@ -18,7 +16,7 @@ import com.google.android.gms.auth.api.identity.BeginSignInResult
 
 @Composable
 fun AuthScreen(
-    navController: NavController,
+    navigateToHome: () -> Unit = {},
     snackbarHostState: SnackbarHostState,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
@@ -47,13 +45,7 @@ fun AuthScreen(
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is Effect.GoToHome -> {
-                    navController.navigate(AppScreen.Account.route) {
-                        navController.currentBackStackEntry?.destination?.route?.let {
-                            popUpTo(it) {
-                                inclusive =  true
-                            }
-                        }
-                    }
+                    navigateToHome()
                 }
                 is Effect.LaunchSignInResult -> {
                     launchSignInResult(effect.signInResult)

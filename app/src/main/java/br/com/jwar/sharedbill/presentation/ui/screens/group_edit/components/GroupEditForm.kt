@@ -1,7 +1,6 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_edit.components
 
 
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -13,7 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
-import br.com.jwar.sharedbill.presentation.ui.theme.*
+import br.com.jwar.sharedbill.presentation.ui.theme.VerticalSpacerMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
 
 @Composable
 fun GroupEditForm(
@@ -36,13 +36,13 @@ fun GroupEditForm(
         ) {
             item {
                 GroupEditHeader(group, onGroupUpdated)
-                Spacer(modifier = Modifier.verticalSpaceMedium())
+                VerticalSpacerMedium()
             }
             item {
                 GroupEditMembersHeader()
             }
             items(group.members) { member ->
-                Spacer(modifier = Modifier.verticalSpaceMedium())
+                VerticalSpacerMedium()
                 GroupMemberCard(
                     member = member,
                     onMemberSelect = { onMemberSelectionChange(it) },

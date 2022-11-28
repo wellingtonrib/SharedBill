@@ -12,7 +12,7 @@ import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.State
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.State.*
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.theme.verticalSpaceMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.VerticalSpacerMedium
 
 @Composable
 fun AccountContent(
@@ -30,7 +30,7 @@ fun AccountContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     UserInfo(state.user)
-                    Spacer(modifier = Modifier.verticalSpaceMedium())
+                    VerticalSpacerMedium()
                     SignOutButton(onSignOutClick)
                 }
             }

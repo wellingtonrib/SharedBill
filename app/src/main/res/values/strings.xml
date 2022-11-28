@@ -38,6 +38,7 @@
     <string name="label_groups">Groups</string>
     <string name="label_account">Account</string>
     <string name="label_group_members_count">%1$d members</string>
+    <string name="label_total_spent">Total spent</string>
 
     <string name="message_welcome">Welcome %1$s</string>
     <string name="message_empty_content">Nothing here</string>
@@ -57,6 +58,7 @@
     <string name="message_payment_paid_to">Paid to %1$s</string>
     <string name="message_payment_created_at">Created at %1$s</string>
     <string name="message_payment_created_by">Created by %1$s</string>
+    <string name="message_group_saved_successfull">Group updated with success</string>
 
     <string name="placeholder_group_title">Ex. Trip</string>
     <string name="placeholder_add_member_name">Ex. Alex</string>
@@ -80,6 +82,8 @@
     <string name="error_payment_date_empty">Please provide a date</string>
     <string name="error_payment_empty_related_members">Please select some related members</string>
     <string name="error_removing_member_with_non_zero_balance">You cannot remove this user until settle up him</string>
+    <string name="error_group_invalid_title">Please provide a valid title</string>
+    <string name="error_invalid_user_name">Please provide first and last name</string>
 
     <string name="empty"/>
 

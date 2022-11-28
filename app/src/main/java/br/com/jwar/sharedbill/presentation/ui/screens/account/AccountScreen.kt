@@ -4,14 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Effect
 import br.com.jwar.sharedbill.presentation.ui.screens.account.components.AccountContent
 
 @Composable
 fun AccountScreen(
-    navController: NavController,
+    navigateToAuth: () -> Unit = {},
     viewModel: AccountViewModel = hiltViewModel()
 ) {
     val state = viewModel.uiState.collectAsState().value
@@ -26,7 +24,7 @@ fun AccountScreen(
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is Effect.GoToAuth -> {
-                    navController.navigate(AppScreen.Auth.route)
+                    navigateToAuth()
                 }
             }
         }

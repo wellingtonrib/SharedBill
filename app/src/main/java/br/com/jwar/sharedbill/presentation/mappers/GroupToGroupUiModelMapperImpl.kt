@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.presentation.mappers
 
+import br.com.jwar.sharedbill.core.extensions.toCurrency
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import java.math.BigDecimal
@@ -16,7 +17,8 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
             membersNames = from.members.joinToString(", ") { it.firstName },
             members = from.members.map { userToUserUiModelMapper.mapFrom(it) },
             payments = from.payments.map { paymentToPaymentUiModelMapper.mapFrom(it) },
-            balance = mapBalance(from)
+            balance = mapBalance(from),
+            total = from.payments.sumOf { it.value.toBigDecimal() }.toCurrency()
         )
 
     private fun mapBalance(from: Group): Map<String, BigDecimal> {

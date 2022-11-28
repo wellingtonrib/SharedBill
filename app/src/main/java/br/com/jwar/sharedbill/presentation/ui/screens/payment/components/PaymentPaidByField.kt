@@ -1,7 +1,6 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.payment.components
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,8 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.ui.generic_components.SelectDialog
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract
+import br.com.jwar.sharedbill.presentation.ui.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.theme.horizontalSpaceMedium
 
 @Composable
 fun PaymentPaidByField(
@@ -41,7 +40,7 @@ fun PaymentPaidByField(
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(text = stringResource(R.string.label_payment_paid_by))
-        Spacer(modifier = Modifier.horizontalSpaceMedium())
+        HorizontalSpacerMedium()
         Button(
             onClick = { isPaidBySelecting.value = true },
             modifier = Modifier.weight(1f),

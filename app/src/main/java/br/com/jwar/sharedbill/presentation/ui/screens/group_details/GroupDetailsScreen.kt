@@ -12,9 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import br.com.jwar.sharedbill.R
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen
 import br.com.jwar.sharedbill.presentation.navigation.AppTopBar
 import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.*
 import br.com.jwar.sharedbill.presentation.ui.screens.group_details.components.GroupDetailsContent
@@ -23,7 +21,9 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun GroupDetailsScreen(
-    navController: NavController,
+    navigateToGroupEdit: (String) -> Unit = {},
+    navigateToNewPayment: (String) -> Unit = {},
+    navigateBack: () -> Unit,
     groupId: String,
     viewModel: GroupDetailsViewModel = hiltViewModel()
 ) {
@@ -31,7 +31,7 @@ fun GroupDetailsScreen(
 
     Column(modifier = Modifier.fillMaxWidth()) {
         AppTopBar(
-            navController = navController,
+            navigationBack = navigateBack,
             title = stringResource(id = R.string.label_group_details),
             actions = {
                 IconButton(onClick = { viewModel.emitEvent { Event.OnManageClick } }) {
@@ -59,10 +59,10 @@ fun GroupDetailsScreen(
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.OpenGroupMembers -> {
-                    navController.navigate(AppScreen.GroupEdit.createRoute(groupId))
+                    navigateToGroupEdit(groupId)
                 }
                 is Effect.OpenNewPayment -> {
-                    navController.navigate(AppScreen.Payment.createRoute(groupId))
+                    navigateToNewPayment(groupId)
                 }
             }
         }

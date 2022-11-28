@@ -4,16 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen.GroupDetails
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Effect
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.Event
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.components.GroupListContent
 
 @Composable
 fun GroupListScreen(
-    navController: NavController,
+    navigateToAuth: () -> Unit,
+    navigateToGroupDetails: (String) -> Unit,
     viewModel: GroupListViewModel = hiltViewModel()
 ) {
     val state = viewModel.uiState.collectAsState().value
@@ -39,10 +37,9 @@ fun GroupListScreen(
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.OpenGroupDetails ->
-                    navController.navigate(GroupDetails.createRoute(effect.groupId))
+                    navigateToGroupDetails(effect.groupId)
                 is Effect.GoToAuth -> {
-                    navController.popBackStack()
-                    navController.navigate(AppScreen.Auth.route)
+                    navigateToAuth()
                 }
             }
         }

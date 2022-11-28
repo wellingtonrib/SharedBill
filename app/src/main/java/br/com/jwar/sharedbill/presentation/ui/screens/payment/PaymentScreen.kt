@@ -12,7 +12,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.navigation.AppTopBar
 import br.com.jwar.sharedbill.presentation.navigation.CloseNavigationIcon
@@ -22,7 +21,7 @@ import br.com.jwar.sharedbill.presentation.ui.screens.payment.components.Payment
 
 @Composable
 fun PaymentScreen(
-    navController: NavController,
+    navigateBack: () -> Unit = {},
     snackbarHostState: SnackbarHostState,
     viewModel: PaymentViewModel = hiltViewModel(),
     groupId: String
@@ -32,8 +31,8 @@ fun PaymentScreen(
 
     Column {
         AppTopBar(
-            navController = navController,
-            navigationIcon = { CloseNavigationIcon(navController) },
+            navigationBack = navigateBack,
+            navigationIcon = { CloseNavigationIcon(navigateBack) },
             title = stringResource(id = R.string.label_payment_new),
             actions = {
                 IconButton(onClick = {
@@ -54,7 +53,7 @@ fun PaymentScreen(
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.Finish -> {
-                    navController.popBackStack()
+                    navigateBack()
                 }
                 is Effect.ShowError -> {
                     snackbarHostState.showSnackbar(effect.text.asString(context))

@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.DismissState
 import androidx.compose.material.DismissValue
@@ -27,8 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
+import br.com.jwar.sharedbill.presentation.ui.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
-import br.com.jwar.sharedbill.presentation.ui.theme.horizontalSpaceMedium
 import br.com.jwar.sharedbill.presentation.ui.theme.sizeMedium
 import kotlinx.coroutines.launch
 
@@ -65,7 +64,7 @@ fun GroupMemberCard(
                         contentScale = ContentScale.Crop
                     )
                 }
-                Spacer(modifier = Modifier.horizontalSpaceMedium())
+                HorizontalSpacerMedium()
                 Text(text = member.name, style = AppTheme.typo.titleMedium)
             }
         }
