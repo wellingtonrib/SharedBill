@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -40,7 +41,10 @@ fun GroupEditHeader(
     }
 
     Card {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.padding(end = AppTheme.dimens.space_4),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Box(
                 modifier = Modifier
                     .sizeLarge()
@@ -66,7 +70,7 @@ fun GroupEditHeader(
                 placeholder = { Text(text = stringResource(R.string.placeholder_group_title)) },
                 onValueChange = { onGroupUpdated(group.copy(title = it)) },
             )
-            HorizontalSpacerMedium()
+            HorizontalSpacerLarge()
         }
     }
 }

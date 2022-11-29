@@ -15,10 +15,8 @@ import br.com.jwar.sharedbill.presentation.ui.theme.VerticalSpacerSmall
 
 @Composable
 fun GroupBalance(group: GroupUiModel) {
-    if (group.balance.isEmpty()) {
-        Text(stringResource(R.string.message_no_expenses))
-        return
-    }
+    if (group.balance.isEmpty()) return
+
     Column {
         group.balance.forEach { entry ->
             Row {

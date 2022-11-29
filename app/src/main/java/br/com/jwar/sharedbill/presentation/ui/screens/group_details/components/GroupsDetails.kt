@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
@@ -39,10 +40,17 @@ fun GroupsDetails(
             }
             item {
                 GroupBalance(group)
+            }
+            item {
                 VerticalSpacerMedium()
             }
             items(group.payments) { payment ->
                 GroupPaymentCard(payment, group)
+            }
+            item {
+                if (group.payments.isEmpty()) {
+                    GroupPaymentsEmpty(Modifier.fillParentMaxHeight())
+                }
             }
         }
     }
@@ -53,7 +61,7 @@ fun GroupsDetails(
 fun PreviewGroupDetails() {
     SharedBillTheme {
         Scaffold {
-            GroupsDetails(GroupUiModel.sample())
+            GroupsDetails(GroupUiModel.sample().copy(payments = emptyList()))
         }
     }
 }

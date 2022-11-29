@@ -131,7 +131,7 @@ private fun createAuthScreenRoute(
 ) {
     AuthScreen(
         navigateToHome = {
-            navController.navigate(Account.route) {
+            navController.navigate(GroupList.route) {
                 navController.currentBackStackEntry?.destination?.route?.let {
                     popUpTo(it) {
                         inclusive = true

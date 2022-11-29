@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.ui.generic_components.SwipeToDismissBackground
 import br.com.jwar.sharedbill.presentation.ui.generic_components.SwipeToDismissConfirm
-import br.com.jwar.sharedbill.presentation.ui.generic_components.SwipeToDismissLeaveAction
+import br.com.jwar.sharedbill.presentation.ui.generic_components.SwipeToDismissDeleteAction
 import br.com.jwar.sharedbill.presentation.ui.screens.account.components.UserImage
 import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
 import br.com.jwar.sharedbill.presentation.ui.theme.HorizontalSpacerMedium
@@ -29,7 +29,7 @@ fun GroupMemberCard(
     onMemberSelect: (member: UserUiModel) -> Unit = {},
     onMemberDelete: (userId: String) -> Unit = {}
 ) {
-    val swipeToDismissAction = SwipeToDismissLeaveAction(action = { onMemberDelete(member.uid) })
+    val swipeToDismissAction = SwipeToDismissDeleteAction(action = { onMemberDelete(member.uid) })
     val swipeToDismissState = SwipeToDismissConfirm(
         onConfirm = { swipeToDismissAction.action.invoke() }
     )

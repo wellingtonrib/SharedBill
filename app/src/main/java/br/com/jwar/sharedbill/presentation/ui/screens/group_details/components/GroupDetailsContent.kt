@@ -5,14 +5,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.State
-import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.State.Error
-import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.State.Loaded
-import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.State.Loading
-import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.generic_components.EmptyContent
-import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.presentation.ui.generic_components.ErrorContent
+import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
+import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.State
+import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsContract.State.*
+import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
 
 @Composable
@@ -27,7 +25,7 @@ fun GroupDetailsContent(
                 group = state.group,
                 onNewPaymentClick = { onNewPaymentClick(state.group.id) }
             )
-            is Error -> EmptyContent()
+            is Error -> ErrorContent()
         }
     }
 }
