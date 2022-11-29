@@ -7,12 +7,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen.Account
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen.Auth
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen.GroupDetails
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen.GroupEdit
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen.GroupList
-import br.com.jwar.sharedbill.presentation.navigation.AppScreen.Payment
+import br.com.jwar.sharedbill.presentation.navigation.AppScreen.*
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountScreen
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthScreen
 import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsScreen
@@ -43,7 +38,7 @@ fun NavGraph(
             createAccountScreenRoute(navController)
         }
         composable(route = GroupList.route) {
-            createGroupListScreenRoute(navController)
+            createGroupListScreenRoute(navController, snackbarHostState)
         }
         composable(route = GroupDetails.route) { backStackEntry ->
             createGroupDetailsScreenRoute(navController, backStackEntry)
@@ -101,14 +96,21 @@ private fun createGroupDetailsScreenRoute(
 }
 
 @Composable
-private fun createGroupListScreenRoute(navController: NavHostController) {
+private fun createGroupListScreenRoute(
+    navController: NavHostController,
+    snackbarHostState: SnackbarHostState
+) {
     GroupListScreen(
+        snackbarHostState = snackbarHostState,
         navigateToAuth = {
             navController.popBackStack()
             navController.navigate(Auth.route)
         },
         navigateToGroupDetails = { groupId ->
             navController.navigate(GroupDetails.createRoute(groupId))
+        },
+        navigateToGroupEdit = { groupId ->
+            navController.navigate(GroupEdit.createRoute(groupId))
         }
     )
 }

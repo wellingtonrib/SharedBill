@@ -27,7 +27,7 @@ class GroupEditContract {
 
     sealed class Effect: UiEffect {
         object ShowSuccess: Effect()
-        class ShowError(val error: UiText): Effect()
+        class ShowError(val message: UiText): Effect()
     }
 
 }

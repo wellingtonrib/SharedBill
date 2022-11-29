@@ -5,6 +5,8 @@ sealed class GroupException: Exception() {
     object MemberNotFoundException: GroupException()
     object InvalidUserNameException: GroupException()
     object InvalidInviteCodeException: GroupException()
-    object RemoveMemberWithNonZeroBalanceException: GroupException()
-    object InvalidTitle : Exception()
+    object RemovingMemberWithNonZeroBalanceException: GroupException()
+    object RemovingOwnerException: GroupException()
+    object InvalidTitle : GroupException()
+    object DeletingFromNonOwnerException : GroupException()
 }

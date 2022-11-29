@@ -67,7 +67,7 @@ fun GroupEditScreen(
             when(effect) {
                 is Effect.ShowError ->
                     snackbarHostState.showSnackbar(
-                        message = effect.error.asString(context)
+                        message = effect.message.asString(context)
                     )
                 is Effect.ShowSuccess ->
                     snackbarHostState.showSnackbar(

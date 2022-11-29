@@ -3,11 +3,10 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_list
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.usecases.CreateGroupUseCase
-import br.com.jwar.sharedbill.domain.usecases.GetGroupsStreamUseCase
-import br.com.jwar.sharedbill.domain.usecases.GroupJoinUseCase
+import br.com.jwar.sharedbill.domain.usecases.*
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
+import br.com.jwar.sharedbill.presentation.models.GroupUiError
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.onStart
@@ -19,6 +18,8 @@ class GroupListViewModel @Inject constructor(
     private val getGroupsStreamUseCase: GetGroupsStreamUseCase,
     private val createGroupUseCase: CreateGroupUseCase,
     private val groupJoinUseCase: GroupJoinUseCase,
+    private val deleteGroupUseCase: DeleteGroupUseCase,
+    private val leaveGroupUseCase: GroupLeaveUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper
 ): BaseViewModel<Event, State, Effect>() {
 
@@ -30,6 +31,8 @@ class GroupListViewModel @Inject constructor(
             is Event.OnGroupCreate -> onGroupCreate(event.title)
             is Event.OnGroupSelect -> onGroupSelect(event.groupId)
             is Event.OnGroupJoin -> onGroupJoin(event.inviteCode)
+            is Event.OnGroupDelete -> onGroupDelete(event.groupId)
+            is Event.OnGroupLeave -> onGroupLeave(event.groupId)
         }
     }
 
@@ -45,9 +48,12 @@ class GroupListViewModel @Inject constructor(
     private fun onGroupCreate(title: String) = viewModelScope.launch {
         setLoadingState()
         createGroupUseCase(title)
-            .onSuccess { onGroupSelect(it) }
+            .onSuccess { onGroupCreated(it) }
             .onFailure { setErrorState(it) }
     }
+
+    private fun onGroupCreated(groupId: String) =
+        sendEffect { Effect.OpenGroupEdit(groupId) }
 
     private fun onGroupJoin(code: String) = viewModelScope.launch {
         setLoadingState()
@@ -56,13 +62,29 @@ class GroupListViewModel @Inject constructor(
             .onFailure { setErrorState(it) }
     }
 
+    private fun onGroupDelete(groupId: String) = viewModelScope.launch {
+        deleteGroupUseCase(groupId)
+            .onSuccess { setLoadedStateRemoving(groupId) }
+            .onFailure { setErrorEffect(it) }
+    }
+
+    private fun onGroupLeave(groupId: String) = viewModelScope.launch {
+        leaveGroupUseCase(groupId)
+            .onSuccess { setLoadedStateRemoving(groupId) }
+            .onFailure { setErrorEffect(it) }
+    }
+
     private fun setLoadingState() = setState { State.Loading }
 
+    private fun getCurrentLoadedGroups() = (uiState.value as? State.Loaded)?.groups.orEmpty()
+
     private fun setLoadedState(groups: List<Group>) =
-        setState {
-            if (groups.isEmpty()) State.Empty
-            else State.Loaded(groups.map { groupToGroupUiModelMapper.mapFrom(it) })
-        }
+        setState { State.Loaded(groups.map { groupToGroupUiModelMapper.mapFrom(it) }) }
+
+    private fun setLoadedStateRemoving(groupId: String) =
+        setState { State.Loaded(getCurrentLoadedGroups().toMutableList().apply {
+            removeIf { it.id == groupId }
+        }.toList()) }
 
     private fun setErrorState(throwable: Throwable) {
         setState { State.Error(throwable.message) }
@@ -71,6 +93,10 @@ class GroupListViewModel @Inject constructor(
         }
     }
 
-    private fun onGroupSelect(groupId: String) =
-        sendEffect { Effect.OpenGroupDetails(groupId) }
+    private fun setErrorEffect(throwable: Throwable) {
+        val error = GroupUiError.mapFrom(throwable)
+        sendEffect { Effect.Error(error.message) }
+    }
+
+    private fun onGroupSelect(groupId: String) = sendEffect { Effect.OpenGroupDetails(groupId) }
 }

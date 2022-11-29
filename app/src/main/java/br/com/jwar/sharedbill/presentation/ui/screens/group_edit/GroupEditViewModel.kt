@@ -2,19 +2,20 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_edit
 
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
-import br.com.jwar.sharedbill.domain.usecases.*
+import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdStreamUseCase
+import br.com.jwar.sharedbill.domain.usecases.GroupAddMemberUseCase
+import br.com.jwar.sharedbill.domain.usecases.GroupRemoveMemberUseCase
+import br.com.jwar.sharedbill.domain.usecases.UpdateGroupUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
-import br.com.jwar.sharedbill.presentation.models.GroupEditingUiError
+import br.com.jwar.sharedbill.presentation.models.GroupUiError
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
-import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.Effect
-import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.Event
-import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.State
+import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.onStart
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class GroupEditViewModel @Inject constructor(
@@ -97,7 +98,7 @@ class GroupEditViewModel @Inject constructor(
     }
 
     private fun sendErrorEffect(throwable: Throwable) {
-        val error = GroupEditingUiError.mapFrom(throwable)
+        val error = GroupUiError.mapFrom(throwable)
         setState { it.copy(isLoading = false) }
         sendEffect { Effect.ShowError(error.message) }
     }

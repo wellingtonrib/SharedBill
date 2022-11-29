@@ -126,6 +126,11 @@ class FirebaseGroupsDataSource @Inject constructor(
             firestore.collection(UNPROCESSED_PAYMENTS_REF).document(payment.id).set(payment)
         }
 
+    override suspend fun deleteGroup(groupId: String) {
+        val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
+        groupDoc.delete()
+    }
+
     private suspend fun mapGroupFromSnapshot(snapshot: DocumentSnapshot?): Group {
         val group = snapshot?.toObject(Group::class.java) ?: throw GroupNotFoundException
         val groupUnprocessedPayments = getUnprocessedPayments(group.id)

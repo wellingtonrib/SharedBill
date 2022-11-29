@@ -56,7 +56,7 @@ fun PaymentScreen(
                     navigateBack()
                 }
                 is Effect.ShowError -> {
-                    snackbarHostState.showSnackbar(effect.text.asString(context))
+                    snackbarHostState.showSnackbar(effect.message.asString(context))
                 }
             }
         }

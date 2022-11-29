@@ -6,7 +6,7 @@ import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.core.extensions.toCurrency
 import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
 import java.math.BigDecimal
-import java.util.UUID
+import java.util.*
 
 data class GroupUiModel(
     val id: String = "",
@@ -16,6 +16,7 @@ data class GroupUiModel(
     val payments: List<PaymentUiModel> = emptyList(),
     val balance: Map<String, BigDecimal> = mapOf(),
     val total: String = "",
+    val isCurrentUserOwner: Boolean = false
 ) {
     @Composable
     fun getBalanceTextFromValue(value: BigDecimal) = when {

@@ -65,8 +65,28 @@ fun Modifier.paddingLarge() =
     Modifier.padding(AppTheme.dimens.space_10)
 
 @Composable
+fun Modifier.verticalPaddingSmall() =
+    Modifier.padding(top = AppTheme.dimens.space_4, bottom = AppTheme.dimens.space_4)
+
+@Composable
 fun Modifier.verticalPaddingMedium() =
     Modifier.padding(top = AppTheme.dimens.space_8, bottom = AppTheme.dimens.space_8)
+
+@Composable
+fun Modifier.verticalPaddingLarge() =
+    Modifier.padding(top = AppTheme.dimens.space_10, bottom = AppTheme.dimens.space_10)
+
+@Composable
+fun Modifier.horizontalPaddingSmall() =
+    Modifier.padding(start = AppTheme.dimens.space_4, end = AppTheme.dimens.space_4)
+
+@Composable
+fun Modifier.horizontalPaddingMedium() =
+    Modifier.padding(start = AppTheme.dimens.space_8, end = AppTheme.dimens.space_8)
+
+@Composable
+fun Modifier.horizontalPaddingLarge() =
+    Modifier.padding(start = AppTheme.dimens.space_10, end = AppTheme.dimens.space_10)
 
 @Composable
 fun Modifier.sizeSmall() =

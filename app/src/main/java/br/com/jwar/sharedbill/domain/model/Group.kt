@@ -9,7 +9,6 @@ data class Group(
     val payments: List<Payment> = emptyList(),
     val balance: Map<String, String> = emptyMap()
 ) {
-
     fun findMemberById(id: String) =
         members.firstOrNull { it.id == id }
 
