@@ -23,8 +23,8 @@ import java.util.*
 
 @Composable
 fun PaymentDateField(
-    params: PaymentContract.SendPaymentParams,
-    onPaymentParamsChange: (PaymentContract.SendPaymentParams) -> Unit = {}
+    params: PaymentContract.PaymentParams,
+    onPaymentParamsChange: (PaymentContract.PaymentParams) -> Unit = {}
 ) {
     val calendar = Calendar.getInstance()
     val datePickerDialog = DatePickerDialog(
@@ -63,7 +63,7 @@ fun PaymentDateField(
 fun PreviewPaymentDateField() {
     SharedBillTheme {
         PaymentDateField(
-            PaymentContract.SendPaymentParams.sample()
+            PaymentContract.PaymentParams.sample()
         )
     }
 }

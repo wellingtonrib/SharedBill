@@ -13,13 +13,13 @@ class PaymentContract {
 
     sealed class Event: UiEvent {
         class OnInit(val groupId: String): Event()
-        class OnPaymentParamsChange(val params: SendPaymentParams) : Event()
+        class OnParamsChange(val params: PaymentParams) : Event()
         object OnCreatePayment : Event()
     }
 
     data class State(
         val isLoading: Boolean = false,
-        val params: SendPaymentParams? = null,
+        val params: PaymentParams? = null,
     ): UiState
 
     sealed class Effect: UiEffect {
@@ -27,7 +27,7 @@ class PaymentContract {
         class ShowError(val message: UiText): Effect()
     }
 
-    data class SendPaymentParams(
+    data class PaymentParams(
         val description: String = "",
         val value: String = "",
         val paidBy: UserUiModel = UserUiModel(),
@@ -37,7 +37,7 @@ class PaymentContract {
         val error: PaymentUiError? = null
     ) {
         companion object {
-            fun sample() = SendPaymentParams(
+            fun sample() = PaymentParams(
                 group = GroupUiModel.sample(),
                 paidBy = UserUiModel.sample(),
                 paidTo = listOf(

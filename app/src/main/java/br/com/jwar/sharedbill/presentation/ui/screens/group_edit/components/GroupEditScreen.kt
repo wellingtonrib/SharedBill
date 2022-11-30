@@ -28,8 +28,8 @@ fun GroupEditScreen(
 ) {
     when {
         state.isLoading -> LoadingContent()
-        state.group != null -> GroupEditForm(
-            group = state.group,
+        state.uiModel != null -> GroupEditForm(
+            group = state.uiModel,
             selectedMember = state.selectedMember,
             onGroupUpdated = onGroupUpdated,
             onSaveMemberClick = onSaveMemberClick,
@@ -52,7 +52,7 @@ fun previewGroupEditContent() {
     SharedBillTheme {
         Scaffold {
             GroupEditScreen(
-                state = State(group = GroupUiModel.sample()),
+                state = State(uiModel = GroupUiModel.sample()),
             )
         }
     }

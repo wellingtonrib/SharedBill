@@ -2,9 +2,9 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_edit
 
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
+import br.com.jwar.sharedbill.domain.usecases.AddMemberUseCase
 import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdStreamUseCase
-import br.com.jwar.sharedbill.domain.usecases.GroupAddMemberUseCase
-import br.com.jwar.sharedbill.domain.usecases.GroupRemoveMemberUseCase
+import br.com.jwar.sharedbill.domain.usecases.RemoveMemberUseCase
 import br.com.jwar.sharedbill.domain.usecases.UpdateGroupUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
@@ -20,9 +20,9 @@ import javax.inject.Inject
 @HiltViewModel
 class GroupEditViewModel @Inject constructor(
     private val getGroupByIdStreamUseCase: GetGroupByIdStreamUseCase,
-    private val groupAddMemberUseCase: GroupAddMemberUseCase,
+    private val addMemberUseCase: AddMemberUseCase,
     private val updateGroupUseCase: UpdateGroupUseCase,
-    private val groupRemoveMemberUseCase: GroupRemoveMemberUseCase,
+    private val removeMemberUseCase: RemoveMemberUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
 ): BaseViewModel<Event, State, Effect>() {
 
@@ -58,21 +58,21 @@ class GroupEditViewModel @Inject constructor(
 
     private fun onSaveMemberClick(userName: String, groupId: String) = viewModelScope.launch {
         setLoadingState()
-        groupAddMemberUseCase(userName, groupId)
+        addMemberUseCase(userName, groupId)
             .onSuccess { setShouldSelectMemberState(userName) }
             .onFailure { sendErrorEffect(it) }
     }
 
     private fun onMemberDeleteClick(userId: String, groupId: String) = viewModelScope.launch {
         setLoadingState()
-        groupRemoveMemberUseCase(userId, groupId)
+        removeMemberUseCase(userId, groupId)
             .onSuccess { sendSuccessEffect() }
             .onFailure { sendErrorEffect(it) }
     }
 
     private fun setLoadingState() = setState { it.copy(isLoading = true) }
 
-    private fun getEditingGroup() = uiState.value.group ?: GroupUiModel()
+    private fun getEditingGroup() = uiState.value.uiModel ?: GroupUiModel()
 
     private fun setEditingGroup(group: Group) =
         setState {
@@ -83,14 +83,14 @@ class GroupEditViewModel @Inject constructor(
             }
             it.copy(
                 isLoading = false,
-                group = groupUiModel,
+                uiModel = groupUiModel,
                 selectedMember = selectedMember,
                 shouldSelectMemberByName = null
             )
         }
 
     private fun setEditingGroup(group: GroupUiModel) =
-        setState { it.copy(isLoading = false, group = group) }
+        setState { it.copy(isLoading = false, uiModel = group) }
 
     private fun sendSuccessEffect() {
         setState { it.copy(isLoading = false) }

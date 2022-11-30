@@ -79,20 +79,20 @@ class DomainModule {
     @Singleton
     fun providesGroupAddMemberUseCase(
         groupRepository: GroupRepository
-    ): GroupAddMemberUseCase = GroupAddMemberUseCaseImpl(groupRepository)
+    ): AddMemberUseCase = AddMemberUseCaseImpl(groupRepository)
 
     @Provides
     @Singleton
     fun providesGroupRemoveMemberUseCase(
         groupRepository: GroupRepository
-    ): GroupRemoveMemberUseCase = GroupRemoveMemberUseCaseImpl(groupRepository)
+    ): RemoveMemberUseCase = RemoveMemberUseCaseImpl(groupRepository)
 
     @Provides
     @Singleton
     fun providesGroupJoinUseCase(
         groupRepository: GroupRepository,
         userRepository: UserRepository
-    ): GroupJoinUseCase = GroupJoinUseCaseImpl(groupRepository, userRepository)
+    ): JoinGroupUseCase = JoinGroupUseCaseImpl(groupRepository, userRepository)
 
     @Provides
     @Singleton
@@ -117,6 +117,6 @@ class DomainModule {
     @Singleton
     fun providesGroupLeaveUseCase(
         groupRepository: GroupRepository,
-        removeMemberUseCase: GroupRemoveMemberUseCase
-    ): GroupLeaveUseCase = GroupLeaveUseCaseImpl(groupRepository, removeMemberUseCase)
+        removeMemberUseCase: RemoveMemberUseCase
+    ): LeaveGroupUseCase = LeaveGroupUseCaseImpl(groupRepository, removeMemberUseCase)
 }

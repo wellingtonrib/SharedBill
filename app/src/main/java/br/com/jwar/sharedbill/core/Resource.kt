@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.domain.model
+package br.com.jwar.sharedbill.core
 
 sealed class Resource<out T> {
     object Loading: Resource<Nothing>()

@@ -5,6 +5,6 @@ import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract
 
 interface CreatePaymentUseCase {
     suspend operator fun invoke(
-        params: PaymentContract.SendPaymentParams
+        params: PaymentContract.PaymentParams
     ): Result<Payment>
 }

@@ -17,8 +17,8 @@ import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 
 @Composable
 fun PaymentValueField(
-    params: PaymentContract.SendPaymentParams,
-    onPaymentParamsChange: (PaymentContract.SendPaymentParams) -> Unit = {}
+    params: PaymentContract.PaymentParams,
+    onPaymentParamsChange: (PaymentContract.PaymentParams) -> Unit = {}
 ) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -38,6 +38,6 @@ fun PaymentValueField(
 @Composable
 fun PreviewPaymentValueField() {
     SharedBillTheme {
-        PaymentValueField(PaymentContract.SendPaymentParams.sample())
+        PaymentValueField(PaymentContract.PaymentParams.sample())
     }
 }

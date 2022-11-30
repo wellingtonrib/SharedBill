@@ -5,10 +5,10 @@ import br.com.jwar.sharedbill.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import javax.inject.Inject
 
-class GroupLeaveUseCaseImpl @Inject constructor(
+class LeaveGroupUseCaseImpl @Inject constructor(
     private val groupsRepository: GroupRepository,
-    private val removeMemberUseCase: GroupRemoveMemberUseCase
-): GroupLeaveUseCase {
+    private val removeMemberUseCase: RemoveMemberUseCase
+): LeaveGroupUseCase {
     override suspend fun invoke(groupId: String) = resultOf {
         val group = groupsRepository.getGroupById(groupId)
         val currentUser = group.findCurrentUser()

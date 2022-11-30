@@ -22,7 +22,7 @@ fun PaymentRoute(
 
     PaymentScreen(
         state = state,
-        onPaymentParamsChange = { viewModel.emitEvent { Event.OnPaymentParamsChange(it) }},
+        onPaymentParamsChange = { viewModel.emitEvent { Event.OnParamsChange(it) }},
         onSaveClick = { viewModel.emitEvent { Event.OnCreatePayment } },
         onNavigateBack = onNavigateBack,
     )

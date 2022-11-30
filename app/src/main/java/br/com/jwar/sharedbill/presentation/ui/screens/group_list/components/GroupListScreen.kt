@@ -22,7 +22,7 @@ fun GroupListScreen(
     when(state) {
         is State.Loading -> LoadingContent()
         is State.Loaded -> GroupList(
-            groups = state.groups,
+            groups = state.uiModel,
             onGroupClick = onGroupClick,
             onGroupCreate = onGroupCreate,
             onGroupJoin = onGroupJoin,

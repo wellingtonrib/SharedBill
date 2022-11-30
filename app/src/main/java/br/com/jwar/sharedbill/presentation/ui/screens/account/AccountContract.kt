@@ -13,7 +13,7 @@ class AccountContract {
 
     sealed class State : UiState  {
         object Loading: State()
-        class Loaded(val user: UserUiModel): State()
+        class Loaded(val uiModel: UserUiModel): State()
         class Error(val message: String): State()
     }
 

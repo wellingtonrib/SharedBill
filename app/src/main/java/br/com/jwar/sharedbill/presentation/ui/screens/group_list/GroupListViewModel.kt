@@ -17,9 +17,9 @@ import javax.inject.Inject
 class GroupListViewModel @Inject constructor(
     private val getGroupsStreamUseCase: GetGroupsStreamUseCase,
     private val createGroupUseCase: CreateGroupUseCase,
-    private val groupJoinUseCase: GroupJoinUseCase,
+    private val joinGroupUseCase: JoinGroupUseCase,
     private val deleteGroupUseCase: DeleteGroupUseCase,
-    private val leaveGroupUseCase: GroupLeaveUseCase,
+    private val leaveGroupUseCase: LeaveGroupUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper
 ): BaseViewModel<Event, State, Effect>() {
 
@@ -57,7 +57,7 @@ class GroupListViewModel @Inject constructor(
 
     private fun onGroupJoin(code: String) = viewModelScope.launch {
         setLoadingState()
-        groupJoinUseCase(code)
+        joinGroupUseCase(code)
             .onSuccess { onGroupSelect(it) }
             .onFailure { setErrorState(it) }
     }
@@ -76,7 +76,7 @@ class GroupListViewModel @Inject constructor(
 
     private fun setLoadingState() = setState { State.Loading }
 
-    private fun getCurrentLoadedGroups() = (uiState.value as? State.Loaded)?.groups.orEmpty()
+    private fun getCurrentLoadedGroups() = (uiState.value as? State.Loaded)?.uiModel.orEmpty()
 
     private fun setLoadedState(groups: List<Group>) =
         setState { State.Loaded(groups.map { groupToGroupUiModelMapper.mapFrom(it) }) }

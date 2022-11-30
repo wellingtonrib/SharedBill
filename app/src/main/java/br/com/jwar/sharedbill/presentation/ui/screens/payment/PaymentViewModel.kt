@@ -30,7 +30,7 @@ class PaymentViewModel @Inject constructor(
         when(event) {
             is Event.OnInit -> onInit(event.groupId)
             is Event.OnCreatePayment -> onCreatePayment()
-            is Event.OnPaymentParamsChange -> setPaymentParams(event.params)
+            is Event.OnParamsChange -> setPaymentParams(event.params)
         }
     }
 
@@ -55,9 +55,9 @@ class PaymentViewModel @Inject constructor(
             .onFailure { handlePaymentError(it) }
     }
 
-    private fun getPaymentParams(group: Group): SendPaymentParams =
+    private fun getPaymentParams(group: Group): PaymentParams =
         groupToGroupUiModelMapper.mapFrom(group).let { groupUiModel ->
-            SendPaymentParams(
+            PaymentParams(
                 group = groupUiModel,
                 paidBy = userToUserUiModelMapper.mapFrom(group.findCurrentUser() ?: group.owner),
                 paidTo = groupUiModel.members
@@ -66,10 +66,10 @@ class PaymentViewModel @Inject constructor(
 
     private fun setLoadingState() = setState { it.copy(isLoading = true) }
 
-    private fun setPaymentParams(params: SendPaymentParams) =
+    private fun setPaymentParams(params: PaymentParams) =
         setState { it.copy(isLoading = false, params = params) }
 
-    private fun getCurrentPaymentParams() = uiState.value.params ?: SendPaymentParams()
+    private fun getCurrentPaymentParams() = uiState.value.params ?: PaymentParams()
 
     private fun handlePaymentError(throwable: Throwable) {
         val paymentError = PaymentUiError.mapFrom(throwable)
