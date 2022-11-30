@@ -1,6 +1,8 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.account.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,32 +14,29 @@ import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.State
 import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.State.*
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.theme.verticalSpaceMedium
+import br.com.jwar.sharedbill.presentation.ui.theme.VerticalSpacerMedium
 
 @Composable
-fun AccountContent(
+fun AccountScreen(
     state: State,
     onSignOutClick: () -> Unit = {}
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        when(state) {
-            is Loading -> LoadingContent()
-            is Loaded -> {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    UserInfo(state.user)
-                    Spacer(modifier = Modifier.verticalSpaceMedium())
-                    SignOutButton(onSignOutClick)
-                }
-            }
-            is Error -> {
-                Text(text = state.message)
+    when(state) {
+        is Loading -> LoadingContent()
+        is Loaded -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                UserInfo(state.user)
+                VerticalSpacerMedium()
                 SignOutButton(onSignOutClick)
             }
+        }
+        is Error -> {
+            Text(text = state.message)
+            SignOutButton(onSignOutClick)
         }
     }
 }
@@ -48,7 +47,7 @@ fun AccountContent(
 fun PreviewAccountContent() {
     SharedBillTheme {
         Scaffold {
-            AccountContent(state = Loaded(
+            AccountScreen(state = Loaded(
                 UserUiModel.sample()
             ))
         }

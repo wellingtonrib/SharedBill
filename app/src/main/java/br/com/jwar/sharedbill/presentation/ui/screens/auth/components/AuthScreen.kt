@@ -12,7 +12,7 @@ import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 
 @Composable
-fun AuthContent(
+fun AuthScreen(
     state: AuthContract.State,
     onSignInClick: () -> Unit = {}
 ) {
@@ -30,7 +30,7 @@ fun AuthContent(
 fun PreviewAuthContent() {
     SharedBillTheme {
         Scaffold {
-            AuthContent(state = AuthContract.State(isAuthenticating = false))
+            AuthScreen(state = AuthContract.State(isAuthenticating = false))
         }
     }
 }

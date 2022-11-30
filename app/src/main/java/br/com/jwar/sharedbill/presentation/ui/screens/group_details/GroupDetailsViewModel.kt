@@ -22,8 +22,8 @@ class GroupDetailsViewModel @Inject constructor(
     override fun handleEvent(event: Event) {
         when(event) {
             is Event.OnInit -> onInit(event.groupId)
-            is Event.OnManageClick -> onManageClick()
-            is Event.OnNewPaymentClick -> onNewPaymentClick(event.groupId)
+            is Event.OnManage -> onManage()
+            is Event.OnNewPayment -> onNewPayment(event.groupId)
         }
     }
 
@@ -40,12 +40,12 @@ class GroupDetailsViewModel @Inject constructor(
     private fun setErrorState(exception: Throwable) =
         setState { State.Error(exception.message.orEmpty()) }
 
-    private fun setLoadedState(group: Group) =
-        setState { State.Loaded(groupToGroupUiModelMapper.mapFrom(group)) }
+    private fun setLoadedState(group: Group) {
+        if (group.title.isBlank()) onManage()
+        else setState { State.Loaded(groupToGroupUiModelMapper.mapFrom(group)) }
+    }
 
-    private fun onNewPaymentClick(groupId: String) =
-        sendEffect { Effect.OpenNewPayment(groupId) }
+    private fun onNewPayment(groupId: String) = sendEffect { Effect.OpenNewPayment(groupId) }
 
-    private fun onManageClick() =
-        sendEffect { Effect.OpenGroupMembers }
+    private fun onManage() = sendEffect { Effect.OpenGroupEdit }
 }

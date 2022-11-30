@@ -4,15 +4,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -28,8 +32,19 @@ fun GroupEditHeader(
     group: GroupUiModel,
     onGroupUpdated: (GroupUiModel) -> Unit = {},
 ) {
+    val titleFocusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        if (group.title.isBlank()) {
+            titleFocusRequester.requestFocus()
+        }
+    }
+
     Card {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.padding(end = AppTheme.dimens.space_4),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Box(
                 modifier = Modifier
                     .sizeLarge()
@@ -44,17 +59,18 @@ fun GroupEditHeader(
                     contentScale = ContentScale.Crop
                 )
             }
-            Spacer(modifier = Modifier.horizontalSpaceMedium())
+            HorizontalSpacerMedium()
             OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .focusRequester(titleFocusRequester),
                 shape = MaterialTheme.shapes.medium,
                 value = group.title,
                 label = { Text(text = stringResource(R.string.label_group_title)) },
                 placeholder = { Text(text = stringResource(R.string.placeholder_group_title)) },
-                onValueChange = { onGroupUpdated(group.copy(title = it)) }
+                onValueChange = { onGroupUpdated(group.copy(title = it)) },
             )
-            Spacer(modifier = Modifier.horizontalSpaceMedium())
+            HorizontalSpacerLarge()
         }
     }
 }

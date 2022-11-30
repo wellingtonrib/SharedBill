@@ -1,7 +1,6 @@
 package br.com.jwar.sharedbill.domain.usecases
 
 import br.com.jwar.sharedbill.core.extensions.resultOf
-import br.com.jwar.sharedbill.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
@@ -13,7 +12,7 @@ class CreateGroupUseCaseImpl @Inject constructor(
     private val userRepository: UserRepository
 ) : CreateGroupUseCase {
     override suspend fun invoke(title: String) = resultOf {
-        if (title.isBlank()) throw GroupException.InvalidTitle
+//        if (title.isBlank()) throw GroupException.InvalidTitle
 
         val userResult = userRepository.getCurrentUser()
         val owner = userResult.copy(id = UUID.randomUUID().toString())

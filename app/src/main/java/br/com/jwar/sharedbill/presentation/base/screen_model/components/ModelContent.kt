@@ -1,6 +1,6 @@
 package br.com.jwar.sharedbill.presentation.base.screen_model.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier

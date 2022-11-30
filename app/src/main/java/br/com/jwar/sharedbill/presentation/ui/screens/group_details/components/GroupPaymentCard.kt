@@ -3,7 +3,6 @@ package br.com.jwar.sharedbill.presentation.ui.screens.group_details.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -34,7 +33,7 @@ fun GroupPaymentCard(
                 modifier = Modifier.fillMaxWidthPaddingMedium()
             ) {
                 Text(text = payment.createdAt)
-                Spacer(modifier = Modifier.horizontalSpaceMedium())
+                HorizontalSpacerMedium()
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = payment.description)
                     Text(
@@ -42,11 +41,11 @@ fun GroupPaymentCard(
                         style = AppTheme.typo.labelSmall
                     )
                 }
-                Spacer(modifier = Modifier.horizontalSpaceMedium())
+                HorizontalSpacerMedium()
                 Text(text = payment.value)
             }
         }
-        Spacer(modifier = Modifier.verticalSpaceMedium())
+        VerticalSpacerMedium()
     }
 }
 

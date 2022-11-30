@@ -1,28 +1,28 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.payment.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.SendPaymentParams
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.State
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
 
 @Composable
-fun PaymentContent(
+fun PaymentScreen(
     state: State,
     onPaymentParamsChange: (SendPaymentParams) -> Unit = {},
+    onSaveClick: () -> Unit = {},
+    onNavigateBack: () -> Unit = {},
 ) {
-    Column(
-        modifier = Modifier.fillMaxWidthPaddingMedium()
-    ) {
-        when {
-            state.isLoading -> LoadingContent()
-            state.params != null -> PaymentForm(state.params, onPaymentParamsChange)
-        }
+    when {
+        state.isLoading -> LoadingContent()
+        state.params != null -> PaymentForm(
+            params = state.params,
+            onParamsChange = onPaymentParamsChange,
+            onSaveClick = onSaveClick,
+            onNavigateBack = onNavigateBack
+        )
     }
 }
 
@@ -31,8 +31,8 @@ fun PaymentContent(
 fun PreviewPaymentContent() {
     SharedBillTheme {
         Scaffold {
-            PaymentContent(
-                state = State(params = SendPaymentParams.sample())
+            PaymentScreen(
+                state = State(params = SendPaymentParams.sample()),
             )
         }
     }

@@ -29,25 +29,38 @@ fun UserInfo(user: UserUiModel) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(user.imageUrl)
-                .crossfade(true)
-                .build(),
-            placeholder = forwardingPainter(
-                painter = painterResource(R.drawable.ic_baseline_person_24),
-                colorFilter = ColorFilter.tint(AppTheme.colors.primary)
-            ),
-            contentDescription = stringResource(id = R.string.description_user_image),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .sizeLarge()
-                .clip(CircleShape)
-                .border(2.dp, AppTheme.colors.primary, CircleShape)
-        )
+        UserImage(user.imageUrl)
         Text(text = user.name, style = AppTheme.typo.titleLarge)
         Text(text = user.email, style = AppTheme.typo.bodyMedium)
     }
+}
+
+@Composable
+fun UserImage(
+    imageUrl: String,
+    bordered: Boolean = true
+) {
+    val placeholder = forwardingPainter(
+        painter = painterResource(R.drawable.ic_baseline_person_24),
+        colorFilter = ColorFilter.tint(AppTheme.colors.primary)
+    )
+    var modifier = Modifier.sizeLarge().clip(CircleShape)
+
+    if (bordered) {
+        modifier = modifier.then(Modifier.border(2.dp, AppTheme.colors.primary, CircleShape))
+    }
+
+    AsyncImage(
+        modifier = modifier,
+        contentScale = ContentScale.Crop,
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(imageUrl)
+            .crossfade(true)
+            .build(),
+        placeholder = placeholder,
+        error = placeholder,
+        contentDescription = stringResource(id = R.string.description_user_image)
+    )
 }
 
 @Preview(showBackground = true)

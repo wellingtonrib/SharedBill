@@ -14,8 +14,11 @@ class GroupRemoveMemberUseCaseImpl @Inject constructor(
         val group = groupRepository.getGroupById(groupId, true)
         val member = group.findMemberById(userId)
             ?: throw GroupException.MemberNotFoundException
+        if (group.owner.id == userId)
+            throw GroupException.RemovingOwnerException
         if (group.balance[userId].orZero() != ZERO)
-            throw GroupException.RemoveMemberWithNonZeroBalanceException
+            throw GroupException.RemovingMemberWithNonZeroBalanceException
+
         groupRepository.removeMember(member, groupId)
     }
 }

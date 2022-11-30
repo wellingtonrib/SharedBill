@@ -16,13 +16,15 @@ import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContra
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 
 @Composable
-fun GroupEditContent(
+fun GroupEditScreen(
     state: State,
     snackHostState: SnackbarHostState = SnackbarHostState(),
     onGroupUpdated: (GroupUiModel) -> Unit = {},
     onSaveMemberClick: (String) -> Unit = {},
     onMemberSelectionChange: (UserUiModel?) -> Unit = {},
     onMemberDeleteClick: (String) -> Unit = {},
+    onSaveClick: () -> Unit = {},
+    onNavigateBack: () -> Unit = {},
 ) {
     when {
         state.isLoading -> LoadingContent()
@@ -32,7 +34,9 @@ fun GroupEditContent(
             onGroupUpdated = onGroupUpdated,
             onSaveMemberClick = onSaveMemberClick,
             onMemberSelectionChange = onMemberSelectionChange,
-            onMemberDeleteClick = onMemberDeleteClick
+            onMemberDeleteClick = onMemberDeleteClick,
+            onSaveClick = onSaveClick,
+            onNavigateBack = onNavigateBack
         )
     }
 
@@ -47,7 +51,7 @@ fun GroupEditContent(
 fun previewGroupEditContent() {
     SharedBillTheme {
         Scaffold {
-            GroupEditContent(
+            GroupEditScreen(
                 state = State(group = GroupUiModel.sample()),
             )
         }

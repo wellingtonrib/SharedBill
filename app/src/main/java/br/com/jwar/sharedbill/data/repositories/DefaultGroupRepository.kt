@@ -1,17 +1,16 @@
 package br.com.jwar.sharedbill.data.repositories
 
 import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
-import br.com.jwar.sharedbill.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 class DefaultGroupRepository @Inject constructor(
     private val groupsDataSource: GroupsDataSource,
@@ -31,7 +30,7 @@ class DefaultGroupRepository @Inject constructor(
             .flowOn(ioDispatcher)
 
     override suspend fun getGroupById(groupId: String, refresh: Boolean): Group {
-        val cached = getGroupByIdFromCache(groupId).getOrNull()
+        val cached = getGroupByIdFromCache(groupId)
         return if (cached == null || refresh) {
             groupsDataSource.getGroupById(groupId).also { saveGroupInMemoryCache(it) }
         } else cached
@@ -58,12 +57,16 @@ class DefaultGroupRepository @Inject constructor(
     override suspend fun sendPayment(payment: Payment) =
         groupsDataSource.sendPayment(payment)
 
+    override suspend fun deleteGroup(groupId: String) =
+        groupsDataSource.deleteGroup(groupId).also { removeGroupFromMemoryCache(groupId) }
+
     private fun saveGroupInMemoryCache(group: Group) = with(ioDispatcher) {
         cache.removeIf { it.id == group.id }; cache.add(group)
-        Result.success(group)
     }
 
-    private fun getGroupByIdFromCache(groupId: String) =
-        cache.firstOrNull { it.id == groupId }?.let { Result.success(it) }
-            ?: Result.failure(GroupException.GroupNotFoundException)
+    private fun removeGroupFromMemoryCache(groupId: String) = with(ioDispatcher) {
+        cache.removeIf { it.id == groupId }
+    }
+
+    private fun getGroupByIdFromCache(groupId: String) = cache.firstOrNull { it.id == groupId }
 }

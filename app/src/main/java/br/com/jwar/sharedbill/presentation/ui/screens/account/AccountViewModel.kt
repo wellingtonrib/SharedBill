@@ -7,12 +7,10 @@ import br.com.jwar.sharedbill.domain.usecases.GetCurrentUserUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignOutUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
-import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Effect
-import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.Event
-import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.State
+import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(

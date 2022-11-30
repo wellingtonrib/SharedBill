@@ -9,8 +9,8 @@ class GroupDetailsContract {
 
     sealed class Event: UiEvent {
         class OnInit(val groupId: String) : Event()
-        object OnManageClick : Event()
-        class OnNewPaymentClick(val groupId: String) : Event()
+        object OnManage : Event()
+        class OnNewPayment(val groupId: String) : Event()
     }
 
     sealed class State: UiState {
@@ -20,7 +20,7 @@ class GroupDetailsContract {
     }
 
     sealed class Effect: UiEffect {
-        object OpenGroupMembers: Effect()
+        object OpenGroupEdit: Effect()
         class OpenNewPayment(val groupId: String): Effect()
     }
 

@@ -7,15 +7,14 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
 
 @Composable
 fun AppTopBar(
-    navController: NavController,
     title: String = "",
-    navigationIcon: @Composable () -> Unit = { BackNavigationIcon(navController) },
+    navigationBack: () -> Unit,
+    navigationIcon: @Composable () -> Unit = { BackNavigationIcon(navigationBack) },
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     CenterAlignedTopAppBar(
@@ -33,16 +32,16 @@ fun AppTopBar(
 
 @Composable
 fun BackNavigationIcon(
-    navController: NavController,
+    navigateBack: () -> Unit,
 ) =
-    IconButton(onClick = { navController.popBackStack() }) {
+    IconButton(onClick = { navigateBack() }) {
         Icon(Icons.Filled.ArrowBack, stringResource(id = R.string.description_back))
     }
 
 @Composable
 fun CloseNavigationIcon(
-    navController: NavController,
+    navigateBack: () -> Unit,
 ) =
-    IconButton(onClick = { navController.popBackStack() }) {
+    IconButton(onClick = { navigateBack() }) {
         Icon(Icons.Filled.Close, stringResource(id = R.string.description_close))
     }

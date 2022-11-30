@@ -1,40 +1,35 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_list.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
-import br.com.jwar.sharedbill.presentation.ui.generic_components.EmptyContent
 import br.com.jwar.sharedbill.presentation.ui.generic_components.ErrorContent
 import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
 import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContract.State
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
-import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
 
 @Composable
-fun GroupListContent(
+fun GroupListScreen(
     state: State,
-    onGroupCreate: (String) -> Unit = {},
-    onGroupJoin: (String) -> Unit = {},
     onGroupClick: (groupId: String) -> Unit = {},
+    onGroupCreate: (title: String) -> Unit = {},
+    onGroupJoin: (inviteCode: String) -> Unit = {},
+    onGroupDelete: (groupId: String) -> Unit = {},
+    onGroupLeave: (groupId: String) -> Unit = {},
     onTryAgainClick: () -> Unit = {},
 ) {
-    Column(
-        modifier = Modifier.fillMaxWidthPaddingMedium(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        GroupListHeader(onGroupCreate, onGroupJoin)
-        when(state) {
-            is State.Loading -> LoadingContent()
-            is State.Empty -> EmptyContent(message = stringResource(R.string.message_groups_empty))
-            is State.Loaded -> GroupList(state.groups, onGroupClick)
-            is State.Error -> ErrorContent(message = state.message.orEmpty(), onAction = onTryAgainClick)
-        }
+    when(state) {
+        is State.Loading -> LoadingContent()
+        is State.Loaded -> GroupList(
+            groups = state.groups,
+            onGroupClick = onGroupClick,
+            onGroupCreate = onGroupCreate,
+            onGroupJoin = onGroupJoin,
+            onGroupDelete = onGroupDelete,
+            onGroupLeave = onGroupLeave
+        )
+        is State.Error -> ErrorContent(state.message.orEmpty(), onAction = onTryAgainClick)
     }
 }
 
@@ -43,14 +38,14 @@ fun GroupListContent(
 fun PreviewGroupListContent() {
     SharedBillTheme {
         Scaffold {
-            GroupListContent(
+            GroupListScreen(
                 state = State.Loaded(
                     listOf(
                         GroupUiModel.sample(),
                         GroupUiModel.sample(),
                         GroupUiModel.sample(),
                     )
-                )
+                ),
             )
         }
     }
