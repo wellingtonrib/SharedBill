@@ -49,7 +49,7 @@ fun GroupDetailsScreen(
                 when(state) {
                     is Loading -> LoadingContent()
                     is Loaded -> GroupsDetails(
-                        group = state.group,
+                        group = state.uiModel,
                         onNewPaymentClick = { onNewPaymentClick() }
                     )
                     is Error -> ErrorContent()

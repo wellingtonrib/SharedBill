@@ -7,9 +7,9 @@ import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import java.util.UUID
 import javax.inject.Inject
 
-class GroupAddMemberUseCaseImpl @Inject constructor(
+class AddMemberUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository
-): GroupAddMemberUseCase {
+): AddMemberUseCase {
     override suspend fun invoke(userName: String, groupId: String) = resultOf {
         if (userName.split(" ").count() == 1) throw GroupException.InvalidUserNameException
         groupRepository.addMember(

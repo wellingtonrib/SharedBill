@@ -21,8 +21,8 @@ import br.com.jwar.sharedbill.presentation.ui.theme.paddingMedium
 
 @Composable
 fun PaymentForm(
-    params: PaymentContract.SendPaymentParams,
-    onParamsChange: (PaymentContract.SendPaymentParams) -> Unit = {},
+    params: PaymentContract.PaymentParams,
+    onParamsChange: (PaymentContract.PaymentParams) -> Unit = {},
     onSaveClick: () -> Unit = {},
     onNavigateBack: () -> Unit = {}
 ) {
@@ -63,7 +63,7 @@ fun PaymentForm(
 fun PreviewPaymentForm() {
     SharedBillTheme {
         PaymentForm(
-            PaymentContract.SendPaymentParams.sample(),
+            PaymentContract.PaymentParams.sample(),
         )
     }
 }

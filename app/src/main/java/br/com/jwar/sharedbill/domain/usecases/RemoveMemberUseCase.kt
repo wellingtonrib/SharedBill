@@ -1,5 +1,5 @@
 package br.com.jwar.sharedbill.domain.usecases
 
-interface GroupRemoveMemberUseCase {
+interface RemoveMemberUseCase {
     suspend operator fun invoke(userId: String, groupId: String): Result<Unit>
 }

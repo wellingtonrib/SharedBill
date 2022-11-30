@@ -18,8 +18,8 @@ import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 
 @Composable
 fun PaymentPaidByField(
-    params: PaymentContract.SendPaymentParams,
-    onPaymentParamsChange: (PaymentContract.SendPaymentParams) -> Unit = {},
+    params: PaymentContract.PaymentParams,
+    onPaymentParamsChange: (PaymentContract.PaymentParams) -> Unit = {},
 ) {
     val isPaidBySelecting = remember { mutableStateOf(false) }
     if (isPaidBySelecting.value) {
@@ -56,7 +56,7 @@ fun PaymentPaidByField(
 fun PreviewPaymentPaidByField() {
     SharedBillTheme {
         PaymentPaidByField(
-            PaymentContract.SendPaymentParams.sample()
+            PaymentContract.PaymentParams.sample()
         )
     }
 }

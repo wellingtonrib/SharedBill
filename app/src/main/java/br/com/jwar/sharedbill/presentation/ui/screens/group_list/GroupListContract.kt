@@ -19,7 +19,7 @@ class GroupListContract {
 
     sealed class State: UiState {
         object Loading: State()
-        data class Loaded(val groups: List<GroupUiModel>): State()
+        data class Loaded(val uiModel: List<GroupUiModel>): State()
         class Error(val message: String?): State()
     }
 

@@ -20,7 +20,7 @@ class GroupEditContract {
 
     data class State(
         val isLoading: Boolean = false,
-        val group: GroupUiModel? = null,
+        val uiModel: GroupUiModel? = null,
         val shouldSelectMemberByName: String? = null,
         val selectedMember: UserUiModel? = null
     ): UiState

@@ -7,9 +7,9 @@ import br.com.jwar.sharedbill.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import javax.inject.Inject
 
-class GroupRemoveMemberUseCaseImpl @Inject constructor(
+class RemoveMemberUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository
-) : GroupRemoveMemberUseCase {
+) : RemoveMemberUseCase {
     override suspend fun invoke(userId: String, groupId: String) = resultOf {
         val group = groupRepository.getGroupById(groupId, true)
         val member = group.findMemberById(userId)

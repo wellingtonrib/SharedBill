@@ -29,7 +29,7 @@ fun AccountScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                UserInfo(state.user)
+                UserInfo(state.uiModel)
                 VerticalSpacerMedium()
                 SignOutButton(onSignOutClick)
             }

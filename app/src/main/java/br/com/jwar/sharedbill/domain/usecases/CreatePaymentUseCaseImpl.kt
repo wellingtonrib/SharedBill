@@ -13,7 +13,7 @@ import java.util.*
 class CreatePaymentUseCaseImpl(
     private val groupRepository: GroupRepository
 ) : CreatePaymentUseCase {
-    override suspend fun invoke(params: PaymentContract.SendPaymentParams): Result<Payment> = resultOf {
+    override suspend fun invoke(params: PaymentContract.PaymentParams): Result<Payment> = resultOf {
         if (params.description.isEmpty()) throw PaymentException.EmptyDescriptionException
         if (params.value.toBigDecimalOrZero() == BigDecimal.ZERO) throw PaymentException.InvalidValueException
         if (params.paidTo.isEmpty()) throw PaymentException.EmptyRelatedMembersException

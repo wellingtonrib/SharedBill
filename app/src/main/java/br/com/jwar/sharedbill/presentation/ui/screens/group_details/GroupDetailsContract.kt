@@ -15,7 +15,7 @@ class GroupDetailsContract {
 
     sealed class State: UiState {
         object Loading: State()
-        class Loaded(val group: GroupUiModel): State()
+        class Loaded(val uiModel: GroupUiModel): State()
         class Error(val message: String): State()
     }
 

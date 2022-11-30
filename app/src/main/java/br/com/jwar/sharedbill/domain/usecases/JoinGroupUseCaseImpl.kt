@@ -6,10 +6,10 @@ import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.domain.repositories.UserRepository
 import javax.inject.Inject
 
-class GroupJoinUseCaseImpl @Inject constructor(
+class JoinGroupUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository,
     private val userRepository: UserRepository
-): GroupJoinUseCase {
+): JoinGroupUseCase {
     override suspend fun invoke(inviteCode: String) = resultOf {
         val group = groupRepository.getGroupByInviteCode(inviteCode)
         val invitedUser = group.members.firstOrNull { it.inviteCode == inviteCode }
