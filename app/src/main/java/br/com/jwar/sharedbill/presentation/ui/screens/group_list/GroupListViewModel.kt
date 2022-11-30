@@ -53,7 +53,7 @@ class GroupListViewModel @Inject constructor(
     }
 
     private fun onGroupCreated(groupId: String) =
-        sendEffect { Effect.OpenGroupEdit(groupId) }
+        sendEffect { Effect.OpenGroupDetails(groupId) }
 
     private fun onGroupJoin(code: String) = viewModelScope.launch {
         setLoadingState()

@@ -23,7 +23,7 @@ class GroupEditViewModel @Inject constructor(
     private val groupAddMemberUseCase: GroupAddMemberUseCase,
     private val updateGroupUseCase: UpdateGroupUseCase,
     private val groupRemoveMemberUseCase: GroupRemoveMemberUseCase,
-    private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper
+    private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
 ): BaseViewModel<Event, State, Effect>() {
 
     override fun getInitialState(): State = State(isLoading = true)
@@ -31,10 +31,10 @@ class GroupEditViewModel @Inject constructor(
     override fun handleEvent(event: Event) {
         when(event) {
             is Event.OnInit -> onInit(event.groupId)
-            is Event.OnSaveGroupClick -> onSaveGroupClick()
-            is Event.OnSaveMemberClick -> onSaveMemberClick(event.userName, event.groupId)
+            is Event.OnSaveGroup -> onSaveGroupClick()
+            is Event.OnSaveMember -> onSaveMemberClick(event.userName, event.groupId)
             is Event.OnMemberSelectionChange -> onMemberSelect(event.user)
-            is Event.OnMemberDeleteClick -> onMemberDeleteClick(event.userId, event.groupId)
+            is Event.OnMemberDelete -> onMemberDeleteClick(event.userId, event.groupId)
             is Event.OnGroupUpdated -> onGroupUpdated(event.group)
         }
     }

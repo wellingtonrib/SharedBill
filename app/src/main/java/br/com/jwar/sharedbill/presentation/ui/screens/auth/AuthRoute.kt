@@ -11,18 +11,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.Effect
 import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthContract.Event
-import br.com.jwar.sharedbill.presentation.ui.screens.auth.components.AuthContent
+import br.com.jwar.sharedbill.presentation.ui.screens.auth.components.AuthScreen
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 
 @Composable
-fun AuthScreen(
-    navigateToHome: () -> Unit = {},
+fun AuthRoute(
+    viewModel: AuthViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState,
-    viewModel: AuthViewModel = hiltViewModel()
+    onNavigateToHome: () -> Unit = {}
 ) {
     val state = viewModel.uiState.collectAsState().value
 
-    AuthContent(
+    AuthScreen(
         state = state,
         onSignInClick = { viewModel.emitEvent { Event.OnRequestSignIn } }
     )
@@ -45,7 +45,7 @@ fun AuthScreen(
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is Effect.GoToHome -> {
-                    navigateToHome()
+                    onNavigateToHome()
                 }
                 is Effect.LaunchSignInResult -> {
                     launchSignInResult(effect.signInResult)

@@ -19,7 +19,7 @@ sealed class PaymentUiError(val message: UiText) {
             is PaymentException.CurrentUserNotInGroupException -> CurrentUserNotInGroupError
             is PaymentException.PayerNotInGroupException -> PayerNotInGroupError
             is PaymentException.EmptyDescriptionException -> EmptyDescriptionError
-            is PaymentException.EmptyValueException -> EmptyValueError
+            is PaymentException.InvalidValueException -> EmptyValueError
             is PaymentException.EmptyDateException -> EmptyDateError
             is PaymentException.EmptyRelatedMembersException -> EmptyRelatedMembersError
             else -> PaymentGenericError

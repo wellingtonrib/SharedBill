@@ -25,7 +25,6 @@ class GroupListContract {
 
     sealed class Effect: UiEffect {
         class OpenGroupDetails(val groupId: String): Effect()
-        class OpenGroupEdit(val groupId: String): Effect()
         class Error(val message: UiText): Effect()
         object GoToAuth : Effect()
     }

@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.jwar.sharedbill.R
@@ -67,7 +68,7 @@ private fun InfoDialogContent(
             }
             Text(text = title, style = MaterialTheme.typography.titleLarge)
             VerticalSpacerMedium()
-            Text(text = message)
+            Text(text = message, textAlign = TextAlign.Center)
             VerticalSpacerMedium()
             Button(
                 onClick = { onAction() }

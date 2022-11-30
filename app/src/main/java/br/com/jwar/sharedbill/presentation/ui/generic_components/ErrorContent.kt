@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
@@ -25,7 +26,7 @@ fun ErrorContent(
 ) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = message)
+            Text(text = message, textAlign = TextAlign.Center)
             Button(onClick = { onAction() }) {
                 Text(text = action)
             }

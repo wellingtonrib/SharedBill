@@ -11,10 +11,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import br.com.jwar.sharedbill.R
+import br.com.jwar.sharedbill.presentation.navigation.AppDestinations.ACCOUNT_ROUTE
+import br.com.jwar.sharedbill.presentation.navigation.AppDestinations.GROUP_LIST_ROUTE
 
 enum class AppBottomBarItem(val title: Int, val icon: Int, val route: String) {
-    Groups(R.string.label_groups, R.drawable.ic_baseline_groups_24, GROUP_LIST_SCREEN),
-    Account(R.string.label_account, R.drawable.ic_baseline_account_circle_24, ACCOUNT_SCREEN)
+    Groups(R.string.label_groups, R.drawable.ic_baseline_groups_24, GROUP_LIST_ROUTE),
+    Account(R.string.label_account, R.drawable.ic_baseline_account_circle_24, ACCOUNT_ROUTE)
 }
 
 @Composable

@@ -10,7 +10,7 @@ import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListContra
 import br.com.jwar.sharedbill.presentation.ui.theme.SharedBillTheme
 
 @Composable
-fun GroupListContent(
+fun GroupListScreen(
     state: State,
     onGroupClick: (groupId: String) -> Unit = {},
     onGroupCreate: (title: String) -> Unit = {},
@@ -38,7 +38,7 @@ fun GroupListContent(
 fun PreviewGroupListContent() {
     SharedBillTheme {
         Scaffold {
-            GroupListContent(
+            GroupListScreen(
                 state = State.Loaded(
                     listOf(
                         GroupUiModel.sample(),

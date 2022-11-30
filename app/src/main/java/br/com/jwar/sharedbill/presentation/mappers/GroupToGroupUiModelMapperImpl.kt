@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.presentation.mappers
 
+import br.com.jwar.sharedbill.core.extensions.toBigDecimalOrZero
 import br.com.jwar.sharedbill.core.extensions.toCurrency
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
@@ -22,7 +23,7 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         )
 
     private fun mapTotal(from: Group) =
-        from.payments.sumOf { it.value.toBigDecimal() }.toCurrency()
+        from.payments.sumOf { it.value.toBigDecimalOrZero() }.toCurrency()
 
     private fun mapPayments(from: Group) =
         from.payments.map { paymentToPaymentUiModelMapper.mapFrom(it) }
@@ -40,7 +41,7 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         from.balance.mapNotNull {
             val member = from.findMemberById(it.key)
             if (member != null) {
-                member.firstName to it.value.toBigDecimal()
+                member.firstName to it.value.toBigDecimalOrZero()
             } else null
         }.associateBy({it.first}, {it.second})
 }

@@ -1,6 +1,5 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_edit.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.CircleShape
@@ -53,11 +52,10 @@ fun GroupMemberCard(
                 Box(
                     modifier = Modifier
                         .sizeMedium()
-                        .clip(CircleShape)
-                        .background(AppTheme.colors.primary),
+                        .clip(CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    UserImage(member.imageUrl, bordered = false)
+                    UserImage(member.imageUrl)
                 }
                 HorizontalSpacerMedium()
                 Text(text = member.name, style = AppTheme.typo.titleMedium)

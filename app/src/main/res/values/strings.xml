@@ -29,7 +29,7 @@
     <string name="label_group_invite_code">Enter the invite code</string>
     <string name="label_group_edit">Edit group</string>
     <string name="label_payment_detail">Payment Detail</string>
-    <string name="label_payment_new">New expense</string>
+    <string name="label_payment_new">New payment</string>
     <string name="label_payment_description">Description</string>
     <string name="label_payment_value">Value</string>
     <string name="label_payment_paid_by">Paid by</string>
@@ -54,7 +54,7 @@
     <string name="message_error_content">Something went wrong</string>
     <string name="message_owes">Owes %1$s</string>
     <string name="message_is_owned">Is owned %1$s</string>
-    <string name="message_no_expenses">No expenses, add one\nClick on + New expense button below</string>
+    <string name="message_no_expenses">No payments, add one\nClick on + New payment button below</string>
     <string name="message_settled_up">Settled up</string>
     <string name="message_payment_detail">Paid by %1$s to %2$s</string>
     <string name="message_paid_to_all">All</string>
@@ -75,7 +75,7 @@
     <string name="placeholder_add_member_name">Ex. Alex</string>
     <string name="placeholder_payment_description">Ex. Gas</string>
     <string name="placeholder_payment_paid_by">Select a payer</string>
-    <string name="placeholder_payment_paid_to">Select the related members</string>
+    <string name="placeholder_payment_paid_to">Select related members</string>
     <string name="placeholder_payment_value">$0.00</string>
     <string name="placeholder_payment_date">dd/mm/yyyy</string>
 
