@@ -1,5 +1,4 @@
-import java.io.FileInputStream
-import java.util.Properties
+import java.util.*
 
 plugins {
     id("com.android.application")
@@ -11,12 +10,12 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "br.com.jwar.sharedbill"
-        minSdk = 21
-        targetSdk = 33
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -26,7 +25,7 @@ android {
         }
 
         val properties = Properties()
-        properties.load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+        properties.load(project.rootProject.file("local.properties").reader())
 
         buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"${properties.getProperty("FIREBASE_WEB_CLIENT_ID")}\"")
     }
@@ -68,20 +67,18 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.coreKtx)
-    implementation(libs.androidx.lifecycle)
+    kapt(libs.hilt.android.compiler)
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.kotlinx.coroutines.playServices)
-    implementation(libs.playservices.auth)
-    implementation(libs.hilt)
+    implementation(libs.google.playServices.auth)
+    implementation(libs.hilt.android)
     implementation(libs.bundles.compose)
     implementation(platform(libs.firebase.bom))
     implementation(libs.bundles.firebase)
 
-    kapt(libs.hiltCompiler)
-
     testImplementation(libs.bundles.test)
-
     androidTestImplementation(libs.bundles.androidTest)
-
     debugImplementation(libs.bundles.debug)
 }
