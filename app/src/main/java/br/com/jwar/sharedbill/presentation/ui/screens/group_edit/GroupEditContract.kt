@@ -10,7 +10,6 @@ import br.com.jwar.sharedbill.presentation.ui.util.UiText
 class GroupEditContract {
 
     sealed class Event: UiEvent {
-        class OnInit(val groupId: String) : Event()
         class OnSaveMember(val userName: String, val groupId: String) : Event()
         class OnMemberSelectionChange(val user: UserUiModel?) : Event()
         class OnMemberDelete(val userId: String, val groupId: String) : Event()

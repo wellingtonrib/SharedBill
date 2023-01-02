@@ -19,6 +19,8 @@ class AccountViewModel @Inject constructor(
     private val userToUserUiModelMapper: UserToUserUiModelMapper
 ): BaseViewModel<Event, State, Effect>() {
 
+    init { onInit() }
+
     override fun getInitialState() = State.Loading
 
     override fun handleEvent(event: Event) {

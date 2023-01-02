@@ -27,11 +27,10 @@ fun GroupListRoute(
         onGroupJoin = { viewModel.emitEvent { Event.OnGroupJoin(it) } },
         onGroupDelete = { viewModel.emitEvent { Event.OnGroupDelete(it) } },
         onGroupLeave = { viewModel.emitEvent { Event.OnGroupLeave(it) } },
-        onTryAgainClick = { viewModel.emitEvent { Event.OnInit } }
+        onTryAgainClick = { viewModel.emitEvent { Event.OnTryAgain } }
     )
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { Event.OnInit }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.GoToAuth -> onNavigateToAuth()
