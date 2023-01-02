@@ -20,7 +20,6 @@ fun AccountRoute(
     )
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { AccountContract.Event.OnInit }
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is Effect.GoToAuth -> {

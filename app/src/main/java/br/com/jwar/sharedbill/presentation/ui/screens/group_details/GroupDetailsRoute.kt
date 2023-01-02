@@ -22,12 +22,11 @@ fun GroupDetailsRoute(
         state = state,
         onNavigateBack = onNavigateBack,
         onNewPaymentClick = { viewModel.emitEvent { Event.OnNewPayment(groupId) } },
-        onRefresh = { viewModel.emitEvent { Event.OnInit(groupId) } },
+        onRefresh = { viewModel.emitEvent { Event.OnRefresh } },
         onEditClick = { viewModel.emitEvent { Event.OnManage } }
     )
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { Event.OnInit(groupId) }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.OpenGroupEdit -> {

@@ -23,11 +23,13 @@ class GroupListViewModel @Inject constructor(
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper
 ): BaseViewModel<Event, State, Effect>() {
 
+    init { onInit() }
+
     override fun getInitialState(): State = State.Loading
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnInit -> onInit()
+            is Event.OnTryAgain -> onInit()
             is Event.OnGroupCreate -> onGroupCreate(event.title)
             is Event.OnGroupSelect -> onGroupSelect(event.groupId)
             is Event.OnGroupJoin -> onGroupJoin(event.inviteCode)

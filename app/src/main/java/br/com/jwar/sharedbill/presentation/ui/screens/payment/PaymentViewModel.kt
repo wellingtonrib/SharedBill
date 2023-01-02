@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.payment
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
@@ -10,6 +11,7 @@ import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
 import br.com.jwar.sharedbill.presentation.models.PaymentUiError
+import br.com.jwar.sharedbill.presentation.navigation.AppDestinationsArgs
 import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val sendPaymentUseCase: SendPaymentUseCase,
     private val createPaymentUseCase: CreatePaymentUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
@@ -24,11 +27,14 @@ class PaymentViewModel @Inject constructor(
     private val userToUserUiModelMapper: UserToUserUiModelMapper
 ): BaseViewModel<Event, State, Effect>() {
 
+    private val groupId: String = checkNotNull(savedStateHandle[AppDestinationsArgs.GROUP_ID_ARG])
+
+    init { onInit(groupId) }
+
     override fun getInitialState(): State = State(isLoading = true)
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnInit -> onInit(event.groupId)
             is Event.OnCreatePayment -> onCreatePayment()
             is Event.OnParamsChange -> setPaymentParams(event.params)
         }

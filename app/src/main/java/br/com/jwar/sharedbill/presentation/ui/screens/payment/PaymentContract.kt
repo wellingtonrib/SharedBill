@@ -12,7 +12,6 @@ import java.util.*
 class PaymentContract {
 
     sealed class Event: UiEvent {
-        class OnInit(val groupId: String): Event()
         class OnParamsChange(val params: PaymentParams) : Event()
         object OnCreatePayment : Event()
     }
