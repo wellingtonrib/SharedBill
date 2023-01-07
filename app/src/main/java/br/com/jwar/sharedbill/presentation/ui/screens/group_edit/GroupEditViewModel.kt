@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.usecases.AddMemberUseCase
-import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdStreamUseCase
+import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.domain.usecases.RemoveMemberUseCase
 import br.com.jwar.sharedbill.domain.usecases.UpdateGroupUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
@@ -15,14 +15,13 @@ import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.navigation.AppDestinationsArgs
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GroupEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getGroupByIdStreamUseCase: GetGroupByIdStreamUseCase,
+    private val getGroupByIdUseCase: GetGroupByIdUseCase,
     private val addMemberUseCase: AddMemberUseCase,
     private val updateGroupUseCase: UpdateGroupUseCase,
     private val removeMemberUseCase: RemoveMemberUseCase,
@@ -46,14 +45,9 @@ class GroupEditViewModel @Inject constructor(
     }
 
     private fun onInit() = viewModelScope.launch {
-        getGroupByIdStreamUseCase(groupId)
-            .onStart { setLoadingState() }
-            .collect { result ->
-                with(result) {
-                    onSuccess { setEditingGroup(it) }
-                    onFailure { sendErrorEffect(it) }
-                }
-            }
+        getGroupByIdUseCase(groupId, false)
+            .onSuccess { setEditingGroup(it) }
+            .onFailure { sendErrorEffect(it) }
     }
 
     private fun onSaveGroupClick() = viewModelScope.launch {

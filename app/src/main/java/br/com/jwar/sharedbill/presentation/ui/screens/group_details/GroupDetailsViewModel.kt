@@ -38,7 +38,9 @@ class GroupDetailsViewModel @Inject constructor(
         getGroupByIdStreamUseCase(groupId)
             .onStart { setLoadingState() }
             .collect { result ->
-                result.onSuccess { setLoadedState(it) }.onFailure { setErrorState(it) }
+                result
+                    .onSuccess { setLoadedState(it) }
+                    .onFailure { setErrorState(it) }
             }
     }
 
