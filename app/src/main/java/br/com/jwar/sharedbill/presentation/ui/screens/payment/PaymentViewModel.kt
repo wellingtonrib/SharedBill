@@ -79,8 +79,9 @@ class PaymentViewModel @Inject constructor(
 
     private fun handlePaymentError(throwable: Throwable) {
         val paymentError = PaymentUiError.mapFrom(throwable)
-        setState { it.copy(isLoading = false, params = it.params?.copy(error = paymentError)) }
-        sendEffect { Effect.ShowError(paymentError.message) }
+        setState {
+            it.copy(isLoading = false, params = it.params?.copy(error = paymentError))
+        }
     }
 
     private fun sendFinishEffect() = sendEffect { Effect.Finish }

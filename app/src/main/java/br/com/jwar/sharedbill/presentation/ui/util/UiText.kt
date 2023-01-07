@@ -2,6 +2,7 @@ package br.com.jwar.sharedbill.presentation.ui.util
 
 import android.content.Context
 import androidx.annotation.StringRes
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
@@ -19,4 +20,7 @@ sealed class UiText {
         is DynamicString -> value
         is StringResource -> context.getString(resId, *args)
     }
+
+    @Composable
+    fun asText() = Text(text = this.asString())
 }

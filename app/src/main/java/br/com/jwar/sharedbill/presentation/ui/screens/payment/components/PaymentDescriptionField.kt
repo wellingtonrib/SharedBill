@@ -18,6 +18,7 @@ fun PaymentDescriptionField(
     params: PaymentContract.PaymentParams,
     onPaymentParamsChange: (PaymentContract.PaymentParams) -> Unit = {}
 ) {
+    val isError = params.error is PaymentUiError.EmptyDescriptionError
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
@@ -25,7 +26,8 @@ fun PaymentDescriptionField(
         label = { Text(text = stringResource(R.string.label_payment_description)) },
         placeholder = { Text(text = stringResource(R.string.placeholder_payment_description)) },
         onValueChange = { onPaymentParamsChange(params.copy(description = it)) },
-        isError = params.error is PaymentUiError.EmptyDescriptionError
+        isError = isError,
+        supportingText = { if (isError) params.error?.message?.asText() }
     )
 }
 

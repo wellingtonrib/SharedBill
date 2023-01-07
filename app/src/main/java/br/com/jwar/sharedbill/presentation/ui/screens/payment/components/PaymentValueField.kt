@@ -20,6 +20,7 @@ fun PaymentValueField(
     params: PaymentContract.PaymentParams,
     onPaymentParamsChange: (PaymentContract.PaymentParams) -> Unit = {}
 ) {
+    val isError = params.error is PaymentUiError.EmptyValueError
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
@@ -30,7 +31,8 @@ fun PaymentValueField(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal
         ),
-        isError = params.error is PaymentUiError.EmptyValueError
+        isError = isError,
+        supportingText = { if (isError) params.error?.message?.asText() }
     )
 }
 
