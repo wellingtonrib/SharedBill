@@ -1,9 +1,10 @@
 package br.com.jwar.sharedbill.presentation.ui.screens.group_edit
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.usecases.AddMemberUseCase
-import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdStreamUseCase
+import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.domain.usecases.RemoveMemberUseCase
 import br.com.jwar.sharedbill.domain.usecases.UpdateGroupUseCase
 import br.com.jwar.sharedbill.presentation.base.BaseViewModel
@@ -11,41 +12,42 @@ import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.sharedbill.presentation.models.GroupUiError
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
+import br.com.jwar.sharedbill.presentation.navigation.AppDestinationsArgs
 import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GroupEditViewModel @Inject constructor(
-    private val getGroupByIdStreamUseCase: GetGroupByIdStreamUseCase,
+    savedStateHandle: SavedStateHandle,
+    private val getGroupByIdUseCase: GetGroupByIdUseCase,
     private val addMemberUseCase: AddMemberUseCase,
     private val updateGroupUseCase: UpdateGroupUseCase,
     private val removeMemberUseCase: RemoveMemberUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
 ): BaseViewModel<Event, State, Effect>() {
 
+    private val groupId: String = checkNotNull(savedStateHandle[AppDestinationsArgs.GROUP_ID_ARG])
+
+    init { onInit() }
+
     override fun getInitialState(): State = State(isLoading = true)
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnInit -> onInit(event.groupId)
             is Event.OnSaveGroup -> onSaveGroupClick()
-            is Event.OnSaveMember -> onSaveMemberClick(event.userName, event.groupId)
+            is Event.OnSaveMember -> onSaveMemberClick(event.userName)
             is Event.OnMemberSelectionChange -> onMemberSelect(event.user)
-            is Event.OnMemberDelete -> onMemberDeleteClick(event.userId, event.groupId)
+            is Event.OnMemberDelete -> onMemberDeleteClick(event.userId)
             is Event.OnGroupUpdated -> onGroupUpdated(event.group)
         }
     }
 
-    private fun onInit(groupId: String) = viewModelScope.launch {
-        getGroupByIdStreamUseCase(groupId)
-            .onStart { setLoadingState() }
-            .collect { result ->
-                result.onSuccess { setEditingGroup(it) }
-                    .onFailure { sendErrorEffect(it) }
-            }
+    private fun onInit() = viewModelScope.launch {
+        getGroupByIdUseCase(groupId, false)
+            .onSuccess { setEditingGroup(it) }
+            .onFailure { sendErrorEffect(it) }
     }
 
     private fun onSaveGroupClick() = viewModelScope.launch {
@@ -56,14 +58,14 @@ class GroupEditViewModel @Inject constructor(
             .onFailure { sendErrorEffect(it) }
     }
 
-    private fun onSaveMemberClick(userName: String, groupId: String) = viewModelScope.launch {
+    private fun onSaveMemberClick(userName: String) = viewModelScope.launch {
         setLoadingState()
         addMemberUseCase(userName, groupId)
             .onSuccess { setShouldSelectMemberState(userName) }
             .onFailure { sendErrorEffect(it) }
     }
 
-    private fun onMemberDeleteClick(userId: String, groupId: String) = viewModelScope.launch {
+    private fun onMemberDeleteClick(userId: String) = viewModelScope.launch {
         setLoadingState()
         removeMemberUseCase(userId, groupId)
             .onSuccess { sendSuccessEffect() }

@@ -7,10 +7,7 @@ import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.snapshots
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -53,11 +50,11 @@ class FirebaseGroupsDataSource @Inject constructor(
             .map { mapGroupFromSnapshot(it.documents.first()) }
             .flowOn(ioDispatcher)
 
-    override suspend fun getGroupById(groupId: String) =
+    override suspend fun getGroupById(groupId: String, refresh: Boolean) =
         withContext(ioDispatcher) {
             getUserGroupsQuery()
                 .whereEqualTo(GROUP_ID_FIELD, groupId)
-                .get()
+                .get(if (refresh) Source.SERVER else Source.CACHE)
                 .await()
                 .documents
                 .firstOrNull()

@@ -6,13 +6,11 @@ import br.com.jwar.sharedbill.presentation.base.UiState
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.presentation.models.UserUiModel
-import br.com.jwar.sharedbill.presentation.ui.util.UiText
 import java.util.*
 
 class PaymentContract {
 
     sealed class Event: UiEvent {
-        class OnInit(val groupId: String): Event()
         class OnParamsChange(val params: PaymentParams) : Event()
         object OnCreatePayment : Event()
     }
@@ -24,7 +22,6 @@ class PaymentContract {
 
     sealed class Effect: UiEffect {
         object Finish: Effect()
-        class ShowError(val message: UiText): Effect()
     }
 
     data class PaymentParams(

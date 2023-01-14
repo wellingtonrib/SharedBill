@@ -39,6 +39,7 @@ fun PaymentDateField(
         calendar.get(Calendar.DAY_OF_MONTH)
     )
     val focusManager = LocalFocusManager.current
+    val isError = params.error is PaymentUiError.EmptyDateError
 
     OutlinedTextField(
         modifier = Modifier
@@ -54,7 +55,8 @@ fun PaymentDateField(
         label = { Text(text = stringResource(R.string.label_date)) },
         placeholder = { Text(text = stringResource(R.string.placeholder_payment_date)) },
         onValueChange = {},
-        isError = params.error is PaymentUiError.EmptyDateError
+        isError = isError,
+        supportingText = { if (isError) params.error?.message?.asText() }
     )
 }
 

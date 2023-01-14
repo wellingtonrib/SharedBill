@@ -46,7 +46,7 @@ fun NavGraph(
             createGroupEditRoute(navController, backStackEntry, snackbarHostState)
         }
         composable(route = Payment.route) { backStackEntry ->
-            createPaymentRoute(navController, backStackEntry, snackbarHostState)
+            createPaymentRoute(navController, backStackEntry)
         }
     }
 }
@@ -128,11 +128,9 @@ private fun createGroupEditRoute(
 private fun createPaymentRoute(
     navController: NavHostController,
     backStackEntry: NavBackStackEntry,
-    snackbarHostState: SnackbarHostState
 ) {
     PaymentRoute(
         groupId = backStackEntry.getGroupId(),
-        snackbarHostState = snackbarHostState
     ) { navController.popBackStack() }
 }
 
