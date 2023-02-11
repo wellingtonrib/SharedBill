@@ -2,6 +2,7 @@ rootProject.name = "SharedBill"
 include(":app")
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         gradlePluginPortal()
         google()
