@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import br.com.jwar.sharedbill.presentation.base.screen_model.ModelContract.State
-import br.com.jwar.sharedbill.presentation.ui.generic_components.EmptyContent
-import br.com.jwar.sharedbill.presentation.ui.generic_components.ErrorContent
-import br.com.jwar.sharedbill.presentation.ui.generic_components.LoadingContent
-import br.com.jwar.sharedbill.presentation.ui.theme.fillMaxWidthPaddingMedium
+import br.com.jwar.sharedbill.core.designsystem.components.EmptyContent
+import br.com.jwar.sharedbill.core.designsystem.components.ErrorContent
+import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
+import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
 
 @Composable
 @SuppressWarnings

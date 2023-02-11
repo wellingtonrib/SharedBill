@@ -8,7 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import br.com.jwar.sharedbill.R
-import br.com.jwar.sharedbill.presentation.ui.theme.AppTheme
+import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 
 @Composable
 fun AppTopBar(

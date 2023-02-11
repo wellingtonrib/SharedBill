@@ -5,7 +5,7 @@ import br.com.jwar.sharedbill.core.extensions.toBigDecimalOrZero
 import br.com.jwar.sharedbill.domain.exceptions.PaymentException
 import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
-import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentContract
+import br.com.jwar.sharedbill.presentation.screens.payment.PaymentContract
 import com.google.firebase.Timestamp
 import java.math.BigDecimal
 import java.util.*

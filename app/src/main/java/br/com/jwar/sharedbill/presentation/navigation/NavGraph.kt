@@ -9,12 +9,12 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import br.com.jwar.sharedbill.presentation.navigation.AppDestinationsArgs.GROUP_ID_ARG
 import br.com.jwar.sharedbill.presentation.navigation.AppRoute.*
-import br.com.jwar.sharedbill.presentation.ui.screens.account.AccountRoute
-import br.com.jwar.sharedbill.presentation.ui.screens.auth.AuthRoute
-import br.com.jwar.sharedbill.presentation.ui.screens.group_details.GroupDetailsRoute
-import br.com.jwar.sharedbill.presentation.ui.screens.group_edit.GroupEditRoute
-import br.com.jwar.sharedbill.presentation.ui.screens.group_list.GroupListRoute
-import br.com.jwar.sharedbill.presentation.ui.screens.payment.PaymentRoute
+import br.com.jwar.sharedbill.presentation.screens.account.AccountRoute
+import br.com.jwar.sharedbill.presentation.screens.auth.AuthRoute
+import br.com.jwar.sharedbill.presentation.screens.group_details.GroupDetailsRoute
+import br.com.jwar.sharedbill.presentation.screens.group_edit.GroupEditRoute
+import br.com.jwar.sharedbill.presentation.screens.group_list.GroupListRoute
+import br.com.jwar.sharedbill.presentation.screens.payment.PaymentRoute
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 

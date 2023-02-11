@@ -17,3 +17,4 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+include(":core:designsystem")

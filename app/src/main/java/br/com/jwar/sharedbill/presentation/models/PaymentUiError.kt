@@ -2,7 +2,7 @@ package br.com.jwar.sharedbill.presentation.models
 
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.domain.exceptions.PaymentException
-import br.com.jwar.sharedbill.presentation.ui.util.UiText
+import br.com.jwar.sharedbill.core.designsystem.util.UiText
 
 sealed class PaymentUiError(val message: UiText) {
 

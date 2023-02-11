@@ -7,6 +7,8 @@ import br.com.jwar.sharedbill.domain.model.User
 import br.com.jwar.sharedbill.domain.usecases.GetCurrentUserUseCase
 import br.com.jwar.sharedbill.domain.usecases.SignOutUseCase
 import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
+import br.com.jwar.sharedbill.presentation.screens.account.AccountContract
+import br.com.jwar.sharedbill.presentation.screens.account.AccountViewModel
 import io.mockk.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

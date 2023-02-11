@@ -3,7 +3,7 @@ package br.com.jwar.sharedbill.presentation.models
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import br.com.jwar.sharedbill.R
-import br.com.jwar.sharedbill.presentation.ui.generic_components.Selectable
+import br.com.jwar.sharedbill.core.designsystem.components.Selectable
 import java.util.UUID
 
 class UserUiModel(

@@ -49,4 +49,6 @@ dependencies {
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.androidTest)
     debugImplementation(libs.bundles.debug)
+
+    implementation(project(":core:designsystem"))
 }
