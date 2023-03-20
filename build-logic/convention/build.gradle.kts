@@ -28,5 +28,17 @@ gradlePlugin {
             id = "sharedbill.android.feature"
             implementationClass = "br.com.jwar.convention.plugins.AndroidFeatureConventionPlugin"
         }
+        register("androidFirebase") {
+            id = "sharedbill.android.firebase"
+            implementationClass = "br.com.jwar.convention.plugins.AndroidFirebaseConventionPlugin"
+        }
+        register("androidCompose") {
+            id = "sharedbill.android.compose"
+            implementationClass = "br.com.jwar.convention.plugins.AndroidComposeConventionPlugin"
+        }
+        register("androidHilt") {
+            id = "sharedbill.android.hilt"
+            implementationClass = "br.com.jwar.convention.plugins.AndroidHiltConventionPlugin"
+        }
     }
 }
