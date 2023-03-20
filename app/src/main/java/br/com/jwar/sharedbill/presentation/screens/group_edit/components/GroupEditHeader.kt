@@ -25,7 +25,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.core.designsystem.theme.*
-import br.com.jwar.sharedbill.designsystem.theme.*
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 
 @Composable

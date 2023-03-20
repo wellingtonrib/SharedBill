@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.domain.model
 
+import br.com.jwar.sharedbill.domain.account.model.User
 import com.google.firebase.Timestamp
 import java.util.*
 

@@ -1,6 +1,6 @@
 package br.com.jwar.sharedbill.domain.usecases
 
-import br.com.jwar.sharedbill.core.extensions.resultOf
+import br.com.jwar.sharedbill.core.utility.extensions.resultOf
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 
 class GetGroupByIdUseCaseImpl(

@@ -2,7 +2,7 @@ package br.com.jwar.sharedbill.domain.repositories
 
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
-import br.com.jwar.sharedbill.domain.model.User
+import br.com.jwar.sharedbill.domain.account.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface GroupRepository {

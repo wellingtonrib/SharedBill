@@ -42,6 +42,7 @@ androidx-core-ktx                       = { module = "androidx.core:core-ktx", v
 androidx-core-testing                   = { module = "androidx.arch.core:core-testing", version.ref = "androidCoreTesting"}
 androidx-hilt-navigation-compose        = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidComposeHilt" }
 androidx-lifecycle-runtime-ktx          = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidLifecycle" }
+androidx-lifecycle-viewmodel-ktx        = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidLifecycle" }
 androidx-navigation-compose             = { module = "androidx.navigation:navigation-compose", version.ref = "androidComposeNavigation" }
 androidx-test-espresso-core             = { module = "androidx.test.espresso:espresso-core", version.ref = "androidExpresso" }
 androidx-test-ext-junit                 = { module = "androidx.test.ext:junit", version.ref = "androidExtjunit" }

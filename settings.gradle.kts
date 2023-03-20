@@ -1,5 +1,4 @@
 rootProject.name = "SharedBill"
-include(":app")
 
 pluginManagement {
     includeBuild("build-logic")
@@ -17,4 +16,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-include(":core:designsystem")
+
+apply {
+    from("$rootDir/modules.gradle.kts")
+}
+

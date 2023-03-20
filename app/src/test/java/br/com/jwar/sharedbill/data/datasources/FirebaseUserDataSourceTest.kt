@@ -2,8 +2,9 @@ package br.com.jwar.sharedbill.data.datasources
 
 import br.com.jwar.sharedbill.CoroutinesTestRule
 import br.com.jwar.sharedbill.Fakes
-import br.com.jwar.sharedbill.data.mappers.FirebaseUserToUserMapper
-import br.com.jwar.sharedbill.domain.exceptions.UserException
+import br.com.jwar.sharedbill.data.account.datasources.FirebaseUserDataSource
+import br.com.jwar.sharedbill.data.account.mappers.FirebaseUserToUserMapper
+import br.com.jwar.sharedbill.domain.account.exceptions.UserException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import io.mockk.every

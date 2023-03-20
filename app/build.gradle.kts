@@ -1,5 +1,3 @@
-import java.util.*
-
 plugins {
     id("sharedbill.android.application")
     id("com.google.gms.google-services")
@@ -15,11 +13,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").reader())
-
-        buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"${properties.getProperty("FIREBASE_WEB_CLIENT_ID")}\"")
     }
 
     buildTypes {
@@ -50,5 +43,10 @@ dependencies {
     androidTestImplementation(libs.bundles.androidTest)
     debugImplementation(libs.bundles.debug)
 
-    implementation(project(":core:designsystem"))
+    implementation(project(":core:designsystem"))//todo create a class to modules definition
+    implementation(project(":core:utility"))
+    implementation(project(":core:common"))
+    implementation(project(":ui:account"))
+    implementation(project(":data:account"))
+    implementation(project(":domain:account"))
 }

@@ -26,4 +26,4 @@ fun ModelContent(
             is State.Error -> ErrorContent()
         }
     }
-}
+}//todo move base classes to appropriate module

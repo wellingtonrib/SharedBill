@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
-import br.com.jwar.sharedbill.designsystem.theme.*
 import br.com.jwar.sharedbill.core.designsystem.components.InfoDialog
 import br.com.jwar.sharedbill.core.designsystem.theme.*
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel

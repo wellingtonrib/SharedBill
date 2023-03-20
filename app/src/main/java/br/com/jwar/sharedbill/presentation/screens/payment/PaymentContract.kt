@@ -1,16 +1,13 @@
 package br.com.jwar.sharedbill.presentation.screens.payment
 
-import br.com.jwar.sharedbill.presentation.base.UiEffect
-import br.com.jwar.sharedbill.presentation.base.UiEvent
-import br.com.jwar.sharedbill.presentation.base.UiState
+import br.com.jwar.sharedbill.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.presentation.models.PaymentUiError
-import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import java.util.*
 
 class PaymentContract {
 
-    sealed class Event: UiEvent {
+    sealed class Event: br.com.jwar.sharedbill.core.common.UiEvent {
         class OnParamsChange(val params: PaymentParams) : Event()
         object OnCreatePayment : Event()
     }
@@ -18,17 +15,17 @@ class PaymentContract {
     data class State(
         val isLoading: Boolean = false,
         val params: PaymentParams? = null,
-    ): UiState
+    ): br.com.jwar.sharedbill.core.common.UiState
 
-    sealed class Effect: UiEffect {
+    sealed class Effect: br.com.jwar.sharedbill.core.common.UiEffect {
         object Finish: Effect()
     }
 
     data class PaymentParams(
         val description: String = "",
         val value: String = "",
-        val paidBy: UserUiModel = UserUiModel(),
-        val paidTo: List<UserUiModel> = emptyList(),
+        val paidBy: GroupMemberUiModel = GroupMemberUiModel(),
+        val paidTo: List<GroupMemberUiModel> = emptyList(),
         val date: Date = Date(),
         val group: GroupUiModel = GroupUiModel(),
         val error: PaymentUiError? = null
@@ -36,11 +33,11 @@ class PaymentContract {
         companion object {
             fun sample() = PaymentParams(
                 group = GroupUiModel.sample(),
-                paidBy = UserUiModel.sample(),
+                paidBy = GroupMemberUiModel.sample(),
                 paidTo = listOf(
-                    UserUiModel.sample(),
-                    UserUiModel.sample(),
-                    UserUiModel.sample(),
+                    GroupMemberUiModel.sample(),
+                    GroupMemberUiModel.sample(),
+                    GroupMemberUiModel.sample(),
                 )
             )
         }

@@ -7,11 +7,10 @@ import br.com.jwar.sharedbill.domain.usecases.AddMemberUseCase
 import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.domain.usecases.RemoveMemberUseCase
 import br.com.jwar.sharedbill.domain.usecases.UpdateGroupUseCase
-import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
+import br.com.jwar.sharedbill.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.presentation.models.GroupUiError
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
-import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.navigation.AppDestinationsArgs
 import br.com.jwar.sharedbill.presentation.screens.group_edit.GroupEditContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +25,7 @@ class GroupEditViewModel @Inject constructor(
     private val updateGroupUseCase: UpdateGroupUseCase,
     private val removeMemberUseCase: RemoveMemberUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
-): BaseViewModel<Event, State, Effect>() {
+): br.com.jwar.sharedbill.core.common.BaseViewModel<Event, State, Effect>() {
 
     private val groupId: String = checkNotNull(savedStateHandle[AppDestinationsArgs.GROUP_ID_ARG])
 
@@ -110,5 +109,5 @@ class GroupEditViewModel @Inject constructor(
 
     private fun onGroupUpdated(group: GroupUiModel) = setEditingGroup(group)
 
-    private fun onMemberSelect(user: UserUiModel?) = setState { it.copy(selectedMember = user) }
+    private fun onMemberSelect(user: GroupMemberUiModel?) = setState { it.copy(selectedMember = user) }
 }

@@ -2,8 +2,9 @@ package br.com.jwar.sharedbill.data.repositories
 
 import br.com.jwar.sharedbill.CoroutinesTestRule
 import br.com.jwar.sharedbill.Fakes
-import br.com.jwar.sharedbill.domain.datasources.UserDataSource
-import br.com.jwar.sharedbill.domain.exceptions.UserException
+import br.com.jwar.sharedbill.data.account.repositories.DefaultUserRepository
+import br.com.jwar.sharedbill.data.account.datasources.UserDataSource
+import br.com.jwar.sharedbill.domain.account.exceptions.UserException
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

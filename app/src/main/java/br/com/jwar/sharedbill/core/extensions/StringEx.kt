@@ -27,3 +27,5 @@ fun String?.orZero() = if (this.isNullOrBlank()) ZERO else this
 
 fun String.replaceIf(replacement: String, predicate: () -> Boolean) =
     if (predicate()) replacement else this
+
+//todo move extensions to appropriate module

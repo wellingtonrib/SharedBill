@@ -12,7 +12,7 @@ data class GroupUiModel(
     val id: String = "",
     val title: String = "",
     val membersNames: String = "",
-    val members: List<UserUiModel> = emptyList(),
+    val members: List<GroupMemberUiModel> = emptyList(),
     val payments: List<PaymentUiModel> = emptyList(),
     val balance: Map<String, BigDecimal> = mapOf(),
     val total: String = "",
@@ -42,9 +42,9 @@ data class GroupUiModel(
             title = "Group Sample",
             membersNames = "Member One, Member Two, Member Three",
             members = listOf(
-                UserUiModel.sample(),
-                UserUiModel.sample(),
-                UserUiModel.sample(),
+                GroupMemberUiModel.sample(),
+                GroupMemberUiModel.sample(),
+                GroupMemberUiModel.sample(),
             ),
             payments = listOf(
                 PaymentUiModel.sample(),
@@ -60,3 +60,4 @@ data class GroupUiModel(
         )
     }
 }
+

@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdStreamUseCase
-import br.com.jwar.sharedbill.presentation.base.BaseViewModel
+import br.com.jwar.sharedbill.core.common.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.sharedbill.presentation.navigation.AppDestinationsArgs
 import br.com.jwar.sharedbill.presentation.screens.group_details.GroupDetailsContract.*
@@ -18,7 +18,7 @@ class GroupDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getGroupByIdStreamUseCase: GetGroupByIdStreamUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper
-): BaseViewModel<Event, State, Effect>() {
+): br.com.jwar.sharedbill.core.common.BaseViewModel<Event, State, Effect>() {
 
     private val groupId: String = checkNotNull(savedStateHandle[AppDestinationsArgs.GROUP_ID_ARG])
 

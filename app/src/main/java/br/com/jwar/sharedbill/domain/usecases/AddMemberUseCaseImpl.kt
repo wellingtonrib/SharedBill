@@ -1,8 +1,8 @@
 package br.com.jwar.sharedbill.domain.usecases
 
-import br.com.jwar.sharedbill.core.extensions.resultOf
+import br.com.jwar.sharedbill.core.utility.extensions.resultOf
 import br.com.jwar.sharedbill.domain.exceptions.GroupException
-import br.com.jwar.sharedbill.domain.model.User
+import br.com.jwar.sharedbill.domain.account.model.User
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import java.util.UUID
 import javax.inject.Inject

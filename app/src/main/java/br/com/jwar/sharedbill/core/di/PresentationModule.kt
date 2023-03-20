@@ -1,6 +1,8 @@
 package br.com.jwar.sharedbill.core.di
 
 import br.com.jwar.sharedbill.presentation.mappers.*
+import br.com.jwar.sharedbill.ui.account.mappers.UserToUserUiModelMapper
+import br.com.jwar.sharedbill.ui.account.mappers.UserToUserUiModelMapperImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,8 +13,8 @@ import dagger.hilt.components.SingletonComponent
 class PresentationModule {
 
     @Provides
-    fun provideUserToUserUiModel(): UserToUserUiModelMapper =
-        UserToUserUiModelMapperImpl()
+    fun provideUserToGroupMemberUiModel(): UserToGroupMemberUiModelMapper =
+        UserToGroupMemberUiModelMapperImpl()
 
     @Provides
     fun providePaymentToPaymentUiModel(): PaymentToPaymentUiModelMapper =
@@ -21,7 +23,7 @@ class PresentationModule {
     @Provides
     fun provideGroupToGroupUiModelMapper(
         paymentToPaymentUiModelMapper: PaymentToPaymentUiModelMapper,
-        userToUserUiModelMapper: UserToUserUiModelMapper
+        userToGroupMemberUiModelMapper: UserToGroupMemberUiModelMapper
     ): GroupToGroupUiModelMapper =
-        GroupToGroupUiModelMapperImpl(paymentToPaymentUiModelMapper, userToUserUiModelMapper)
+        GroupToGroupUiModelMapperImpl(paymentToPaymentUiModelMapper, userToGroupMemberUiModelMapper)
 }

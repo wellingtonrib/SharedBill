@@ -1,6 +1,6 @@
 package br.com.jwar.sharedbill
 
-import br.com.jwar.sharedbill.domain.model.User
+import br.com.jwar.sharedbill.domain.account.model.User
 
 object Fakes {
 

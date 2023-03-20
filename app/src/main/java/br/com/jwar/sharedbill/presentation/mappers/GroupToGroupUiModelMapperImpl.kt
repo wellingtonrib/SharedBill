@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GroupToGroupUiModelMapperImpl @Inject constructor(
     private val paymentToPaymentUiModelMapper: PaymentToPaymentUiModelMapper,
-    private val userToUserUiModelMapper: UserToUserUiModelMapper
+    private val userToGroupMemberUiModelMapper: UserToGroupMemberUiModelMapper
 ) : GroupToGroupUiModelMapper {
     override fun mapFrom(from: Group) =
         GroupUiModel(
@@ -29,7 +29,7 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         from.payments.map { paymentToPaymentUiModelMapper.mapFrom(it) }
 
     private fun mapMembers(from: Group) =
-        from.members.map { userToUserUiModelMapper.mapFrom(it) }
+        from.members.map { userToGroupMemberUiModelMapper.mapFrom(it) }
 
     private fun mapMembersNames(from: Group) =
         from.members.joinToString(", ") { it.firstName }

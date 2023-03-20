@@ -10,10 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
-import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.presentation.screens.group_edit.GroupEditContract.State
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.presentation.models.GroupMemberUiModel
 
 @Composable
 fun GroupEditScreen(
@@ -21,7 +21,7 @@ fun GroupEditScreen(
     snackHostState: SnackbarHostState = SnackbarHostState(),
     onGroupUpdated: (GroupUiModel) -> Unit = {},
     onSaveMemberClick: (String) -> Unit = {},
-    onMemberSelectionChange: (UserUiModel?) -> Unit = {},
+    onMemberSelectionChange: (GroupMemberUiModel?) -> Unit = {},
     onMemberDeleteClick: (String) -> Unit = {},
     onSaveClick: () -> Unit = {},
     onNavigateBack: () -> Unit = {},

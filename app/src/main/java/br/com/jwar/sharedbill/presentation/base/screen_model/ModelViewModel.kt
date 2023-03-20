@@ -1,7 +1,7 @@
 package br.com.jwar.sharedbill.presentation.base.screen_model
 
 import androidx.lifecycle.viewModelScope
-import br.com.jwar.sharedbill.presentation.base.BaseViewModel
+import br.com.jwar.sharedbill.core.common.BaseViewModel
 import br.com.jwar.sharedbill.presentation.base.screen_model.ModelContract.Effect
 import br.com.jwar.sharedbill.presentation.base.screen_model.ModelContract.Event
 import br.com.jwar.sharedbill.presentation.base.screen_model.ModelContract.State
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ModelViewModel @Inject constructor(
-): BaseViewModel<Event, State, Effect>() {
+): br.com.jwar.sharedbill.core.common.BaseViewModel<Event, State, Effect>() {
 
     override fun getInitialState(): State = State.Loading
 

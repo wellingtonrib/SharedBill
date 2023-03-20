@@ -1,0 +1,7 @@
+include(":app")
+include(":core:designsystem")
+include(":core:utility")
+include(":core:common")
+include(":data:account")
+include(":domain:account")
+include(":ui:account")

@@ -14,18 +14,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
-import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.presentation.navigation.AppTopBar
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
+import br.com.jwar.sharedbill.presentation.models.GroupMemberUiModel
 
 @Composable
 fun GroupEditForm(
     group: GroupUiModel,
-    selectedMember: UserUiModel? = null,
+    selectedMember: GroupMemberUiModel? = null,
     onGroupUpdated: (GroupUiModel) -> Unit = {},
     onSaveMemberClick: (String) -> Unit = {},
-    onMemberSelectionChange: (UserUiModel?) -> Unit = {},
+    onMemberSelectionChange: (GroupMemberUiModel?) -> Unit = {},
     onMemberDeleteClick: (String) -> Unit = {},
     onSaveClick: () -> Unit = {},
     onNavigateBack: () -> Unit = {},
@@ -68,9 +68,8 @@ fun GroupEditForm(
                 VerticalSpacerMedium()
                 GroupMemberCard(
                     member = member,
-                    onMemberSelect = { onMemberSelectionChange(it) },
-                    onMemberDelete = { onMemberDeleteClick(it) }
-                )
+                    onMemberSelect = { onMemberSelectionChange(it) }
+                ) { onMemberDeleteClick(it) }
             }
         }
     }

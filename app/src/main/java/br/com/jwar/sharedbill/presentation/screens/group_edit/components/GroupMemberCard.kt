@@ -12,20 +12,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.presentation.models.UserUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissBackground
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissConfirm
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissDeleteAction
-import br.com.jwar.sharedbill.presentation.screens.account.components.UserImage
+import br.com.jwar.sharedbill.core.designsystem.components.UserImage
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.sizeMedium
+import br.com.jwar.sharedbill.presentation.models.GroupMemberUiModel
 
 @Composable
 fun GroupMemberCard(
-    member: UserUiModel,
-    onMemberSelect: (member: UserUiModel) -> Unit = {},
+    member: GroupMemberUiModel,
+    onMemberSelect: (member: GroupMemberUiModel) -> Unit = {},
     onMemberDelete: (userId: String) -> Unit = {}
 ) {
     val swipeToDismissAction = SwipeToDismissDeleteAction(action = { onMemberDelete(member.uid) })
@@ -68,7 +68,7 @@ fun GroupMemberCard(
 @Composable
 fun GroupMemberCard() {
     MaterialTheme {
-        GroupMemberCard(UserUiModel.sample())
+        GroupMemberCard(GroupMemberUiModel.sample())
     }
 }
 

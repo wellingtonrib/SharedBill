@@ -7,9 +7,8 @@ import br.com.jwar.sharedbill.domain.model.Payment
 import br.com.jwar.sharedbill.domain.usecases.CreatePaymentUseCase
 import br.com.jwar.sharedbill.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.domain.usecases.SendPaymentUseCase
-import br.com.jwar.sharedbill.presentation.base.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
-import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
+import br.com.jwar.sharedbill.presentation.mappers.UserToGroupMemberUiModelMapper
 import br.com.jwar.sharedbill.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.presentation.navigation.AppDestinationsArgs
 import br.com.jwar.sharedbill.presentation.screens.payment.PaymentContract.*
@@ -24,8 +23,8 @@ class PaymentViewModel @Inject constructor(
     private val createPaymentUseCase: CreatePaymentUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
-    private val userToUserUiModelMapper: UserToUserUiModelMapper
-): BaseViewModel<Event, State, Effect>() {
+    private val userToGroupMemberUiModelMapper: UserToGroupMemberUiModelMapper
+): br.com.jwar.sharedbill.core.common.BaseViewModel<Event, State, Effect>() {
 
     private val groupId: String = checkNotNull(savedStateHandle[AppDestinationsArgs.GROUP_ID_ARG])
 
@@ -65,7 +64,7 @@ class PaymentViewModel @Inject constructor(
         groupToGroupUiModelMapper.mapFrom(group).let { groupUiModel ->
             PaymentParams(
                 group = groupUiModel,
-                paidBy = userToUserUiModelMapper.mapFrom(group.findCurrentUser() ?: group.owner),
+                paidBy = userToGroupMemberUiModelMapper.mapFrom(group.findCurrentUser() ?: group.owner),
                 paidTo = groupUiModel.members
             )
         }

@@ -1,10 +1,10 @@
 package br.com.jwar.sharedbill.presentation.screens.group_list
 
 import androidx.lifecycle.viewModelScope
-import br.com.jwar.sharedbill.domain.exceptions.UserException.UserNotFoundException
+import br.com.jwar.sharedbill.domain.account.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.usecases.*
-import br.com.jwar.sharedbill.presentation.base.BaseViewModel
+import br.com.jwar.sharedbill.core.common.BaseViewModel
 import br.com.jwar.sharedbill.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.sharedbill.presentation.models.GroupUiError
 import br.com.jwar.sharedbill.presentation.screens.group_list.GroupListContract.*
@@ -21,7 +21,7 @@ class GroupListViewModel @Inject constructor(
     private val deleteGroupUseCase: DeleteGroupUseCase,
     private val leaveGroupUseCase: LeaveGroupUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper
-): BaseViewModel<Event, State, Effect>() {
+): br.com.jwar.sharedbill.core.common.BaseViewModel<Event, State, Effect>() {
 
     init { onInit() }
 

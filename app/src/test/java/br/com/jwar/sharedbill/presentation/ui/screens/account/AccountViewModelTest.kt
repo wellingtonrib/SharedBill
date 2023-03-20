@@ -2,13 +2,13 @@ package br.com.jwar.sharedbill.presentation.ui.screens.account
 
 import br.com.jwar.sharedbill.CoroutinesTestRule
 import br.com.jwar.sharedbill.Fakes
-import br.com.jwar.sharedbill.domain.exceptions.UserException
-import br.com.jwar.sharedbill.domain.model.User
-import br.com.jwar.sharedbill.domain.usecases.GetCurrentUserUseCase
-import br.com.jwar.sharedbill.domain.usecases.SignOutUseCase
-import br.com.jwar.sharedbill.presentation.mappers.UserToUserUiModelMapper
-import br.com.jwar.sharedbill.presentation.screens.account.AccountContract
-import br.com.jwar.sharedbill.presentation.screens.account.AccountViewModel
+import br.com.jwar.sharedbill.domain.account.exceptions.UserException
+import br.com.jwar.sharedbill.domain.account.model.User
+import br.com.jwar.sharedbill.domain.account.usecases.GetCurrentUserUseCase
+import br.com.jwar.sharedbill.domain.account.usecases.SignOutUseCase
+import br.com.jwar.sharedbill.ui.account.mappers.UserToUserUiModelMapper
+import br.com.jwar.sharedbill.ui.account.AccountContract
+import br.com.jwar.sharedbill.ui.account.AccountViewModel
 import io.mockk.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

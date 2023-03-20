@@ -9,12 +9,11 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import br.com.jwar.sharedbill.presentation.navigation.AppDestinationsArgs.GROUP_ID_ARG
 import br.com.jwar.sharedbill.presentation.navigation.AppRoute.*
-import br.com.jwar.sharedbill.presentation.screens.account.AccountRoute
-import br.com.jwar.sharedbill.presentation.screens.auth.AuthRoute
 import br.com.jwar.sharedbill.presentation.screens.group_details.GroupDetailsRoute
 import br.com.jwar.sharedbill.presentation.screens.group_edit.GroupEditRoute
 import br.com.jwar.sharedbill.presentation.screens.group_list.GroupListRoute
 import br.com.jwar.sharedbill.presentation.screens.payment.PaymentRoute
+import br.com.jwar.sharedbill.ui.account.navigation.accountScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
@@ -30,12 +29,7 @@ fun NavGraph(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
     ) {
-        composable(route = Auth.route) {
-            createAuthRoute(navController, snackbarHostState)
-        }
-        composable(route = Account.route) {
-            createAccountRoute(navController)
-        }
+        accountScreen(snackbarHostState = snackbarHostState)
         composable(route = GroupList.route) {
             createGroupListRoute(navController, snackbarHostState)
         }
@@ -52,31 +46,6 @@ fun NavGraph(
 }
 
 @Composable
-private fun createAuthRoute(
-    navController: NavHostController,
-    snackbarHostState: SnackbarHostState
-) {
-    AuthRoute(
-        snackbarHostState = snackbarHostState,
-    ) {
-        navController.navigate(GroupList.route) {
-            navController.currentBackStackEntry?.destination?.route?.let {
-                popUpTo(it) {
-                    inclusive = true
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun createAccountRoute(navController: NavHostController) {
-    AccountRoute(
-        onNavigateToAuth = { navController.navigate(Auth.route) }
-    )
-}
-
-@Composable
 private fun createGroupListRoute(
     navController: NavHostController,
     snackbarHostState: SnackbarHostState
@@ -88,7 +57,6 @@ private fun createGroupListRoute(
         }
     ) {
         navController.popBackStack()
-        navController.navigate(Auth.route)
     }
 }
 

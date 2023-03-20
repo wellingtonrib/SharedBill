@@ -1,14 +1,14 @@
 package br.com.jwar.sharedbill.presentation.screens.group_list
 
-import br.com.jwar.sharedbill.presentation.base.UiEffect
-import br.com.jwar.sharedbill.presentation.base.UiEvent
-import br.com.jwar.sharedbill.presentation.base.UiState
+import br.com.jwar.sharedbill.core.common.UiEffect
+import br.com.jwar.sharedbill.core.common.UiEvent
+import br.com.jwar.sharedbill.core.common.UiState
 import br.com.jwar.sharedbill.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.designsystem.util.UiText
 
 class GroupListContract {
 
-    sealed class Event: UiEvent {
+    sealed class Event: br.com.jwar.sharedbill.core.common.UiEvent {
         object OnTryAgain : Event()
         class OnGroupCreate(val title: String): Event()
         class OnGroupJoin(val inviteCode: String): Event()
@@ -17,13 +17,13 @@ class GroupListContract {
         class OnGroupLeave(val groupId: String) : Event()
     }
 
-    sealed class State: UiState {
+    sealed class State: br.com.jwar.sharedbill.core.common.UiState {
         object Loading: State()
         data class Loaded(val uiModel: List<GroupUiModel>): State()
         class Error(val message: String?): State()
     }
 
-    sealed class Effect: UiEffect {
+    sealed class Effect: br.com.jwar.sharedbill.core.common.UiEffect {
         class OpenGroupDetails(val groupId: String): Effect()
         class Error(val message: UiText): Effect()
         object GoToAuth : Effect()

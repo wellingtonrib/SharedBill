@@ -12,8 +12,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.core.designsystem.theme.Icons
-import br.com.jwar.sharedbill.presentation.navigation.AppDestinations.ACCOUNT_ROUTE
 import br.com.jwar.sharedbill.presentation.navigation.AppDestinations.GROUP_LIST_ROUTE
+import br.com.jwar.sharedbill.ui.account.navigation.ACCOUNT_ROUTE
 
 enum class AppBottomBarItem(val title: Int, val icon: Int, val route: String) {
     Groups(R.string.label_group_list, Icons.Groups, GROUP_LIST_ROUTE),

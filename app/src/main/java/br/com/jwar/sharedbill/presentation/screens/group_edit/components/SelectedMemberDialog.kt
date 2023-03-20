@@ -13,15 +13,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.jwar.sharedbill.core.designsystem.R
-import br.com.jwar.sharedbill.presentation.models.UserUiModel
-import br.com.jwar.sharedbill.presentation.screens.account.components.UserInfo
+import br.com.jwar.sharedbill.core.designsystem.components.UserCard
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
+import br.com.jwar.sharedbill.presentation.models.GroupMemberUiModel
 
 @Composable
 fun SelectedMemberDialog(
-    selectedMember: UserUiModel? = null,
-    onMemberSelectionChange: (UserUiModel?) -> Unit = {}
+    selectedMember: GroupMemberUiModel? = null,
+    onMemberSelectionChange: (GroupMemberUiModel?) -> Unit = {}
 ) {
     selectedMember?.let { user ->
         Dialog(
@@ -35,7 +35,7 @@ fun SelectedMemberDialog(
                     modifier = Modifier.fillMaxWidthPaddingMedium(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    UserInfo(user = user)
+                    UserCard(user = user.toUserCardUiModel())
                     Text(text = user.getJoinInfo())
                     Button(onClick = { onMemberSelectionChange(null) }) {
                         Text(text = stringResource(R.string.label_ok))
@@ -51,7 +51,7 @@ fun SelectedMemberDialog(
 fun PreviewSelectedMemberDialog() {
     SharedBillTheme {
         SelectedMemberDialog(
-            selectedMember = UserUiModel.sample()
+            selectedMember = GroupMemberUiModel.sample()
         )
     }
 }
