@@ -22,9 +22,9 @@ class FirebaseUserDataSource @Inject constructor(
         const val USERS_REF = "users"
     }
 
-    override suspend fun getCurrentUser(): br.com.jwar.sharedbill.account.domain.model.User =
+    override suspend fun getCurrentUser(): User =
         withContext(ioDispatcher) {
-            val firebaseUser = firebaseAuth.currentUser ?: throw br.com.jwar.sharedbill.account.domain.exceptions.UserException.UserNotFoundException
+            val firebaseUser = firebaseAuth.currentUser ?: throw UserException.UserNotFoundException
             firebaseUserToUserMapper.mapFrom(firebaseUser)
         }
 
@@ -32,11 +32,11 @@ class FirebaseUserDataSource @Inject constructor(
         withContext(ioDispatcher) {
             val userDoc = firestore.collection(USERS_REF).document()
             val user =
-                br.com.jwar.sharedbill.account.domain.model.User(id = userDoc.id, name = userName)
+                User(id = userDoc.id, name = userName)
             userDoc.set(user)
         }
 
-    override suspend fun saveUser(user: br.com.jwar.sharedbill.account.domain.model.User): Unit =
+    override suspend fun saveUser(user: User): Unit =
         withContext(ioDispatcher) {
             firestore.collection(USERS_REF).document(user.firebaseUserId).set(user).await()
         }

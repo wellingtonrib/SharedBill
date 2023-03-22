@@ -28,25 +28,25 @@ class FirebaseAuthService @Inject constructor(
     @Named(SIGN_UP_REQUEST)
     private var signUpRequest: BeginSignInRequest,
     private var firebaseUserToUserMapper: FirebaseUserToUserMapper,
-    private var userRepository: br.com.jwar.sharedbill.account.domain.repositories.UserRepository,
+    private var userRepository: UserRepository,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-): br.com.jwar.sharedbill.account.domain.services.AuthService {
+): AuthService {
 
     override suspend fun signIn(): BeginSignInResult =
         withContext(ioDispatcher) {
-            signInClient.beginSignIn(signInRequest).await() ?: throw br.com.jwar.sharedbill.account.domain.exceptions.AuthException.SignInException
+            signInClient.beginSignIn(signInRequest).await() ?: throw AuthException.SignInException
         }
 
     override suspend fun signUp(): BeginSignInResult =
         withContext(ioDispatcher) {
-            signInClient.beginSignIn(signUpRequest).await() ?: throw br.com.jwar.sharedbill.account.domain.exceptions.AuthException.SignUpException
+            signInClient.beginSignIn(signUpRequest).await() ?: throw AuthException.SignUpException
         }
 
     override suspend fun signInFirebase(data: Intent?) =
         withContext(ioDispatcher) {
             val signInCredential = signInClient.getSignInCredentialFromIntent(data)
             val authCredential = GoogleAuthProvider.getCredential(signInCredential.googleIdToken, null)
-            val authResult = firebaseAuth.signInWithCredential(authCredential).await() ?: throw br.com.jwar.sharedbill.account.domain.exceptions.AuthException.SignInFirebaseException
+            val authResult = firebaseAuth.signInWithCredential(authCredential).await() ?: throw AuthException.SignInFirebaseException
             val firebaseUser = authResult.user ?: throw UserNotFoundException
             val domainUser = firebaseUserToUserMapper.mapFrom(firebaseUser)
             userRepository.saveUser(domainUser)

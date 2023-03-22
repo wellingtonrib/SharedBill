@@ -7,7 +7,7 @@ import javax.inject.Singleton
 @Singleton
 class FirebaseUserToUserMapperImpl : FirebaseUserToUserMapper {
     override fun mapFrom(from: FirebaseUser) = with(from) {
-        br.com.jwar.sharedbill.account.domain.model.User(
+        User(
             firebaseUserId = uid,
             name = displayName.orEmpty(),
             email = email.orEmpty(),

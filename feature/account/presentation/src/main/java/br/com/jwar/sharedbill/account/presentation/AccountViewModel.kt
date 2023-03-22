@@ -17,11 +17,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(
-    private val signOutUseCase: br.com.jwar.sharedbill.account.domain.usecases.SignOutUseCase,
-    private val getCurrentUserUseCase: br.com.jwar.sharedbill.account.domain.usecases.GetCurrentUserUseCase,
-    private val signInUseCase: br.com.jwar.sharedbill.account.domain.usecases.SignInUseCase,
-    private val signUpUseCase: br.com.jwar.sharedbill.account.domain.usecases.SignUpUseCase,
-    private val signInFirebaseUseCase: br.com.jwar.sharedbill.account.domain.usecases.SignInFirebaseUseCase,
+    private val signOutUseCase: SignOutUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val signInUseCase: SignInUseCase,
+    private val signUpUseCase: SignUpUseCase,
+    private val signInFirebaseUseCase: SignInFirebaseUseCase,
     private val userToUserUiModelMapper: UserToUserUiModelMapper,
 ): BaseViewModel<Event, State, Effect>() {
 
@@ -81,7 +81,7 @@ class AccountViewModel @Inject constructor(
 
     private fun setLoadingState() = setState { State.Loading }
 
-    private fun setLoadedState(user: br.com.jwar.sharedbill.account.domain.model.User) =
+    private fun setLoadedState(user: User) =
         setState { State.Loaded(uiModel = userToUserUiModelMapper.mapFrom(user)) }
 
     private fun setLoggedOutState() = setState { State.Loaded(isLoggedIn = false) }
