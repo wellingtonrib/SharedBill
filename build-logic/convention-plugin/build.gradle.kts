@@ -18,27 +18,27 @@ gradlePlugin {
     plugins {
         register("androidApplication") {
             id = "sharedbill.android.application"
-            implementationClass = "br.com.jwar.convention.plugins.AndroidApplicationConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidApplicationConventionPlugin"
         }
         register("androidLibrary") {
             id = "sharedbill.android.library"
-            implementationClass = "br.com.jwar.convention.plugins.AndroidLibraryConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidLibraryConventionPlugin"
         }
         register("androidFeature") {
             id = "sharedbill.android.feature"
-            implementationClass = "br.com.jwar.convention.plugins.AndroidFeatureConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidFeatureConventionPlugin"
         }
         register("androidFirebase") {
             id = "sharedbill.android.firebase"
-            implementationClass = "br.com.jwar.convention.plugins.AndroidFirebaseConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidFirebaseConventionPlugin"
         }
         register("androidCompose") {
             id = "sharedbill.android.compose"
-            implementationClass = "br.com.jwar.convention.plugins.AndroidComposeConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidComposeConventionPlugin"
         }
         register("androidHilt") {
             id = "sharedbill.android.hilt"
-            implementationClass = "br.com.jwar.convention.plugins.AndroidHiltConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidHiltConventionPlugin"
         }
     }
 }

@@ -1,4 +1,4 @@
-package br.com.jwar.convention.extensions
+package br.com.jwar.sharedbill.buildlogic.conventionplugin.extensions
 
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
