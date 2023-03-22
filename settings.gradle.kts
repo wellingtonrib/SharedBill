@@ -17,7 +17,10 @@ dependencyResolutionManagement {
     }
 }
 
-apply {
-    from("$rootDir/modules.gradle.kts")
-}
-
+include(":app")
+include(":core:designsystem")
+include(":core:utility")
+include(":core:common")
+include(":feature:account:domain")
+include(":feature:account:data")
+include(":feature:account:presentation")

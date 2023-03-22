@@ -5,7 +5,7 @@ import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
 import br.com.jwar.sharedbill.domain.exceptions.GroupException.GroupNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
-import br.com.jwar.sharedbill.domain.account.model.User
+import br.com.jwar.sharedbill.account.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.snapshots

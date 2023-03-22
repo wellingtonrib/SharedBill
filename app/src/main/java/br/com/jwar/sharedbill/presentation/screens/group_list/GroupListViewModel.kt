@@ -1,7 +1,7 @@
 package br.com.jwar.sharedbill.presentation.screens.group_list
 
 import androidx.lifecycle.viewModelScope
-import br.com.jwar.sharedbill.domain.account.exceptions.UserException.UserNotFoundException
+import br.com.jwar.sharedbill.account.domain.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.usecases.*
 import br.com.jwar.sharedbill.core.common.BaseViewModel

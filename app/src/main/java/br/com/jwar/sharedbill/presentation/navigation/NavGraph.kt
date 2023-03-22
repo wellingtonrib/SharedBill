@@ -13,7 +13,7 @@ import br.com.jwar.sharedbill.presentation.screens.group_details.GroupDetailsRou
 import br.com.jwar.sharedbill.presentation.screens.group_edit.GroupEditRoute
 import br.com.jwar.sharedbill.presentation.screens.group_list.GroupListRoute
 import br.com.jwar.sharedbill.presentation.screens.payment.PaymentRoute
-import br.com.jwar.sharedbill.ui.account.navigation.accountScreen
+import br.com.jwar.sharedbill.account.presentation.navigation.accountScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 

@@ -1,6 +1,6 @@
 package br.com.jwar.sharedbill.domain.model
 
-import br.com.jwar.sharedbill.domain.account.model.User
+import br.com.jwar.sharedbill.account.domain.model.User
 
 data class Group(
     val id: String = "",

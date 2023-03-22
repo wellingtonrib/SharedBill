@@ -3,7 +3,7 @@ package br.com.jwar.sharedbill.domain.usecases
 import br.com.jwar.sharedbill.core.utility.extensions.resultOf
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
-import br.com.jwar.sharedbill.domain.account.repositories.UserRepository
+import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
 import java.util.*
 import javax.inject.Inject
 

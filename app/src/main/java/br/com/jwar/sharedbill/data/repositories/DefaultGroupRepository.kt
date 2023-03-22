@@ -3,7 +3,7 @@ package br.com.jwar.sharedbill.data.repositories
 import br.com.jwar.sharedbill.domain.datasources.GroupsDataSource
 import br.com.jwar.sharedbill.domain.model.Group
 import br.com.jwar.sharedbill.domain.model.Payment
-import br.com.jwar.sharedbill.domain.account.model.User
+import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

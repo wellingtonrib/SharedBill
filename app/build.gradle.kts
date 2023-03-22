@@ -46,7 +46,7 @@ dependencies {
     implementation(project(":core:designsystem"))//todo create a class to modules definition
     implementation(project(":core:utility"))
     implementation(project(":core:common"))
-    implementation(project(":ui:account"))
-    implementation(project(":data:account"))
-    implementation(project(":domain:account"))
+    implementation(project(":feature:account:domain"))
+    implementation(project(":feature:account:data"))
+    implementation(project(":feature:account:presentation"))
 }

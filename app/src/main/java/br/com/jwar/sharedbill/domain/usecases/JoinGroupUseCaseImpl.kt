@@ -3,7 +3,7 @@ package br.com.jwar.sharedbill.domain.usecases
 import br.com.jwar.sharedbill.core.utility.extensions.resultOf
 import br.com.jwar.sharedbill.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
-import br.com.jwar.sharedbill.domain.account.repositories.UserRepository
+import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
 import javax.inject.Inject
 
 class JoinGroupUseCaseImpl @Inject constructor(

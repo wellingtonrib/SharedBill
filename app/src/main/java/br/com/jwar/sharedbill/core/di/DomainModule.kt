@@ -1,9 +1,9 @@
 package br.com.jwar.sharedbill.core.di
 
 import br.com.jwar.sharedbill.domain.repositories.GroupRepository
-import br.com.jwar.sharedbill.domain.account.repositories.UserRepository
-import br.com.jwar.sharedbill.domain.account.services.AuthService
-import br.com.jwar.sharedbill.domain.account.usecases.*
+import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
+import br.com.jwar.sharedbill.account.domain.services.AuthService
+import br.com.jwar.sharedbill.account.domain.usecases.*
 import br.com.jwar.sharedbill.domain.usecases.*
 import dagger.Module
 import dagger.Provides

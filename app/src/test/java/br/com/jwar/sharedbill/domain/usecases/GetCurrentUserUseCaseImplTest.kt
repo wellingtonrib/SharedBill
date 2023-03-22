@@ -1,7 +1,7 @@
 package br.com.jwar.sharedbill.domain.usecases
 
-import br.com.jwar.sharedbill.domain.account.repositories.UserRepository
-import br.com.jwar.sharedbill.domain.account.usecases.GetCurrentUserUseCaseImpl
+import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
+import br.com.jwar.sharedbill.account.domain.usecases.GetCurrentUserUseCaseImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
