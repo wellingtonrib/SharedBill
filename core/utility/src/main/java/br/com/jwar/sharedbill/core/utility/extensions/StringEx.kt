@@ -1,22 +1,19 @@
 package br.com.jwar.sharedbill.core.utility.extensions
 
-import com.google.firebase.Timestamp
 import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 const val DATE_FORMAT_SMALL = "dd/MM"
 const val DATE_FORMAT_DEFAULT = "dd/MM/yyyy"
 const val ZERO = "0"
 
-fun Timestamp.format(pattern: String = DATE_FORMAT_DEFAULT): String =
-    this.toDate().format(pattern)
-
 fun Date.format(pattern: String = DATE_FORMAT_DEFAULT): String =
-    SimpleDateFormat(pattern).format(this)
+    SimpleDateFormat(pattern, Locale.getDefault()).format(this)
 
 fun String.parse(pattern: String = DATE_FORMAT_DEFAULT, default: Date = Date()): Date =
-    SimpleDateFormat(pattern).parse(this) ?: default
+    SimpleDateFormat(pattern, Locale.getDefault()).parse(this) ?: default
 
 fun String.toCurrency() = this.toBigDecimalOrZero().toCurrency()
 

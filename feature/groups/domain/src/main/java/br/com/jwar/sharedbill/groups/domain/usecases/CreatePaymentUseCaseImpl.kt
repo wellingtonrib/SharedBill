@@ -5,7 +5,6 @@ import br.com.jwar.sharedbill.core.utility.extensions.toBigDecimalOrZero
 import br.com.jwar.sharedbill.groups.domain.exceptions.PaymentException
 import br.com.jwar.sharedbill.groups.domain.model.Payment
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
-import com.google.firebase.Timestamp
 import java.math.BigDecimal
 import java.util.*
 
@@ -40,7 +39,7 @@ class CreatePaymentUseCaseImpl(
             value = value,
             paidBy = paidBy,
             paidTo = paidTo,
-            createdAt = Timestamp(date),
+            createdAt = date,
             createdBy = createdBy
         )
         return Result.success(payment)

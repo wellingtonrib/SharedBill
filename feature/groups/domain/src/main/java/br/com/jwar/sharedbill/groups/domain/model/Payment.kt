@@ -1,7 +1,6 @@
 package br.com.jwar.sharedbill.groups.domain.model
 
 import br.com.jwar.sharedbill.account.domain.model.User
-import com.google.firebase.Timestamp
 import java.util.*
 
 data class Payment(
@@ -11,6 +10,6 @@ data class Payment(
     val value: String = "",
     val paidBy: User = User(),
     val paidTo: List<User> = emptyList(),
-    val createdAt: Timestamp = Timestamp(Date()),
+    val createdAt: Date = Date(),
     val createdBy: User = User(),
 )

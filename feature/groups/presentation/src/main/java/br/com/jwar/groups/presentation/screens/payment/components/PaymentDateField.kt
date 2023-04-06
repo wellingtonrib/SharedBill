@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.groups.presentation.screens.payment.PaymentContract
 import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
@@ -38,7 +39,7 @@ fun PaymentDateField(
         calendar.get(Calendar.DAY_OF_MONTH)
     )
     val focusManager = LocalFocusManager.current
-    val isError = params.error is br.com.jwar.groups.presentation.models.PaymentUiError.EmptyDateError
+    val isError = params.error is PaymentUiError.EmptyDateError
 
     OutlinedTextField(
         modifier = Modifier
