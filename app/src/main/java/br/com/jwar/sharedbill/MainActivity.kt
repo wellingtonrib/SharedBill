@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.screens
+package br.com.jwar.sharedbill
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,9 +7,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
-import br.com.jwar.sharedbill.presentation.navigation.AppBottomBar
-import br.com.jwar.sharedbill.presentation.navigation.NavGraph
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.navigation.NavGraph
+import br.com.jwar.sharedbill.ui.AppBottomBar
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import dagger.hilt.android.AndroidEntryPoint

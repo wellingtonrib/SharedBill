@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.presentation.navigation
+package br.com.jwar.sharedbill.navigation
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
