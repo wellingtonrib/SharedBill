@@ -1,4 +1,4 @@
-import java.util.*
+import java.util.Properties
 
 plugins {
     id("sharedbill.android.library")
@@ -25,4 +25,5 @@ dependencies {
     implementation(libs.google.playServices.auth)
 
     implementation(project(":feature:account:domain"))
+    testImplementation(project(":core:testing"))
 }

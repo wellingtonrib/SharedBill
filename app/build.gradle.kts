@@ -49,4 +49,7 @@ dependencies {
     implementation(project(":feature:account:domain"))
     implementation(project(":feature:account:data"))
     implementation(project(":feature:account:presentation"))
+    implementation(project(":feature:groups:domain"))
+    implementation(project(":feature:groups:data"))
+    implementation(project(":feature:groups:presentation"))
 }

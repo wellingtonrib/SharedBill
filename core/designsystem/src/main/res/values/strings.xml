@@ -23,5 +23,7 @@
 
     <string name="description_delete">Delete action</string>
     <string name="description_leave">Leave action</string>
+    <string name="description_back">Back</string>
+    <string name="description_close">Close</string>
 
 </resources>

@@ -1,5 +1,6 @@
 plugins {
     id("sharedbill.android.library")
+    id("sharedbill.android.firebase")
 }
 
 android {
