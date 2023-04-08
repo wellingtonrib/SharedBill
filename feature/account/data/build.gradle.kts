@@ -24,6 +24,6 @@ android {
 dependencies {
     implementation(libs.google.playServices.auth)
 
-    implementation(project(":feature:account:domain"))
-    testImplementation(project(":core:testing"))
+    implementation(projects.feature.account.domain)
+    testImplementation(projects.core.testing)
 }

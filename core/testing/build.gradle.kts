@@ -9,5 +9,5 @@ android {
 dependencies {
     api(libs.bundles.test)
 
-    implementation(project(":feature:account:domain"))
+    implementation(projects.feature.account.domain)
 }

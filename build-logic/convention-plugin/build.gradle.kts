@@ -18,27 +18,27 @@ gradlePlugin {
     plugins {
         register("androidApplication") {
             id = "sharedbill.android.application"
-            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidApplicationConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins.AndroidApplicationConventionPlugin"
         }
         register("androidLibrary") {
             id = "sharedbill.android.library"
-            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidLibraryConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins.AndroidLibraryConventionPlugin"
         }
         register("androidFeature") {
             id = "sharedbill.android.feature"
-            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidFeatureConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins.AndroidFeatureConventionPlugin"
         }
         register("androidFirebase") {
             id = "sharedbill.android.firebase"
-            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidFirebaseConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins.AndroidFirebaseConventionPlugin"
         }
         register("androidCompose") {
             id = "sharedbill.android.compose"
-            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidComposeConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins.AndroidComposeConventionPlugin"
         }
         register("androidHilt") {
             id = "sharedbill.android.hilt"
-            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.AndroidHiltConventionPlugin"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins.AndroidHiltConventionPlugin"
         }
     }
 }

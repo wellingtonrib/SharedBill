@@ -6,7 +6,3 @@ plugins {
 android {
     namespace = "br.com.jwar.sharedbill.core.designsystem"
 }
-
-dependencies {
-
-}

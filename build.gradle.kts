@@ -3,12 +3,13 @@ buildscript {
         google()
         mavenCentral()
     }
-    dependencies {
-        classpath(libs.android.gradle.plugin)
-        classpath(libs.kotlin.gradle.plugin)
-        classpath(libs.hilt.android.gradle.plugin)
-        classpath(libs.google.services.gradle.plugin)
-    }
+}
+
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.gms) apply false
+    alias(libs.plugins.hilt) apply false
 }
 
 tasks.register("clean", Delete::class) {

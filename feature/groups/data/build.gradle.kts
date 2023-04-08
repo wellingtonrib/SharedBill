@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:utility"))
-    implementation(project(":feature:account:domain"))
-    implementation(project(":feature:groups:domain"))
+    implementation(projects.core.utility)
+    implementation(projects.feature.account.domain)
+    implementation(projects.feature.groups.domain)
 }

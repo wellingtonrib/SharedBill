@@ -30,26 +30,25 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.designsystem)
+    implementation(projects.core.utility)
+    implementation(projects.core.common)
+    implementation(projects.feature.account.domain)
+    implementation(projects.feature.account.data)
+    implementation(projects.feature.account.presentation)
+    implementation(projects.feature.groups.domain)
+    implementation(projects.feature.groups.data)
+    implementation(projects.feature.groups.presentation)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.kotlinx.coroutines.playServices)
-    implementation(libs.google.playServices.auth)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.bundles.firebase)
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
     implementation(libs.bundles.compose)
+
+    kapt(libs.hilt.android.compiler)
+
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.androidTest)
     debugImplementation(libs.bundles.debug)
-
-    implementation(project(":core:designsystem"))//todo create a class to modules definition
-    implementation(project(":core:utility"))
-    implementation(project(":core:common"))
-    implementation(project(":feature:account:domain"))
-    implementation(project(":feature:account:data"))
-    implementation(project(":feature:account:presentation"))
-    implementation(project(":feature:groups:domain"))
-    implementation(project(":feature:groups:data"))
-    implementation(project(":feature:groups:presentation"))
 }

@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.buildlogic.conventionplugin
+package br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins
 
 import br.com.jwar.sharedbill.buildlogic.conventionplugin.extensions.configureCompose
 import com.android.build.gradle.LibraryExtension

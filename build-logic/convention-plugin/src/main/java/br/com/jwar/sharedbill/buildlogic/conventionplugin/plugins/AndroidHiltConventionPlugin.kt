@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.buildlogic.conventionplugin
+package br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

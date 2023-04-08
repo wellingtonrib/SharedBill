@@ -11,5 +11,5 @@ android {
 dependencies {
     implementation(libs.google.playServices.auth)
 
-    implementation(project(":core:utility"))
+    implementation(projects.core.utility)
 }

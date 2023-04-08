@@ -51,10 +51,8 @@ firebase-auth                           = { module = "com.google.firebase:fireba
 firebase-bom                            = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBoM" }
 firebase-firestore                      = { module = "com.google.firebase:firebase-firestore-ktx" }
 google-playServices-auth                = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
-google-services-gradle-plugin           = { module = "com.google.gms:google-services", version.ref = "googleServicesPlugin" }
 hilt-android                            = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler                   = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
-hilt-android-gradle-plugin              = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 junit                                   = { module = "junit:junit", version.ref = "junit" }
 kotlin-gradle-plugin                    = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-test                             = { module = "org.jetbrains.kotlin:kotlin-test" }
@@ -68,3 +66,10 @@ compose                                 = ["accompanist-navigation-material", "a
 debug                                   = ["androidx-compose-ui-tooling", "androidx-compose-ui-test-manifest"]
 firebase                                = ["firebase-auth", "firebase-firestore"]
 test                                    = ["junit", "kotlinx-coroutines-test", "kotlin-test", "androidx-core-testing", "mockk"]
+
+[plugins]
+android-application                     = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library                         = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+gms                                     = { id = "com.google.gms.google-services", version.ref = "googleServicesPlugin" }
+hilt                                    = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-jvm                              = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
