@@ -19,10 +19,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                "implementation"(libs.findLibrary("androidx.core.ktx").get())
-                "implementation"(libs.findLibrary("androidx.lifecycle.runtime.ktx").get())
-                "implementation"(libs.findLibrary("kotlinx.coroutines.playServices").get())
-
                 "implementation"(project(":core:designsystem"))
                 "implementation"(project(":core:common"))
             }
