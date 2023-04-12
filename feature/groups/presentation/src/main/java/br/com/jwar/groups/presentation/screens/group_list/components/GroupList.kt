@@ -51,6 +51,7 @@ fun GroupList(
     ModalBottomSheetLayout(
         sheetState = newGroupBottomSheetState,
         sheetShape = MaterialTheme.shapes.medium,
+        sheetBackgroundColor = MaterialTheme.colorScheme.background,
         sheetContent = {
             NewGroupBottomSheet(onGroupCreate, onGroupJoin)
         }
@@ -66,7 +67,7 @@ fun GroupList(
                 )
             },
             floatingActionButtonPosition = FabPosition.End,
-        ) {
+        ) { innerPadding ->
             if (groups.isEmpty()) {
                 EmptyContent(message = stringResource(id = R.string.message_groups_empty))
                 return@Scaffold
@@ -74,6 +75,7 @@ fun GroupList(
             LazyColumn(
                 state = groupListState,
                 modifier = Modifier.paddingMedium(),
+                contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
                 content = {
                     items(groups) { group ->

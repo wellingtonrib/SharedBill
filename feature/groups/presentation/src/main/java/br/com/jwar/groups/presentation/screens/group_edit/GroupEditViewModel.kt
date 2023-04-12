@@ -3,6 +3,9 @@ package br.com.jwar.groups.presentation.screens.group_edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.groups.presentation.mappers.GroupToGroupUiModelMapper
+import br.com.jwar.groups.presentation.models.GroupMemberUiModel
+import br.com.jwar.groups.presentation.models.GroupUiError
+import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.groups.presentation.navigation.GROUP_ID_ARG
 import br.com.jwar.groups.presentation.screens.group_edit.GroupEditContract.Effect
 import br.com.jwar.groups.presentation.screens.group_edit.GroupEditContract.Event
@@ -73,7 +76,7 @@ class GroupEditViewModel @Inject constructor(
 
     private fun setLoadingState() = setState { it.copy(isLoading = true) }
 
-    private fun getEditingGroup() = uiState.value.uiModel ?: br.com.jwar.groups.presentation.models.GroupUiModel()
+    private fun getEditingGroup() = uiState.value.uiModel ?: GroupUiModel()
 
     private fun setEditingGroup(group: Group) =
         setState {
@@ -90,7 +93,7 @@ class GroupEditViewModel @Inject constructor(
             )
         }
 
-    private fun setEditingGroup(group: br.com.jwar.groups.presentation.models.GroupUiModel) =
+    private fun setEditingGroup(group: GroupUiModel) =
         setState { it.copy(isLoading = false, uiModel = group) }
 
     private fun sendSuccessEffect() {
@@ -99,7 +102,7 @@ class GroupEditViewModel @Inject constructor(
     }
 
     private fun sendErrorEffect(throwable: Throwable) {
-        val error = br.com.jwar.groups.presentation.models.GroupUiError.mapFrom(throwable)
+        val error = GroupUiError.mapFrom(throwable)
         setState { it.copy(isLoading = false) }
         sendEffect { Effect.ShowError(error.message) }
     }
@@ -107,7 +110,7 @@ class GroupEditViewModel @Inject constructor(
     private fun setShouldSelectMemberState(userName: String) =
         setState { it.copy(shouldSelectMemberByName = userName) }
 
-    private fun onGroupUpdated(group: br.com.jwar.groups.presentation.models.GroupUiModel) = setEditingGroup(group)
+    private fun onGroupUpdated(group: GroupUiModel) = setEditingGroup(group)
 
-    private fun onMemberSelect(user: br.com.jwar.groups.presentation.models.GroupMemberUiModel?) = setState { it.copy(selectedMember = user) }
+    private fun onMemberSelect(user: GroupMemberUiModel?) = setState { it.copy(selectedMember = user) }
 }
