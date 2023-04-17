@@ -31,8 +31,8 @@ class DataModule {
         @Named(FirebaseModule.SIGN_UP_REQUEST) signUpRequest: BeginSignInRequest,
         @Named(FirebaseModule.SIGN_IN_REQUEST) signInRequest: BeginSignInRequest,
         firebaseUserToUserMapper: FirebaseUserToUserMapper,
-        userRepository: br.com.jwar.sharedbill.account.domain.repositories.UserRepository
-    ): br.com.jwar.sharedbill.account.domain.services.AuthService = FirebaseAuthService(
+        userRepository: UserRepository
+    ): AuthService = FirebaseAuthService(
         firebaseAuth = firebaseAuth,
         signInClient = signInClient,
         signInRequest = signUpRequest,
@@ -57,7 +57,7 @@ class DataModule {
     @Singleton
     fun provideUserRepository(
         userDataSource: UserDataSource,
-    ): br.com.jwar.sharedbill.account.domain.repositories.UserRepository = DefaultUserRepository(
+    ): UserRepository = DefaultUserRepository(
         userDataSource = userDataSource
     )
 

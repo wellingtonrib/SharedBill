@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissBackground
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissConfirm
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissDeleteAction
@@ -23,8 +24,8 @@ import br.com.jwar.sharedbill.core.designsystem.theme.sizeMedium
 
 @Composable
 fun GroupMemberCard(
-    member: br.com.jwar.groups.presentation.models.GroupMemberUiModel,
-    onMemberSelect: (member: br.com.jwar.groups.presentation.models.GroupMemberUiModel) -> Unit = {},
+    member: GroupMemberUiModel,
+    onMemberSelect: (member: GroupMemberUiModel) -> Unit = {},
     onMemberDelete: (userId: String) -> Unit = {}
 ) {
     val swipeToDismissAction = SwipeToDismissDeleteAction(action = { onMemberDelete(member.uid) })
@@ -67,7 +68,7 @@ fun GroupMemberCard(
 @Composable
 fun GroupMemberCard() {
     MaterialTheme {
-        GroupMemberCard(br.com.jwar.groups.presentation.models.GroupMemberUiModel.sample())
+        GroupMemberCard(GroupMemberUiModel.sample())
     }
 }
 

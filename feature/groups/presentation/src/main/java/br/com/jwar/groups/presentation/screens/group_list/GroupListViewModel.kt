@@ -90,9 +90,10 @@ class GroupListViewModel @Inject constructor(
         setState { State.Loaded(groups.map { groupToGroupUiModelMapper.mapFrom(it) }) }
 
     private fun setLoadedStateRemoving(groupId: String) =
-        setState { State.Loaded(getCurrentLoadedGroups().toMutableList().apply {
-            removeIf { it.id == groupId }
-        }.toList()) }
+        setState {
+            val updatedGroups = getCurrentLoadedGroups().filterNot { it.id == groupId }
+            State.Loaded(updatedGroups)
+        }
 
     private fun setErrorState(throwable: Throwable) {
         setState { State.Error(throwable.message) }

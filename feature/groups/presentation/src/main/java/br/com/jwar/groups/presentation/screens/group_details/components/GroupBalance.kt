@@ -7,14 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerSmall
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerSmall
+import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
-fun GroupBalance(group: br.com.jwar.groups.presentation.models.GroupUiModel) {
+fun GroupBalance(group: GroupUiModel) {
     if (group.balance.isEmpty()) return
 
     Column {
@@ -42,6 +42,6 @@ fun GroupBalance(group: br.com.jwar.groups.presentation.models.GroupUiModel) {
 @Composable
 fun PreviewGroupBalance() {
     SharedBillTheme {
-        GroupBalance(group = br.com.jwar.groups.presentation.models.GroupUiModel.sample())
+        GroupBalance(group = GroupUiModel.sample())
     }
 }

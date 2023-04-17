@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.State
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.State.Error
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.State.Loaded
@@ -65,7 +66,7 @@ fun GroupDetailsScreen(
 fun PreviewGroupDetailsContent() {
     SharedBillTheme {
         Scaffold {
-            GroupDetailsScreen(state = Loaded(br.com.jwar.groups.presentation.models.GroupUiModel.sample()))
+            GroupDetailsScreen(state = Loaded(GroupUiModel.sample()))
         }
     }
 }

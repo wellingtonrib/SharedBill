@@ -5,6 +5,7 @@ import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.common.UiEffect
 import br.com.jwar.sharedbill.core.common.UiEvent
+import br.com.jwar.sharedbill.core.common.UiState
 import java.util.Date
 
 class PaymentContract {
@@ -17,7 +18,7 @@ class PaymentContract {
     data class State(
         val isLoading: Boolean = false,
         val params: PaymentParams? = null,
-    ): br.com.jwar.sharedbill.core.common.UiState
+    ): UiState
 
     sealed class Effect: UiEffect {
         object Finish: Effect()

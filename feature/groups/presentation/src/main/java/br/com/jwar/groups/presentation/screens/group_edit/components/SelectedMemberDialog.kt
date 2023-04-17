@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
+import br.com.jwar.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.components.UserCard
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
@@ -19,8 +20,8 @@ import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
 
 @Composable
 fun SelectedMemberDialog(
-    selectedMember: br.com.jwar.groups.presentation.models.GroupMemberUiModel? = null,
-    onMemberSelectionChange: (br.com.jwar.groups.presentation.models.GroupMemberUiModel?) -> Unit = {}
+    selectedMember: GroupMemberUiModel? = null,
+    onMemberSelectionChange: (GroupMemberUiModel?) -> Unit = {}
 ) {
     selectedMember?.let { user ->
         Dialog(
@@ -50,7 +51,7 @@ fun SelectedMemberDialog(
 fun PreviewSelectedMemberDialog() {
     SharedBillTheme {
         SelectedMemberDialog(
-            selectedMember = br.com.jwar.groups.presentation.models.GroupMemberUiModel.sample()
+            selectedMember = GroupMemberUiModel.sample()
         )
     }
 }

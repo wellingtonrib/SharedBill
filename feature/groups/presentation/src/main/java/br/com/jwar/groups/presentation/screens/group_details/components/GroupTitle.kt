@@ -4,12 +4,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
-fun GroupTitle(group: br.com.jwar.groups.presentation.models.GroupUiModel) {
+fun GroupTitle(group: GroupUiModel) {
     Text(
         text = group.title.ifEmpty { stringResource(id = R.string.label_unnamed) },
         style = AppTheme.typo.titleLarge
@@ -20,6 +21,6 @@ fun GroupTitle(group: br.com.jwar.groups.presentation.models.GroupUiModel) {
 @Composable
 fun PreviewGroupTitle() {
     SharedBillTheme {
-        GroupTitle(group = br.com.jwar.groups.presentation.models.GroupUiModel.sample())
+        GroupTitle(group = GroupUiModel.sample())
     }
 }

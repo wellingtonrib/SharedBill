@@ -3,7 +3,9 @@ package br.com.jwar.groups.presentation.di
 import br.com.jwar.groups.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.groups.presentation.mappers.GroupToGroupUiModelMapperImpl
 import br.com.jwar.groups.presentation.mappers.PaymentToPaymentUiModelMapper
+import br.com.jwar.groups.presentation.mappers.PaymentToPaymentUiModelMapperImpl
 import br.com.jwar.groups.presentation.mappers.UserToGroupMemberUiModelMapper
+import br.com.jwar.groups.presentation.mappers.UserToGroupMemberUiModelMapperImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,11 +17,11 @@ class PresentationModule {
 
     @Provides
     fun provideUserToGroupMemberUiModel(): UserToGroupMemberUiModelMapper =
-        br.com.jwar.groups.presentation.mappers.UserToGroupMemberUiModelMapperImpl()
+        UserToGroupMemberUiModelMapperImpl()
 
     @Provides
     fun providePaymentToPaymentUiModel(): PaymentToPaymentUiModelMapper =
-        br.com.jwar.groups.presentation.mappers.PaymentToPaymentUiModelMapperImpl()
+        PaymentToPaymentUiModelMapperImpl()
 
     @Provides
     fun provideGroupToGroupUiModelMapper(

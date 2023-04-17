@@ -23,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerLarge
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
@@ -34,8 +35,8 @@ import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
 fun GroupEditHeader(
-    group: br.com.jwar.groups.presentation.models.GroupUiModel,
-    onGroupUpdated: (br.com.jwar.groups.presentation.models.GroupUiModel) -> Unit = {},
+    group: GroupUiModel,
+    onGroupUpdated: (GroupUiModel) -> Unit = {},
 ) {
     val titleFocusRequester = remember { FocusRequester() }
 
@@ -84,6 +85,6 @@ fun GroupEditHeader(
 @Composable
 fun PreviewGroupEditHeader() {
     SharedBillTheme {
-        GroupEditHeader(group = br.com.jwar.groups.presentation.models.GroupUiModel.sample())
+        GroupEditHeader(group = GroupUiModel.sample())
     }
 }

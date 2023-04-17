@@ -13,6 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.groups.presentation.models.GroupUiModel
+import br.com.jwar.groups.presentation.models.PaymentUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.InfoDialog
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
@@ -23,8 +25,8 @@ import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
 fun GroupPaymentCard(
-    payment: br.com.jwar.groups.presentation.models.PaymentUiModel,
-    group: br.com.jwar.groups.presentation.models.GroupUiModel
+    payment: PaymentUiModel,
+    group: GroupUiModel
 ) {
     val showingPaymentInfo = PaymentInfoDialog(payment)
     Column {
@@ -52,7 +54,7 @@ fun GroupPaymentCard(
 }
 
 @Composable
-private fun PaymentInfoDialog(payment: br.com.jwar.groups.presentation.models.PaymentUiModel): MutableState<Boolean> {
+private fun PaymentInfoDialog(payment: PaymentUiModel): MutableState<Boolean> {
     val showingPaymentInfo = remember { mutableStateOf(false) }
     if (showingPaymentInfo.value) {
         InfoDialog(
@@ -70,6 +72,6 @@ private fun PaymentInfoDialog(payment: br.com.jwar.groups.presentation.models.Pa
 @Composable
 fun PreviewGroupPaymentCard(){
     SharedBillTheme {
-        GroupPaymentCard(payment = br.com.jwar.groups.presentation.models.PaymentUiModel.sample(), group = br.com.jwar.groups.presentation.models.GroupUiModel.sample())
+        GroupPaymentCard(payment = PaymentUiModel.sample(), group = GroupUiModel.sample())
     }
 }
