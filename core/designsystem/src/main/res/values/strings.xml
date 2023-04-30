@@ -1,0 +1,31 @@
+<resources>
+    <string name="empty"/>
+
+    <string name="label_loading">Loading</string>
+    <string name="label_ok">OK</string>
+    <string name="label_save">Save</string>
+    <string name="label_confirm">Confirm</string>
+    <string name="label_send">Send</string>
+    <string name="label_yes">Yes</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_verify">Verify</string>
+    <string name="label_create">Create</string>
+    <string name="label_date">Date</string>
+    <string name="label_try_again">Try again</string>
+    <string name="label_delete">Delete</string>
+    <string name="label_leave">Leave</string>
+    <string name="label_done">Done</string>
+
+    <string name="message_empty_content">Nothing here</string>
+    <string name="message_error_content">Something went wrong</string>
+    <string name="message_confirm_action">Are you sure about this? This cannot be undone.</string>
+
+    <string name="placeholder_payment_date">dd/mm/yyyy</string>
+
+    <string name="description_delete">Delete action</string>
+    <string name="description_leave">Leave action</string>
+    <string name="description_back">Back</string>
+    <string name="description_close">Close</string>
+    <string name="description_done">Done action</string>
+
+</resources>

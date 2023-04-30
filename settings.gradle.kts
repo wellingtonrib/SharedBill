@@ -1,7 +1,7 @@
 rootProject.name = "SharedBill"
-include(":app")
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         gradlePluginPortal()
         google()
@@ -16,3 +16,18 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+include(":app")
+include(":core:designsystem")
+include(":core:utility")
+include(":core:common")
+include(":core:testing")
+include(":feature:account:domain")
+include(":feature:account:data")
+include(":feature:account:presentation")
+include(":feature:groups:domain")
+include(":feature:groups:data")
+include(":feature:groups:presentation")
+
