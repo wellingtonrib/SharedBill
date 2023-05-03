@@ -12,7 +12,7 @@ class PaymentContract {
 
     sealed class Event: UiEvent {
         class OnParamsChange(val params: PaymentParams) : Event()
-        object OnCreatePayment : Event()
+        object OnSavePayment : Event()
     }
 
     data class State(

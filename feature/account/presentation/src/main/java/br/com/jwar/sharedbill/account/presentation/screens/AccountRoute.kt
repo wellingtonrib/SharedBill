@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.account.presentation
+package br.com.jwar.sharedbill.account.presentation.screens
 
 import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -9,8 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import br.com.jwar.sharedbill.account.presentation.AccountContract.Effect
-import br.com.jwar.sharedbill.account.presentation.components.AccountScreen
+import br.com.jwar.sharedbill.account.presentation.screens.AccountContract.Effect
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 
 @Composable

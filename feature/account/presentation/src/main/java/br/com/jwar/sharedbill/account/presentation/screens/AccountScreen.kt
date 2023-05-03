@@ -1,5 +1,6 @@
-package br.com.jwar.sharedbill.account.presentation.components
+package br.com.jwar.sharedbill.account.presentation.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,8 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.account.presentation.model.UserUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.components.UserCard
-import br.com.jwar.sharedbill.account.presentation.AccountContract.State
-import br.com.jwar.sharedbill.account.presentation.AccountContract.State.*
+import br.com.jwar.sharedbill.account.presentation.screens.AccountContract.State
+import br.com.jwar.sharedbill.account.presentation.screens.AccountContract.State.*
+import br.com.jwar.sharedbill.account.presentation.screens.components.SignInButton
+import br.com.jwar.sharedbill.account.presentation.screens.components.SignOutButton
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
 
@@ -58,6 +61,7 @@ private fun UserInfo(
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
 fun PreviewAccountContent() {

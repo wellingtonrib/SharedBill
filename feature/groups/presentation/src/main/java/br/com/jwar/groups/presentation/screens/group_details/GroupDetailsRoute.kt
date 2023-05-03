@@ -6,7 +6,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.Effect
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.Event
-import br.com.jwar.groups.presentation.screens.group_details.components.GroupDetailsScreen
 
 @Composable
 fun GroupDetailsRoute(
@@ -22,17 +21,17 @@ fun GroupDetailsRoute(
         state = state,
         onNavigateBack = onNavigateBack,
         onNewPaymentClick = { viewModel.emitEvent { Event.OnNewPayment(groupId) } },
-        onRefresh = { viewModel.emitEvent { Event.OnRefresh } },
-        onEditClick = { viewModel.emitEvent { Event.OnManage } }
+        onRefresh = { viewModel.emitEvent { Event.OnRefreshGroup } },
+        onEditClick = { viewModel.emitEvent { Event.OnEditGroup } }
     )
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when(effect) {
-                is Effect.OpenGroupEdit -> {
+                is Effect.NavigateToGroupEdit -> {
                     onNavigateToGroupEdit(groupId)
                 }
-                is Effect.OpenNewPayment -> {
+                is Effect.NavigateToNewPayment -> {
                     onNavigateToNewPayment(groupId)
                 }
             }

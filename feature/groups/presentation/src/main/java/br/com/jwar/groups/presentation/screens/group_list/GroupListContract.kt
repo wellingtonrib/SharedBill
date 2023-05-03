@@ -24,9 +24,10 @@ class GroupListContract {
     }
 
     sealed class Effect: UiEffect {
-        class OpenGroupDetails(val groupId: String): Effect()
-        class Error(val message: UiText): Effect()
-        object GoToAuth : Effect()
+        class NavigateToGroupDetails(val groupId: String): Effect()
+        class NavigateToGroupEdit(val groupId: String): Effect()
+        class ShowError(val message: UiText): Effect()
+        object NavigateToAuth : Effect()
     }
 
 }

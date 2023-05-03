@@ -8,7 +8,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.groups.presentation.screens.group_edit.GroupEditContract.Effect
 import br.com.jwar.groups.presentation.screens.group_edit.GroupEditContract.Event
-import br.com.jwar.groups.presentation.screens.group_edit.components.GroupEditScreen
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
@@ -26,7 +25,7 @@ fun GroupEditRoute(
         state = state,
         onGroupUpdated = { group -> viewModel.emitEvent { Event.OnGroupUpdated(group) } },
         onSaveMemberClick = { userName -> viewModel.emitEvent { Event.OnSaveMember(userName, groupId) } },
-        onMemberSelectionChange = { user -> viewModel.emitEvent { Event.OnMemberSelectionChange(user) } },
+        onMemberSelectionChange = { user -> viewModel.emitEvent { Event.OnMemberSelect(user) } },
         onMemberDeleteClick = { userId -> viewModel.emitEvent { Event.OnMemberDelete(userId, groupId) } },
         onSaveClick = { viewModel.emitEvent { Event.OnSaveGroup } },
         onNavigateBack = onNavigateBack
@@ -36,14 +35,10 @@ fun GroupEditRoute(
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.ShowError ->
-                    snackbarHostState.showSnackbar(
-                        message = effect.message.asString(context)
-                    )
+                    snackbarHostState.showSnackbar(effect.message.asString(context))
                 is Effect.ShowSuccess ->
-                    snackbarHostState.showSnackbar(
-                        message = context.getString(R.string.message_group_saved_success)
-                    )
-                is Effect.GoToDetails ->
+                    snackbarHostState.showSnackbar(context.getString(R.string.message_group_saved_success))
+                is Effect.NavigateToGroupDetails ->
                     onNavigateToDetails(groupId)
             }
         }

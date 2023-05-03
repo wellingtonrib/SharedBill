@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "br.com.jwar.sharedbill.core.designsystem"
 }
+
+dependencies {
+    debugImplementation(libs.bundles.debug)
+}

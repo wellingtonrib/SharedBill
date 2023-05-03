@@ -10,7 +10,7 @@ class GroupEditContract {
 
     sealed class Event: br.com.jwar.sharedbill.core.common.UiEvent {
         class OnSaveMember(val userName: String, val groupId: String) : Event()
-        class OnMemberSelectionChange(val user: GroupMemberUiModel?) : Event()
+        class OnMemberSelect(val user: GroupMemberUiModel?) : Event()
         class OnMemberDelete(val userId: String, val groupId: String) : Event()
         class OnGroupUpdated(val group: GroupUiModel) : Event()
         object OnSaveGroup: Event()
@@ -19,13 +19,12 @@ class GroupEditContract {
     data class State(
         val isLoading: Boolean = false,
         val uiModel: GroupUiModel? = null,
-        val shouldSelectMemberByName: String? = null,
         val selectedMember: GroupMemberUiModel? = null
     ): UiState
 
     sealed class Effect: UiEffect {
         object ShowSuccess: Effect()
-        object GoToDetails : Effect()
+        object NavigateToGroupDetails : Effect()
         class ShowError(val message: UiText): Effect()
     }
 

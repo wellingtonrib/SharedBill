@@ -27,29 +27,21 @@ abstract class BaseViewModel<Event: UiEvent, State: UiState, Effect: UiEffect> :
 
     abstract fun handleEvent(event: Event)
 
-    init {
-        subscribeEvents()
-    }
+    init { subscribeEvents() }
 
     private fun subscribeEvents() = viewModelScope.launch {
-        _uiEvent.collect {
-            handleEvent(it)
-        }
+        _uiEvent.collect { handleEvent(it) }
     }
 
-    fun emitEvent(event: () -> Event) {
-        viewModelScope.launch {
-            _uiEvent.emit(event())
-        }
+    fun emitEvent(event: () -> Event) = viewModelScope.launch {
+        _uiEvent.emit(event())
     }
 
     protected fun setState(update: (State) -> State) {
         _uiState.update(update)
     }
 
-    protected fun sendEffect(effect: () -> Effect) {
-        viewModelScope.launch {
-            _uiEffect.send(effect())
-        }
+    protected fun sendEffect(effect: () -> Effect) = viewModelScope.launch {
+        _uiEffect.send(effect())
     }
 }

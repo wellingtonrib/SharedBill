@@ -38,21 +38,21 @@ class GroupEditViewModel @Inject constructor(
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnSaveGroup -> onSaveGroupClick()
-            is Event.OnSaveMember -> onSaveMemberClick(event.userName)
-            is Event.OnMemberSelectionChange -> onMemberSelect(event.user)
-            is Event.OnMemberDelete -> onMemberDeleteClick(event.userId)
+            is Event.OnSaveGroup -> onSaveGroup()
+            is Event.OnSaveMember -> onSaveMember(event.userName)
+            is Event.OnMemberSelect -> onSelectMember(event.user)
+            is Event.OnMemberDelete -> onDeleteMember(event.userId)
             is Event.OnGroupUpdated -> onGroupUpdated(event.group)
         }
     }
 
-    private fun onInit() = viewModelScope.launch {
-        getGroupByIdUseCase(groupId, false)
-            .onSuccess { setEditingGroup(it) }
+    private fun onInit(selectedMemberId: String? = null) = viewModelScope.launch {
+        getGroupByIdUseCase(groupId)
+            .onSuccess { setEditingGroup(it, selectedMemberId) }
             .onFailure { sendErrorEffect(it) }
     }
 
-    private fun onSaveGroupClick() = viewModelScope.launch {
+    private fun onSaveGroup() = viewModelScope.launch {
         val groupEdited = getEditingGroup()
         setLoadingState()
         updateGroupUseCase(groupEdited.id, groupEdited.title)
@@ -60,14 +60,14 @@ class GroupEditViewModel @Inject constructor(
             .onFailure { sendErrorEffect(it) }
     }
 
-    private fun onSaveMemberClick(userName: String) = viewModelScope.launch {
+    private fun onSaveMember(userName: String) = viewModelScope.launch {
         setLoadingState()
         addMemberUseCase(userName, groupId)
-            .onSuccess { setShouldSelectMemberState(userName) }
+            .onSuccess { onInit(it) }
             .onFailure { sendErrorEffect(it) }
     }
 
-    private fun onMemberDeleteClick(userId: String) = viewModelScope.launch {
+    private fun onDeleteMember(userId: String) = viewModelScope.launch {
         setLoadingState()
         removeMemberUseCase(userId, groupId)
             .onSuccess { sendSuccessEffect() }
@@ -78,18 +78,16 @@ class GroupEditViewModel @Inject constructor(
 
     private fun getEditingGroup() = uiState.value.uiModel ?: GroupUiModel()
 
-    private fun setEditingGroup(group: Group) =
-        setState {
+    private fun setEditingGroup(group: Group, selectedMemberId: String?) =
+        setState { state ->
             val groupUiModel = groupToGroupUiModelMapper.mapFrom(group)
-            val shouldSelectMemberName = it.shouldSelectMemberByName
-            val selectedMember = groupUiModel.members.firstOrNull { member ->
-                member.name == shouldSelectMemberName
+            val selectedMember = selectedMemberId?.let {
+                groupUiModel.members.firstOrNull { it.uid == selectedMemberId }
             }
-            it.copy(
+            state.copy(
                 isLoading = false,
                 uiModel = groupUiModel,
                 selectedMember = selectedMember,
-                shouldSelectMemberByName = null
             )
         }
 
@@ -97,20 +95,19 @@ class GroupEditViewModel @Inject constructor(
         setState { it.copy(isLoading = false, uiModel = group) }
 
     private fun sendSuccessEffect() {
-        setState { it.copy(isLoading = false) }
-        sendEffect { Effect.ShowSuccess }
+        sendEffect { Effect.NavigateToGroupDetails }
     }
 
     private fun sendErrorEffect(throwable: Throwable) {
-        val error = GroupUiError.mapFrom(throwable)
         setState { it.copy(isLoading = false) }
-        sendEffect { Effect.ShowError(error.message) }
+        sendEffect {
+            val error = GroupUiError.mapFrom(throwable)
+            Effect.ShowError(error.message)
+        }
     }
-
-    private fun setShouldSelectMemberState(userName: String) =
-        setState { it.copy(shouldSelectMemberByName = userName) }
 
     private fun onGroupUpdated(group: GroupUiModel) = setEditingGroup(group)
 
-    private fun onMemberSelect(user: GroupMemberUiModel?) = setState { it.copy(selectedMember = user) }
+    private fun onSelectMember(user: GroupMemberUiModel?) =
+        setState { it.copy(selectedMember = user) }
 }

@@ -1,10 +1,12 @@
-package br.com.jwar.groups.presentation.screens.group_list.components
+package br.com.jwar.groups.presentation.screens.group_list
 
+import android.annotation.SuppressLint
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.groups.presentation.screens.group_list.GroupListContract.State
+import br.com.jwar.groups.presentation.screens.group_list.components.GroupList
 import br.com.jwar.sharedbill.core.designsystem.components.ErrorContent
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
@@ -33,6 +35,7 @@ fun GroupListScreen(
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
 fun PreviewGroupListContent() {

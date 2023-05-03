@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.account.presentation
+package br.com.jwar.sharedbill.account.presentation.screens
 
 import android.content.Intent
 import androidx.lifecycle.viewModelScope
@@ -7,9 +7,9 @@ import br.com.jwar.sharedbill.account.domain.exceptions.UserException.UserNotFou
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.account.domain.usecases.*
 import br.com.jwar.sharedbill.account.presentation.mappers.UserToUserUiModelMapper
-import br.com.jwar.sharedbill.account.presentation.AccountContract.Effect
-import br.com.jwar.sharedbill.account.presentation.AccountContract.Event
-import br.com.jwar.sharedbill.account.presentation.AccountContract.State
+import br.com.jwar.sharedbill.account.presentation.screens.AccountContract.Effect
+import br.com.jwar.sharedbill.account.presentation.screens.AccountContract.Event
+import br.com.jwar.sharedbill.account.presentation.screens.AccountContract.State
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

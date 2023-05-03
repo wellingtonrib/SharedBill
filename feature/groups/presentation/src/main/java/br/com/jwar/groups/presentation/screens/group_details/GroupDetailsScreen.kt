@@ -1,5 +1,6 @@
-package br.com.jwar.groups.presentation.screens.group_details.components
+package br.com.jwar.groups.presentation.screens.group_details
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContrac
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.State.Error
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.State.Loaded
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.State.Loading
+import br.com.jwar.groups.presentation.screens.group_details.components.GroupsDetails
 import br.com.jwar.sharedbill.core.designsystem.components.AppTopBar
 import br.com.jwar.sharedbill.core.designsystem.components.ErrorContent
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
@@ -61,6 +63,7 @@ fun GroupDetailsScreen(
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
 fun PreviewGroupDetailsContent() {
