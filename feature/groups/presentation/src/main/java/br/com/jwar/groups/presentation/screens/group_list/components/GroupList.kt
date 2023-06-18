@@ -1,5 +1,6 @@
 package br.com.jwar.groups.presentation.screens.group_list.components
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -15,9 +16,13 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -43,6 +48,8 @@ fun GroupList(
     val coroutineScope = rememberCoroutineScope()
     val newGroupBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val groupListState = rememberLazyListState()
+    val topBarScrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val floatingActionButtonExpanded = remember { groupListState.firstVisibleItemIndex == 0 }
 
     BackHandler(newGroupBottomSheetState.isVisible) {
         coroutineScope.launch { newGroupBottomSheetState.hide() }
@@ -58,10 +65,16 @@ fun GroupList(
     ) {
         Scaffold(
             modifier = Modifier.padding(bottom = 80.dp),
+            topBar = {
+                MediumTopAppBar(
+                    title = { Text(text = stringResource(id = R.string.label_my_groups)) },
+                    scrollBehavior = topBarScrollBehavior
+                )
+            },
             floatingActionButton = {
                 ExtendedFloatingActionButton(
                     onClick = { coroutineScope.launch { newGroupBottomSheetState.show() } },
-                    expanded = groupListState.firstVisibleItemIndex == 0,
+                    expanded = floatingActionButtonExpanded,
                     icon = { Icon(Icons.Filled.Add, stringResource(R.string.label_group_new)) },
                     text = { Text(text = stringResource(R.string.label_group_new)) },
                 )
@@ -87,6 +100,7 @@ fun GroupList(
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
 fun PreviewGroupList() {

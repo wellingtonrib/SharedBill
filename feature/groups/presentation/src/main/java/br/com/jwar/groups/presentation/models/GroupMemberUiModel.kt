@@ -3,7 +3,7 @@ package br.com.jwar.groups.presentation.models
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import br.com.jwar.sharedbill.core.designsystem.components.Selectable
-import br.com.jwar.sharedbill.core.designsystem.components.UserCardUiModel
+import br.com.jwar.sharedbill.core.designsystem.model.UserUiModel
 import br.com.jwar.sharedbill.groups.presentation.R
 import java.util.*
 
@@ -30,8 +30,9 @@ class GroupMemberUiModel(
         if (inviteCode.isNullOrBlank()) stringResource(R.string.label_joined)
         else stringResource(R.string.message_invite_code, inviteCode)
 
-    fun toUserCardUiModel() =
-        UserCardUiModel(
+    fun toUserUiModel() =
+        UserUiModel(
+            id = this.uid,
             name = this.name,
             email = this.email,
             imageUrl = this.imageUrl,

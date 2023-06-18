@@ -5,8 +5,8 @@ import br.com.jwar.sharedbill.account.domain.exceptions.UserException
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.account.domain.usecases.*
 import br.com.jwar.sharedbill.account.presentation.mappers.UserToUserUiModelMapper
-import br.com.jwar.sharedbill.account.presentation.screens.AccountContract
-import br.com.jwar.sharedbill.account.presentation.screens.AccountViewModel
+import br.com.jwar.sharedbill.account.presentation.screens.account.AccountContract
+import br.com.jwar.sharedbill.account.presentation.screens.account.AccountViewModel
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
 import br.com.jwar.sharedbill.testing.Fakes
 import io.mockk.*
@@ -25,17 +25,11 @@ internal class AccountViewModelTest {
 
     private val signOutUseCase = mockk<SignOutUseCase>()
     private val getCurrentUserUseCase = mockk<GetCurrentUserUseCase>()
-    private val signUpUseCase = mockk<SignUpUseCase>()
-    private val signInUseCase = mockk<SignInUseCase>()
-    private val signInFirebaseUseCase = mockk<SignInFirebaseUseCase>()
     private val userToUserUiModelMapper = mockk<UserToUserUiModelMapper>()
     private val viewModel: AccountViewModel by lazy {
         AccountViewModel(
             getCurrentUserUseCase = getCurrentUserUseCase,
-            signUpUseCase = signUpUseCase,
             signOutUseCase = signOutUseCase,
-            signInUseCase = signInUseCase,
-            signInFirebaseUseCase = signInFirebaseUseCase,
             userToUserUiModelMapper = userToUserUiModelMapper,
         )
     }
