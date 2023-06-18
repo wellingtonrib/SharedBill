@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.core.designsystem.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,6 +44,7 @@ fun EmptyContent(
 }
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
 fun PreviewEmptyContent() {

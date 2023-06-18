@@ -25,6 +25,9 @@ fun NavGraphBuilder.groupsNav(
             snackbarHostState = snackbarHostState,
             onNavigateToGroupDetails = { groupId ->
                 navController.navigate(GROUP_DETAILS_ROUTE.bindGroupId(groupId))
+            },
+            onNavigateToGroupEdit = { groupId ->
+                navController.navigate(GROUP_EDIT_ROUTE.bindGroupId(groupId))
             }
         ) { navController.popBackStack() }
     }
@@ -58,5 +61,4 @@ fun NavGraphBuilder.groupsNav(
 
 private fun NavBackStackEntry.getGroupId() = arguments?.getString(GROUP_ID_ARG).orEmpty()
 
-private fun String.bindGroupId(groupId: String) =
-    this.replace("{${GROUP_ID_ARG}}", groupId)
+private fun String.bindGroupId(groupId: String) = this.replace("{${GROUP_ID_ARG}}", groupId)

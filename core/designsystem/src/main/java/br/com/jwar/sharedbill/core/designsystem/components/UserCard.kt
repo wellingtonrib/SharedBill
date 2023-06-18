@@ -27,7 +27,6 @@ class UserCardUiModel(
     val email: String = "",
     val imageUrl: String = "",
 ) {
-
     companion object {
         fun sample() = UserCardUiModel(
             name = "User One",

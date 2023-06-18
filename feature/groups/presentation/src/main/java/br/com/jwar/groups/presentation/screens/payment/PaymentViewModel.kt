@@ -37,7 +37,7 @@ class PaymentViewModel @Inject constructor(
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnCreatePayment -> onCreatePayment()
+            is Event.OnSavePayment -> onSavePayment()
             is Event.OnParamsChange -> setPaymentParams(event.params)
         }
     }
@@ -49,7 +49,7 @@ class PaymentViewModel @Inject constructor(
             .onFailure { handlePaymentError(it) }
     }
 
-    private fun onCreatePayment() = viewModelScope.launch {
+    private fun onSavePayment() = viewModelScope.launch {
         setLoadingState()
         with(getCurrentPaymentParams()) {
             createPaymentUseCase(
@@ -59,12 +59,12 @@ class PaymentViewModel @Inject constructor(
                 paidById = paidBy.uid,
                 paidToIds = paidTo.map { it.uid },
                 groupId = group.id
-            ).onSuccess { onSendPayment(it) }
+            ).onSuccess { onPaymentCreated(it) }
                 .onFailure { handlePaymentError(it) }
         }
     }
 
-    private fun onSendPayment(payment: Payment) = viewModelScope.launch {
+    private fun onPaymentCreated(payment: Payment) = viewModelScope.launch {
         setLoadingState()
         sendPaymentUseCase(payment)
             .onSuccess { sendFinishEffect() }
@@ -73,11 +73,10 @@ class PaymentViewModel @Inject constructor(
 
     private fun getPaymentParams(group: Group): PaymentContract.PaymentParams =
         groupToGroupUiModelMapper.mapFrom(group).let { groupUiModel ->
+            val paidBy = group.findCurrentUser() ?: group.owner
             PaymentContract.PaymentParams(
                 group = groupUiModel,
-                paidBy = userToGroupMemberUiModelMapper.mapFrom(
-                    group.findCurrentUser() ?: group.owner
-                ),
+                paidBy = userToGroupMemberUiModelMapper.mapFrom(paidBy),
                 paidTo = groupUiModel.members
             )
         }
@@ -89,12 +88,12 @@ class PaymentViewModel @Inject constructor(
 
     private fun getCurrentPaymentParams() = uiState.value.params ?: PaymentContract.PaymentParams()
 
-    private fun handlePaymentError(throwable: Throwable) {
-        val paymentError = PaymentUiError.mapFrom(throwable)
+    private fun handlePaymentError(throwable: Throwable) =
         setState {
-            it.copy(isLoading = false, params = it.params?.copy(error = paymentError))
+            val paymentError = PaymentUiError.mapFrom(throwable)
+            val params = it.params?.copy(error = paymentError)
+            it.copy(isLoading = false, params = params)
         }
-    }
 
     private fun sendFinishEffect() = sendEffect { Effect.Finish }
 }

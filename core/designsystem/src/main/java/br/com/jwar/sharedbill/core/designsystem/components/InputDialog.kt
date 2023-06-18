@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerSmall
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 
 @Composable
@@ -65,6 +66,7 @@ private fun InputDialogContent(
                 placeholder = { Text(text = placeholder) },
                 onValueChange = { input = it }
             )
+            VerticalSpacerSmall()
             Button(
                 onClick = { onAction(input) },
                 enabled = input.isNotBlank()

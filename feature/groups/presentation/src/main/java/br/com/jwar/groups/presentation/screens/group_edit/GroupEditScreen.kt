@@ -1,5 +1,6 @@
-package br.com.jwar.groups.presentation.screens.group_edit.components
+package br.com.jwar.groups.presentation.screens.group_edit
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Scaffold
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.groups.presentation.screens.group_edit.GroupEditContract.State
+import br.com.jwar.groups.presentation.screens.group_edit.components.GroupEditForm
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 
@@ -45,9 +47,10 @@ fun GroupEditScreen(
     )
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
-fun previewGroupEditContent() {
+fun PreviewGroupEditContent() {
     SharedBillTheme {
         Scaffold {
             GroupEditScreen(

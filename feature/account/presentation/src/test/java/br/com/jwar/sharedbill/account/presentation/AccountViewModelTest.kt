@@ -5,6 +5,8 @@ import br.com.jwar.sharedbill.account.domain.exceptions.UserException
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.account.domain.usecases.*
 import br.com.jwar.sharedbill.account.presentation.mappers.UserToUserUiModelMapper
+import br.com.jwar.sharedbill.account.presentation.screens.AccountContract
+import br.com.jwar.sharedbill.account.presentation.screens.AccountViewModel
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
 import br.com.jwar.sharedbill.testing.Fakes
 import io.mockk.*

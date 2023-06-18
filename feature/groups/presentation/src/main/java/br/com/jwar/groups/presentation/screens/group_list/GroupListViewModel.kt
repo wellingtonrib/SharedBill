@@ -61,7 +61,7 @@ class GroupListViewModel @Inject constructor(
     }
 
     private fun onGroupCreated(groupId: String) =
-        sendEffect { Effect.OpenGroupDetails(groupId) }
+        sendEffect { Effect.NavigateToGroupEdit(groupId) }
 
     private fun onGroupJoin(code: String) = viewModelScope.launch {
         setLoadingState()
@@ -96,16 +96,19 @@ class GroupListViewModel @Inject constructor(
         }
 
     private fun setErrorState(throwable: Throwable) {
-        setState { State.Error(throwable.message) }
         if (throwable is UserNotFoundException) {
-            sendEffect { Effect.GoToAuth }
+            sendEffect { Effect.NavigateToAuth }
+        } else {
+            setState { State.Error(throwable.message) }
         }
     }
 
-    private fun setErrorEffect(throwable: Throwable) {
-        val error = GroupUiError.mapFrom(throwable)
-        sendEffect { Effect.Error(error.message) }
-    }
+    private fun setErrorEffect(throwable: Throwable) =
+        sendEffect {
+            val error = GroupUiError.mapFrom(throwable)
+            Effect.ShowError(error.message)
+        }
 
-    private fun onGroupSelect(groupId: String) = sendEffect { Effect.OpenGroupDetails(groupId) }
+    private fun onGroupSelect(groupId: String) =
+        sendEffect { Effect.NavigateToGroupDetails(groupId) }
 }

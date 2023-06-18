@@ -54,7 +54,7 @@ private fun <T: Selectable> SelectDialogContent(
     isMultiChoice: Boolean,
     onSelect: (List<T>) -> Unit
 ) {
-    var selection by remember { mutableStateOf(options.values.toMutableList()) }
+    var selection by remember { mutableStateOf(options.values.toList()) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -69,10 +69,10 @@ private fun <T: Selectable> SelectDialogContent(
             }
             itemsIndexed(selection) { index, selected ->
                 SelectOption(options.keys.toList()[index], selected, isMultiChoice) { checked ->
-                    if (isMultiChoice) {
-                        selection[index] = checked
+                    selection = if (isMultiChoice) {
+                        selection.mapIndexed { i, v -> if (i == index) checked else v }
                     } else {
-                        selection = List(selection.size) { it == index }.toMutableList()
+                        List(selection.size) { it == index }
                     }
                 }
             }
@@ -96,27 +96,29 @@ private fun <T : Selectable> SelectOption(
     isMultiChoice: Boolean,
     onSelectionChange: (Boolean) -> Unit
 ) {
-    val checkedState = remember { mutableStateOf(isSelected) }
+    var checkedState by remember { mutableStateOf(isSelected) }
+
     Row(
         modifier = Modifier.clickable {
-            checkedState.value = checkedState.value.not()
+            checkedState = checkedState.not()
+            onSelectionChange(checkedState)
         },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (isMultiChoice) {
             Checkbox(
-                checked = checkedState.value,
+                checked = checkedState,
                 onCheckedChange = { checked ->
-                    checkedState.value = checked
-                    onSelectionChange(checkedState.value)
+                    checkedState = checked
+                    onSelectionChange(checkedState)
                 }
             )
         } else {
             RadioButton(
                 selected = isSelected,
                 onClick = {
-                    checkedState.value = checkedState.value.not()
-                    onSelectionChange(checkedState.value)
+                    checkedState = checkedState.not()
+                    onSelectionChange(checkedState)
                 }
             )
         }

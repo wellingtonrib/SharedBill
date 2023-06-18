@@ -12,13 +12,15 @@ class AddMemberUseCaseImpl @Inject constructor(
 ): AddMemberUseCase {
     override suspend fun invoke(userName: String, groupId: String) = resultOf {
         if (userName.split(" ").count() == 1) throw GroupException.InvalidUserNameException
+        val userId = UUID.randomUUID().toString()
         groupRepository.addMember(
             user = User(
-                id = UUID.randomUUID().toString(),
+                id = userId,
                 name = userName,
                 inviteCode = User.generateCode(groupId)
             ),
             groupId = groupId
         )
+        userId
     }
 }

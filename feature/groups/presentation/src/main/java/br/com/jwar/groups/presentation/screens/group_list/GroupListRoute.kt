@@ -8,7 +8,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.groups.presentation.screens.group_list.GroupListContract.Effect
 import br.com.jwar.groups.presentation.screens.group_list.GroupListContract.Event
-import br.com.jwar.groups.presentation.screens.group_list.components.GroupListScreen
 
 const val GROUP_LIST_ROUTE = "group_list"
 
@@ -17,6 +16,7 @@ fun GroupListRoute(
     viewModel: GroupListViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState,
     onNavigateToGroupDetails: (String) -> Unit,
+    onNavigateToGroupEdit: (String) -> Unit,
     onNavigateToAuth: () -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
@@ -35,12 +35,11 @@ fun GroupListRoute(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when(effect) {
-                is Effect.GoToAuth -> onNavigateToAuth()
-                is Effect.OpenGroupDetails -> onNavigateToGroupDetails(effect.groupId)
-                is Effect.Error -> {
-                    snackbarHostState.showSnackbar(
-                        message = effect.message.asString(context)
-                    )
+                is Effect.NavigateToAuth -> onNavigateToAuth()
+                is Effect.NavigateToGroupDetails -> onNavigateToGroupDetails(effect.groupId)
+                is Effect.NavigateToGroupEdit -> onNavigateToGroupEdit(effect.groupId)
+                is Effect.ShowError -> {
+                    snackbarHostState.showSnackbar(effect.message.asString(context))
                 }
             }
         }

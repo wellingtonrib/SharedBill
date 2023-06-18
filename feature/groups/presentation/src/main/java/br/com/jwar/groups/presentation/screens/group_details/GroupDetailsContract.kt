@@ -8,8 +8,8 @@ import br.com.jwar.sharedbill.core.common.UiState
 class GroupDetailsContract {
 
     sealed class Event: UiEvent {
-        object OnRefresh : Event()
-        object OnManage : Event()
+        object OnRefreshGroup : Event()
+        object OnEditGroup : Event()
         class OnNewPayment(val groupId: String) : Event()
     }
 
@@ -20,8 +20,8 @@ class GroupDetailsContract {
     }
 
     sealed class Effect: UiEffect {
-        object OpenGroupEdit: Effect()
-        class OpenNewPayment(val groupId: String): Effect()
+        object NavigateToGroupEdit: Effect()
+        class NavigateToNewPayment(val groupId: String): Effect()
     }
 
 }

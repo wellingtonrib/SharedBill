@@ -1,5 +1,6 @@
-package br.com.jwar.sharedbill.account.presentation.components
+package br.com.jwar.sharedbill.account.presentation.screens.components
 
+import android.annotation.SuppressLint
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -10,20 +11,25 @@ import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.account.presentation.R
 
 @Composable
-fun SignOutButton(
-    onSignOutClick: () -> Unit = {}
+fun SignInButton(
+    onSignInClick: () -> Unit = {}
 ) {
-    Button(onClick = onSignOutClick) {
-        Text(text = stringResource(R.string.label_logout))
+    Button(
+        onClick = onSignInClick
+    ) {
+        Text(
+            text = stringResource(R.string.label_sign_in)
+        )
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
-fun PreviewSignOutButton() {
+fun PreviewSignInButton() {
     SharedBillTheme {
         Scaffold {
-            SignOutButton()
+            SignInButton()
         }
     }
 }

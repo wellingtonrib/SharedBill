@@ -6,7 +6,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.groups.presentation.screens.payment.PaymentContract.Effect
 import br.com.jwar.groups.presentation.screens.payment.PaymentContract.Event
-import br.com.jwar.groups.presentation.screens.payment.components.PaymentScreen
 
 @Composable
 fun PaymentRoute(
@@ -19,7 +18,7 @@ fun PaymentRoute(
     PaymentScreen(
         state = state,
         onPaymentParamsChange = { viewModel.emitEvent { Event.OnParamsChange(it) }},
-        onSaveClick = { viewModel.emitEvent { Event.OnCreatePayment } },
+        onSaveClick = { viewModel.emitEvent { Event.OnSavePayment } },
         onNavigateBack = onNavigateBack,
     )
 

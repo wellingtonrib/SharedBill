@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.account.presentation
+package br.com.jwar.sharedbill.account.presentation.screens
 
 import android.content.Intent
 import br.com.jwar.sharedbill.account.presentation.model.UserUiModel
