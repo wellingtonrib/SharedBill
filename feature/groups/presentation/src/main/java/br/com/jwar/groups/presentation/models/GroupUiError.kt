@@ -1,5 +1,6 @@
 package br.com.jwar.groups.presentation.models
 
+import br.com.jwar.sharedbill.account.domain.exceptions.UserException
 import br.com.jwar.sharedbill.core.designsystem.util.UiText
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.groups.presentation.R
@@ -12,6 +13,7 @@ sealed class GroupUiError(val message: UiText) {
     object EmptyTitleError: GroupUiError(UiText.StringResource(R.string.error_group_invalid_title))
     object InvalidUserNameError: GroupUiError(UiText.StringResource(R.string.error_invalid_user_name))
     object GroupGenericError: GroupUiError(UiText.StringResource(R.string.error_generic))
+    object UserNotFoundException: GroupUiError(UiText.StringResource(R.string.error_unauthenticated_user))
 
     companion object {
         fun mapFrom(throwable: Throwable) = when(throwable) {
@@ -20,6 +22,7 @@ sealed class GroupUiError(val message: UiText) {
             is GroupException.DeletingFromNonOwnerException -> DeletingFromNonOwnerError
             is GroupException.InvalidUserNameException -> InvalidUserNameError
             is GroupException.InvalidTitle -> EmptyTitleError
+            is UserException.UserNotFoundException -> UserNotFoundException
             else -> GroupGenericError
         }
     }

@@ -1,7 +1,7 @@
 package br.com.jwar.sharedbill.account.presentation.mappers
 
 import br.com.jwar.sharedbill.account.domain.model.User
-import br.com.jwar.sharedbill.account.presentation.model.UserUiModel
+import br.com.jwar.sharedbill.core.designsystem.model.UserUiModel
 import javax.inject.Inject
 
 class UserToUserUiModelMapperImpl @Inject constructor(): UserToUserUiModelMapper {

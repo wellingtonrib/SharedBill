@@ -14,6 +14,7 @@
     <string name="label_group_invite_code">Enter the invite code</string>
     <string name="label_group_edit">Edit group</string>
     <string name="label_group_list">Groups</string>
+    <string name="label_my_groups">My Groups</string>
     <string name="label_group_total_spent">Total spent</string>
     <plurals name="label_group_members_count">
         <item quantity="one">%1$d member</item>
@@ -70,6 +71,7 @@
     <string name="error_deleting_group_from_non_owner">Only the owner can delete this group</string>
     <string name="error_group_invalid_title">Please provide a valid title</string>
     <string name="error_invalid_user_name">Please provide first and last name</string>
+    <string name="error_unauthenticated_user">You need to sign in first</string>
 
     <string name="description_group_image">Group Image</string>
     <string name="description_back">Back action</string>

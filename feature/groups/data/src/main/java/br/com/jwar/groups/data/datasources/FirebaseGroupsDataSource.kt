@@ -1,5 +1,6 @@
 package br.com.jwar.groups.data.datasources
 
+import br.com.jwar.sharedbill.account.domain.exceptions.UserException
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.core.utility.extensions.orZero
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException.GroupNotFoundException
@@ -169,7 +170,8 @@ class FirebaseGroupsDataSource @Inject constructor(
     }
 
     private fun getUserGroupsQuery(): Query {
+        val firebaseUser = firebaseAuth.currentUser ?: throw UserException.UserNotFoundException
         return firestore.collection(GROUPS_REF)
-            .whereArrayContains(GROUP_FIREBASE_MEMBERS_IDS_FIELD, firebaseAuth.currentUser?.uid.orEmpty())
+            .whereArrayContains(GROUP_FIREBASE_MEMBERS_IDS_FIELD, firebaseUser.uid)
     }
 }

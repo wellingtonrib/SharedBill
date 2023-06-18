@@ -1,36 +1,27 @@
 package br.com.jwar.groups.presentation.screens.group_list.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissBackground
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissConfirm
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissDeleteAction
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissLeaveAction
+import br.com.jwar.sharedbill.core.designsystem.components.UserAvatarStack
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
-import br.com.jwar.sharedbill.core.designsystem.theme.Icons
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
-import br.com.jwar.sharedbill.core.designsystem.theme.sizeLarge
-import br.com.jwar.sharedbill.core.designsystem.theme.sizeMedium
+import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerSmall
+import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
@@ -63,34 +54,29 @@ fun GroupListItem(
             modifier = Modifier.fillMaxWidth(),
             onClick = { onGroupClick(group.id) },
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxWidthPaddingMedium()
             ) {
-                Box(
-                    modifier = Modifier
-                        .sizeLarge()
-                        .background(AppTheme.colors.primary),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .sizeMedium(),
-                        imageVector = ImageVector.vectorResource(Icons.Groups),
-                        contentDescription = stringResource(R.string.description_group_image),
-                        colorFilter = ColorFilter.tint(color = AppTheme.colors.onPrimary),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-                Column(
-                    modifier = Modifier.paddingMedium()
-                ) {
-                    Text(text = group.title.ifEmpty { stringResource(id = R.string.label_unnamed) }, style = AppTheme.typo.titleMedium)
-                    Text(text = pluralStringResource(R.plurals.label_group_members_count, group.members.size, group.members.size), style = AppTheme.typo.titleSmall)
-                }
+                Text(
+                    text = group.title.ifEmpty { stringResource(id = R.string.label_unnamed) },
+                    style = AppTheme.typo.titleLarge
+                )
+                VerticalSpacerSmall()
+                UserAvatarStack(
+                    users = group.members.map { it.toUserUiModel() },
+                    avatarSize = 42.dp,
+                    overlap = 12.dp
+                )
+                VerticalSpacerSmall()
+                Text(
+                    text = pluralStringResource(R.plurals.label_group_members_count, group.members.size, group.members.size),
+                    style = AppTheme.typo.titleSmall
+                )
             }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

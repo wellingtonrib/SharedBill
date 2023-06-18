@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import br.com.jwar.groups.presentation.navigation.groupsNav
 import br.com.jwar.groups.presentation.screens.group_list.GROUP_LIST_ROUTE
+import br.com.jwar.sharedbill.account.presentation.navigation.ACCOUNT_ROUTE
 import br.com.jwar.sharedbill.account.presentation.navigation.accountNav
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 
@@ -23,8 +24,16 @@ fun NavGraph(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
     ) {
-        accountNav(navController = navController, snackbarHostState = snackbarHostState)
-        groupsNav(navController = navController, snackbarHostState = snackbarHostState)
+        accountNav(
+            navController = navController,
+            snackbarHostState = snackbarHostState,
+            onNavigateToHome = { navController.navigate(GROUP_LIST_ROUTE) }
+        )
+        groupsNav(
+            navController = navController,
+            snackbarHostState = snackbarHostState,
+            onNavigateAccount = { navController.navigate(ACCOUNT_ROUTE) }
+        )
     }
 }
 
