@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.account.presentation.screens
+package br.com.jwar.sharedbill.account.presentation.screens.auth
 
 import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -9,27 +9,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import br.com.jwar.sharedbill.account.presentation.screens.AccountContract.Effect
+import br.com.jwar.sharedbill.account.presentation.screens.auth.AuthContract.Effect
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 
 @Composable
-fun AccountRoute(
-    viewModel: AccountViewModel = hiltViewModel(),
+fun AuthRoute(
+    viewModel: AuthViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState,
+    onNavigateToHome: () -> Unit,
 ) {
     val state = viewModel.uiState.collectAsState().value
 
-    AccountScreen(
+    AuthScreen(
         state = state,
-        onSignInClick = { viewModel.emitEvent { AccountContract.Event.OnRequestSignIn } },
-        onSignOutClick = { viewModel.emitEvent { AccountContract.Event.OnSignOut } }
+        onSignInClick = { viewModel.emitEvent { AuthContract.Event.OnRequestSignIn } },
     )
 
     val launcherForActivityResult = rememberLauncherForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            viewModel.emitEvent { AccountContract.Event.OnRequestSignInFirebase(result.data) }
+            viewModel.emitEvent { AuthContract.Event.OnRequestSignInFirebase(result.data) }
+        } else {
+            viewModel.emitEvent { AuthContract.Event.OnRequestSignInFirebaseFailed }
         }
     }
 
@@ -47,6 +49,9 @@ fun AccountRoute(
                 }
                 is Effect.ShowError -> {
                     snackbarHostState.showSnackbar(effect.message)
+                }
+                is Effect.LoggedIn -> {
+                    onNavigateToHome()
                 }
             }
         }

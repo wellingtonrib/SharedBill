@@ -16,7 +16,7 @@ import br.com.jwar.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissBackground
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissConfirm
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissDeleteAction
-import br.com.jwar.sharedbill.core.designsystem.components.UserImage
+import br.com.jwar.sharedbill.core.designsystem.components.UserAvatar
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
@@ -55,7 +55,7 @@ fun GroupMemberCard(
                         .clip(CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    UserImage(member.imageUrl)
+                    UserAvatar(user = member.toUserUiModel())
                 }
                 HorizontalSpacerMedium()
                 Text(text = member.name, style = AppTheme.typo.titleMedium)

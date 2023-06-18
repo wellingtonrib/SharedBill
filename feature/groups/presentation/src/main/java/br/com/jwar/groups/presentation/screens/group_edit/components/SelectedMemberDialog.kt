@@ -35,7 +35,7 @@ fun SelectedMemberDialog(
                     modifier = Modifier.fillMaxWidthPaddingMedium(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    UserCard(user = user.toUserCardUiModel())
+                    UserCard(user = user.toUserUiModel())
                     Text(text = user.getJoinInfo())
                     Button(onClick = { onMemberSelectionChange(null) }) {
                         Text(text = stringResource(R.string.label_ok))

@@ -15,9 +15,9 @@ import br.com.jwar.sharedbill.groups.domain.usecases.GetGroupsStreamUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.JoinGroupUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.LeaveGroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class GroupListViewModel @Inject constructor(
@@ -26,7 +26,7 @@ class GroupListViewModel @Inject constructor(
     private val joinGroupUseCase: JoinGroupUseCase,
     private val deleteGroupUseCase: DeleteGroupUseCase,
     private val leaveGroupUseCase: LeaveGroupUseCase,
-    private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper
+    private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
 ): BaseViewModel<Event, State, Effect>() {
 
     init { onInit() }
@@ -96,10 +96,9 @@ class GroupListViewModel @Inject constructor(
         }
 
     private fun setErrorState(throwable: Throwable) {
+        setState { State.Error(throwable.message) }
         if (throwable is UserNotFoundException) {
             sendEffect { Effect.NavigateToAuth }
-        } else {
-            setState { State.Error(throwable.message) }
         }
     }
 

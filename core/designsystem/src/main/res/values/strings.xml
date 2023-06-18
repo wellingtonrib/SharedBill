@@ -27,5 +27,6 @@
     <string name="description_back">Back</string>
     <string name="description_close">Close</string>
     <string name="description_done">Done action</string>
+    <string name="description_user_avatar">User avatar</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.account.presentation.screens.components
+package br.com.jwar.sharedbill.account.presentation.screens.account.components
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.Button
