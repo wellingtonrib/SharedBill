@@ -43,6 +43,7 @@ class GroupEditViewModel @Inject constructor(
             is Event.OnMemberSelect -> onSelectMember(event.user)
             is Event.OnMemberDelete -> onDeleteMember(event.userId)
             is Event.OnGroupUpdated -> onGroupUpdated(event.group)
+            is Event.OnShareInviteCode -> onShareInviteCode(event.inviteCode)
         }
     }
 
@@ -72,6 +73,10 @@ class GroupEditViewModel @Inject constructor(
         removeMemberUseCase(userId, groupId)
             .onSuccess { sendSuccessEffect() }
             .onFailure { sendErrorEffect(it) }
+    }
+
+    private fun onShareInviteCode(inviteCode: String) {
+        sendEffect { Effect.ShareInviteCode(inviteCode) }
     }
 
     private fun setLoadingState() = setState { it.copy(isLoading = true) }

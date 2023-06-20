@@ -1,5 +1,7 @@
 package br.com.jwar.groups.presentation.screens.group_edit
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +29,7 @@ fun GroupEditRoute(
         onSaveMemberClick = { userName -> viewModel.emitEvent { Event.OnSaveMember(userName, groupId) } },
         onMemberSelectionChange = { user -> viewModel.emitEvent { Event.OnMemberSelect(user) } },
         onMemberDeleteClick = { userId -> viewModel.emitEvent { Event.OnMemberDelete(userId, groupId) } },
+        onShareInviteCodeClick = { inviteCode -> viewModel.emitEvent { Event.OnShareInviteCode(inviteCode) } },
         onSaveClick = { viewModel.emitEvent { Event.OnSaveGroup } },
         onNavigateBack = onNavigateBack
     )
@@ -40,7 +43,16 @@ fun GroupEditRoute(
                     snackbarHostState.showSnackbar(context.getString(R.string.message_group_saved_success))
                 is Effect.NavigateToGroupDetails ->
                     onNavigateToDetails(groupId)
+                is Effect.ShareInviteCode ->
+                    shareInviteCode(context, effect.inviteCode)
             }
         }
     }
+}
+
+fun shareInviteCode(context: Context, inviteCode: String) {
+    val intent = Intent(Intent.ACTION_SEND)
+    intent.type = "text/plain"
+    intent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.message_share_invite_code,inviteCode))
+    context.startActivity(Intent.createChooser(intent, "Share via"))
 }

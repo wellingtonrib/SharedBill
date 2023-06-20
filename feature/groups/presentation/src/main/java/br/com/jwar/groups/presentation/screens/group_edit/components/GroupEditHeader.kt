@@ -1,5 +1,6 @@
 package br.com.jwar.groups.presentation.screens.group_edit.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -30,18 +31,16 @@ fun GroupEditHeader(
         }
     }
 
-    Card {
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidthPaddingMedium()
-                .focusRequester(titleFocusRequester),
-            shape = MaterialTheme.shapes.medium,
-            value = group.title,
-            label = { Text(text = stringResource(R.string.label_group_title)) },
-            placeholder = { Text(text = stringResource(R.string.placeholder_group_title)) },
-            onValueChange = { onGroupUpdated(group.copy(title = it)) },
-        )
-    }
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .focusRequester(titleFocusRequester),
+        shape = MaterialTheme.shapes.medium,
+        value = group.title,
+        label = { Text(text = stringResource(R.string.label_group_title)) },
+        placeholder = { Text(text = stringResource(R.string.placeholder_group_title)) },
+        onValueChange = { onGroupUpdated(group.copy(title = it)) },
+    )
 }
 
 @Preview

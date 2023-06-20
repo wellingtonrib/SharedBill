@@ -12,6 +12,7 @@ class GroupEditContract {
         class OnSaveMember(val userName: String, val groupId: String) : Event()
         class OnMemberSelect(val user: GroupMemberUiModel?) : Event()
         class OnMemberDelete(val userId: String, val groupId: String) : Event()
+        class OnShareInviteCode(val inviteCode: String) : Event()
         class OnGroupUpdated(val group: GroupUiModel) : Event()
         object OnSaveGroup: Event()
     }
@@ -26,6 +27,7 @@ class GroupEditContract {
         object ShowSuccess: Effect()
         object NavigateToGroupDetails : Effect()
         class ShowError(val message: UiText): Effect()
+        class ShareInviteCode(val inviteCode: String): Effect()
     }
 
 }

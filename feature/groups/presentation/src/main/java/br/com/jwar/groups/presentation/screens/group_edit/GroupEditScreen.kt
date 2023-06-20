@@ -24,6 +24,7 @@ fun GroupEditScreen(
     onSaveMemberClick: (String) -> Unit = {},
     onMemberSelectionChange: (br.com.jwar.groups.presentation.models.GroupMemberUiModel?) -> Unit = {},
     onMemberDeleteClick: (String) -> Unit = {},
+    onShareInviteCodeClick: (String) -> Unit = {},
     onSaveClick: () -> Unit = {},
     onNavigateBack: () -> Unit = {},
 ) {
@@ -37,6 +38,7 @@ fun GroupEditScreen(
             onMemberSelectionChange = onMemberSelectionChange,
             onMemberDeleteClick = onMemberDeleteClick,
             onSaveClick = onSaveClick,
+            onShareInviteCodeClick = onShareInviteCodeClick,
             onNavigateBack = onNavigateBack
         )
     }
