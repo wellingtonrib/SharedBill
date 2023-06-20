@@ -2,7 +2,7 @@
 <resources>
     <string name="label_group_balance">Balance</string>
     <string name="label_group_details">Group Details</string>
-    <string name="label_group_title">Title</string>
+    <string name="label_group_title">Group Title</string>
     <string name="label_group_manage">Manage</string>
     <string name="label_group_members">Members</string>
     <string name="label_group_info">Info</string>
@@ -31,6 +31,7 @@
     <string name="label_joined">Joined</string>
     <string name="label_account">Account</string>
     <string name="label_unnamed">Unnamed</string>
+    <string name="label_share_invite_code">Share invite code</string>
 
     <string name="message_welcome">Welcome %1$s</string>
     <string name="message_owes">Owes %1$s</string>
@@ -50,9 +51,10 @@
     <string name="message_group_saved_success">Group updated with success</string>
     <string name="message_confirm_user_remove">Are you sure about removing this user?</string>
     <string name="message_confirm_group_delete">Are you sure about deleting this group?</string>
+    <string name="message_share_invite_code">Use this code to join us: %1$s</string>
 
     <string name="placeholder_user_name">Enter user name</string>
-    <string name="placeholder_group_title">Ex. Trip</string>
+    <string name="placeholder_group_title">Ex. Trip 🚙</string>
     <string name="placeholder_add_member_name">Ex. Alex</string>
     <string name="placeholder_payment_description">Ex. Gas</string>
     <string name="placeholder_payment_paid_by">Select a payer</string>
@@ -77,4 +79,5 @@
     <string name="description_back">Back action</string>
     <string name="description_close">Close action</string>
     <string name="description_user_image">User image</string>
+
 </resources>

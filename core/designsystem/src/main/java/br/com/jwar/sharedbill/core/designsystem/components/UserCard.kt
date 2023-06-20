@@ -17,7 +17,9 @@ fun UserCard(user: UserUiModel) {
     ) {
         UserAvatar(user = user, avatarSize = 62.dp)
         Text(text = user.name, style = AppTheme.typo.titleLarge)
-        Text(text = user.email, style = AppTheme.typo.bodyMedium)
+        if (user.email.isNotBlank()) {
+            Text(text = user.email, style = AppTheme.typo.bodyMedium)
+        }
     }
 }
 

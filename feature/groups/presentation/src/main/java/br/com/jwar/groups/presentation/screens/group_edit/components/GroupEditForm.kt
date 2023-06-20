@@ -26,12 +26,13 @@ fun GroupEditForm(
     onSaveMemberClick: (String) -> Unit = {},
     onMemberSelectionChange: (GroupMemberUiModel?) -> Unit = {},
     onMemberDeleteClick: (String) -> Unit = {},
+    onShareInviteCodeClick: (String) -> Unit = {},
     onSaveClick: () -> Unit = {},
     onNavigateBack: () -> Unit = {},
 ) {
     val listState = rememberLazyListState()
 
-    SelectedMemberDialog(selectedMember, onMemberSelectionChange)
+    SelectedMemberDialog(selectedMember, onMemberSelectionChange, onShareInviteCodeClick)
 
     Scaffold(
         topBar = {

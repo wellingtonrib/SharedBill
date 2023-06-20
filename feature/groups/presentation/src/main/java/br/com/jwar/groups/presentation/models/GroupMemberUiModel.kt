@@ -1,13 +1,10 @@
 package br.com.jwar.groups.presentation.models
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import br.com.jwar.sharedbill.core.designsystem.components.Selectable
 import br.com.jwar.sharedbill.core.designsystem.model.UserUiModel
-import br.com.jwar.sharedbill.groups.presentation.R
-import java.util.*
+import java.util.UUID
 
-class GroupMemberUiModel(
+data class GroupMemberUiModel(
     val uid: String = "",
     val name: String = "",
     val email: String = "",
@@ -24,11 +21,6 @@ class GroupMemberUiModel(
             inviteCode = "",
         )
     }
-
-    @Composable
-    fun getJoinInfo() =
-        if (inviteCode.isNullOrBlank()) stringResource(R.string.label_joined)
-        else stringResource(R.string.message_invite_code, inviteCode)
 
     fun toUserUiModel() =
         UserUiModel(
