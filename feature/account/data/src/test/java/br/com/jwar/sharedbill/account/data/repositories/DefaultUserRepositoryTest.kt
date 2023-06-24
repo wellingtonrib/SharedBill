@@ -1,11 +1,11 @@
 package br.com.jwar.sharedbill.account.data.repositories
 
-import br.com.jwar.sharedbill.account.data.repositories.DefaultUserRepository
 import br.com.jwar.sharedbill.account.data.datasources.UserDataSource
-import br.com.jwar.sharedbill.account.domain.exceptions.UserException
+import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
 import br.com.jwar.sharedbill.testing.Fakes
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -25,23 +25,41 @@ internal class DefaultUserRepositoryTest {
     )
 
     @Test
-    fun `GIVEN there is a User WHEN getUser RETURN a success resource`() = runTest {
-        //GIVEN
-        val expected = Fakes.makeUser()
-        coEvery { userDataSource.getCurrentUser() } returns expected
+    fun `getCurrentUser should call userDataSource getCurrentUser and return it`() = runTest {
+        val currentUser = Fakes.makeUser()
+        prepareScenario(currentUser = currentUser)
 
-        //WHEN
         val result = repository.getCurrentUser()
 
-        //THEN
-        assertEquals(expected, result)
+        coVerify { userDataSource.getCurrentUser() }
+        assertEquals(currentUser, result)
     }
 
-    @Test(expected = UserException.UserNotFoundException::class)
-    fun `GIVEN there isn't a User WHEN getUser RETURN a failure`() = runTest {
-        //GIVEN
-        coEvery { userDataSource.getCurrentUser() } throws UserException.UserNotFoundException
+    @Test
+    fun `saveUser should call userDataSource saveUser`() = runTest {
+        val user = Fakes.makeUser()
+        prepareScenario()
 
-        repository.getCurrentUser()
+        repository.saveUser(user)
+
+        coVerify { userDataSource.saveUser(user) }
+    }
+
+    @Test
+    fun `createUser should call userDataSource createUser`() = runTest {
+        val userName = "User name"
+        prepareScenario()
+
+        repository.createUser(userName)
+
+        coVerify { userDataSource.createUser(userName) }
+    }
+
+    private fun prepareScenario(
+        currentUser: User = Fakes.makeUser()
+    ) {
+        coEvery { userDataSource.getCurrentUser() } returns currentUser
+        coEvery { userDataSource.saveUser(any()) } returns mockk()
+        coEvery { userDataSource.createUser(any()) } returns mockk()
     }
 }

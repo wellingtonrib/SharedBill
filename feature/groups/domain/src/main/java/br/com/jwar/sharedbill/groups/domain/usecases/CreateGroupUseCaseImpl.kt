@@ -12,8 +12,6 @@ class CreateGroupUseCaseImpl @Inject constructor(
     private val userRepository: UserRepository
 ) : CreateGroupUseCase {
     override suspend fun invoke(title: String) = resultOf {
-//        if (title.isBlank()) throw GroupException.InvalidTitle
-
         val userResult = userRepository.getCurrentUser()
         val owner = userResult.copy(id = UUID.randomUUID().toString())
         val group = Group(

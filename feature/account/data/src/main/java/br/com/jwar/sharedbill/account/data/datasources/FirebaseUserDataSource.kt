@@ -31,8 +31,7 @@ class FirebaseUserDataSource @Inject constructor(
     override suspend fun createUser(userName: String): Unit =
         withContext(ioDispatcher) {
             val userDoc = firestore.collection(USERS_REF).document()
-            val user =
-                User(id = userDoc.id, name = userName)
+            val user = User(id = userDoc.id, name = userName)
             userDoc.set(user)
         }
 

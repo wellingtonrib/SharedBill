@@ -12,17 +12,17 @@ import org.junit.Test
 internal class GetCurrentUserUseCaseImplTest {
 
     private val userRepository = mockk<UserRepository>()
+
     private val useCase = GetCurrentUserUseCaseImpl(
         userRepository = userRepository
     )
 
     @Test
-    fun `GIVEN GetUserUseCase WHEN invoked SHOULD call getUser from repository`() = runTest {
-        //GIVEN
+    fun `invoke should call userRepository getCurrentUser`() = runTest {
         coEvery { userRepository.getCurrentUser() } returns mockk()
-        //WHEN
+
         useCase.invoke()
-        //THEN
+
         coVerify { userRepository.getCurrentUser() }
     }
 }
