@@ -16,9 +16,9 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -66,8 +66,10 @@ fun GroupList(
         Scaffold(
             modifier = Modifier.padding(bottom = 80.dp),
             topBar = {
-                MediumTopAppBar(
-                    title = { Text(text = stringResource(id = R.string.label_my_groups)) },
+                TopAppBar(
+                    title = {
+                        Text(text = stringResource(R.string.label_my_groups), style = AppTheme.typo.headlineMedium)
+                    },
                     scrollBehavior = topBarScrollBehavior
                 )
             },

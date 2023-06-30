@@ -9,7 +9,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 
@@ -20,13 +19,7 @@ fun AppTopBar(
     navigationIcon: @Composable () -> Unit = { BackNavigationIcon(navigationBack) },
     actions: @Composable RowScope.() -> Unit = {},
 ) {
-    CenterAlignedTopAppBar(
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = AppTheme.colors.primary,
-            titleContentColor = AppTheme.colors.onPrimary,
-            actionIconContentColor = AppTheme.colors.onPrimary,
-            navigationIconContentColor = AppTheme.colors.onPrimary,
-        ),
+    TopAppBar(
         navigationIcon = navigationIcon,
         actions = actions,
         title = { Text(text = title) }

@@ -17,6 +17,7 @@ class GroupDetailsContract {
         object Loading: State()
         class Loaded(val uiModel: GroupUiModel): State()
         class Error(val message: String): State()
+        fun getTitle() = if (this is Loaded) this.uiModel.title else ""
     }
 
     sealed class Effect: UiEffect {

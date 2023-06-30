@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -30,9 +31,12 @@ fun GroupPaymentCard(
 ) {
     val showingPaymentInfo = PaymentInfoDialog(payment)
     Column {
-        Card(modifier = Modifier
-            .fillMaxWidth()
-            .clickable { showingPaymentInfo.value = true }) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { showingPaymentInfo.value = true },
+
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidthPaddingMedium()
             ) {

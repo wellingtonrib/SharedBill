@@ -32,6 +32,7 @@
     <string name="label_account">Account</string>
     <string name="label_unnamed">Unnamed</string>
     <string name="label_share_invite_code">Share invite code</string>
+    <string name="label_total_spent">Total spent %1$s</string>
 
     <string name="message_welcome">Welcome %1$s</string>
     <string name="message_owes">Owes %1$s</string>

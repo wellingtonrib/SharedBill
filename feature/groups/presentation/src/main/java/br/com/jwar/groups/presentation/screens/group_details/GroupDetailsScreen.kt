@@ -24,8 +24,6 @@ import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun GroupDetailsScreen(
@@ -38,26 +36,21 @@ fun GroupDetailsScreen(
     Column(modifier = Modifier.fillMaxWidth()) {
         AppTopBar(
             navigationBack = onNavigateBack,
-            title = stringResource(id = R.string.label_group_details),
+            title = state.getTitle(),
             actions = {
                 IconButton(onClick = onEditClick) {
                     Icon(Icons.Filled.Edit, stringResource(id = R.string.label_group_manage))
                 }
             }
         )
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(state is Loading),
-            onRefresh = onRefresh
-        ) {
-            Column(modifier = Modifier.fillMaxWidthPaddingMedium()) {
-                when(state) {
-                    is Loading -> LoadingContent()
-                    is Loaded -> GroupsDetails(
-                        group = state.uiModel,
-                        onNewPaymentClick = { onNewPaymentClick() }
-                    )
-                    is Error -> ErrorContent()
-                }
+        Column(modifier = Modifier.fillMaxWidthPaddingMedium()) {
+            when(state) {
+                is Loading -> LoadingContent()
+                is Loaded -> GroupsDetails(
+                    group = state.uiModel,
+                    onNewPaymentClick = { onNewPaymentClick() }
+                )
+                is Error -> ErrorContent()
             }
         }
     }

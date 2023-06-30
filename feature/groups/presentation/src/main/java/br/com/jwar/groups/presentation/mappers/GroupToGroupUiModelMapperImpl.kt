@@ -26,7 +26,7 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         from.payments.sumOf { it.value.toBigDecimalOrZero() }.toCurrency()
 
     private fun mapPayments(from: Group) =
-        from.payments.map { paymentToPaymentUiModelMapper.mapFrom(it) }
+        from.payments.sortedByDescending { it.createdAt }.map { paymentToPaymentUiModelMapper.mapFrom(it) }
 
     private fun mapMembers(from: Group) =
         from.members.map { userToGroupMemberUiModelMapper.mapFrom(it) }
