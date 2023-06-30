@@ -26,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.core.designsystem.components.Title
+import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
 import br.com.jwar.sharedbill.groups.presentation.R
@@ -48,17 +50,19 @@ fun GroupsDetails(
         },
         floatingActionButtonPosition = FabPosition.End,
     ) { contentPadding ->
-        Box(modifier = Modifier
+        Column(modifier = Modifier
             .fillMaxSize()
             .padding(contentPadding)) {
             if (group.payments.isEmpty()) {
                 GroupPaymentsEmpty(Modifier.fillMaxSize())
             } else {
+                GroupBalance(group)
+                VerticalSpacerMedium()
+                Title(stringResource(R.string.label_group_payments))
+                VerticalSpacerMedium()
                 LazyColumn(
                     state = listState,
                 ) {
-                    item { GroupBalance(group) }
-                    item { VerticalSpacerMedium() }
                     items(group.payments) { payment ->
                         GroupPaymentCard(payment, group)
                     }
