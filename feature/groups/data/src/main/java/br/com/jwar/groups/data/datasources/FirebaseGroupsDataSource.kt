@@ -2,6 +2,7 @@ package br.com.jwar.groups.data.datasources
 
 import br.com.jwar.sharedbill.account.domain.exceptions.UserException
 import br.com.jwar.sharedbill.account.domain.model.User
+import br.com.jwar.sharedbill.core.utility.extensions.NetworkManager
 import br.com.jwar.sharedbill.core.utility.extensions.orZero
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException.GroupNotFoundException
 import br.com.jwar.sharedbill.groups.domain.model.Group
@@ -26,7 +27,8 @@ import kotlinx.coroutines.withContext
 class FirebaseGroupsDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val networkManager: NetworkManager,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): GroupsDataSource {
 
     companion object {
@@ -58,7 +60,7 @@ class FirebaseGroupsDataSource @Inject constructor(
         withContext(ioDispatcher) {
             getUserGroupsQuery()
                 .whereEqualTo(GROUP_ID_FIELD, groupId)
-                .get(if (refresh) Source.SERVER else Source.CACHE)
+                .get(if (refresh && networkManager.isConnected()) Source.SERVER else Source.CACHE)
                 .await()
                 .documents
                 .firstOrNull()

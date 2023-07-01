@@ -30,9 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.EmptyContent
+import br.com.jwar.sharedbill.core.designsystem.components.Title
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
 import kotlinx.coroutines.launch
 
@@ -67,9 +67,7 @@ fun GroupList(
             modifier = Modifier.padding(bottom = 80.dp),
             topBar = {
                 TopAppBar(
-                    title = {
-                        Text(text = stringResource(R.string.label_my_groups), style = AppTheme.typo.headlineMedium)
-                    },
+                    title = { Title(stringResource(R.string.label_my_groups)) },
                     scrollBehavior = topBarScrollBehavior
                 )
             },
@@ -89,7 +87,7 @@ fun GroupList(
             }
             LazyColumn(
                 state = groupListState,
-                modifier = Modifier.paddingMedium(),
+                modifier = Modifier.padding(horizontal = AppTheme.dimens.space_8),
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
                 content = {

@@ -22,7 +22,7 @@ import br.com.jwar.sharedbill.core.designsystem.components.AppTopBar
 import br.com.jwar.sharedbill.core.designsystem.components.ErrorContent
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
+import br.com.jwar.sharedbill.core.designsystem.theme.horizontalPaddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
@@ -43,7 +43,7 @@ fun GroupDetailsScreen(
                 }
             }
         )
-        Column(modifier = Modifier.fillMaxWidthPaddingMedium()) {
+        Column(modifier = Modifier.horizontalPaddingMedium()) {
             when(state) {
                 is Loading -> LoadingContent()
                 is Loaded -> GroupsDetails(

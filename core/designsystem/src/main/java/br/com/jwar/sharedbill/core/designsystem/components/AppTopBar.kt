@@ -22,7 +22,7 @@ fun AppTopBar(
     TopAppBar(
         navigationIcon = navigationIcon,
         actions = actions,
-        title = { Text(text = title) }
+        title = { Title(title) }
     )
 }
 

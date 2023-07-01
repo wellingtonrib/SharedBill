@@ -1,12 +1,14 @@
 package br.com.jwar.groups.presentation.screens.payment.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.groups.presentation.screens.payment.PaymentContract
@@ -27,7 +29,9 @@ fun PaymentDescriptionField(
         placeholder = { Text(text = stringResource(R.string.placeholder_payment_description)) },
         onValueChange = { onPaymentParamsChange(params.copy(description = it)) },
         isError = isError,
-        supportingText = { if (isError) params.error?.message?.asText() }
+        supportingText = { if (isError) params.error?.message?.asText() },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            capitalization = KeyboardCapitalization.Sentences)
     )
 }
 
