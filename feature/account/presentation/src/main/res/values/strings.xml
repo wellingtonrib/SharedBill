@@ -2,4 +2,6 @@
 <resources>
     <string name="label_logout">Logout</string>
     <string name="label_sign_in">Sign In</string>
+
+    <string name="description_app_logo">App logo</string>
 </resources>
