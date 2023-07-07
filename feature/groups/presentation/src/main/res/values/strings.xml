@@ -34,6 +34,7 @@
     <string name="label_unnamed">Unnamed</string>
     <string name="label_share_invite_code">Share invite code</string>
     <string name="label_total_spent">Total spent %1$s</string>
+    <string name="label_suggestion">Suggestions</string>
 
     <string name="message_welcome">Welcome %1$s</string>
     <string name="message_owes">Owes %1$s</string>
@@ -55,9 +56,9 @@
     <string name="message_confirm_group_delete">Are you sure about deleting this group?</string>
     <string name="message_share_invite_code">Use this code to join us: %1$s</string>
 
-    <string name="placeholder_user_name">Enter user name</string>
-    <string name="placeholder_group_title">Ex. Trip 🚙</string>
-    <string name="placeholder_add_member_name">Ex. Alex</string>
+    <string name="placeholder_user_name">Enter the new member name</string>
+    <string name="placeholder_group_title">Ex. 🚙 Trip</string>
+    <string name="placeholder_add_member_name">Ex. Walter White</string>
     <string name="placeholder_payment_description">Ex. Gas</string>
     <string name="placeholder_payment_paid_by">Select a payer</string>
     <string name="placeholder_payment_paid_to">Select related members</string>
@@ -81,5 +82,14 @@
     <string name="description_back">Back action</string>
     <string name="description_close">Close action</string>
     <string name="description_user_image">User image</string>
+
+    <array name="samples_group_title">
+        <item>🏠 My house</item>
+        <item>️❤️ Me&amp;You</item>
+        <item>🚙 Trip</item>
+        <item>🎸 My band</item>
+        <item>⚽ My team</item>
+        <item>💼 Coworkers</item>
+    </array>
 
 </resources>

@@ -1,7 +1,6 @@
 package br.com.jwar.groups.presentation.screens.group_details.components
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.Title
-import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
 import br.com.jwar.sharedbill.groups.presentation.R
@@ -57,6 +56,8 @@ fun GroupsDetails(
                 GroupPaymentsEmpty(Modifier.fillMaxSize())
             } else {
                 GroupBalance(group)
+                VerticalSpacerMedium()
+                Divider()
                 VerticalSpacerMedium()
                 Title(stringResource(R.string.label_group_payments))
                 VerticalSpacerMedium()

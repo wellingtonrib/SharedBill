@@ -12,19 +12,12 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -64,9 +57,9 @@ fun GroupList(
         }
     ) {
         Scaffold(
-            modifier = Modifier.padding(bottom = 80.dp),
+            modifier = Modifier.padding(bottom = 80.dp).nestedScroll(topBarScrollBehavior.nestedScrollConnection),
             topBar = {
-                TopAppBar(
+                MediumTopAppBar(
                     title = { Title(stringResource(R.string.label_my_groups)) },
                     scrollBehavior = topBarScrollBehavior
                 )
