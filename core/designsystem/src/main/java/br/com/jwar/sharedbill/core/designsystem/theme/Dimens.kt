@@ -20,7 +20,9 @@ class Dimensions(
     val space_10: Dp,
     val size_1: Dp,
     val size_2: Dp,
-    val size_3: Dp
+    val size_3: Dp,
+    val size_4: Dp,
+    val size_5: Dp,
 )
 
 val DefaultDimens  = Dimensions(
@@ -36,7 +38,9 @@ val DefaultDimens  = Dimensions(
     space_10 = 42.dp,
     size_1 = 20.dp,
     size_2 = 40.dp,
-    size_3 = 80.dp
+    size_3 = 80.dp,
+    size_4 = 100.dp,
+    size_5 = 120.dp,
 )
 
 val SmallDimens = Dimensions(
@@ -52,7 +56,9 @@ val SmallDimens = Dimensions(
     space_10 = 36.dp,
     size_1 = 10.dp,
     size_2 = 20.dp,
-    size_3 = 60.dp
+    size_3 = 60.dp,
+    size_4 = 80.dp,
+    size_5 = 100.dp,
 )
 
 @Composable

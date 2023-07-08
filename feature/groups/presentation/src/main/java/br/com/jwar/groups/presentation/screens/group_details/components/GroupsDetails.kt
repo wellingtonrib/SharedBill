@@ -23,9 +23,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.core.designsystem.components.EmptyContent
 import br.com.jwar.sharedbill.core.designsystem.components.Title
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
@@ -53,7 +55,10 @@ fun GroupsDetails(
             .fillMaxSize()
             .padding(contentPadding)) {
             if (group.payments.isEmpty()) {
-                GroupPaymentsEmpty(Modifier.fillMaxSize())
+                EmptyContent(
+                    image = painterResource(R.drawable.group_details_empty_img),
+                    message = stringResource(R.string.message_no_expenses),
+                )
             } else {
                 GroupBalance(group)
                 VerticalSpacerMedium()

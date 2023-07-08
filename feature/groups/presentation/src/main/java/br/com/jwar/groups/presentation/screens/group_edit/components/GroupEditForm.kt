@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.groups.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.core.designsystem.components.Title
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
@@ -57,7 +58,7 @@ fun GroupEditForm(
                 VerticalSpacerMedium()
             }
             item {
-                GroupEditMembersHeader()
+                Title(stringResource(R.string.label_group_members))
             }
             items(group.members) { member ->
                 VerticalSpacerMedium()
