@@ -29,52 +29,38 @@ fun InputDialog(
     placeholder: String = "",
     action: String = stringResource(id = R.string.label_save),
     onDismiss: () -> Unit,
-    onAction: (string: String) -> Unit
+    minLength: Int = 1,
+    minWords: Int = 1,
+    onAction: (string: String) -> Unit,
 ) {
     Dialog(
         onDismissRequest = { onDismiss() },
     ) {
-        InputDialogContent(
-            label = label,
-            placeholder = placeholder,
-            action = action
-        ) {
-            onAction(it)
-        }
-    }
-}
+        var input by remember { mutableStateOf("") }
 
-@Composable
-private fun InputDialogContent(
-    label: String,
-    placeholder: String,
-    action: String,
-    onAction: (input: String) -> Unit
-) {
-    var input by remember { mutableStateOf("") }
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-    ) {
-        Column(
-            modifier = Modifier.paddingMedium()
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
         ) {
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.medium,
-                value = input,
-                label = { Text(text = label) },
-                placeholder = { Text(text = placeholder) },
-                onValueChange = { input = it },
-                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words)
-            )
-            VerticalSpacerSmall()
-            Button(
-                onClick = { onAction(input) },
-                enabled = input.isNotBlank()
+            Column(
+                modifier = Modifier.paddingMedium()
             ) {
-                Text(text = action)
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium,
+                    value = input,
+                    label = { Text(text = label) },
+                    placeholder = { Text(text = placeholder) },
+                    onValueChange = { input = it },
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words)
+                )
+                VerticalSpacerSmall()
+                Button(
+                    onClick = { onAction(input.trim()) },
+                    enabled = input.length > minLength && input.split(" ").size >= minWords
+                ) {
+                    Text(text = action)
+                }
             }
         }
     }
@@ -84,12 +70,12 @@ private fun InputDialogContent(
 @Composable
 fun PreviewInputDialogContent() {
     SharedBillTheme {
-        InputDialogContent(
+        InputDialog(
             label = "Label",
             placeholder = "Placeholder",
-            action = "Action"
-        ) {
-
-        }
+            action = "Action",
+            onDismiss = {},
+            onAction = {},
+        )
     }
 }

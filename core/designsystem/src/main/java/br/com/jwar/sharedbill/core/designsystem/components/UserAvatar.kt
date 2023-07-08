@@ -80,7 +80,7 @@ private fun UserAvatarPlaceholder(
     }
 }
 
-fun String.initials() = this.split(" ").let {
+fun String.initials() = this.trim().split(" ").let {
     (it.first().take(1) + it.last().take(1)).uppercase()
 }
 

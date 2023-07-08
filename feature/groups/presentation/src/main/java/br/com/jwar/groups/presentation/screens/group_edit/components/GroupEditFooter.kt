@@ -29,7 +29,8 @@ fun GroupEditFooter(
             placeholder = stringResource(R.string.placeholder_add_member_name),
             action = stringResource(DSR.string.label_save),
             onDismiss = { openGroupAddMemberDialog.value = false },
-            onAction = { openGroupAddMemberDialog.value = false; onSaveMemberClick(it) }
+            onAction = { openGroupAddMemberDialog.value = false; onSaveMemberClick(it) },
+            minWords = 2,
         )
     }
     ExtendedFloatingActionButton(
