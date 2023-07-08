@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
@@ -37,16 +38,14 @@ fun AuthScreen(
         is Loading -> LoadingContent()
         is Idle -> {
             Box(
-                modifier = Modifier
-                    .background(AppTheme.colors.primaryContainer)
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                        modifier = Modifier.size(200.dp),
+                        modifier = Modifier.size(100.dp),
                         painter = painterResource(DS.drawable.app_icon),
                         contentDescription = stringResource(R.string.description_app_logo)
                     )
@@ -54,7 +53,7 @@ fun AuthScreen(
                         text = stringResource(DS.string.app_name),
                         fontSize = 32.sp,
                         fontWeight = FontWeight(600),
-                        color = AppTheme.colors.onPrimaryContainer,
+                        color = AppTheme.colors.primary,
                         style = AppTheme.typo.titleLarge
                     )
                     VerticalSpacerLarge()
