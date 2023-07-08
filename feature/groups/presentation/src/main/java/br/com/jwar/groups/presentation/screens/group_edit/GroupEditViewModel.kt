@@ -19,7 +19,6 @@ import br.com.jwar.sharedbill.groups.domain.usecases.UpdateGroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
-
 @HiltViewModel
 class GroupEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -62,6 +61,7 @@ class GroupEditViewModel @Inject constructor(
     }
 
     private fun onSaveMember(userName: String) = viewModelScope.launch {
+        onSaveGroup()
         setLoadingState()
         addMemberUseCase(userName, groupId)
             .onSuccess { onInit(it) }
@@ -116,3 +116,4 @@ class GroupEditViewModel @Inject constructor(
     private fun onSelectMember(user: GroupMemberUiModel?) =
         setState { it.copy(selectedMember = user) }
 }
+

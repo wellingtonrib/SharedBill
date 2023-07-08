@@ -2,6 +2,7 @@ package br.com.jwar.sharedbill.core.designsystem.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.jwar.sharedbill.core.designsystem.R
@@ -64,7 +66,8 @@ private fun InputDialogContent(
                 value = input,
                 label = { Text(text = label) },
                 placeholder = { Text(text = placeholder) },
-                onValueChange = { input = it }
+                onValueChange = { input = it },
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words)
             )
             VerticalSpacerSmall()
             Button(

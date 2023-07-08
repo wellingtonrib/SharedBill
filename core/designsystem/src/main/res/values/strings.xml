@@ -30,5 +30,6 @@
     <string name="description_close">Close</string>
     <string name="description_done">Done action</string>
     <string name="description_user_avatar">User avatar</string>
+    <string name="description_empty">Empty state image</string>
 
 </resources>

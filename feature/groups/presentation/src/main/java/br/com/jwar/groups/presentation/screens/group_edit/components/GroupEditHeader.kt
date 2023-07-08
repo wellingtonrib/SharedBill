@@ -2,6 +2,7 @@ package br.com.jwar.groups.presentation.screens.group_edit.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
@@ -55,6 +57,7 @@ fun GroupEditHeader(
                 isDropdownVisible.value = newValue.text.isEmpty()
                 onGroupUpdated(group.copy(title = newValue.text))
             },
+            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words)
         )
         DropdownMenu(
             modifier = Modifier.fillMaxWidth(0.9f),

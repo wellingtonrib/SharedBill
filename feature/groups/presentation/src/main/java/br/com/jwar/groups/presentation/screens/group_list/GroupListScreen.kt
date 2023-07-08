@@ -31,7 +31,7 @@ fun GroupListScreen(
             onGroupDelete = onGroupDelete,
             onGroupLeave = onGroupLeave
         )
-        is State.Error -> ErrorContent(state.message.orEmpty(), onAction = onTryAgainClick)
+        is State.Error -> ErrorContent(message = state.message.orEmpty(), onAction = onTryAgainClick)
     }
 }
 

@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,7 +58,9 @@ fun GroupList(
         }
     ) {
         Scaffold(
-            modifier = Modifier.padding(bottom = 80.dp).nestedScroll(topBarScrollBehavior.nestedScrollConnection),
+            modifier = Modifier
+                .padding(bottom = 80.dp)
+                .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
             topBar = {
                 MediumTopAppBar(
                     title = { Title(stringResource(R.string.label_my_groups)) },
@@ -75,7 +78,10 @@ fun GroupList(
             floatingActionButtonPosition = FabPosition.End,
         ) { innerPadding ->
             if (groups.isEmpty()) {
-                EmptyContent(message = stringResource(id = R.string.message_groups_empty))
+                EmptyContent(
+                    image = painterResource(R.drawable.group_list_empty_img),
+                    message = stringResource(R.string.message_groups_empty)
+                )
                 return@Scaffold
             }
             LazyColumn(
@@ -104,7 +110,7 @@ fun PreviewGroupList() {
                     GroupUiModel.sample(),
                     GroupUiModel.sample(),
                     GroupUiModel.sample(),
-                ),
+                )
             )
         }
     }
