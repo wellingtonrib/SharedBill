@@ -49,7 +49,7 @@ class GroupListViewModel @Inject constructor(
             .onStart { setLoadingState() }
             .collect { result ->
                 result.onSuccess { setLoadedState(it) }
-                    .onFailure { setErrorState(it) }
+                    .onFailure { setErrorState(it, Event.OnTryAgain) }
             }
     }
 
@@ -57,7 +57,7 @@ class GroupListViewModel @Inject constructor(
         setLoadingState()
         createGroupUseCase(title)
             .onSuccess { onGroupCreated(it) }
-            .onFailure { setErrorState(it) }
+            .onFailure { setErrorState(it, Event.OnGroupCreate(title)) }
     }
 
     private fun onGroupCreated(groupId: String) =
@@ -67,7 +67,7 @@ class GroupListViewModel @Inject constructor(
         setLoadingState()
         joinGroupUseCase(code)
             .onSuccess { onGroupSelect(it) }
-            .onFailure { setErrorState(it) }
+            .onFailure { setErrorState(it, Event.OnGroupJoin(code)) }
     }
 
     private fun onGroupDelete(groupId: String) = viewModelScope.launch {
@@ -95,8 +95,8 @@ class GroupListViewModel @Inject constructor(
             State.Loaded(updatedGroups)
         }
 
-    private fun setErrorState(throwable: Throwable) {
-        setState { State.Error(throwable.message) }
+    private fun setErrorState(throwable: Throwable, event: Event) {
+        setState { State.Error(throwable.message, event) }
         if (throwable is UserNotFoundException) {
             sendEffect { Effect.NavigateToAuth }
         }

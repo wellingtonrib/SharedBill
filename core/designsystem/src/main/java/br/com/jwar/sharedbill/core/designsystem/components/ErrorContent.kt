@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
 
 @Composable
 fun ErrorContent(
@@ -42,6 +43,7 @@ fun ErrorContent(
                 )
             }
             Text(text = message, textAlign = TextAlign.Center)
+            VerticalSpacerMedium()
             Button(onClick = { onAction() }) {
                 Text(text = action)
             }

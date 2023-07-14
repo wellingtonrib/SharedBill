@@ -9,4 +9,5 @@ sealed class GroupException: Exception() {
     object RemovingOwnerException: GroupException()
     object InvalidTitle : GroupException()
     object DeletingFromNonOwnerException : GroupException()
+    object GroupJoinException: GroupException()
 }

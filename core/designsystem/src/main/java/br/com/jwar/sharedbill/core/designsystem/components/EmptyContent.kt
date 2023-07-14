@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
 
 @Composable
 fun EmptyContent(
@@ -32,7 +33,9 @@ fun EmptyContent(
     onAction: (() -> Unit)? = null
 ) {
     Box(
-        modifier = Modifier.fillMaxSize().offset(y = (-60).dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .offset(y = (-60).dp),
         contentAlignment = Alignment.Center
     ){
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -43,12 +46,8 @@ fun EmptyContent(
                     contentDescription = stringResource(R.string.description_empty)
                 )
             }
-            Text(
-                textAlign = TextAlign.Center,
-                text = message,
-                color = Color.LightGray,
-                style = AppTheme.typo.titleLarge
-            )
+            Text(text = message, textAlign = TextAlign.Center)
+            VerticalSpacerMedium()
             if (onAction != null && action != null) {
                 Button(onClick = { onAction() }) {
                     Text(text = action)
@@ -65,7 +64,9 @@ fun EmptyContent(
 fun PreviewEmptyContent() {
     SharedBillTheme {
         Scaffold {
-            EmptyContent()
+            EmptyContent(action = "Add something") {
+
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ fun GroupListScreen(
     onGroupJoin: (inviteCode: String) -> Unit = {},
     onGroupDelete: (groupId: String) -> Unit = {},
     onGroupLeave: (groupId: String) -> Unit = {},
-    onTryAgainClick: () -> Unit = {},
+    onTryAgainClick: (GroupListContract.Event) -> Unit = {},
 ) {
     when(state) {
         is State.Loading -> LoadingContent()
@@ -31,7 +31,10 @@ fun GroupListScreen(
             onGroupDelete = onGroupDelete,
             onGroupLeave = onGroupLeave
         )
-        is State.Error -> ErrorContent(message = state.message.orEmpty(), onAction = onTryAgainClick)
+        is State.Error -> ErrorContent(
+            message = state.message.orEmpty(),
+            onAction = { onTryAgainClick(state.event) }
+        )
     }
 }
 

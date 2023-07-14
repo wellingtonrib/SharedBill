@@ -57,7 +57,7 @@ fun InputDialog(
                 VerticalSpacerSmall()
                 Button(
                     onClick = { onAction(input.trim()) },
-                    enabled = input.length > minLength && input.split(" ").size >= minWords
+                    enabled = input.length > minLength && input.trim().split("\\s+".toRegex()).size >= minWords
                 ) {
                     Text(text = action)
                 }

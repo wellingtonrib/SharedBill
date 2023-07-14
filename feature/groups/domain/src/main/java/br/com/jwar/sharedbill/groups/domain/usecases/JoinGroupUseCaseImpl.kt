@@ -1,6 +1,7 @@
 package br.com.jwar.sharedbill.groups.domain.usecases
 
 import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
+import br.com.jwar.sharedbill.core.utility.extensions.mapResult
 import br.com.jwar.sharedbill.core.utility.extensions.resultOf
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
@@ -21,6 +22,10 @@ class JoinGroupUseCaseImpl @Inject constructor(
             photoUrl = currentUser.photoUrl.toString(),
             email = currentUser.email
         )
-        groupRepository.joinGroup(group.id, invitedUser, joinedUser); group.id
+        val joinResult = resultOf { groupRepository.joinGroup(group.id, invitedUser, joinedUser) }
+        when {
+            joinResult.isSuccess -> group.id
+            else -> throw GroupException.GroupJoinException
+        }
     }
 }
