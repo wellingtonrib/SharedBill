@@ -57,7 +57,7 @@ class GroupListViewModel @Inject constructor(
         setLoadingState()
         createGroupUseCase(title)
             .onSuccess { onGroupCreated(it) }
-            .onFailure { setErrorState(it, Event.OnGroupCreate(title)) }
+            .onFailure { setErrorState(it, Event.OnTryAgain) }
     }
 
     private fun onGroupCreated(groupId: String) =
@@ -67,7 +67,7 @@ class GroupListViewModel @Inject constructor(
         setLoadingState()
         joinGroupUseCase(code)
             .onSuccess { onGroupSelect(it) }
-            .onFailure { setErrorEffect(it) }
+            .onFailure { setErrorState(it, Event.OnTryAgain) }
     }
 
     private fun onGroupDelete(groupId: String) = viewModelScope.launch {
