@@ -34,8 +34,8 @@ class DefaultGroupRepository @Inject constructor(
     override suspend fun updateGroup(groupId: String, title: String) =
         groupsDataSource.updateGroup(groupId, title)
 
-    override suspend fun joinGroup(groupId: String, invitedUser: User, joinedUser: User) =
-        groupsDataSource.joinGroup(groupId, invitedUser, joinedUser)
+    override suspend fun joinGroup(groupId: String, inviteCode: String, joinedUser: User) =
+        groupsDataSource.joinGroup(groupId, inviteCode, joinedUser)
 
     override suspend fun addMember(user: User, groupId: String) =
         groupsDataSource.addMember(user, groupId)

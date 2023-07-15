@@ -67,7 +67,7 @@ class GroupListViewModel @Inject constructor(
         setLoadingState()
         joinGroupUseCase(code)
             .onSuccess { onGroupSelect(it) }
-            .onFailure { setErrorState(it, Event.OnGroupJoin(code)) }
+            .onFailure { setErrorEffect(it) }
     }
 
     private fun onGroupDelete(groupId: String) = viewModelScope.launch {
@@ -96,9 +96,13 @@ class GroupListViewModel @Inject constructor(
         }
 
     private fun setErrorState(throwable: Throwable, event: Event) {
-        setState { State.Error(throwable.message, event) }
         if (throwable is UserNotFoundException) {
             sendEffect { Effect.NavigateToAuth }
+        } else {
+            setState {
+                val error = GroupUiError.mapFrom(throwable)
+                State.Error(error.message, event)
+            }
         }
     }
 
