@@ -1,0 +1,25 @@
+package br.com.jwar.sharedbill.account.presentation.screens.auth.components
+
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import br.com.jwar.sharedbill.account.presentation.R
+
+@Composable
+fun PrivacyPolicy() {
+    val annotatedString = buildAnnotatedString {
+        val text = stringResource(R.string.message_privacy_police)
+        val underlineText = text.split("\n").last()
+        append(text)
+        addStyle(
+            style = SpanStyle(textDecoration = TextDecoration.Underline),
+            start = text.indexOf(underlineText),
+            end = text.indexOf(underlineText) + underlineText.length
+        )
+    }
+    Text(annotatedString, textAlign = TextAlign.Center)
+}

@@ -2,6 +2,16 @@
 <resources>
     <string name="label_logout">Logout</string>
     <string name="label_sign_in">Sign In</string>
+    <string name="label_sign_in_with_google">Sign in with Google</string>
+
+    <string name="message_privacy_police">By signing in you agree with\nPrivacy Policy</string>
+
+    <string name="onboarding_title_1">Create personalized groups</string>
+    <string name="onboarding_message_1">to organize each kind of expense effortlessly</string>
+    <string name="onboarding_title_2">Register expenses and payments with ease</string>
+    <string name="onboarding_message_2">and let us handle the calculations for you</string>
+    <string name="onboarding_title_3">Track who owes who</string>
+    <string name="onboarding_message_3">and settle up with just a few taps</string>
 
     <string name="description_app_logo">App logo</string>
 </resources>
