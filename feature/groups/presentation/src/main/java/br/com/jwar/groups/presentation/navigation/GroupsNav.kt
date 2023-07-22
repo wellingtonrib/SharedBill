@@ -4,17 +4,19 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import br.com.jwar.groups.presentation.models.PaymentType
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsRoute
 import br.com.jwar.groups.presentation.screens.group_edit.GroupEditRoute
 import br.com.jwar.groups.presentation.screens.group_list.GROUP_LIST_ROUTE
 import br.com.jwar.groups.presentation.screens.group_list.GroupListRoute
 import br.com.jwar.groups.presentation.screens.payment.PaymentRoute
-import com.google.accompanist.navigation.animation.composable
+import androidx.navigation.compose.composable
 
 const val GROUP_ID_ARG = "groupId"
+const val PAYMENT_TYPE_ARG = "paymentType"
 const val GROUP_DETAILS_ROUTE = "group_details/{$GROUP_ID_ARG}"
 const val GROUP_EDIT_ROUTE = "group_edit/{$GROUP_ID_ARG}"
-const val PAYMENT_ROUTE = "payment/{$GROUP_ID_ARG}"
+const val PAYMENT_ROUTE = "payment/{$GROUP_ID_ARG}/{$PAYMENT_TYPE_ARG}"
 
 fun NavGraphBuilder.groupsNav(
     navController: NavHostController,
@@ -41,8 +43,8 @@ fun NavGraphBuilder.groupsNav(
             onNavigateToGroupEdit = { groupId ->
                 navController.navigate(GROUP_EDIT_ROUTE.bindGroupId(groupId))
             },
-            onNavigateToNewPayment = { groupId ->
-                navController.navigate(PAYMENT_ROUTE.bindGroupId(groupId))
+            onNavigateToNewPayment = { groupId, paymentType ->
+                navController.navigate(PAYMENT_ROUTE.bindGroupId(groupId).bindPaymentType(paymentType))
             }
         ) { navController.popBackStack() }
     }
@@ -59,10 +61,17 @@ fun NavGraphBuilder.groupsNav(
     composable(route = PAYMENT_ROUTE) { backStackEntry ->
         PaymentRoute(
             groupId = backStackEntry.getGroupId(),
+            paymentType = backStackEntry.getPaymentType(),
         ) { navController.popBackStack() }
     }
 }
 
 private fun NavBackStackEntry.getGroupId() = arguments?.getString(GROUP_ID_ARG).orEmpty()
 
-private fun String.bindGroupId(groupId: String) = this.replace("{${GROUP_ID_ARG}}", groupId)
+private fun NavBackStackEntry.getPaymentType() =
+    PaymentType.from(arguments?.getString(PAYMENT_TYPE_ARG).orEmpty())
+
+private fun String.bindGroupId(groupId: String) = this.replace("{$GROUP_ID_ARG}", groupId)
+
+private fun String.bindPaymentType(paymentType: PaymentType) =
+    this.replace("{$PAYMENT_TYPE_ARG}", paymentType::class.java.simpleName.orEmpty())

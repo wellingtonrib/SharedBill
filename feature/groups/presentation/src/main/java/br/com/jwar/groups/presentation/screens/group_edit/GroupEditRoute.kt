@@ -1,7 +1,6 @@
 package br.com.jwar.groups.presentation.screens.group_edit
 
 import android.content.Context
-import android.content.Intent
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -10,6 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.groups.presentation.screens.group_edit.GroupEditContract.Effect
 import br.com.jwar.groups.presentation.screens.group_edit.GroupEditContract.Event
+import br.com.jwar.sharedbill.core.utility.extensions.shareText
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
@@ -51,8 +51,5 @@ fun GroupEditRoute(
 }
 
 fun shareInviteCode(context: Context, inviteCode: String) {
-    val intent = Intent(Intent.ACTION_SEND)
-    intent.type = "text/plain"
-    intent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.message_share_invite_code,inviteCode))
-    context.startActivity(Intent.createChooser(intent, "Share via"))
+    context.shareText(context.getString(R.string.message_share_invite_code, inviteCode))
 }

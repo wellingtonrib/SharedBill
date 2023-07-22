@@ -2,6 +2,7 @@ package br.com.jwar.groups.presentation.screens.payment
 
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.groups.presentation.models.GroupUiModel
+import br.com.jwar.groups.presentation.models.PaymentType
 import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.common.UiEffect
 import br.com.jwar.sharedbill.core.common.UiEvent
@@ -31,17 +32,19 @@ class PaymentContract {
         val paidTo: List<GroupMemberUiModel> = emptyList(),
         val date: Date = Date(),
         val group: GroupUiModel = GroupUiModel(),
-        val error: PaymentUiError? = null
+        val error: PaymentUiError? = null,
+        val paymentType: PaymentType = PaymentType.Expense,
     ) {
         companion object {
             fun sample() = PaymentParams(
-                group = GroupUiModel.sample(),
                 paidBy = GroupMemberUiModel.sample(),
                 paidTo = listOf(
                     GroupMemberUiModel.sample(),
                     GroupMemberUiModel.sample(),
                     GroupMemberUiModel.sample(),
-                )
+                ),
+                group = GroupUiModel.sample(),
+                paymentType = PaymentType.Expense
             )
         }
     }

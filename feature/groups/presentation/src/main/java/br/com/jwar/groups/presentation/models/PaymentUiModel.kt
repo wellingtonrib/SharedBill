@@ -2,9 +2,22 @@ package br.com.jwar.groups.presentation.models
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import br.com.jwar.sharedbill.core.utility.extensions.replaceIf
 import br.com.jwar.sharedbill.groups.presentation.R
 import java.util.UUID
+
+sealed class PaymentType {
+    object Expense: PaymentType()
+    object Settlement: PaymentType()
+
+    companion object {
+        fun from(string: String) =
+            when (string) {
+                Expense::class.java.simpleName -> Expense
+                Settlement::class.java.simpleName -> Settlement
+                else -> Expense
+            }
+    }
+}
 
 class PaymentUiModel(
     val id: String = "",
@@ -26,12 +39,12 @@ class PaymentUiModel(
     }.toString()
 
     @Composable
-    fun getMessage(group: GroupUiModel) = stringResource(
-        R.string.message_payment_detail,
-        paidBy, paidTo.replaceIf(stringResource(R.string.message_paid_to_all)) {
-            paidTo.split(",").size == group.membersNames.split(",").size
+    fun getMessage(group: GroupUiModel) =
+        if (paidTo.split(",").size == group.membersNames.split(",").size) {
+            stringResource(R.string.message_payment_detail_to_all, paidBy)
+        } else {
+            stringResource(R.string.message_payment_detail, paidBy, paidTo)
         }
-    )
 
     companion object {
         fun sample() = PaymentUiModel(

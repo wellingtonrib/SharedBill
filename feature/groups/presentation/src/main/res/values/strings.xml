@@ -23,16 +23,20 @@
     </plurals>
     <string name="label_payment_detail">Payment Detail</string>
     <string name="label_payment_new">New payment</string>
+    <string name="label_payment_new_expense">New expense</string>
+    <string name="label_payment_new_settlement">New settlement</string>
     <string name="label_payment_description">Description</string>
     <string name="label_payment_value">Value</string>
     <string name="label_payment_paid_by">Paid by</string>
     <string name="label_payment_paid_to">Paid to</string>
+    <string name="label_payment_received_by">Payment to %1$s</string>
     <string name="label_payment_created_at">Created at</string>
     <string name="label_payment_created_by">Created by</string>
     <string name="label_joined">Joined</string>
     <string name="label_account">Account</string>
     <string name="label_unnamed">Unnamed</string>
     <string name="label_share_invite_code">Share invite code</string>
+    <string name="label_share_balance">Share balance</string>
     <string name="label_total_spent">Total spent %1$s</string>
     <string name="label_suggestion">Suggestions</string>
 
@@ -42,6 +46,7 @@
     <string name="message_no_expenses">No payments, add one\nClick on + New payment button below</string>
     <string name="message_settled_up">Settled up</string>
     <string name="message_payment_detail">Paid by %1$s to %2$s</string>
+    <string name="message_payment_detail_to_all">Paid by %1$s</string>
     <string name="message_paid_to_all">All</string>
     <string name="message_invite_code">Invite code %1$s</string>
     <string name="message_groups_empty">No groups, create or join one\nClick on + New Group button below</string>

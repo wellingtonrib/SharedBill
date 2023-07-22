@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.groups.presentation.models.PaymentType
 import br.com.jwar.groups.presentation.screens.payment.PaymentContract
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
@@ -26,7 +27,9 @@ fun PaymentForm(
         topBar = {
             FormTopBar(
                 onNavigateBack = { onNavigateBack() },
-                title = stringResource(id = R.string.label_payment_new),
+                title = if (params.paymentType == PaymentType.Expense)
+                    stringResource(id = R.string.label_payment_new_expense)
+                else stringResource(id = R.string.label_payment_new_settlement),
                 onSaveClick = { onSaveClick() }
             )
         }
@@ -35,15 +38,26 @@ fun PaymentForm(
             Column(
                 modifier = Modifier.paddingMedium()
             ) {
-                PaymentDescriptionField(params, onParamsChange)
-                VerticalSpacerMedium()
-                PaymentValueField(params, onParamsChange)
-                VerticalSpacerMedium()
-                PaymentDateField(params, onParamsChange)
-                VerticalSpacerMedium()
-                PaymentPaidByField(params, onParamsChange)
-                VerticalSpacerMedium()
-                PaymentPaidToField(params, onParamsChange)
+                when(params.paymentType) {
+                    PaymentType.Expense -> {
+                        PaymentDescriptionField(params, onParamsChange)
+                        VerticalSpacerMedium()
+                        PaymentValueField(params, onParamsChange)
+                        VerticalSpacerMedium()
+                        PaymentDateField(params, onParamsChange)
+                        VerticalSpacerMedium()
+                        PaymentPaidByField(params, onParamsChange)
+                        VerticalSpacerMedium()
+                        PaymentPaidToField(params, onParamsChange)
+                    }
+                    PaymentType.Settlement -> {
+                        PaymentValueField(params, onParamsChange)
+                        VerticalSpacerMedium()
+                        PaymentPaidByField(params, onParamsChange)
+                        VerticalSpacerMedium()
+                        PaymentPaidToField(params, onParamsChange)
+                    }
+                }
             }
         }
     }
@@ -54,7 +68,7 @@ fun PaymentForm(
 fun PreviewPaymentForm() {
     SharedBillTheme {
         PaymentForm(
-            PaymentContract.PaymentParams.sample(),
+            PaymentContract.PaymentParams.sample()
         )
     }
 }

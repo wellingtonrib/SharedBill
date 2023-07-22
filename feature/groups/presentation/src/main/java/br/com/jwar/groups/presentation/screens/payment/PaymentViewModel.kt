@@ -4,8 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.groups.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.groups.presentation.mappers.UserToGroupMemberUiModelMapper
+import br.com.jwar.groups.presentation.models.PaymentType
 import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.groups.presentation.navigation.GROUP_ID_ARG
+import br.com.jwar.groups.presentation.navigation.PAYMENT_TYPE_ARG
 import br.com.jwar.groups.presentation.screens.payment.PaymentContract.Effect
 import br.com.jwar.groups.presentation.screens.payment.PaymentContract.Event
 import br.com.jwar.groups.presentation.screens.payment.PaymentContract.State
@@ -30,8 +32,9 @@ class PaymentViewModel @Inject constructor(
 ): BaseViewModel<Event, State, Effect>() {
 
     private val groupId: String = checkNotNull(savedStateHandle[GROUP_ID_ARG])
+    private val paymentType = PaymentType.from(checkNotNull(savedStateHandle[PAYMENT_TYPE_ARG]))
 
-    init { onInit(groupId) }
+    init { onInit(groupId, paymentType) }
 
     override fun getInitialState(): State = State(isLoading = true)
 
@@ -42,10 +45,10 @@ class PaymentViewModel @Inject constructor(
         }
     }
 
-    private fun onInit(groupId: String) = viewModelScope.launch {
+    private fun onInit(groupId: String, paymentType: PaymentType) = viewModelScope.launch {
         setLoadingState()
         getGroupByIdUseCase(groupId, false)
-            .onSuccess { setPaymentParams(getPaymentParams(it)) }
+            .onSuccess { group -> setPaymentParams(getPaymentParams(group, paymentType)) }
             .onFailure { handlePaymentError(it) }
     }
 
@@ -71,13 +74,14 @@ class PaymentViewModel @Inject constructor(
             .onFailure { handlePaymentError(it) }
     }
 
-    private fun getPaymentParams(group: Group): PaymentContract.PaymentParams =
+    private fun getPaymentParams(group: Group, paymentType: PaymentType): PaymentContract.PaymentParams =
         groupToGroupUiModelMapper.mapFrom(group).let { groupUiModel ->
             val paidBy = group.findCurrentUser() ?: group.owner
             PaymentContract.PaymentParams(
                 group = groupUiModel,
                 paidBy = userToGroupMemberUiModelMapper.mapFrom(paidBy),
-                paidTo = groupUiModel.members
+                paidTo = groupUiModel.members,
+                paymentType = paymentType
             )
         }
 

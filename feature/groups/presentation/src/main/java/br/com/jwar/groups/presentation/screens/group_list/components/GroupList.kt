@@ -3,6 +3,7 @@ package br.com.jwar.groups.presentation.screens.group_list.components
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,6 +29,7 @@ import br.com.jwar.sharedbill.core.designsystem.components.EmptyContent
 import br.com.jwar.sharedbill.core.designsystem.components.Title
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
 import kotlinx.coroutines.launch
 
@@ -64,6 +67,10 @@ fun GroupList(
             topBar = {
                 MediumTopAppBar(
                     title = { Title(stringResource(R.string.label_my_groups)) },
+                    colors = TopAppBarDefaults.mediumTopAppBarColors(
+                        scrolledContainerColor = Color.Unspecified,
+                        containerColor = Color.Unspecified
+                    ),
                     scrollBehavior = topBarScrollBehavior
                 )
             },
@@ -77,24 +84,27 @@ fun GroupList(
             },
             floatingActionButtonPosition = FabPosition.End,
         ) { innerPadding ->
-            if (groups.isEmpty()) {
-                EmptyContent(
-                    image = painterResource(R.drawable.group_list_empty_img),
-                    message = stringResource(R.string.message_groups_empty)
-                )
-                return@Scaffold
-            }
-            LazyColumn(
-                state = groupListState,
-                modifier = Modifier.padding(horizontal = AppTheme.dimens.space_8),
-                contentPadding = innerPadding,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
-                content = {
-                    items(groups) { group ->
-                        GroupListItem(group, onGroupClick, onGroupDelete, onGroupLeave)
-                    }
+            Box (
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                if (groups.isEmpty()) {
+                    EmptyContent(
+                        image = painterResource(R.drawable.group_list_empty_img),
+                        message = stringResource(R.string.message_groups_empty)
+                    )
+                    return@Scaffold
                 }
-            )
+                LazyColumn(
+                    state = groupListState,
+                    modifier = Modifier.paddingMedium(),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
+                    content = {
+                        items(groups) { group ->
+                            GroupListItem(group, onGroupClick, onGroupDelete, onGroupLeave)
+                        }
+                    }
+                )
+            }
         }
     }
 }

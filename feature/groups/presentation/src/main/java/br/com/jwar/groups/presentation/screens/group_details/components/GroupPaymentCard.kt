@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -20,7 +19,6 @@ import br.com.jwar.sharedbill.core.designsystem.components.InfoDialog
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
 
@@ -30,30 +28,27 @@ fun GroupPaymentCard(
     group: GroupUiModel
 ) {
     val showingPaymentInfo = PaymentInfoDialog(payment)
-    Column {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { showingPaymentInfo.value = true },
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showingPaymentInfo.value = true },
 
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidthPaddingMedium()
-            ) {
-                Text(text = payment.createdAt)
-                HorizontalSpacerMedium()
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(text = payment.description)
-                    Text(
-                        text = payment.getMessage(group),
-                        style = AppTheme.typo.labelSmall
-                    )
-                }
-                HorizontalSpacerMedium()
-                Text(text = payment.value)
+        Row(
+            modifier = Modifier.fillMaxWidthPaddingMedium()
+        ) {
+            Text(text = payment.createdAt)
+            HorizontalSpacerMedium()
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = payment.description)
+                Text(
+                    text = payment.getMessage(group),
+                    style = AppTheme.typo.labelSmall
+                )
             }
+            HorizontalSpacerMedium()
+            Text(text = payment.value)
         }
-        VerticalSpacerMedium()
     }
 }
 

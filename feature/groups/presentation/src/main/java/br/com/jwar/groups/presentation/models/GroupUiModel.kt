@@ -36,6 +36,11 @@ data class GroupUiModel(
         if (value > BigDecimal.ZERO) AppTheme.colors.error
         else AppTheme.colors.primary
 
+    @Composable
+    fun getBalanceForShare() = title
+        .plus("\n\n" + balance.map { entry -> "${entry.key} ${getBalanceTextFromValue(entry.value)}" }.joinToString("\n"))
+        .plus("\n\nTotal $total")
+
     companion object {
         fun sample() = GroupUiModel(
             id = UUID.randomUUID().toString(),

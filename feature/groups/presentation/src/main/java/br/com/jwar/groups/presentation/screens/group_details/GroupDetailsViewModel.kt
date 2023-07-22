@@ -3,6 +3,7 @@ package br.com.jwar.groups.presentation.screens.group_details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.groups.presentation.mappers.GroupToGroupUiModelMapper
+import br.com.jwar.groups.presentation.models.PaymentType
 import br.com.jwar.groups.presentation.navigation.GROUP_ID_ARG
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.Effect
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.Event
@@ -32,7 +33,8 @@ class GroupDetailsViewModel @Inject constructor(
         when(event) {
             is Event.OnRefreshGroup -> onInit()
             is Event.OnEditGroup -> onEditGroup()
-            is Event.OnNewPayment -> onNewPayment(event.groupId)
+            is Event.OnNewPayment -> onNewPayment(event.paymentType)
+            is Event.OnShareBalance -> onShareBalance(event.balance)
         }
     }
 
@@ -46,6 +48,13 @@ class GroupDetailsViewModel @Inject constructor(
             }
     }
 
+    private fun onNewPayment(paymentType: PaymentType) =
+        sendEffect { Effect.NavigateToNewPayment(paymentType) }
+
+    private fun onShareBalance(balance: String) {
+        sendEffect { Effect.ShareBalance(balance) }
+    }
+
     private fun setLoadingState() = setState { State.Loading }
 
     private fun setErrorState(exception: Throwable) =
@@ -53,8 +62,6 @@ class GroupDetailsViewModel @Inject constructor(
 
     private fun setLoadedState(group: Group) =
         setState { State.Loaded(groupToGroupUiModelMapper.mapFrom(group)) }
-
-    private fun onNewPayment(groupId: String) = sendEffect { Effect.NavigateToNewPayment(groupId) }
 
     private fun onEditGroup() = sendEffect { Effect.NavigateToGroupEdit }
 }
