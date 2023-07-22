@@ -1,23 +1,16 @@
 package br.com.jwar.sharedbill.account.presentation.screens.account
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.account.presentation.screens.account.AccountContract.State
 import br.com.jwar.sharedbill.account.presentation.screens.account.AccountContract.State.*
-import br.com.jwar.sharedbill.account.presentation.screens.account.components.SignOutButton
+import br.com.jwar.sharedbill.account.presentation.screens.account.components.AccountForm
+import br.com.jwar.sharedbill.core.designsystem.components.ErrorContent
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
-import br.com.jwar.sharedbill.core.designsystem.components.UserCard
 import br.com.jwar.sharedbill.core.designsystem.model.UserUiModel
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
 
 @Composable
 fun AccountScreen(
@@ -26,27 +19,8 @@ fun AccountScreen(
 ) {
     when(state) {
         is Loading -> LoadingContent()
-        is Loaded -> UserInfo(state, onSignOutClick)
-        is Error -> {
-            Text(text = state.message)
-            SignOutButton(onSignOutClick)
-        }
-    }
-}
-
-@Composable
-private fun UserInfo(
-    state: Loaded,
-    onSignOutClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        UserCard(state.uiModel)
-        VerticalSpacerMedium()
-        SignOutButton(onSignOutClick)
+        is Loaded -> AccountForm(state = state, onSignOutClick = onSignOutClick)
+        is Error -> ErrorContent(message = state.message, onAction = { onSignOutClick() })
     }
 }
 
