@@ -4,6 +4,7 @@ import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.utility.extensions.toBigDecimalOrZero
 import br.com.jwar.sharedbill.core.utility.extensions.toCurrency
 import br.com.jwar.sharedbill.groups.domain.model.Group
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import javax.inject.Inject
 
 class GroupToGroupUiModelMapperImpl @Inject constructor(
@@ -23,7 +24,9 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         )
 
     private fun mapTotal(from: Group) =
-        from.payments.sumOf { it.value.toBigDecimalOrZero() }.toCurrency()
+        from.payments
+            .filter { it.paymentType == PaymentType.EXPENSE }
+            .sumOf { it.value.toBigDecimalOrZero() }.toCurrency()
 
     private fun mapPayments(from: Group) =
         from.payments.sortedByDescending { it.createdAt }.map { paymentToPaymentUiModelMapper.mapFrom(it) }

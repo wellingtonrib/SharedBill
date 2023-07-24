@@ -46,7 +46,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupUiModel
-import br.com.jwar.groups.presentation.models.PaymentType
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.core.designsystem.components.BackNavigationIcon
 import br.com.jwar.sharedbill.core.designsystem.components.EmptyContent
 import br.com.jwar.sharedbill.core.designsystem.components.Title
@@ -160,7 +160,7 @@ private fun GroupDetailsFloatingButtons(
     ) {
         if (actionButtonsVisible) {
             ExtendedFloatingActionButton(
-                onClick = { onNewPaymentClick(PaymentType.Expense) },
+                onClick = { onNewPaymentClick(PaymentType.EXPENSE) },
                 expanded = true,
                 icon = {
                     Icon(
@@ -172,7 +172,7 @@ private fun GroupDetailsFloatingButtons(
             )
             VerticalSpacerSmall()
             ExtendedFloatingActionButton(
-                onClick = { onNewPaymentClick(PaymentType.Settlement) },
+                onClick = { onNewPaymentClick(PaymentType.SETTLEMENT) },
                 expanded = true,
                 icon = {
                     Icon(
@@ -202,7 +202,7 @@ private fun GroupDetailsTopBar(
 ) {
     MediumTopAppBar(
         navigationIcon = { BackNavigationIcon(onNavigateBack) },
-        title = { Title(group.title) },
+        title = { Title(group.title.ifEmpty { stringResource(R.string.label_unnamed) }) },
         actions = {
             IconButton(onClick = onEditClick) {
                 Icon(Icons.Filled.Edit, stringResource(id = R.string.label_group_manage))

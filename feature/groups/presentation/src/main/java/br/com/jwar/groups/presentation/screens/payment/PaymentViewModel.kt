@@ -2,9 +2,7 @@ package br.com.jwar.groups.presentation.screens.payment
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import br.com.jwar.groups.presentation.mappers.GroupToGroupUiModelMapper
-import br.com.jwar.groups.presentation.mappers.UserToGroupMemberUiModelMapper
-import br.com.jwar.groups.presentation.models.PaymentType
+import br.com.jwar.groups.presentation.mappers.GroupToPaymentParamsMapper
 import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.groups.presentation.navigation.GROUP_ID_ARG
 import br.com.jwar.groups.presentation.navigation.PAYMENT_TYPE_ARG
@@ -14,12 +12,13 @@ import br.com.jwar.groups.presentation.screens.payment.PaymentContract.State
 import br.com.jwar.sharedbill.core.common.BaseViewModel
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.model.Payment
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.domain.usecases.CreatePaymentUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.SendPaymentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
@@ -27,12 +26,11 @@ class PaymentViewModel @Inject constructor(
     private val sendPaymentUseCase: SendPaymentUseCase,
     private val createPaymentUseCase: CreatePaymentUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
-    private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
-    private val userToGroupMemberUiModelMapper: UserToGroupMemberUiModelMapper
+    private val groupToPaymentParamsMapper: GroupToPaymentParamsMapper,
 ): BaseViewModel<Event, State, Effect>() {
 
     private val groupId: String = checkNotNull(savedStateHandle[GROUP_ID_ARG])
-    private val paymentType = PaymentType.from(checkNotNull(savedStateHandle[PAYMENT_TYPE_ARG]))
+    private val paymentType = PaymentType.valueOf(checkNotNull(savedStateHandle[PAYMENT_TYPE_ARG]))
 
     init { onInit(groupId, paymentType) }
 
@@ -55,13 +53,14 @@ class PaymentViewModel @Inject constructor(
     private fun onSavePayment() = viewModelScope.launch {
         setLoadingState()
         with(getCurrentPaymentParams()) {
-            createPaymentUseCase(
+            createPaymentUseCase.invoke(
                 description = description,
                 value = value,
                 date = date,
                 paidById = paidBy.uid,
                 paidToIds = paidTo.map { it.uid },
-                groupId = group.id
+                groupId = group.id,
+                paymentType = paymentType,
             ).onSuccess { onPaymentCreated(it) }
                 .onFailure { handlePaymentError(it) }
         }
@@ -75,15 +74,7 @@ class PaymentViewModel @Inject constructor(
     }
 
     private fun getPaymentParams(group: Group, paymentType: PaymentType): PaymentContract.PaymentParams =
-        groupToGroupUiModelMapper.mapFrom(group).let { groupUiModel ->
-            val paidBy = group.findCurrentUser() ?: group.owner
-            PaymentContract.PaymentParams(
-                group = groupUiModel,
-                paidBy = userToGroupMemberUiModelMapper.mapFrom(paidBy),
-                paidTo = groupUiModel.members,
-                paymentType = paymentType
-            )
-        }
+        groupToPaymentParamsMapper.mapFrom(group,paymentType)
 
     private fun setLoadingState() = setState { it.copy(isLoading = true) }
 

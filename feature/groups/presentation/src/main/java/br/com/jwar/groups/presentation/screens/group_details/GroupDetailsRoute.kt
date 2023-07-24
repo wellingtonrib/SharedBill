@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import br.com.jwar.groups.presentation.models.PaymentType
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.Effect
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.Event
 import br.com.jwar.sharedbill.core.utility.extensions.shareText

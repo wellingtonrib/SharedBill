@@ -3,7 +3,7 @@ package br.com.jwar.groups.presentation.screens.group_details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.groups.presentation.mappers.GroupToGroupUiModelMapper
-import br.com.jwar.groups.presentation.models.PaymentType
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.groups.presentation.navigation.GROUP_ID_ARG
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.Effect
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.Event

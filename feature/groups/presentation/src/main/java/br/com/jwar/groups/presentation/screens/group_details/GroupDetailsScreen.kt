@@ -5,7 +5,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupUiModel
-import br.com.jwar.groups.presentation.models.PaymentType
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.State
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.State.Error
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsContract.State.Loaded

@@ -2,22 +2,9 @@ package br.com.jwar.groups.presentation.models
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.presentation.R
 import java.util.UUID
-
-sealed class PaymentType {
-    object Expense: PaymentType()
-    object Settlement: PaymentType()
-
-    companion object {
-        fun from(string: String) =
-            when (string) {
-                Expense::class.java.simpleName -> Expense
-                Settlement::class.java.simpleName -> Settlement
-                else -> Expense
-            }
-    }
-}
 
 class PaymentUiModel(
     val id: String = "",
@@ -27,6 +14,7 @@ class PaymentUiModel(
     val paidTo: String = "",
     val createdAt: String = "",
     val createdBy: String = "",
+    val paymentType: PaymentType = PaymentType.EXPENSE,
 ) {
     @Composable
     fun getInfo() = StringBuilder().apply {
@@ -53,8 +41,9 @@ class PaymentUiModel(
             value = "100.00",
             paidBy = "Member One",
             paidTo = "Member One, Member Two",
+            createdAt = "00/00",
             createdBy = "Member One",
-            createdAt = "00/00"
+            paymentType = PaymentType.EXPENSE,
         )
     }
 }

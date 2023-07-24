@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.groups.presentation.models.PaymentType
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.groups.presentation.screens.payment.PaymentContract
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
@@ -27,7 +27,7 @@ fun PaymentForm(
         topBar = {
             FormTopBar(
                 onNavigateBack = { onNavigateBack() },
-                title = if (params.paymentType == PaymentType.Expense)
+                title = if (params.paymentType == PaymentType.EXPENSE)
                     stringResource(id = R.string.label_payment_new_expense)
                 else stringResource(id = R.string.label_payment_new_settlement),
                 onSaveClick = { onSaveClick() }
@@ -39,7 +39,7 @@ fun PaymentForm(
                 modifier = Modifier.paddingMedium()
             ) {
                 when(params.paymentType) {
-                    PaymentType.Expense -> {
+                    PaymentType.EXPENSE -> {
                         PaymentDescriptionField(params, onParamsChange)
                         VerticalSpacerMedium()
                         PaymentValueField(params, onParamsChange)
@@ -50,7 +50,7 @@ fun PaymentForm(
                         VerticalSpacerMedium()
                         PaymentPaidToField(params, onParamsChange)
                     }
-                    PaymentType.Settlement -> {
+                    PaymentType.SETTLEMENT -> {
                         PaymentValueField(params, onParamsChange)
                         VerticalSpacerMedium()
                         PaymentPaidByField(params, onParamsChange)

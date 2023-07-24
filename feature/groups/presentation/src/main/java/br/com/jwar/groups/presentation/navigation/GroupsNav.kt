@@ -4,7 +4,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import br.com.jwar.groups.presentation.models.PaymentType
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.groups.presentation.screens.group_details.GroupDetailsRoute
 import br.com.jwar.groups.presentation.screens.group_edit.GroupEditRoute
 import br.com.jwar.groups.presentation.screens.group_list.GROUP_LIST_ROUTE
@@ -69,9 +69,9 @@ fun NavGraphBuilder.groupsNav(
 private fun NavBackStackEntry.getGroupId() = arguments?.getString(GROUP_ID_ARG).orEmpty()
 
 private fun NavBackStackEntry.getPaymentType() =
-    PaymentType.from(arguments?.getString(PAYMENT_TYPE_ARG).orEmpty())
+    PaymentType.valueOf(arguments?.getString(PAYMENT_TYPE_ARG).orEmpty())
 
 private fun String.bindGroupId(groupId: String) = this.replace("{$GROUP_ID_ARG}", groupId)
 
 private fun String.bindPaymentType(paymentType: PaymentType) =
-    this.replace("{$PAYMENT_TYPE_ARG}", paymentType::class.java.simpleName.orEmpty())
+    this.replace("{$PAYMENT_TYPE_ARG}", paymentType.name)

@@ -18,16 +18,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
-import br.com.jwar.groups.presentation.models.PaymentType
 import br.com.jwar.groups.presentation.screens.payment.PaymentContract
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerSmall
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingSmall
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
@@ -35,14 +34,7 @@ fun PaymentPaidToField(
     params: PaymentContract.PaymentParams,
     onPaymentParamsChange: (PaymentContract.PaymentParams) -> Unit = {}
 ) {
-    val context = LocalContext.current
-    var selection by remember {
-        if (params.paymentType == PaymentType.Expense) {
-            mutableStateOf(params.group.members)
-        } else {
-            mutableStateOf(listOf(params.group.members.first()))
-        }
-    }
+    var selection by remember { mutableStateOf(params.paidTo) }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -54,7 +46,7 @@ fun PaymentPaidToField(
         }
         HorizontalSpacerMedium()
         LazyColumn {
-            if (params.paymentType == PaymentType.Expense) {
+            if (params.paymentType == PaymentType.EXPENSE) {
                 items(params.group.members) { member ->
                     CheckboxWitText(
                         member = member,
@@ -76,12 +68,7 @@ fun PaymentPaidToField(
                         isChecked = selection.contains(member),
                         onCheckedChange = { checked ->
                             selection = if (checked) listOf(member) else emptyList()
-                            onPaymentParamsChange(
-                                params.copy(
-                                    description = context.getString(R.string.label_payment_received_by, member.name),
-                                    paidTo = selection
-                                )
-                            )
+                            onPaymentParamsChange(params.copy(paidTo = selection))
                         }
                     )
                 }
@@ -99,11 +86,13 @@ fun CheckboxWitText(
     var checkedState by remember { mutableStateOf(isChecked) }
 
     Row(
-        modifier = Modifier.fillMaxWidth().clickable {
-            val newValue = !checkedState
-            checkedState = newValue
-            onCheckedChange(newValue)
-        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                val newValue = !checkedState
+                checkedState = newValue
+                onCheckedChange(newValue)
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
@@ -125,9 +114,12 @@ fun RadioButtonWitText(
     onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(
-        modifier = Modifier.paddingSmall().fillMaxWidth().clickable {
-            onCheckedChange(true)
-        },
+        modifier = Modifier
+            .paddingSmall()
+            .fillMaxWidth()
+            .clickable {
+                onCheckedChange(true)
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         RadioButton(
@@ -148,7 +140,7 @@ fun RadioButtonWitText(
 fun PreviewPaymentPaidToField() {
     SharedBillTheme {
         PaymentPaidToField(
-            PaymentContract.PaymentParams.sample().copy(paymentType = PaymentType.Settlement)
+            PaymentContract.PaymentParams.sample()
         )
     }
 }

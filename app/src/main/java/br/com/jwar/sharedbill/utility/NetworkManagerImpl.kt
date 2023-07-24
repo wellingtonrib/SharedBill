@@ -7,7 +7,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
-import br.com.jwar.sharedbill.core.utility.extensions.NetworkManager
+import br.com.jwar.sharedbill.core.utility.NetworkManager
 import javax.inject.Inject
 
 class NetworkManagerImpl @Inject constructor(

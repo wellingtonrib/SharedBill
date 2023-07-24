@@ -1,7 +1,7 @@
 package br.com.jwar.groups.presentation.screens.group_details
 
 import br.com.jwar.groups.presentation.models.GroupUiModel
-import br.com.jwar.groups.presentation.models.PaymentType
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.core.common.UiEffect
 import br.com.jwar.sharedbill.core.common.UiEvent
 import br.com.jwar.sharedbill.core.common.UiState

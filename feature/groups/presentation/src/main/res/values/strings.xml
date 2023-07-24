@@ -39,6 +39,7 @@
     <string name="label_share_balance">Share balance</string>
     <string name="label_total_spent">Total spent %1$s</string>
     <string name="label_suggestion">Suggestions</string>
+    <string name="label_settlement">Settlement</string>
 
     <string name="message_welcome">Welcome %1$s</string>
     <string name="message_owes">Owes %1$s</string>
@@ -94,7 +95,19 @@
         <item>🚙 Trip</item>
         <item>🎸 My band</item>
         <item>⚽ My team</item>
+        <item>🍻 Happy Hour</item>
         <item>💼 Coworkers</item>
+    </array>
+
+    <array name="samples_payment_description">
+        <item>️🧾 Bills</item>
+        <item>🛒 Groceries</item>
+        <item>️🍽 Restaurants</item>
+        <item>🔧 Services</item>
+        <item>🚙 Transport</item>
+        <item>🎲 Entertainment</item>
+        <item>🛏️ Accommodation</item>
+        <item>🧩 Misc</item>
     </array>
 
 </resources>

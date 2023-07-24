@@ -2,7 +2,9 @@ package br.com.jwar.sharedbill.di
 
 import android.app.Application
 import android.content.Context
-import br.com.jwar.sharedbill.core.utility.extensions.NetworkManager
+import br.com.jwar.sharedbill.core.utility.NetworkManager
+import br.com.jwar.sharedbill.core.utility.StringProvider
+import br.com.jwar.sharedbill.utility.AndroidStringProvider
 import br.com.jwar.sharedbill.utility.NetworkManagerImpl
 import dagger.Module
 import dagger.Provides
@@ -19,7 +21,12 @@ class AppModule {
     ): Context = app.applicationContext
 
     @Provides
-    fun provideNetworkProvider(
+    fun provideNetworkManager(
         context: Context
     ): NetworkManager = NetworkManagerImpl(context)
+
+    @Provides
+    fun provideStringProvider(
+        context: Context
+    ): StringProvider = AndroidStringProvider(context)
 }
