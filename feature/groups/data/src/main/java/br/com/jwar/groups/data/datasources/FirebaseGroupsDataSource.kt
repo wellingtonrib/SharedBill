@@ -2,7 +2,7 @@ package br.com.jwar.groups.data.datasources
 
 import br.com.jwar.sharedbill.account.domain.exceptions.UserException
 import br.com.jwar.sharedbill.account.domain.model.User
-import br.com.jwar.sharedbill.core.utility.extensions.NetworkManager
+import br.com.jwar.sharedbill.core.utility.NetworkManager
 import br.com.jwar.sharedbill.core.utility.extensions.orZero
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException.GroupNotFoundException

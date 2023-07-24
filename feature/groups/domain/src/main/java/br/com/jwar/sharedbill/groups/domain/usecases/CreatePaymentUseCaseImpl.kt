@@ -4,12 +4,14 @@ import br.com.jwar.sharedbill.core.utility.extensions.resultOf
 import br.com.jwar.sharedbill.core.utility.extensions.toBigDecimalOrZero
 import br.com.jwar.sharedbill.groups.domain.exceptions.PaymentException
 import br.com.jwar.sharedbill.groups.domain.model.Payment
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import java.math.BigDecimal
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 class CreatePaymentUseCaseImpl(
-    private val groupRepository: GroupRepository
+    private val groupRepository: GroupRepository,
 ) : CreatePaymentUseCase {
     override suspend fun invoke(
         description: String,
@@ -18,6 +20,7 @@ class CreatePaymentUseCaseImpl(
         paidById: String,
         paidToIds: List<String>,
         groupId: String,
+        paymentType: PaymentType,
     ): Result<Payment> = resultOf {
         if (description.isEmpty()) throw PaymentException.EmptyDescriptionException
         if (value.toBigDecimalOrZero() == BigDecimal.ZERO) throw PaymentException.InvalidValueException
@@ -40,7 +43,8 @@ class CreatePaymentUseCaseImpl(
             paidBy = paidBy,
             paidTo = paidTo,
             createdAt = date,
-            createdBy = createdBy
+            createdBy = createdBy,
+            paymentType = paymentType,
         )
         return Result.success(payment)
     }

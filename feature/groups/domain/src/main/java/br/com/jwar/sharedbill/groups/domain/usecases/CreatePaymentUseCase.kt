@@ -1,6 +1,7 @@
 package br.com.jwar.sharedbill.groups.domain.usecases
 
 import br.com.jwar.sharedbill.groups.domain.model.Payment
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import java.util.Date
 
 interface CreatePaymentUseCase {
@@ -10,6 +11,7 @@ interface CreatePaymentUseCase {
         date: Date,
         paidById: String,
         paidToIds: List<String>,
-        groupId: String
+        groupId: String,
+        paymentType: PaymentType
     ): Result<Payment>
 }
