@@ -41,7 +41,7 @@ fun GroupBalance(
         VerticalSpacerSmall()
         Text(
             text = stringResource(R.string.label_total_spent, group.total),
-            fontWeight = FontWeight.Bold
+            style = AppTheme.typo.titleMedium
         )
         VerticalSpacerLarge()
         Button(onClick = { onShareBalance(balanceForShare) }) {

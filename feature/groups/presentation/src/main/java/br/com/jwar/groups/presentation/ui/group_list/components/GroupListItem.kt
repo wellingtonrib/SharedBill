@@ -1,10 +1,16 @@
 package br.com.jwar.groups.presentation.ui.group_list.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,6 +28,8 @@ import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerSmall
 import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
+import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
+import br.com.jwar.sharedbill.core.designsystem.theme.paddingSmall
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
@@ -55,22 +63,17 @@ fun GroupListItem(
             onClick = { onGroupClick(group.id) },
         ) {
             Column(
-                modifier = Modifier.fillMaxWidthPaddingMedium()
+                modifier = Modifier.paddingMedium()
             ) {
                 Text(
-                    text = group.title.ifEmpty { stringResource(id = R.string.label_unnamed) },
-                    style = AppTheme.typo.titleLarge
+                    text = group.title.ifEmpty { stringResource(R.string.label_unnamed) },
+                    style = AppTheme.typo.titleMedium
                 )
                 VerticalSpacerSmall()
                 UserAvatarStack(
                     users = group.members.map { it.toUserUiModel() },
-                    avatarSize = 42.dp,
-                    overlap = 12.dp
-                )
-                VerticalSpacerSmall()
-                Text(
-                    text = pluralStringResource(R.plurals.label_group_members_count, group.members.size, group.members.size),
-                    style = AppTheme.typo.titleSmall
+                    avatarSize = 32.dp,
+                    overlap = 10.dp
                 )
             }
         }

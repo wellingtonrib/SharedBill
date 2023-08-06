@@ -44,7 +44,7 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         from.balance.mapNotNull {
             val member = from.findMemberById(it.key)
             if (member != null) {
-                member.firstName to it.value.toBigDecimalOrZero()
+                userToGroupMemberUiModelMapper.mapFrom(member) to it.value.toBigDecimalOrZero()
             } else null
         }.associateBy({it.first}, {it.second})
 }

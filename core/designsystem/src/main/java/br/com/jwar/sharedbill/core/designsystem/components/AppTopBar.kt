@@ -2,11 +2,13 @@ package br.com.jwar.sharedbill.core.designsystem.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.core.designsystem.R
@@ -20,9 +22,12 @@ fun AppTopBar(
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     TopAppBar(
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = Color.Unspecified,
+        ),
         navigationIcon = navigationIcon,
-        actions = actions,
-        title = { Title(title) }
+        title = { Title(title) },
+        actions = actions
     )
 }
 

@@ -11,6 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.sharedbill.account.presentation.R
+import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
+import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 
 @Composable
@@ -24,7 +29,7 @@ fun AccountAction(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { onClick() },
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
@@ -32,7 +37,28 @@ fun AccountAction(
                 imageVector = imageVector,
                 contentDescription = null
             )
-            Text(text = title)
+            Text(
+                modifier =  Modifier.weight(1f),
+                text = title,
+                style = AppTheme.typo.titleMedium
+            )
+            Icon(
+                modifier = Modifier.paddingMedium(),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_chevron_right),
+                contentDescription = null
+            )
         }
+    }
+}
+
+
+@Composable
+@Preview
+fun PreviewAccountAction() {
+    SharedBillTheme {
+        AccountAction(
+            imageVector = ImageVector.vectorResource(androidx.core.R.drawable.ic_call_answer),
+            title = "Call",
+        )
     }
 }

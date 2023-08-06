@@ -10,7 +10,7 @@ import br.com.jwar.groups.presentation.ui.group_details.GroupDetailsContract.Sta
 import br.com.jwar.groups.presentation.ui.group_details.GroupDetailsContract.State.Error
 import br.com.jwar.groups.presentation.ui.group_details.GroupDetailsContract.State.Loaded
 import br.com.jwar.groups.presentation.ui.group_details.GroupDetailsContract.State.Loading
-import br.com.jwar.groups.presentation.ui.group_details.components.GroupsDetails
+import br.com.jwar.groups.presentation.ui.group_details.components.GroupsDetailsContent
 import br.com.jwar.sharedbill.core.designsystem.components.ErrorContent
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
@@ -26,7 +26,7 @@ fun GroupDetailsScreen(
 ) {
     when(state) {
         is Loading -> LoadingContent()
-        is Loaded -> GroupsDetails(
+        is Loaded -> GroupsDetailsContent(
             group = state.uiModel,
             onNewPaymentClick = { onNewPaymentClick(it) },
             onEditClick = onEditClick,
