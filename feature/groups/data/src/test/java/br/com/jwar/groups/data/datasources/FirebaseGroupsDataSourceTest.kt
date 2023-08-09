@@ -5,6 +5,7 @@ import br.com.jwar.groups.data.datasources.FirebaseGroupsDataSource.Companion.GR
 import br.com.jwar.groups.data.datasources.FirebaseGroupsDataSource.Companion.GROUP_ID_FIELD
 import br.com.jwar.groups.data.datasources.FirebaseGroupsDataSource.Companion.PAYMENT_GROUP_ID_FIELD
 import br.com.jwar.groups.data.datasources.FirebaseGroupsDataSource.Companion.UNPROCESSED_PAYMENTS_REF
+import br.com.jwar.sharedbill.core.utility.NetworkManager
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.model.Payment
@@ -37,10 +38,12 @@ internal class FirebaseGroupsDataSourceTest {
 
     private val firebaseAuth: FirebaseAuth = mockk()
     private val firestore: FirebaseFirestore = mockk()
+    private val networkManager: NetworkManager = mockk()
 
     private val firebaseGroupsDataSource = FirebaseGroupsDataSource(
         firebaseAuth = firebaseAuth,
         firestore = firestore,
+        networkManager = networkManager,
         ioDispatcher = coroutineRule.dispatcher
     )
 

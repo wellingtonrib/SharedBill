@@ -2,14 +2,15 @@ package br.com.jwar.sharedbill.core.designsystem.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 
@@ -20,16 +21,13 @@ fun AppTopBar(
     navigationIcon: @Composable () -> Unit = { BackNavigationIcon(navigationBack) },
     actions: @Composable RowScope.() -> Unit = {},
 ) {
-    CenterAlignedTopAppBar(
+    TopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = AppTheme.colors.primary,
-            titleContentColor = AppTheme.colors.onPrimary,
-            actionIconContentColor = AppTheme.colors.onPrimary,
-            navigationIconContentColor = AppTheme.colors.onPrimary,
+            containerColor = Color.Unspecified,
         ),
         navigationIcon = navigationIcon,
-        actions = actions,
-        title = { Text(text = title) }
+        title = { Title(title) },
+        actions = actions
     )
 }
 

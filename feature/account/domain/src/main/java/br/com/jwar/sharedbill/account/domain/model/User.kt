@@ -14,7 +14,7 @@ data class User(
     companion object {
         fun generateCode(groupId: String): String {
             val characters = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-            return characters.shuffled().takeLast(4).joinToString("") + groupId.takeLast(2)
+            return characters.shuffled().takeLast(4).joinToString("") + groupId.takeLast(2).uppercase()
         }
     }
 

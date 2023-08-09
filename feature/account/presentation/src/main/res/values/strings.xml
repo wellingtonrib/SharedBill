@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_support_mail">wellington.rib@gmail.com</string>
+    <string name="app_support_subject">Shared Bill - Support</string>
+    <string name="app_terms_link">https://wellingtonribeiro.notion.site/Shared-Bills-Terms-of-Use-0eb3a1a4930242c1bd3d90446a4b4f14?pvs=4</string>
+    <string name="app_privacy_link">https://wellingtonribeiro.notion.site/Shared-Bills-Privacy-Policy-330d883162064eec99897719236f6f33?pvs=4</string>
+
     <string name="label_logout">Logout</string>
     <string name="label_sign_in">Sign In</string>
+    <string name="label_sign_in_with_google">Sign in with Google</string>
+    <string name="label_support">Support and Feedbacks</string>
+    <string name="label_about">About</string>
+    <string name="label_rate">Rate Us</string>
+    <string name="label_terms">Terms of Use</string>
+    <string name="label_privacy">Privacy Policy</string>
+
+    <string name="message_privacy_police">By signing in you agree with\nPrivacy Policy</string>
+
+    <string name="description_app_logo">App logo</string>
+
+    <string name="onboarding_title_1">Create personalized groups</string>
+    <string name="onboarding_message_1">to organize each kind of expense effortlessly</string>
+    <string name="onboarding_title_2">Register expenses and payments with ease</string>
+    <string name="onboarding_message_2">and let us handle the calculations for you</string>
+    <string name="onboarding_title_3">Track who owes who</string>
+    <string name="onboarding_message_3">and settle up with just a few taps</string>
+
+    <string name="message_about">
+        Welcome to Shared Bill\n\n
+        Your ultimate solution for simplifying group expenses, splitting bills, and settling debts effortlessly. Our app is designed to streamline the process of managing shared expenses among friends, family, roommates, or colleagues, making financial collaborations hassle-free and transparent.
+    </string>
 </resources>

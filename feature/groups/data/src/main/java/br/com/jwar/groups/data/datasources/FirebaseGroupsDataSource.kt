@@ -2,7 +2,9 @@ package br.com.jwar.groups.data.datasources
 
 import br.com.jwar.sharedbill.account.domain.exceptions.UserException
 import br.com.jwar.sharedbill.account.domain.model.User
+import br.com.jwar.sharedbill.core.utility.NetworkManager
 import br.com.jwar.sharedbill.core.utility.extensions.orZero
+import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException.GroupNotFoundException
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.model.Payment
@@ -13,8 +15,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.snapshots
-import java.math.RoundingMode
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -22,12 +22,17 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.math.RoundingMode
+import javax.inject.Inject
 
 class FirebaseGroupsDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val networkManager: NetworkManager,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): GroupsDataSource {
+
+
 
     companion object {
         const val GROUPS_REF = "groups"
@@ -58,7 +63,7 @@ class FirebaseGroupsDataSource @Inject constructor(
         withContext(ioDispatcher) {
             getUserGroupsQuery()
                 .whereEqualTo(GROUP_ID_FIELD, groupId)
-                .get(if (refresh) Source.SERVER else Source.CACHE)
+                .get(if (refresh && networkManager.isConnected()) Source.SERVER else Source.CACHE)
                 .await()
                 .documents
                 .firstOrNull()
@@ -107,16 +112,20 @@ class FirebaseGroupsDataSource @Inject constructor(
             ))
         }
 
-    override suspend fun joinGroup(groupId: String, invitedUser: User, joinedUser: User): Unit =
+    override suspend fun joinGroup(groupId: String, inviteCode: String, joinedUser: User): Unit =
         withContext(ioDispatcher) {
             val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
+            val groupSnapshot = groupDoc.get().await()
+            val membersList = groupSnapshot?.toObject(Group::class.java)?.members?.toMutableList()
+            val memberIndex = membersList?.indexOfFirst { it.inviteCode == inviteCode }
+            if (memberIndex == null || memberIndex == -1) throw GroupException.InvalidInviteCodeException
+
+            membersList[memberIndex] = joinedUser
+
             groupDoc.update(mapOf(
-                GROUP_MEMBERS_FIELD to FieldValue.arrayRemove(invitedUser),
-                GROUP_INVITES_FIELD to FieldValue.arrayRemove(invitedUser.inviteCode),
-            ))
-            groupDoc.update(mapOf(
-                GROUP_MEMBERS_FIELD to FieldValue.arrayUnion(joinedUser),
-                GROUP_FIREBASE_MEMBERS_IDS_FIELD to FieldValue.arrayUnion(joinedUser.firebaseUserId)
+                GROUP_MEMBERS_FIELD to membersList,
+                GROUP_FIREBASE_MEMBERS_IDS_FIELD to FieldValue.arrayUnion(joinedUser.firebaseUserId),
+                GROUP_INVITES_FIELD to FieldValue.arrayRemove(inviteCode)
             ))
         }
 

@@ -1,5 +1,7 @@
 package br.com.jwar.sharedbill.core.designsystem.components
 
+import android.text.Spannable
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,9 +14,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
+import androidx.core.text.HtmlCompat
+import androidx.core.text.buildSpannedString
 import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
@@ -23,7 +28,7 @@ import br.com.jwar.sharedbill.core.designsystem.theme.sizeMedium
 
 @Composable
 fun InfoDialog(
-    image: Int? = R.drawable.ic_baseline_info_24,
+    @DrawableRes image: Int? = R.drawable.ic_baseline_info_24,
     title: String,
     message: String,
     action: String = stringResource(id = R.string.label_ok),

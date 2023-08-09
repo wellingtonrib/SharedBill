@@ -1,5 +1,5 @@
 [versions]
-accompanist                = "0.31.0-alpha"
+accompanist                = "0.31.5-beta"
 androidComposeBom          = "2023.04.01"
 androidComposeHilt         = "1.0.0"
 androidCoreKtx             = "1.9.0"
@@ -10,7 +10,7 @@ androidGradlePlugin        = "7.3.1"
 androidLifecycle           = "2.6.0-alpha02"
 coilCompose                = "2.4.0"
 compileSdk                 = "33"
-composeCompiler            = "1.4.3"
+composeCompiler            = "1.4.4"
 dependencyAnalysis         = "1.19.0"
 firebaseBoM                = "31.0.2"
 googleServicesPlugin       = "4.3.14"
@@ -29,6 +29,7 @@ accompanist-navigation-material         = { module = "com.google.accompanist:acc
 accompanist-swiperefresh                = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist"}
 android-gradle-plugin                   = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
 androidx-compose-bom                    = { group = "androidx.compose", name = "compose-bom", version.ref = "androidComposeBom" }
+androidx-compose-foundation             = { module = "androidx.compose.foundation:foundation" }
 androidx-compose-material               = { module = "androidx.compose.material:material" }
 androidx-compose-material3              = { module = "androidx.compose.material3:material3" }
 androidx-compose-ui                     = { module = "androidx.compose.ui:ui" }
@@ -60,7 +61,7 @@ mockk                                   = { module = "io.mockk:mockk", version.r
 
 [bundles]
 androidTest                             = ["androidx-test-ext-junit", "androidx-test-espresso-core", "androidx-compose-ui-test-junit4"]
-compose                                 = ["accompanist-navigation-material", "accompanist-navigation-animation", "accompanist-swiperefresh", "androidx-compose-ui", "androidx-compose-ui-tooling-preview", "androidx-compose-material", "androidx-compose-material3", "androidx-navigation-compose", "androidx-hilt-navigation-compose", "coil-compose"]
+compose                                 = ["androidx-compose-foundation","accompanist-navigation-material", "accompanist-navigation-animation", "accompanist-swiperefresh", "androidx-compose-ui", "androidx-compose-ui-tooling-preview", "androidx-compose-material", "androidx-compose-material3", "androidx-navigation-compose", "androidx-hilt-navigation-compose", "coil-compose"]
 debug                                   = ["androidx-compose-ui-tooling", "androidx-compose-ui-test-manifest"]
 firebase                                = ["firebase-auth", "firebase-firestore"]
 test                                    = ["junit", "kotlinx-coroutines-test", "kotlin-test", "androidx-core-testing", "mockk"]

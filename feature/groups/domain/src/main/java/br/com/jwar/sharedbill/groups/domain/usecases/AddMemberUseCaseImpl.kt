@@ -1,8 +1,7 @@
 package br.com.jwar.sharedbill.groups.domain.usecases
 
-import br.com.jwar.sharedbill.core.utility.extensions.resultOf
-import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.account.domain.model.User
+import br.com.jwar.sharedbill.core.utility.extensions.resultOf
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import java.util.UUID
 import javax.inject.Inject
@@ -11,7 +10,6 @@ class AddMemberUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository
 ): AddMemberUseCase {
     override suspend fun invoke(userName: String, groupId: String) = resultOf {
-        if (userName.split(" ").count() == 1) throw GroupException.InvalidUserNameException
         val userId = UUID.randomUUID().toString()
         groupRepository.addMember(
             user = User(

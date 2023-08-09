@@ -15,6 +15,7 @@ class PaymentToPaymentUiModelMapperImpl @Inject constructor(): PaymentToPaymentU
             paidBy = from.paidBy.firstName,
             paidTo = from.paidTo.joinToString(", ") { it.firstName },
             createdAt = from.createdAt.format(DATE_FORMAT_SMALL),
-            createdBy = from.createdBy.firstName
+            createdBy = from.createdBy.firstName,
+            paymentType = from.paymentType,
         )
 }

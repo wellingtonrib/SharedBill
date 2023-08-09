@@ -3,6 +3,7 @@ package br.com.jwar.groups.data.di
 import br.com.jwar.groups.data.datasources.FirebaseGroupsDataSource
 import br.com.jwar.groups.data.datasources.GroupsDataSource
 import br.com.jwar.groups.data.repositories.DefaultGroupRepository
+import br.com.jwar.sharedbill.core.utility.NetworkManager
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,9 +22,11 @@ class DataModule {
     fun provideGroupsDataSource(
         firebaseAuth: FirebaseAuth,
         firestore: FirebaseFirestore,
+        networkManager: NetworkManager,
     ): GroupsDataSource = FirebaseGroupsDataSource(
         firebaseAuth = firebaseAuth,
-        firestore = firestore
+        firestore = firestore,
+        networkManager = networkManager,
     )
 
     @Provides

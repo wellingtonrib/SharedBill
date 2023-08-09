@@ -73,7 +73,7 @@ class DomainModule {
     @Provides
     @Singleton
     fun providesCreatePaymentUseCase(
-        groupRepository: GroupRepository
+        groupRepository: GroupRepository,
     ): CreatePaymentUseCase = CreatePaymentUseCaseImpl(groupRepository)
 
     @Provides

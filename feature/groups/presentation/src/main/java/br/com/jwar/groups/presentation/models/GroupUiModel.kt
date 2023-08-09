@@ -3,7 +3,6 @@ package br.com.jwar.groups.presentation.models
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import br.com.jwar.sharedbill.core.utility.extensions.toCurrency
-import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.groups.presentation.R
 import java.math.BigDecimal
 import java.util.*
@@ -14,7 +13,7 @@ data class GroupUiModel(
     val membersNames: String = "",
     val members: List<GroupMemberUiModel> = emptyList(),
     val payments: List<PaymentUiModel> = emptyList(),
-    val balance: Map<String, BigDecimal> = mapOf(),
+    val balance: Map<GroupMemberUiModel, BigDecimal> = mapOf(),
     val total: String = "",
     val isCurrentUserOwner: Boolean = false
 ) {
@@ -32,9 +31,9 @@ data class GroupUiModel(
     }
 
     @Composable
-    fun getBalanceColorFromValue(value: BigDecimal) =
-        if (value > BigDecimal.ZERO) AppTheme.colors.error
-        else AppTheme.colors.primary
+    fun getBalanceForShare() = title
+        .plus("\n\n" + balance.map { entry -> "${entry.key.name} ${getBalanceTextFromValue(entry.value)}" }.joinToString("\n"))
+        .plus("\n\nTotal $total")
 
     companion object {
         fun sample() = GroupUiModel(
@@ -52,9 +51,9 @@ data class GroupUiModel(
                 PaymentUiModel.sample(),
             ),
             balance = mapOf(
-                "Member One" to BigDecimal("100"),
-                "Member Two" to BigDecimal("-100"),
-                "Member Three" to BigDecimal.ZERO,
+                GroupMemberUiModel() to BigDecimal("100"),
+                GroupMemberUiModel() to BigDecimal("-100"),
+                GroupMemberUiModel() to BigDecimal.ZERO,
             ),
             total = "$300"
         )

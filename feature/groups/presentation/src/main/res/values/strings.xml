@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="label_group_balance">Balance</string>
+    <string name="label_group_payments">Payments</string>
     <string name="label_group_details">Group Details</string>
     <string name="label_group_title">Group Title</string>
     <string name="label_group_manage">Manage</string>
@@ -22,16 +23,23 @@
     </plurals>
     <string name="label_payment_detail">Payment Detail</string>
     <string name="label_payment_new">New payment</string>
+    <string name="label_payment_new_expense">New expense</string>
+    <string name="label_payment_new_settlement">New settlement</string>
     <string name="label_payment_description">Description</string>
     <string name="label_payment_value">Value</string>
     <string name="label_payment_paid_by">Paid by</string>
     <string name="label_payment_paid_to">Paid to</string>
+    <string name="label_payment_received_by">Payment to %1$s</string>
     <string name="label_payment_created_at">Created at</string>
     <string name="label_payment_created_by">Created by</string>
     <string name="label_joined">Joined</string>
     <string name="label_account">Account</string>
     <string name="label_unnamed">Unnamed</string>
     <string name="label_share_invite_code">Share invite code</string>
+    <string name="label_share_balance">Share balance</string>
+    <string name="label_total_spent">Total spent %1$s</string>
+    <string name="label_suggestion">Suggestions</string>
+    <string name="label_settlement">🤝 Settlement</string>
 
     <string name="message_welcome">Welcome %1$s</string>
     <string name="message_owes">Owes %1$s</string>
@@ -39,8 +47,9 @@
     <string name="message_no_expenses">No payments, add one\nClick on + New payment button below</string>
     <string name="message_settled_up">Settled up</string>
     <string name="message_payment_detail">Paid by %1$s to %2$s</string>
+    <string name="message_payment_detail_to_all">Paid by %1$s</string>
     <string name="message_paid_to_all">All</string>
-    <string name="message_invite_code">Invite code %1$s</string>
+    <string name="message_invite_code">Invite code: %1$s</string>
     <string name="message_groups_empty">No groups, create or join one\nClick on + New Group button below</string>
     <string name="message_payment_description">Description %1$s</string>
     <string name="message_payment_value">Value %1$s</string>
@@ -53,9 +62,9 @@
     <string name="message_confirm_group_delete">Are you sure about deleting this group?</string>
     <string name="message_share_invite_code">Use this code to join us: %1$s</string>
 
-    <string name="placeholder_user_name">Enter user name</string>
-    <string name="placeholder_group_title">Ex. Trip 🚙</string>
-    <string name="placeholder_add_member_name">Ex. Alex</string>
+    <string name="placeholder_user_name">Enter the first and last name</string>
+    <string name="placeholder_group_title">Ex. 🚙 Trip</string>
+    <string name="placeholder_add_member_name">Ex. Walter White</string>
     <string name="placeholder_payment_description">Ex. Gas</string>
     <string name="placeholder_payment_paid_by">Select a payer</string>
     <string name="placeholder_payment_paid_to">Select related members</string>
@@ -79,5 +88,26 @@
     <string name="description_back">Back action</string>
     <string name="description_close">Close action</string>
     <string name="description_user_image">User image</string>
+
+    <array name="samples_group_title">
+        <item>🏠 My house</item>
+        <item>️❤️ Me&amp;You</item>
+        <item>🚙 Trip</item>
+        <item>🎸 My band</item>
+        <item>⚽ My team</item>
+        <item>🍻 Happy Hour</item>
+        <item>💼 Coworkers</item>
+    </array>
+
+    <array name="samples_payment_description">
+        <item>️🧾 Bills</item>
+        <item>🛒 Groceries</item>
+        <item>️🍽 Restaurants</item>
+        <item>🔧 Services</item>
+        <item>🚙 Transport</item>
+        <item>🎲 Entertainment</item>
+        <item>🛏️ Accommodation</item>
+        <item>🧩 Misc</item>
+    </array>
 
 </resources>

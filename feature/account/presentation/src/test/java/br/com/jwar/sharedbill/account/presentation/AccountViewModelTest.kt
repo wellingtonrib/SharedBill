@@ -5,8 +5,8 @@ import br.com.jwar.sharedbill.account.domain.exceptions.UserException
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.account.domain.usecases.*
 import br.com.jwar.sharedbill.account.presentation.mappers.UserToUserUiModelMapper
-import br.com.jwar.sharedbill.account.presentation.screens.account.AccountContract
-import br.com.jwar.sharedbill.account.presentation.screens.account.AccountViewModel
+import br.com.jwar.sharedbill.account.presentation.ui.account.AccountContract
+import br.com.jwar.sharedbill.account.presentation.ui.account.AccountViewModel
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
 import br.com.jwar.sharedbill.testing.Fakes
 import io.mockk.*
@@ -85,7 +85,7 @@ internal class AccountViewModelTest {
         //GIVEN
         coEvery { signOutUseCase() } returns mockk(relaxed = true)
         //WHEN
-        viewModel.emitEvent { AccountContract.Event.OnSignOut }
+        viewModel.emitEvent { AccountContract.Event.OnSignOutClick }
         //THEN
         coVerify { signOutUseCase() }
     }

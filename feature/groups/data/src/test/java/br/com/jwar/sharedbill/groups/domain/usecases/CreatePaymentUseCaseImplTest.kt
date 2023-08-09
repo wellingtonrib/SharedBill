@@ -3,6 +3,7 @@ package br.com.jwar.sharedbill.groups.domain.usecases
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.model.Payment
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
 import io.mockk.coEvery
@@ -43,7 +44,8 @@ class CreatePaymentUseCaseImplTest {
             date = date,
             paidById = paidById,
             paidToIds = paidToIds,
-            groupId = groupId
+            groupId = groupId,
+            paymentType = PaymentType.EXPENSE,
         )
 
         val expectedPayment = Payment(

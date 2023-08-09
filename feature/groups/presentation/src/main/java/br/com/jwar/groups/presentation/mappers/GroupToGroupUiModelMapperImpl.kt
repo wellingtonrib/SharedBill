@@ -4,6 +4,7 @@ import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.utility.extensions.toBigDecimalOrZero
 import br.com.jwar.sharedbill.core.utility.extensions.toCurrency
 import br.com.jwar.sharedbill.groups.domain.model.Group
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import javax.inject.Inject
 
 class GroupToGroupUiModelMapperImpl @Inject constructor(
@@ -23,10 +24,12 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         )
 
     private fun mapTotal(from: Group) =
-        from.payments.sumOf { it.value.toBigDecimalOrZero() }.toCurrency()
+        from.payments
+            .filter { it.paymentType == PaymentType.EXPENSE }
+            .sumOf { it.value.toBigDecimalOrZero() }.toCurrency()
 
     private fun mapPayments(from: Group) =
-        from.payments.map { paymentToPaymentUiModelMapper.mapFrom(it) }
+        from.payments.sortedByDescending { it.createdAt }.map { paymentToPaymentUiModelMapper.mapFrom(it) }
 
     private fun mapMembers(from: Group) =
         from.members.map { userToGroupMemberUiModelMapper.mapFrom(it) }
@@ -41,7 +44,7 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         from.balance.mapNotNull {
             val member = from.findMemberById(it.key)
             if (member != null) {
-                member.firstName to it.value.toBigDecimalOrZero()
+                userToGroupMemberUiModelMapper.mapFrom(member) to it.value.toBigDecimalOrZero()
             } else null
         }.associateBy({it.first}, {it.second})
 }

@@ -2,6 +2,7 @@ package br.com.jwar.sharedbill.core.designsystem.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import br.com.jwar.sharedbill.core.designsystem.R
@@ -27,51 +29,38 @@ fun InputDialog(
     placeholder: String = "",
     action: String = stringResource(id = R.string.label_save),
     onDismiss: () -> Unit,
-    onAction: (string: String) -> Unit
+    minLength: Int = 1,
+    minWords: Int = 1,
+    onAction: (string: String) -> Unit,
 ) {
     Dialog(
         onDismissRequest = { onDismiss() },
     ) {
-        InputDialogContent(
-            label = label,
-            placeholder = placeholder,
-            action = action
-        ) {
-            onAction(it)
-        }
-    }
-}
+        var input by remember { mutableStateOf("") }
 
-@Composable
-private fun InputDialogContent(
-    label: String,
-    placeholder: String,
-    action: String,
-    onAction: (input: String) -> Unit
-) {
-    var input by remember { mutableStateOf("") }
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-    ) {
-        Column(
-            modifier = Modifier.paddingMedium()
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
         ) {
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.medium,
-                value = input,
-                label = { Text(text = label) },
-                placeholder = { Text(text = placeholder) },
-                onValueChange = { input = it }
-            )
-            VerticalSpacerSmall()
-            Button(
-                onClick = { onAction(input) },
-                enabled = input.isNotBlank()
+            Column(
+                modifier = Modifier.paddingMedium()
             ) {
-                Text(text = action)
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium,
+                    value = input,
+                    label = { Text(text = label) },
+                    placeholder = { Text(text = placeholder) },
+                    onValueChange = { input = it },
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words)
+                )
+                VerticalSpacerSmall()
+                Button(
+                    onClick = { onAction(input.trim()) },
+                    enabled = input.length > minLength && input.trim().split("\\s+".toRegex()).size >= minWords
+                ) {
+                    Text(text = action)
+                }
             }
         }
     }
@@ -81,12 +70,12 @@ private fun InputDialogContent(
 @Composable
 fun PreviewInputDialogContent() {
     SharedBillTheme {
-        InputDialogContent(
+        InputDialog(
             label = "Label",
             placeholder = "Placeholder",
-            action = "Action"
-        ) {
-
-        }
+            action = "Action",
+            onDismiss = {},
+            onAction = {},
+        )
     }
 }

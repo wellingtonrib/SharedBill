@@ -21,6 +21,10 @@ class JoinGroupUseCaseImpl @Inject constructor(
             photoUrl = currentUser.photoUrl.toString(),
             email = currentUser.email
         )
-        groupRepository.joinGroup(group.id, invitedUser, joinedUser); group.id
+        val joinResult = resultOf { groupRepository.joinGroup(group.id, inviteCode, joinedUser) }
+        when {
+            joinResult.isSuccess -> group.id
+            else -> throw GroupException.GroupJoinException
+        }
     }
 }

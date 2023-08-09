@@ -30,7 +30,7 @@ fun SharedBillTheme(
 
     val configuration = LocalConfiguration.current
     val dimens = if (configuration.screenWidthDp <= 360) SmallDimens else DefaultDimens
-    val typography = if (configuration.screenWidthDp <= 360) SmallTypography else DefaultTypography
+    val typography = DefaultTypography
 
     val view = LocalView.current
     if (!view.isInEditMode) {

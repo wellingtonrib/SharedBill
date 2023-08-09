@@ -1,19 +1,17 @@
 package br.com.jwar.sharedbill.groups.domain.usecases
 
-import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
+import java.util.UUID
+import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import java.util.UUID
-import kotlin.test.assertEquals
-import kotlin.test.assertIs
 
 internal class AddMemberUseCaseImplTest {
 
@@ -42,16 +40,5 @@ internal class AddMemberUseCaseImplTest {
 
         assert(result.isSuccess)
         assertEquals(userId, result.getOrNull())
-    }
-
-    @Test
-    fun `invoke should throw InvalidUserNameException if username has only one part`() = runTest {
-        val userName = "John"
-        val groupId = "1"
-
-        val result = addMemberUseCase.invoke(userName, groupId)
-
-        assert(result.isFailure)
-        assertIs<GroupException.InvalidUserNameException>(result.exceptionOrNull())
     }
 }

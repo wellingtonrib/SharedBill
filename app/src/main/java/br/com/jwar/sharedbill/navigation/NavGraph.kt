@@ -7,7 +7,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import br.com.jwar.groups.presentation.navigation.groupsNav
-import br.com.jwar.groups.presentation.screens.group_list.GROUP_LIST_ROUTE
+import br.com.jwar.groups.presentation.ui.group_list.GROUP_LIST_ROUTE
 import br.com.jwar.sharedbill.account.presentation.navigation.ACCOUNT_ROUTE
 import br.com.jwar.sharedbill.account.presentation.navigation.accountNav
 import com.google.accompanist.navigation.animation.AnimatedNavHost

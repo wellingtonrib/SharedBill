@@ -1,6 +1,8 @@
 <resources>
     <string name="empty"/>
 
+    <string name="app_name">Shared Bill</string>
+
     <string name="label_loading">Loading</string>
     <string name="label_ok">OK</string>
     <string name="label_save">Save</string>
@@ -28,5 +30,6 @@
     <string name="description_close">Close</string>
     <string name="description_done">Done action</string>
     <string name="description_user_avatar">User avatar</string>
+    <string name="description_empty">Empty state image</string>
 
 </resources>

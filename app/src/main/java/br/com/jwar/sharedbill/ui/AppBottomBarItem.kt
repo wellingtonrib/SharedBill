@@ -1,6 +1,6 @@
 package br.com.jwar.sharedbill.ui
 
-import br.com.jwar.groups.presentation.screens.group_list.GROUP_LIST_ROUTE
+import br.com.jwar.groups.presentation.ui.group_list.GROUP_LIST_ROUTE
 import br.com.jwar.sharedbill.R
 import br.com.jwar.sharedbill.account.presentation.navigation.ACCOUNT_ROUTE
 import br.com.jwar.sharedbill.core.designsystem.theme.Icons
