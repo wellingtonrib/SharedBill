@@ -39,7 +39,7 @@
     <string name="label_share_balance">Share balance</string>
     <string name="label_total_spent">Total spent %1$s</string>
     <string name="label_suggestion">Suggestions</string>
-    <string name="label_settlement">Settlement</string>
+    <string name="label_settlement">🤝 Settlement</string>
 
     <string name="message_welcome">Welcome %1$s</string>
     <string name="message_owes">Owes %1$s</string>

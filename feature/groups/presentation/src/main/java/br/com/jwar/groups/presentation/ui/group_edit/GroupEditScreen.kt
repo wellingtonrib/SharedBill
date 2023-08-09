@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.groups.presentation.ui.group_edit.GroupEditContract.State
-import br.com.jwar.groups.presentation.ui.group_edit.components.GroupEditForm
+import br.com.jwar.groups.presentation.ui.group_edit.components.GroupEditContent
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 
@@ -30,7 +30,7 @@ fun GroupEditScreen(
 ) {
     when {
         state.isLoading -> LoadingContent()
-        state.uiModel != null -> GroupEditForm(
+        state.uiModel != null -> GroupEditContent(
             group = state.uiModel,
             selectedMember = state.selectedMember,
             onGroupUpdated = onGroupUpdated,

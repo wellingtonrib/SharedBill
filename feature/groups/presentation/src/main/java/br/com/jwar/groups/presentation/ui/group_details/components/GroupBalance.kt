@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
@@ -35,7 +34,7 @@ fun GroupBalance(
             verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
         ) {
             items(group.balance.entries.toList()) { entry ->
-                GroupBalanceItem(entry, group)
+                GroupBalanceItem(entry)
             }
         }
         VerticalSpacerSmall()

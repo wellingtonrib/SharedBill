@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.groups.presentation.ui.payment.components.PaymentForm
+import br.com.jwar.groups.presentation.ui.payment.components.PaymentContent
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 
@@ -17,7 +17,7 @@ fun PaymentScreen(
 ) {
     when {
         state.isLoading -> LoadingContent()
-        state.params != null -> PaymentForm(
+        state.params != null -> PaymentContent(
             params = state.params,
             onParamsChange = onPaymentParamsChange,
             onSaveClick = onSaveClick,

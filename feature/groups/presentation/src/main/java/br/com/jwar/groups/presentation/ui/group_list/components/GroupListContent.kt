@@ -34,7 +34,7 @@ import br.com.jwar.sharedbill.groups.presentation.R
 import kotlinx.coroutines.launch
 
 @Composable
-fun GroupList(
+fun GroupListContent(
     groups: List<GroupUiModel>,
     onGroupClick: (groupId: String) -> Unit = {},
     onGroupCreate: (title: String) -> Unit = {},
@@ -115,7 +115,7 @@ fun GroupList(
 fun PreviewGroupList() {
     SharedBillTheme {
         Scaffold {
-            GroupList(
+            GroupListContent(
                 listOf(
                     GroupUiModel.sample(),
                     GroupUiModel.sample(),

@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.account.presentation.ui.account.AccountContract.State
 import br.com.jwar.sharedbill.account.presentation.ui.account.AccountContract.State.*
-import br.com.jwar.sharedbill.account.presentation.ui.account.components.AccountForm
+import br.com.jwar.sharedbill.account.presentation.ui.account.components.AccountContent
 import br.com.jwar.sharedbill.core.designsystem.model.UserUiModel
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 
@@ -21,7 +21,7 @@ fun AccountScreen(
     onPrivacyClick: () -> Unit = {},
     onRateUsClick: () -> Unit = {},
 ) {
-    AccountForm(
+    AccountContent(
         state = state,
         onSignOutClick = onSignOutClick,
         onSupportClick = onSupportClick,

@@ -3,15 +3,13 @@ package br.com.jwar.groups.presentation.ui.group_list
 import android.annotation.SuppressLint
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.groups.presentation.ui.group_list.GroupListContract.State
-import br.com.jwar.groups.presentation.ui.group_list.components.GroupList
+import br.com.jwar.groups.presentation.ui.group_list.components.GroupListContent
 import br.com.jwar.sharedbill.core.designsystem.components.ErrorContent
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
 fun GroupListScreen(
@@ -25,7 +23,7 @@ fun GroupListScreen(
 ) {
     when(state) {
         is State.Loading -> LoadingContent()
-        is State.Loaded -> GroupList(
+        is State.Loaded -> GroupListContent(
             groups = state.uiModel,
             onGroupClick = onGroupClick,
             onGroupCreate = onGroupCreate,

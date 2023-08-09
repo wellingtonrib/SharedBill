@@ -1,8 +1,6 @@
 package br.com.jwar.groups.presentation.ui.group_edit.components
 
 
-import FormTopBar
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,29 +9,32 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.groups.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.core.designsystem.components.AppTopBar
+import br.com.jwar.sharedbill.core.designsystem.components.CloseNavigationIcon
 import br.com.jwar.sharedbill.core.designsystem.components.TextFieldWithSuggestions
-import br.com.jwar.sharedbill.core.designsystem.components.Title
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
-import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
-import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
-import br.com.jwar.sharedbill.core.designsystem.theme.paddingLarge
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
+import br.com.jwar.sharedbill.core.designsystem.R as DSR
 
 @Composable
-fun GroupEditForm(
+fun GroupEditContent(
     group: GroupUiModel,
     selectedMember: GroupMemberUiModel? = null,
     onGroupUpdated: (GroupUiModel) -> Unit = {},
@@ -46,15 +47,21 @@ fun GroupEditForm(
 ) {
     val listState = rememberLazyListState()
     val suggestions = stringArrayResource(R.array.samples_group_title)
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     SelectedMemberDialog(selectedMember, onMemberSelectionChange, onShareInviteCodeClick)
 
     Scaffold(
         topBar = {
-            FormTopBar(
-                onNavigateBack = { onNavigateBack() },
+            AppTopBar(
+                navigationBack = onNavigateBack,
+                navigationIcon = { CloseNavigationIcon(onNavigateBack) },
                 title = stringResource(id = R.string.label_group_edit),
-                onSaveClick = { onSaveClick() }
+                actions = {
+                    IconButton(onClick = { onSaveClick(); keyboardController?.hide() }) {
+                        Icon(Icons.Filled.Done, stringResource(id = DSR.string.description_done))
+                    }
+                }
             )
         },
         floatingActionButton = {
@@ -105,6 +112,6 @@ fun GroupEditForm(
 @Composable
 fun PreviewGroupEditForm() {
     MaterialTheme {
-        GroupEditForm(group = GroupUiModel.sample(),)
+        GroupEditContent(group = GroupUiModel.sample(),)
     }
 }
