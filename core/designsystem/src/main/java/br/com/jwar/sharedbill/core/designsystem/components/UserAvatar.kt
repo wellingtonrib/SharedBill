@@ -37,11 +37,12 @@ fun UserAvatar(
     modifier: Modifier = Modifier,
     user: UserUiModel,
     avatarSize: Dp = 48.dp,
-    borderColor: Color = Color.White
+    borderColor: Color = Color.White,
+    borderWidth: Dp = 2.dp,
 ) {
     SubcomposeAsyncImage(
         modifier = modifier
-            .border(1.dp, borderColor, CircleShape)
+            .border(borderWidth, borderColor, CircleShape)
             .size(avatarSize)
             .clip(CircleShape),
         model = user.imageUrl,

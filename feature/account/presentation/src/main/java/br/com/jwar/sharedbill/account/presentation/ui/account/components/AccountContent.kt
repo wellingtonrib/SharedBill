@@ -2,10 +2,10 @@ package br.com.jwar.sharedbill.account.presentation.ui.account.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.ExitToApp
@@ -21,13 +21,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.account.presentation.R
 import br.com.jwar.sharedbill.account.presentation.ui.account.AccountContract
+import br.com.jwar.sharedbill.core.designsystem.R.drawable.app_icon
 import br.com.jwar.sharedbill.core.designsystem.components.InfoDialog
 import br.com.jwar.sharedbill.core.designsystem.components.UserCard
-import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
-import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerLarge
-import br.com.jwar.sharedbill.core.designsystem.R.drawable.app_icon
 import br.com.jwar.sharedbill.core.designsystem.model.UserUiModel
+import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerLarge
 
 @Composable
 fun AccountContent(
@@ -40,8 +40,6 @@ fun AccountContent(
     onPrivacyClick: () -> Unit = {},
     onRateUsClick: () -> Unit = {},
 ) {
-    val listState = rememberLazyListState()
-
     if (state.showAboutDialog) {
         InfoDialog(
             image = app_icon,
@@ -53,7 +51,9 @@ fun AccountContent(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         VerticalSpacerLarge()
@@ -62,54 +62,40 @@ fun AccountContent(
             avatarSize = 80.dp,
         )
         VerticalSpacerLarge()
-        LazyColumn(
-            state = listState,
-            contentPadding = PaddingValues(AppTheme.dimens.space_8),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
+        Column(
+            modifier = Modifier.padding(horizontal = AppTheme.dimens.space_8),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4)
         ) {
-            item {
-                AccountAction(
-                    imageVector = Icons.Outlined.Email,
-                    title = stringResource(R.string.label_support),
-                    onClick = onSupportClick,
-                )
-            }
-            item {
-                AccountAction(
-                    imageVector = Icons.Outlined.Info,
-                    title = stringResource(R.string.label_about),
-                    onClick = onAboutClick,
-                )
-            }
-            item {
-                AccountAction(
-                    imageVector = Icons.Outlined.Star,
-                    title = stringResource(R.string.label_rate),
-                    onClick = onRateUsClick,
-                )
-            }
-            item {
-                AccountAction(
-                    imageVector = Icons.Outlined.Menu,
-                    title = stringResource(R.string.label_terms),
-                    onClick = onTermsClick,
-                )
-            }
-            item {
-                AccountAction(
-                    imageVector = Icons.Outlined.Lock,
-                    title = stringResource(R.string.label_privacy),
-                    onClick = onPrivacyClick,
-                )
-            }
-            item {
-                AccountAction(
-                    imageVector = Icons.Outlined.ExitToApp,
-                    title = stringResource(R.string.label_logout),
-                    onClick = onSignOutClick,
-                )
-            }
+            AccountAction(
+                imageVector = Icons.Outlined.Email,
+                title = stringResource(R.string.label_support),
+                onClick = onSupportClick,
+            )
+            AccountAction(
+                imageVector = Icons.Outlined.Info,
+                title = stringResource(R.string.label_about),
+                onClick = onAboutClick,
+            )
+            AccountAction(
+                imageVector = Icons.Outlined.Star,
+                title = stringResource(R.string.label_rate),
+                onClick = onRateUsClick,
+            )
+            AccountAction(
+                imageVector = Icons.Outlined.Menu,
+                title = stringResource(R.string.label_terms),
+                onClick = onTermsClick,
+            )
+            AccountAction(
+                imageVector = Icons.Outlined.Lock,
+                title = stringResource(R.string.label_privacy),
+                onClick = onPrivacyClick,
+            )
+            AccountAction(
+                imageVector = Icons.Outlined.ExitToApp,
+                title = stringResource(R.string.label_logout),
+                onClick = onSignOutClick,
+            )
         }
     }
 }
