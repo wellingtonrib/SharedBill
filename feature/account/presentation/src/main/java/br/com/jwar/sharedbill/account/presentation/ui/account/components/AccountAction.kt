@@ -4,8 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +26,7 @@ fun AccountAction(
     title: String,
     onClick: () -> Unit = {},
 ) {
-    Card {
+    OutlinedCard {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -57,8 +59,8 @@ fun AccountAction(
 fun PreviewAccountAction() {
     SharedBillTheme {
         AccountAction(
-            imageVector = ImageVector.vectorResource(androidx.core.R.drawable.ic_call_answer),
-            title = "Call",
+            imageVector = Icons.Outlined.Info,
+            title = "Info",
         )
     }
 }

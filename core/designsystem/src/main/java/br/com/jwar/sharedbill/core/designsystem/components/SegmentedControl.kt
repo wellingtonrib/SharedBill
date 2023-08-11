@@ -2,6 +2,7 @@ package br.com.jwar.sharedbill.core.designsystem.components
 
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
@@ -11,8 +12,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +35,8 @@ import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
  */
 @Composable
 fun SegmentedControl(
+    modifier: Modifier = Modifier,
+    horizontalArrangement: Arrangement.Horizontal,
     items: List<String>,
     defaultSelectedItemIndex: Int = 0,
     useFixedWidth: Boolean = false,
@@ -40,10 +45,11 @@ fun SegmentedControl(
     @ColorRes color : Color = AppTheme.colors.primary,
     onItemSelection: (selectedItemIndex: Int) -> Unit
 ) {
-    val selectedIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
+    var selectedIndex by remember { mutableIntStateOf(defaultSelectedItemIndex) }
 
     Row(
-        modifier = Modifier
+        modifier = modifier,
+        horizontalArrangement = horizontalArrangement
     ) {
         items.forEachIndexed { index, item ->
             OutlinedButton(
@@ -53,28 +59,28 @@ fun SegmentedControl(
                             Modifier
                                 .width(itemWidth)
                                 .offset(0.dp, 0.dp)
-                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                                .zIndex(if (selectedIndex == 0) 1f else 0f)
                         } else {
                             Modifier
                                 .wrapContentSize()
                                 .offset(0.dp, 0.dp)
-                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                                .zIndex(if (selectedIndex == 0) 1f else 0f)
                         }
                     } else -> {
                         if (useFixedWidth)
                             Modifier
                                 .width(itemWidth)
                                 .offset((-1 * index).dp, 0.dp)
-                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                                .zIndex(if (selectedIndex == index) 1f else 0f)
                         else Modifier
                             .wrapContentSize()
                             .offset((-1 * index).dp, 0.dp)
-                            .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                            .zIndex(if (selectedIndex == index) 1f else 0f)
                     }
                 },
                 onClick = {
-                    selectedIndex.value = index
-                    onItemSelection(selectedIndex.value)
+                    selectedIndex = index
+                    onItemSelection(selectedIndex)
                 },
                 shape = when (index) {
                     /**
@@ -106,13 +112,13 @@ fun SegmentedControl(
                     )
                 },
                 border = BorderStroke(
-                    1.dp, if (selectedIndex.value == index) {
+                    1.dp, if (selectedIndex == index) {
                         color
                     } else {
                         color.copy(alpha = 0.75f)
                     }
                 ),
-                colors = if (selectedIndex.value == index) {
+                colors = if (selectedIndex == index) {
                     /**
                      * selected colors
                      */
@@ -130,7 +136,7 @@ fun SegmentedControl(
                     Text(
                         text = item,
                         fontWeight = FontWeight.Normal,
-                        color = if (selectedIndex.value == index) {
+                        color = if (selectedIndex == index) {
                             Color.White
                         } else {
                             color.copy(alpha = 0.9f)

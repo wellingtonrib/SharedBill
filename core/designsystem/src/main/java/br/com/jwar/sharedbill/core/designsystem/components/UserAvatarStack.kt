@@ -31,7 +31,8 @@ fun UserAvatarStack(
     users: List<UserUiModel>,
     avatarSize: Dp = 48.dp,
     overlap: Dp = 12.dp,
-    maxAvatars: Int = 3
+    maxAvatars: Int = 3,
+    borderWidth: Dp = 2.dp,
 ) {
     val avatarItems = users
         .take(maxAvatars)
@@ -57,12 +58,14 @@ fun UserAvatarStack(
                         modifier = Modifier.offset(x = offset.dp),
                         avatarSize = avatarSize,
                         user = item.user,
+                        borderWidth = borderWidth,
                     )
                 is AvatarItem.NotShowingIndicator ->
                     NotShowingIndicator(
                         modifier = Modifier.offset(x = offset.dp),
                         avatarSize = avatarSize,
-                        indicator = item.count
+                        indicator = item.count,
+                        borderWidth = borderWidth,
                     )
             }
         }
@@ -73,14 +76,15 @@ fun UserAvatarStack(
 private fun NotShowingIndicator(
     modifier: Modifier,
     avatarSize: Dp,
-    indicator: Int
+    indicator: Int,
+    borderWidth: Dp
 ) {
     Box(
         modifier = modifier
             .size(avatarSize)
-            .border(width = 1.dp, color = Color.White, shape = CircleShape)
+            .border(width = borderWidth, color = Color.White, shape = CircleShape)
             .background(
-                color = Color.LightGray,
+                color = Color.Gray,
                 shape = CircleShape
             ),
         contentAlignment = Alignment.Center

@@ -1,10 +1,9 @@
 package br.com.jwar.groups.presentation.ui.group_details.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Card
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -20,7 +19,6 @@ import br.com.jwar.sharedbill.core.designsystem.components.InfoDialog
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
 
@@ -30,11 +28,11 @@ fun GroupPaymentCard(
     group: GroupUiModel
 ) {
     val showingPaymentInfo = paymentInfoDialog(payment)
-    Card(
+    OutlinedCard(
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable { showingPaymentInfo.value = true },
-        ) {
+            .fillMaxWidth(),
+        onClick = { showingPaymentInfo.value = true }
+    ) {
         Row(
             modifier = Modifier.paddingMedium()
         ) {
