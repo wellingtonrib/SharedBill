@@ -2,8 +2,10 @@ package br.com.jwar.groups.presentation.ui.payment
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import br.com.jwar.groups.presentation.mappers.GroupToPaymentParamsMapper
+import br.com.jwar.groups.presentation.mappers.GroupToGroupUiModelMapper
+import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.groups.presentation.models.PaymentUiError
+import br.com.jwar.groups.presentation.models.PaymentUiModel
 import br.com.jwar.groups.presentation.navigation.GROUP_ID_ARG
 import br.com.jwar.groups.presentation.navigation.PAYMENT_TYPE_ARG
 import br.com.jwar.groups.presentation.ui.payment.PaymentContract.Effect
@@ -26,40 +28,46 @@ class PaymentViewModel @Inject constructor(
     private val sendPaymentUseCase: SendPaymentUseCase,
     private val createPaymentUseCase: CreatePaymentUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
-    private val groupToPaymentParamsMapper: GroupToPaymentParamsMapper,
+    private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
 ): BaseViewModel<Event, State, Effect>() {
 
     private val groupId: String = checkNotNull(savedStateHandle[GROUP_ID_ARG])
     private val paymentType = PaymentType.valueOf(checkNotNull(savedStateHandle[PAYMENT_TYPE_ARG]))
 
+    private lateinit var group: GroupUiModel
+
     init { onInit(groupId, paymentType) }
 
-    override fun getInitialState(): State = State(isLoading = true)
+    override fun getInitialState(): State = State.Loading
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnSavePayment -> onSavePayment()
-            is Event.OnParamsChange -> setPaymentParams(event.params)
+            is Event.OnSavePayment -> onSavePayment(event.payment)
         }
     }
 
     private fun onInit(groupId: String, paymentType: PaymentType) = viewModelScope.launch {
         setLoadingState()
         getGroupByIdUseCase(groupId, false)
-            .onSuccess { group -> setPaymentParams(getPaymentParams(group, paymentType)) }
+            .onSuccess { group -> onGroupLoaded(group) }
             .onFailure { handlePaymentError(it) }
     }
 
-    private fun onSavePayment() = viewModelScope.launch {
-        setLoadingState()
-        with(getCurrentPaymentParams()) {
-            createPaymentUseCase.invoke(
+    private fun onGroupLoaded(group: Group) =
+        setState {
+            this.group = groupToGroupUiModelMapper.mapFrom(group)
+            State.Loaded(group = this.group)
+        }
+
+    private fun onSavePayment(payment: PaymentUiModel) = viewModelScope.launch {
+        with(payment) {
+            createPaymentUseCase(
                 description = description,
                 value = value,
-                date = date,
+                date = createdAt,
                 paidById = paidBy.uid,
                 paidToIds = paidTo.map { it.uid },
-                groupId = group.id,
+                groupId = groupId,
                 paymentType = paymentType,
             ).onSuccess { onPaymentCreated(it) }
                 .onFailure { handlePaymentError(it) }
@@ -73,21 +81,11 @@ class PaymentViewModel @Inject constructor(
             .onFailure { handlePaymentError(it) }
     }
 
-    private fun getPaymentParams(group: Group, paymentType: PaymentType): PaymentContract.PaymentParams =
-        groupToPaymentParamsMapper.mapFrom(group,paymentType)
-
-    private fun setLoadingState() = setState { it.copy(isLoading = true) }
-
-    private fun setPaymentParams(params: PaymentContract.PaymentParams) =
-        setState { it.copy(isLoading = false, params = params) }
-
-    private fun getCurrentPaymentParams() = uiState.value.params ?: PaymentContract.PaymentParams()
+    private fun setLoadingState() = setState { State.Loading }
 
     private fun handlePaymentError(throwable: Throwable) =
         setState {
-            val paymentError = PaymentUiError.mapFrom(throwable)
-            val params = it.params?.copy(error = paymentError)
-            it.copy(isLoading = false, params = params)
+            State.Loaded(group = this.group, error = PaymentUiError.mapFrom(throwable))
         }
 
     private fun sendFinishEffect() = sendEffect { Effect.Finish }

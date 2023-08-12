@@ -6,7 +6,6 @@ import java.util.UUID
 data class GroupUiModel(
     val id: String = "",
     val title: String = "",
-    val membersNames: String = "",
     val members: List<GroupMemberUiModel> = emptyList(),
     val payments: List<PaymentUiModel> = emptyList(),
     val balance: Map<GroupMemberUiModel, BigDecimal> = mapOf(),
@@ -21,7 +20,6 @@ data class GroupUiModel(
         fun sample() = GroupUiModel(
             id = UUID.randomUUID().toString(),
             title = "Group Sample",
-            membersNames = "Member One, Member Two, Member Three",
             members = listOf(
                 GroupMemberUiModel.sample(),
                 GroupMemberUiModel.sample(),

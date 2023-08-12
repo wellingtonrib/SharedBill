@@ -19,8 +19,8 @@ fun PaymentRoute(
 
     PaymentScreen(
         state = state,
-        onPaymentParamsChange = { viewModel.emitEvent { Event.OnParamsChange(it) }},
-        onSaveClick = { viewModel.emitEvent { Event.OnSavePayment } },
+        paymentType = paymentType,
+        onSaveClick = { viewModel.emitEvent { Event.OnSavePayment(it) } },
         onNavigateBack = onNavigateBack,
     )
 

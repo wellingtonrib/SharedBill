@@ -20,6 +20,9 @@ import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
+import br.com.jwar.sharedbill.core.utility.extensions.DATE_FORMAT_DEFAULT
+import br.com.jwar.sharedbill.core.utility.extensions.DATE_FORMAT_SMALL
+import br.com.jwar.sharedbill.core.utility.extensions.format
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
@@ -58,7 +61,7 @@ fun GroupPaymentCard(
                     style = AppTheme.typo.titleMedium
                 )
                 Text(
-                    text = payment.createdAt,
+                    text = payment.createdAt.format(DATE_FORMAT_DEFAULT),
                     style = AppTheme.typo.bodySmall
                 )
             }
@@ -80,6 +83,25 @@ private fun paymentInfoDialog(payment: PaymentUiModel): MutableState<Boolean> {
     }
     return showingPaymentInfo
 }
+
+@Composable
+private fun PaymentUiModel.getInfo() =
+    StringBuilder().apply {
+        append(stringResource(R.string.message_payment_description, description + "\n"))
+        append(stringResource(R.string.message_payment_value, value + "\n"))
+        append(stringResource(R.string.message_payment_paid_by, paidBy.firstName) + "\n")
+        append(stringResource(R.string.message_payment_paid_to, paidTo.joinToString { it.name }) + "\n")
+        append(stringResource(R.string.message_payment_created_by, createdBy.name + "\n"))
+        append(stringResource(R.string.message_payment_created_at, createdAt.format(DATE_FORMAT_SMALL)))
+    }.toString()
+
+@Composable
+fun PaymentUiModel.getMessage(group: GroupUiModel) =
+    if (paidTo.size == group.members.size) {
+        stringResource(R.string.message_payment_detail_to_all, paidBy.firstName)
+    } else {
+        stringResource(R.string.message_payment_detail, paidBy.firstName, paidTo.joinToString { it.firstName })
+    }
 
 @Preview(showBackground = true)
 @Composable

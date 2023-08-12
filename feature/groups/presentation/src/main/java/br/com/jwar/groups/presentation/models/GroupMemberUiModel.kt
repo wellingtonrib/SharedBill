@@ -32,4 +32,7 @@ data class GroupMemberUiModel(
 
     override val selectableLabel: String
         get() = name
+
+    val firstName
+        get() = name.split(" ").first()
 }

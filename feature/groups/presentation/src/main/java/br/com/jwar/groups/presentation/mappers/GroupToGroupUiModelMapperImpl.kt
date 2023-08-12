@@ -15,7 +15,6 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         GroupUiModel(
             id = from.id,
             title = from.title,
-            membersNames = mapMembersNames(from),
             members = mapMembers(from),
             payments = mapPayments(from),
             balance = mapBalance(from),
@@ -23,19 +22,17 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
             isCurrentUserOwner = mapIsCurrentUserOwner(from)
         )
 
-    private fun mapTotal(from: Group) =
-        from.payments
-            .filter { it.paymentType == PaymentType.EXPENSE }
-            .sumOf { it.value.toBigDecimalOrZero() }.toCurrency()
+    private fun mapTotal(from: Group) = from.payments
+        .filter { it.paymentType == PaymentType.EXPENSE }
+        .sumOf { it.value.toBigDecimalOrZero() }.toCurrency()
 
-    private fun mapPayments(from: Group) =
-        from.payments.sortedByDescending { it.createdAt }.map { paymentToPaymentUiModelMapper.mapFrom(it) }
+    private fun mapPayments(from: Group) = from.payments
+        .sortedByDescending { it.createdAt }
+        .map { paymentToPaymentUiModelMapper.mapFrom(it) }
 
-    private fun mapMembers(from: Group) =
-        from.members.map { userToGroupMemberUiModelMapper.mapFrom(it) }
-
-    private fun mapMembersNames(from: Group) =
-        from.members.joinToString(", ") { it.firstName }
+    private fun mapMembers(from: Group) = from.members
+        .sortedByDescending { it.isCurrentUser }
+        .map { userToGroupMemberUiModelMapper.mapFrom(it) }
 
     private fun mapIsCurrentUserOwner(from: Group) =
         from.members.firstOrNull { it.isCurrentUser }?.firebaseUserId == from.owner.firebaseUserId

@@ -1,40 +1,47 @@
 package br.com.jwar.groups.presentation.ui.payment
 
-import android.annotation.SuppressLint
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.groups.presentation.ui.payment.components.PaymentContent
+import br.com.jwar.groups.presentation.models.GroupUiModel
+import br.com.jwar.groups.presentation.models.PaymentUiModel
+import br.com.jwar.groups.presentation.ui.payment.components.ExpensePaymentContent
+import br.com.jwar.groups.presentation.ui.payment.components.SettlementPaymentContent
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 
 @Composable
 fun PaymentScreen(
     state: PaymentContract.State,
-    onPaymentParamsChange: (PaymentContract.PaymentParams) -> Unit = {},
-    onSaveClick: () -> Unit = {},
+    paymentType: PaymentType = PaymentType.EXPENSE,
+    onSaveClick: (payment: PaymentUiModel) -> Unit,
     onNavigateBack: () -> Unit = {},
 ) {
-    when {
-        state.isLoading -> LoadingContent()
-        state.params != null -> PaymentContent(
-            params = state.params,
-            onParamsChange = onPaymentParamsChange,
-            onSaveClick = onSaveClick,
-            onNavigateBack = onNavigateBack
-        )
+    when (state) {
+        is PaymentContract.State.Loading -> LoadingContent()
+        is PaymentContract.State.Loaded ->
+            when (paymentType) {
+                PaymentType.EXPENSE -> ExpensePaymentContent(
+                    state = state,
+                    onSaveClick = onSaveClick,
+                    onNavigateBack = onNavigateBack
+                )
+                PaymentType.SETTLEMENT -> SettlementPaymentContent(
+                    state = state,
+                    onSaveClick = onSaveClick,
+                    onNavigateBack = onNavigateBack
+                )
+            }
     }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
 fun PreviewPaymentContent() {
     SharedBillTheme {
-        Scaffold {
-            PaymentScreen(
-                state = PaymentContract.State(params = PaymentContract.PaymentParams.sample()),
-            )
-        }
+        PaymentScreen(
+            state = PaymentContract.State.Loaded(GroupUiModel.sample()),
+            onSaveClick = {},
+        )
     }
 }

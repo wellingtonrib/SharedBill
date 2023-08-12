@@ -71,13 +71,13 @@ private fun GroupBalanceValue(
             Pill(
                 text = value.toCurrency(),
                 textColor = AppTheme.colors.error,
-                backgroundColor = AppTheme.colors.onError
+                backgroundColor = AppTheme.colors.errorContainer
             )
         else ->
             Pill(
                 text = stringResource(R.string.message_settled_up),
-                textColor = AppTheme.colors.surface,
-                backgroundColor = AppTheme.colors.onSurface
+                textColor = AppTheme.colors.onSurface,
+                backgroundColor = AppTheme.colors.surface
             )
     }
 }
@@ -87,7 +87,7 @@ private fun GroupBalanceValue(
 fun PreviewGroupBalanceItem() {
     SharedBillTheme {
         GroupBalanceItem(
-            entry = hashMapOf(GroupMemberUiModel.sample() to BigDecimal.ONE).entries.first(),
+            entry = hashMapOf(GroupMemberUiModel.sample() to BigDecimal.ZERO).entries.first(),
         )
     }
 }
