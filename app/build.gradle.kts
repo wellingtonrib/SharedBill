@@ -23,7 +23,8 @@ android {
     }
 
     packagingOptions {
-        resources.excludes.add("/META-INF/*")
+        resources.excludes.add("META-INF/LICENSE.md")
+        resources.excludes.add("META-INF/LICENSE-notice.md")
     }
 
     namespace = "br.com.jwar.sharedbill"

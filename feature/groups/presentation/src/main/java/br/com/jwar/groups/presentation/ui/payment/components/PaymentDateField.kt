@@ -71,10 +71,8 @@ fun PaymentDateField(
 @Composable
 fun PreviewPaymentDateField() {
     SharedBillTheme {
-        PaymentDateField(
-            onValueChange = {
+        PaymentDateField {
 
-            },
-        )
+        }
     }
 }

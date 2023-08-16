@@ -22,15 +22,15 @@ class CreatePaymentUseCaseImpl(
         groupId: String,
         paymentType: PaymentType,
     ): Result<Payment> = resultOf {
-        if (description.isEmpty()) throw PaymentException.EmptyDescriptionException
+        if (description.isEmpty()) throw PaymentException.InvalidDescriptionException
         if (value.toBigDecimalOrZero() == BigDecimal.ZERO) throw PaymentException.InvalidValueException
-        if (paidToIds.isEmpty()) throw PaymentException.EmptyRelatedMembersException
+        if (paidToIds.isEmpty()) throw PaymentException.InvalidPaidToException
 
         val group = groupRepository.getGroupById(groupId, true)
         val paidBy = group.findMemberById(paidById)
-            ?: throw PaymentException.PayerNotInGroupException
+            ?: throw PaymentException.InvalidPaidByException
         val createdBy = group.findCurrentUser()
-            ?: throw PaymentException.CurrentUserNotInGroupException
+            ?: throw PaymentException.InvalidPaidByException
         val paidTo = group.members.filter { member ->
             paidToIds.contains(member.id)
         }

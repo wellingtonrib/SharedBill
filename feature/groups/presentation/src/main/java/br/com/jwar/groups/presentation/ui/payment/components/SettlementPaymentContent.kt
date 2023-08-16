@@ -30,7 +30,7 @@ import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.presentation.R
-import java.util.Date
+import java.util.Calendar
 
 @Composable
 fun SettlementPaymentContent(
@@ -39,15 +39,18 @@ fun SettlementPaymentContent(
     onNavigateBack: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val calendar = Calendar.getInstance()
 
+    val paidByOptions = remember { state.group.membersForSelect }
+    val paidToOptions = remember { state.group.members }
     val description = stringResource(R.string.label_settlement)
+    val date = remember { calendar.time }
+
     var value by remember { mutableStateOf("") }
     var paidBy by remember { mutableStateOf(state.group.members.first()) }
-    val paidByOptions by remember { mutableStateOf(state.group.members.associateWith { it.uid == paidBy.uid }) }
     var paidTo by remember { mutableStateOf(listOf(state.group.members.first())) }
-    val paidToOptions by remember { mutableStateOf(state.group.members) }
 
     var valueError by remember { mutableStateOf<PaymentUiError.InvalidValueError?>(null) }
 
@@ -72,7 +75,7 @@ fun SettlementPaymentContent(
                                 value = value,
                                 paidBy = paidBy,
                                 paidTo = paidTo,
-                                createdAt = Date(),
+                                createdAt = date,
                                 paymentType = PaymentType.SETTLEMENT
                             )
                         )

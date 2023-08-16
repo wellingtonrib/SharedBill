@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
+import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.designsystem.components.SelectDialog
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
@@ -26,7 +27,7 @@ fun PaymentPaidByField(
     modifier: Modifier = Modifier,
     paidByOptions: Map<GroupMemberUiModel, Boolean> = emptyMap(),
     paidBy: GroupMemberUiModel = GroupMemberUiModel(),
-    error: UiText? = null,
+    error: PaymentUiError.InvalidPaidByError? = null,
     onValueChange: (GroupMemberUiModel) -> Unit,
 ) {
     val isPaidBySelecting = remember { mutableStateOf(false) }
@@ -62,7 +63,7 @@ fun PaymentPaidByField(
             ) {
                 Text(text = paidBy.name)
             }
-            error?.AsText(AppTheme.colors.error)
+            error?.message?.AsText(AppTheme.colors.error)
         }
     }
 }
@@ -73,7 +74,7 @@ fun PreviewPaymentPaidByField() {
     SharedBillTheme {
         PaymentPaidByField(
             paidBy = GroupMemberUiModel.sample(),
-            error = UiText.DynamicString("Please select one")
+            error = PaymentUiError.InvalidPaidByError
         ) {
 
         }

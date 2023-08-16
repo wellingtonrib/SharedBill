@@ -13,6 +13,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +33,7 @@ import br.com.jwar.sharedbill.core.utility.extensions.orZero
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.presentation.R
 import java.math.BigDecimal
-import java.util.Date
+import java.util.Calendar
 import br.com.jwar.sharedbill.core.designsystem.R as DSR
 
 @Composable
@@ -42,35 +43,36 @@ fun ExpensePaymentContent(
     onNavigateBack: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val calendar = Calendar.getInstance()
+
+    val paidByOptions = remember { state.group.membersForSelect }
+    val paidToOptions = remember { state.group.members }
 
     var description by remember { mutableStateOf("") }
     var value by remember { mutableStateOf("") }
-    var sharedValue by remember { mutableStateOf(BigDecimal.ZERO) }
-    var date by remember { mutableStateOf(Date()) }
+    var date by remember { mutableStateOf(calendar.time) }
     var paidBy by remember { mutableStateOf(state.group.members.first()) }
-    val paidByOptions by remember { mutableStateOf(state.group.members.associateWith { it.uid == paidBy.uid }) }
     var paidTo by remember { mutableStateOf(state.group.members) }
-    val paidToOptions by remember { mutableStateOf(state.group.members) }
 
     var descriptionError by remember { mutableStateOf<PaymentUiError.InvalidDescriptionError?>(null) }
     var valueError by remember { mutableStateOf<PaymentUiError.InvalidValueError?>(null) }
     var dateError by remember { mutableStateOf<PaymentUiError.InvalidDateError?>(null) }
 
+    val sharedValue = remember(value, paidTo) {
+        derivedStateOf {
+            if (paidTo.isEmpty()) BigDecimal.ZERO
+            else value.toBigDecimalOrNull()?.div(paidTo.size.toBigDecimal()).orZero()
+        }
+    }
+
     LaunchedEffect(state.error) {
-        when(state.error) {
+        when (state.error) {
             is PaymentUiError.InvalidDescriptionError -> descriptionError = state.error
             is PaymentUiError.InvalidValueError -> valueError = state.error
             is PaymentUiError.InvalidDateError -> dateError = state.error
             else -> state.error?.message?.asString(context)?.let { snackbarHostState.showSnackbar(it) }
-        }
-    }
-
-    LaunchedEffect(key1 = value, key2 = paidTo) {
-        sharedValue = when(paidTo.size) {
-            0 -> BigDecimal.ZERO
-            else -> value.toBigDecimalOrNull()?.div(paidTo.size.toBigDecimal()).orZero()
         }
     }
 
@@ -109,26 +111,25 @@ fun ExpensePaymentContent(
                 PaymentDescriptionField(
                     description = description,
                     error = descriptionError
-                ) { newDescription -> description = newDescription.text; descriptionError = null}
+                ) { newDescription -> description = newDescription.text; descriptionError = null }
                 PaymentValueField(
                     value = value,
                     error = valueError
                 ) { newValue -> value = newValue; valueError = null }
                 PaymentDateField(
                     date = date,
-                    error = dateError,
-                    onValueChange = { newDate -> date = newDate },
-                )
+                    error = dateError
+                ) { newDate -> date = newDate }
                 PaymentPaidByField(
                     paidBy = paidBy,
                     paidByOptions = paidByOptions,
                 ) { newPaidBy -> paidBy = newPaidBy }
                 PaymentPaidToField(
                     paidTo = paidTo,
-                    sharedValue = sharedValue,
+                    sharedValue = sharedValue.value,
                     paidToOptions = paidToOptions,
                     isExpense = true,
-                ) { newPaidTo -> paidTo = newPaidTo; }
+                ) { newPaidTo -> paidTo = newPaidTo }
             }
         }
     }

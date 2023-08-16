@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
+import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.designsystem.components.CheckboxWitText
 import br.com.jwar.sharedbill.core.designsystem.components.RadioButtonWitText
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
@@ -35,7 +36,7 @@ fun PaymentPaidToField(
     sharedValue: BigDecimal = BigDecimal.ZERO,
     paidToOptions: List<GroupMemberUiModel> = emptyList(),
     paidTo: List<GroupMemberUiModel> = emptyList(),
-    error: UiText? = null,
+    error: PaymentUiError.InvalidPaidToError? = null,
     onValueChange: (List<GroupMemberUiModel>) -> Unit,
 ) {
     var selection by remember { mutableStateOf(paidTo) }
@@ -88,7 +89,7 @@ fun PaymentPaidToField(
                 }
             }
             if (error != null) {
-                item { error.AsText(AppTheme.colors.error) }
+                item { error.message.AsText(AppTheme.colors.error) }
             }
         }
     }
@@ -102,7 +103,7 @@ fun PreviewPaymentPaidToField() {
             sharedValue = BigDecimal.TEN,
             paidTo = listOf(GroupMemberUiModel.sample().copy(uid = "1")),
             paidToOptions = listOf(GroupMemberUiModel.sample().copy(uid = "1")),
-            error = UiText.DynamicString("Please select one")
+            error = PaymentUiError.InvalidPaidToError
         ) {
 
         }
