@@ -12,9 +12,6 @@ data class GroupUiModel(
     val total: String = "",
     val isCurrentUserOwner: Boolean = false
 ) {
-    val membersForSelect: Map<GroupMemberUiModel, Boolean>
-        get() = members.associateWith { it.uid == members.first().uid }
-
     fun getBalanceForShare() = title
         .plus("\n\n" + balance.map { entry -> "${entry.key.name} ${entry.value}" }.joinToString("\n"))
         .plus("\n\nTotal $total")
@@ -34,9 +31,9 @@ data class GroupUiModel(
                 PaymentUiModel.sample(),
             ),
             balance = mapOf(
-                GroupMemberUiModel() to BigDecimal("100"),
-                GroupMemberUiModel() to BigDecimal("-100"),
-                GroupMemberUiModel() to BigDecimal.ZERO,
+                GroupMemberUiModel.sample() to BigDecimal("100"),
+                GroupMemberUiModel.sample() to BigDecimal("-100"),
+                GroupMemberUiModel.sample() to BigDecimal.ZERO,
             ),
             total = "$300"
         )

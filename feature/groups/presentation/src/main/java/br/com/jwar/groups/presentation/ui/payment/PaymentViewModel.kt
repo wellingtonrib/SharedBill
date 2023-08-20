@@ -56,7 +56,7 @@ class PaymentViewModel @Inject constructor(
     private fun onGroupLoaded(group: Group) =
         setState {
             this.group = groupToGroupUiModelMapper.mapFrom(group)
-            State.Loaded(group = this.group)
+            State.Loaded(this.group, this.paymentType)
         }
 
     private fun onSavePayment(payment: PaymentUiModel) = viewModelScope.launch {
@@ -85,7 +85,7 @@ class PaymentViewModel @Inject constructor(
 
     private fun handlePaymentError(throwable: Throwable) =
         setState {
-            State.Loaded(group = this.group, error = PaymentUiError.mapFrom(throwable))
+            State.Loaded(this.group, this.paymentType, error = PaymentUiError.mapFrom(throwable))
         }
 
     private fun sendFinishEffect() = sendEffect { Effect.Finish }

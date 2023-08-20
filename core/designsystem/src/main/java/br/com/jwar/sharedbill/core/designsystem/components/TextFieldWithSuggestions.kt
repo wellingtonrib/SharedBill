@@ -1,7 +1,7 @@
 package br.com.jwar.sharedbill.core.designsystem.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -9,50 +9,49 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 
 @Composable
 fun TextFieldWithSuggestions(
     modifier: Modifier = Modifier,
+    focusRequester: FocusRequester = FocusRequester(),
     label: @Composable() (() -> Unit)? = null,
     placeholder: @Composable() (() -> Unit)? = null,
-    value: String,
+    text: String,
     suggestions: List<String>,
     isError: Boolean = false,
     supportingText: @Composable() (() -> Unit)? = null,
     onValueChange: (TextFieldValue) -> Unit = {}
 ) {
-    val fieldValue = remember { mutableStateOf(TextFieldValue(value)) }
-    val focusRequester = remember { FocusRequester() }
-    val isDropdownVisible = remember { mutableStateOf(fieldValue.value.text.isEmpty()) }
-
-    LaunchedEffect(Unit) {
-        if (fieldValue.value.text.isEmpty()) {
-            focusRequester.requestFocus()
-        }
-    }
+    var textFieldValue by remember { mutableStateOf(TextFieldValue(text)) }
+    var dropDownWidth by remember { mutableIntStateOf(0) }
+    val isDropdownVisible = remember { mutableStateOf(text.isBlank()) }
 
     Column {
         OutlinedTextField(
-            modifier = modifier.focusRequester(focusRequester),
+            modifier = modifier
+                .focusRequester(focusRequester)
+                .onSizeChanged { dropDownWidth = it.width },
             shape = MaterialTheme.shapes.medium,
-            value = fieldValue.value,
+            value = textFieldValue,
             label = label,
             placeholder = placeholder,
             onValueChange = { newValue ->
-                fieldValue.value = newValue
+                textFieldValue = newValue
                 isDropdownVisible.value = newValue.text.isEmpty()
                 onValueChange(newValue)
             },
@@ -62,18 +61,17 @@ fun TextFieldWithSuggestions(
                 capitalization = KeyboardCapitalization.Sentences)
         )
         DropdownMenu(
-            modifier = Modifier.fillMaxWidth(0.9f),
-            offset = DpOffset(x = 0.dp, y = 10.dp),
+            modifier = Modifier.width(with(LocalDensity.current) { dropDownWidth.toDp() }),
             expanded = isDropdownVisible.value,
             onDismissRequest = { isDropdownVisible.value = false }
         ) {
             suggestions.forEach { suggestion ->
                 DropdownMenuItem(
                     onClick = {
-                        fieldValue.value = TextFieldValue(suggestion)
+                        textFieldValue = TextFieldValue(suggestion)
                             .copy(selection = TextRange(suggestion.length))
                         isDropdownVisible.value = false
-                        onValueChange(fieldValue.value)
+                        onValueChange(textFieldValue)
                     },
                     text = { Text(suggestion) }
                 )
@@ -87,8 +85,8 @@ fun TextFieldWithSuggestions(
 fun PreviewTextFieldWithSuggestions() {
     SharedBillTheme {
         TextFieldWithSuggestions(
-            value = "",
-            suggestions = listOf()
+            text = "",
+            suggestions = listOf(),
         )
     }
 }

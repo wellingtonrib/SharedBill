@@ -78,10 +78,10 @@ fun GroupEditContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = AppTheme.dimens.space_8, end = AppTheme.dimens.space_8),
-                value = group.title,
-                suggestions = suggestions.toList(),
                 label = { Text(stringResource(R.string.label_group_title)) },
                 placeholder = { Text(stringResource(R.string.placeholder_group_title)) },
+                text = group.title,
+                suggestions = suggestions.toList(),
                 onValueChange = { newValue ->
                     onGroupUpdated(group.copy(title = newValue.text))
                 },

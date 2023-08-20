@@ -7,13 +7,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.designsystem.R
@@ -27,20 +30,23 @@ import java.util.Date
 @Composable
 fun PaymentDateField(
     modifier: Modifier = Modifier,
-    date: Date = Date(),
+    date: String = Date().format(),
     error: PaymentUiError.InvalidDateError? = null,
-    onValueChange: (Date) -> Unit,
+    onValueChange: (String) -> Unit,
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
-    val selectedDate = remember { mutableStateOf(date) }
+
+    var formattedDateValue by remember { mutableStateOf(TextFieldValue(date.format())) }
 
     val datePickerDialog = remember {
-        val calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance().apply { time = date.parse() }
         DatePickerDialog(
             context,
             { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-                selectedDate.value = "$dayOfMonth/${month + 1}/$year".parse()
+                "$dayOfMonth/${month + 1}/$year".let { dataString ->
+                    formattedDateValue = TextFieldValue(dataString)
+                }
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -58,10 +64,10 @@ fun PaymentDateField(
                 }
             },
         shape = MaterialTheme.shapes.medium,
-        value = selectedDate.value.format(),
+        value = formattedDateValue,
         label = { Text(text = stringResource(R.string.label_date)) },
         placeholder = { Text(text = stringResource(R.string.placeholder_payment_date)) },
-        onValueChange = { onValueChange(it.parse()) },
+        onValueChange = { onValueChange(it.text) },
         isError = error?.message?.asString().isNullOrBlank().not(),
         supportingText = { error?.message?.AsText(AppTheme.colors.error) },
     )

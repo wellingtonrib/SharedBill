@@ -80,6 +80,7 @@ fun GroupsDetailsContent(
         },
         floatingActionButton = {
             GroupDetailsFloatingButtons(
+                group = group,
                 listState = listState,
                 onNewPaymentClick = onNewPaymentClick
             )

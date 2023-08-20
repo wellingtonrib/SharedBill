@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -27,17 +28,21 @@ import br.com.jwar.groups.presentation.models.PaymentUiModel
 import br.com.jwar.groups.presentation.ui.payment.PaymentContract
 import br.com.jwar.sharedbill.core.designsystem.components.AppTopBar
 import br.com.jwar.sharedbill.core.designsystem.components.CloseNavigationIcon
+import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
+import br.com.jwar.sharedbill.core.utility.extensions.format
 import br.com.jwar.sharedbill.core.utility.extensions.orZero
+import br.com.jwar.sharedbill.core.utility.extensions.parse
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.presentation.R
 import java.math.BigDecimal
-import java.util.Calendar
+import java.util.Date
 import br.com.jwar.sharedbill.core.designsystem.R as DSR
 
 @Composable
 fun ExpensePaymentContent(
+    modifier: Modifier = Modifier,
     state: PaymentContract.State.Loaded,
     onSaveClick: (payment: PaymentUiModel) -> Unit,
     onNavigateBack: () -> Unit
@@ -45,22 +50,19 @@ fun ExpensePaymentContent(
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
-    val calendar = Calendar.getInstance()
-
-    val paidByOptions = remember { state.group.membersForSelect }
-    val paidToOptions = remember { state.group.members }
+    val focusManager = remember { FocusRequester() }
 
     var description by remember { mutableStateOf("") }
     var value by remember { mutableStateOf("") }
-    var date by remember { mutableStateOf(calendar.time) }
-    var paidBy by remember { mutableStateOf(state.group.members.first()) }
-    var paidTo by remember { mutableStateOf(state.group.members) }
+    var dateTime by remember { mutableStateOf(Date().format()) }
+    var paidBy by remember { mutableStateOf(state.paidByDefault) }
+    var paidTo by remember { mutableStateOf(state.paidToOptions) }
 
     var descriptionError by remember { mutableStateOf<PaymentUiError.InvalidDescriptionError?>(null) }
     var valueError by remember { mutableStateOf<PaymentUiError.InvalidValueError?>(null) }
     var dateError by remember { mutableStateOf<PaymentUiError.InvalidDateError?>(null) }
 
-    val sharedValue = remember(value, paidTo) {
+    val sharedValue by remember {
         derivedStateOf {
             if (paidTo.isEmpty()) BigDecimal.ZERO
             else value.toBigDecimalOrNull()?.div(paidTo.size.toBigDecimal()).orZero()
@@ -77,6 +79,7 @@ fun ExpensePaymentContent(
     }
 
     Scaffold(
+        modifier = modifier,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             AppTopBar(
@@ -91,7 +94,7 @@ fun ExpensePaymentContent(
                                 value = value,
                                 paidBy = paidBy,
                                 paidTo = paidTo,
-                                createdAt = date,
+                                createdAt = dateTime.parse(),
                                 paymentType = PaymentType.EXPENSE,
                             )
                         )
@@ -103,34 +106,51 @@ fun ExpensePaymentContent(
             )
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
+        Box(modifier = modifier.padding(innerPadding)) {
             Column(
-                modifier = Modifier.paddingMedium(),
+                modifier = modifier.paddingMedium(),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4)
             ) {
-                PaymentDescriptionField(
-                    description = description,
-                    error = descriptionError
-                ) { newDescription -> description = newDescription.text; descriptionError = null }
-                PaymentValueField(
-                    value = value,
-                    error = valueError
-                ) { newValue -> value = newValue; valueError = null }
-                PaymentDateField(
-                    date = date,
-                    error = dateError
-                ) { newDate -> date = newDate }
-                PaymentPaidByField(
-                    paidBy = paidBy,
-                    paidByOptions = paidByOptions,
-                ) { newPaidBy -> paidBy = newPaidBy }
-                PaymentPaidToField(
-                    paidTo = paidTo,
-                    sharedValue = sharedValue.value,
-                    paidToOptions = paidToOptions,
-                    isExpense = true,
-                ) { newPaidTo -> paidTo = newPaidTo }
+                Field {
+                    LaunchedEffect(Unit) {
+                        focusManager.requestFocus()
+                    }
+                    PaymentDescriptionField(
+                        focusRequester = focusManager,
+                        description = description,
+                        error = descriptionError
+                    ) { newDescription ->
+                        description = newDescription.text; descriptionError = null
+                    }
+                }
+                Field {
+                    PaymentValueField(
+                        value = value,
+                        error = valueError
+                    ) { newValue -> value = newValue; valueError = null }
+                }
+                Field {
+                    PaymentDateField(
+                        date = dateTime,
+                        error = dateError
+                    ) { newDate -> dateTime = newDate; dateError = null }
+                }
+                Field {
+                    PaymentPaidByField(
+                        paidBy = paidBy,
+                        paidByOptions = state.paidByOptions,
+                    ) { newPaidBy -> paidBy = newPaidBy }
+                }
+                Field {
+                    PaymentPaidToField(
+                        paidTo = paidTo,
+                        sharedValue = sharedValue,
+                        paidToOptions = state.paidToOptions,
+                        isExpense = true,
+                    ) { newPaidTo -> paidTo = newPaidTo }
+                }
             }
         }
     }
 }
+

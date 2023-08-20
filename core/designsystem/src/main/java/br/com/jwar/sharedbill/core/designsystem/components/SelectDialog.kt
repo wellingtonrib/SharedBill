@@ -26,68 +26,59 @@ fun <T: Selectable> SelectDialog(
     title: String,
     message: String,
     options: Map<T, Boolean>,
+    defaultSelection: List<T> = options.keys.toList(),
     action: String = stringResource(id = R.string.label_ok),
     isMultiChoice: Boolean = true,
     onDismiss: () -> Unit,
     onSelect: (List<T>) -> Unit
 ) {
+    val optionsKeys by remember { derivedStateOf { options.keys.toList() }}
+    var selection by remember { mutableStateOf(defaultSelection.toMutableList()) }
+
     Dialog(
         onDismissRequest = { onDismiss() },
     ) {
-        SelectDialogContent(
-            title = title,
-            message = message,
-            options = options,
-            action = action,
-            isMultiChoice = isMultiChoice,
-            onSelect = onSelect
-        )
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+        ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxWidthPaddingMedium(),
+                content = {
+                    item {
+                        Text(text = title, style = MaterialTheme.typography.titleLarge)
+                        Text(text = message)
+                    }
+                    itemsIndexed(optionsKeys) { index, item ->
+                        SelectOption(optionsKeys[index], selection.contains(item), isMultiChoice) { checked ->
+                            selection = if (isMultiChoice) {
+                                selection.apply {
+                                    if (checked) {
+                                        add(item)
+                                    } else {
+                                        remove(item)
+                                    }
+                                }
+                            } else {
+                                mutableListOf(item)
+                            }
+                        }
+                    }
+                    item {
+                        Button(
+                            onClick = {
+                                onSelect(selection)
+                            }
+                        ) {
+                            Text(text = action)
+                        }
+                    }
+                }
+            )
+        }
     }
 }
 
-@Composable
-private fun <T: Selectable> SelectDialogContent(
-    title: String,
-    message: String,
-    options: Map<T, Boolean>,
-    action: String,
-    isMultiChoice: Boolean,
-    onSelect: (List<T>) -> Unit
-) {
-    var selection by remember { mutableStateOf(options.values.toList()) }
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-    ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxWidthPaddingMedium(),
-            content = {
-            item {
-                Text(text = title, style = MaterialTheme.typography.titleLarge)
-                Text(text = message)
-            }
-            itemsIndexed(selection) { index, selected ->
-                SelectOption(options.keys.toList()[index], selected, isMultiChoice) { checked ->
-                    selection = if (isMultiChoice) {
-                        selection.mapIndexed { i, v -> if (i == index) checked else v }
-                    } else {
-                        List(selection.size) { it == index }
-                    }
-                }
-            }
-            item {
-                Button(
-                    onClick = {
-                        onSelect(options.keys.filterIndexed { index, _ -> selection[index] }.map { it })
-                    }
-                ) {
-                    Text(text = action)
-                }
-            }
-        })
-    }
-}
 
 @Composable
 private fun <T : Selectable> SelectOption(
@@ -132,7 +123,7 @@ private fun <T : Selectable> SelectOption(
 fun PreviewSelectDialogContent() {
     SharedBillTheme {
         Scaffold {
-            SelectDialogContent(
+            SelectDialog(
                 title = "Title",
                 message = "Select a user",
                 options = mapOf(
@@ -142,7 +133,8 @@ fun PreviewSelectDialogContent() {
                     } to true,
                 ),
                 action = "Ok",
-                isMultiChoice = true
+                isMultiChoice = true,
+                onDismiss = {},
             ) {
 
             }

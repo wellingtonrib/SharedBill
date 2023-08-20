@@ -19,7 +19,6 @@ import br.com.jwar.sharedbill.core.designsystem.components.SelectDialog
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.util.UiText
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
@@ -36,6 +35,7 @@ fun PaymentPaidByField(
             title = stringResource(id = R.string.label_payment_paid_by),
             message = stringResource(id = R.string.placeholder_payment_paid_by),
             options = paidByOptions,
+            defaultSelection = listOf(paidBy),
             isMultiChoice = false,
             onDismiss = {
                 isPaidBySelecting.value = false

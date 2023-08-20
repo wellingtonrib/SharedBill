@@ -19,19 +19,18 @@ fun PaymentScreen(
 ) {
     when (state) {
         is PaymentContract.State.Loading -> LoadingContent()
-        is PaymentContract.State.Loaded ->
-            when (paymentType) {
-                PaymentType.EXPENSE -> ExpensePaymentContent(
-                    state = state,
-                    onSaveClick = onSaveClick,
-                    onNavigateBack = onNavigateBack
-                )
-                PaymentType.SETTLEMENT -> SettlementPaymentContent(
-                    state = state,
-                    onSaveClick = onSaveClick,
-                    onNavigateBack = onNavigateBack
-                )
-            }
+        is PaymentContract.State.Loaded -> when (paymentType) {
+            PaymentType.EXPENSE -> ExpensePaymentContent(
+                state = state,
+                onSaveClick = onSaveClick,
+                onNavigateBack = onNavigateBack
+            )
+            PaymentType.SETTLEMENT -> SettlementPaymentContent(
+                state = state,
+                onSaveClick = onSaveClick,
+                onNavigateBack = onNavigateBack
+            )
+        }
     }
 }
 

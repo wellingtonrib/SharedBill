@@ -1,5 +1,6 @@
 package br.com.jwar.groups.presentation.ui.group_details.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.icons.Icons
@@ -18,45 +19,40 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
-import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerSmall
+import br.com.jwar.groups.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
 fun GroupDetailsFloatingButtons(
+    group: GroupUiModel,
+    listState: LazyListState,
+    onNewPaymentClick: (PaymentType) -> Unit,
+) {
+    val showSettlement by remember { derivedStateOf { group.members.size > 1 } }
+
+    if (showSettlement) {
+        NewPaymentGroupedButtons(listState, onNewPaymentClick)
+    } else {
+        NewExpenseButton(listState, onNewPaymentClick)
+    }
+}
+
+@Composable
+private fun NewPaymentGroupedButtons(
     listState: LazyListState,
     onNewPaymentClick: (PaymentType) -> Unit
 ) {
     var actionButtonsVisible by remember { mutableStateOf(false) }
 
     Column(
-        horizontalAlignment = Alignment.End
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4)
     ) {
         if (actionButtonsVisible) {
-            ExtendedFloatingActionButton(
-                onClick = { onNewPaymentClick(PaymentType.EXPENSE) },
-                expanded = true,
-                icon = {
-                    Icon(
-                        Icons.Outlined.ShoppingCart,
-                        stringResource(R.string.label_payment_new_expense)
-                    )
-                },
-                text = { Text(stringResource(R.string.label_payment_new_expense)) },
-            )
-            VerticalSpacerSmall()
-            ExtendedFloatingActionButton(
-                onClick = { onNewPaymentClick(PaymentType.SETTLEMENT) },
-                expanded = true,
-                icon = {
-                    Icon(
-                        Icons.Outlined.ThumbUp,
-                        stringResource(R.string.label_payment_new_settlement)
-                    )
-                },
-                text = { Text(stringResource(R.string.label_payment_new_settlement)) },
-            )
-            VerticalSpacerSmall()
+            NewExpenseButton(listState, onNewPaymentClick)
+            NewSettlementButton(onNewPaymentClick)
         }
         ExtendedFloatingActionButton(
             onClick = { actionButtonsVisible = !actionButtonsVisible },
@@ -65,6 +61,38 @@ fun GroupDetailsFloatingButtons(
             text = { Text(stringResource(R.string.label_payment_new)) },
         )
     }
+}
+
+@Composable
+private fun NewSettlementButton(
+    onNewPaymentClick: (PaymentType) -> Unit
+) {
+    ExtendedFloatingActionButton(
+        onClick = { onNewPaymentClick(PaymentType.SETTLEMENT) },
+        expanded = true,
+        icon = {
+            Icon(
+                Icons.Outlined.ThumbUp,
+                stringResource(R.string.label_payment_new_settlement)
+            )
+        },
+        text = { Text(stringResource(R.string.label_payment_new_settlement)) },
+    )
+}
+
+@Composable
+private fun NewExpenseButton(listState: LazyListState, onNewPaymentClick: (PaymentType) -> Unit) {
+    ExtendedFloatingActionButton(
+        onClick = { onNewPaymentClick(PaymentType.EXPENSE) },
+        expanded = listState.isScrollingUp(),
+        icon = {
+            Icon(
+                Icons.Outlined.ShoppingCart,
+                stringResource(R.string.label_payment_new_expense)
+            )
+        },
+        text = { Text(stringResource(R.string.label_payment_new_expense)) },
+    )
 }
 
 @Composable
