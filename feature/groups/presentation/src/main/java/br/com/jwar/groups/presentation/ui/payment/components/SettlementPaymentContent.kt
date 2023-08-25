@@ -21,6 +21,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.groups.presentation.models.PaymentUiModel
 import br.com.jwar.groups.presentation.ui.payment.PaymentContract
@@ -99,6 +100,7 @@ fun SettlementPaymentContent(
                     }
                     PaymentValueField(
                         focusManager = focusManager,
+                        imeAction = ImeAction.Next,
                         value = value,
                         error = valueError,
                     ) { newValue -> value = newValue; valueError = null }

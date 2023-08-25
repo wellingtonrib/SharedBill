@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.PaymentUiError
@@ -19,6 +20,7 @@ import br.com.jwar.sharedbill.groups.presentation.R
 fun PaymentDescriptionField(
     modifier: Modifier = Modifier,
     focusRequester: FocusRequester = FocusRequester(),
+    imeAction: ImeAction = ImeAction.Next,
     description: String = "",
     error: PaymentUiError.InvalidDescriptionError? = null,
     onValueChange: (TextFieldValue) -> Unit = {},
@@ -34,6 +36,7 @@ fun PaymentDescriptionField(
         suggestions = suggestions.toList(),
         isError = error?.message?.asString().isNullOrBlank().not(),
         supportingText = { error?.message?.AsText(AppTheme.colors.error) },
+        imeAction = imeAction,
         onValueChange = onValueChange,
     )
 }

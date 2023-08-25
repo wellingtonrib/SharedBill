@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.PaymentUiError
@@ -21,6 +22,7 @@ import br.com.jwar.sharedbill.groups.presentation.R
 fun PaymentValueField(
     modifier: Modifier = Modifier,
     focusManager: FocusRequester = FocusRequester(),
+    imeAction: ImeAction = ImeAction.Next,
     value: String = "",
     error: PaymentUiError.InvalidValueError? = null,
     onValueChange: (String) -> Unit,
@@ -33,7 +35,8 @@ fun PaymentValueField(
         placeholder = { Text(text = stringResource(id = R.string.placeholder_payment_value)) },
         onValueChange = onValueChange,
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Decimal
+            keyboardType = KeyboardType.Decimal,
+            imeAction = imeAction
         ),
         isError = error?.message?.asString().isNullOrBlank().not(),
         supportingText = { error?.message?.AsText(AppTheme.colors.error) },
@@ -44,7 +47,7 @@ fun PaymentValueField(
 @Composable
 fun PreviewPaymentValueField() {
     SharedBillTheme {
-        PaymentValueField {
+        PaymentValueField() {
 
         }
     }

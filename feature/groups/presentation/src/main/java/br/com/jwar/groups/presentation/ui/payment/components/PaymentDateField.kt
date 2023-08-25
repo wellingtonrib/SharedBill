@@ -3,6 +3,7 @@ package br.com.jwar.groups.presentation.ui.payment.components
 import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -16,6 +17,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.PaymentUiError
@@ -30,6 +32,7 @@ import java.util.Date
 @Composable
 fun PaymentDateField(
     modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Next,
     date: String = Date().format(),
     error: PaymentUiError.InvalidDateError? = null,
     onValueChange: (String) -> Unit,
@@ -68,6 +71,9 @@ fun PaymentDateField(
         label = { Text(text = stringResource(R.string.label_date)) },
         placeholder = { Text(text = stringResource(R.string.placeholder_payment_date)) },
         onValueChange = { onValueChange(it.text) },
+        keyboardOptions = KeyboardOptions(
+            imeAction = imeAction
+        ),
         isError = error?.message?.asString().isNullOrBlank().not(),
         supportingText = { error?.message?.AsText(AppTheme.colors.error) },
     )
@@ -77,7 +83,7 @@ fun PaymentDateField(
 @Composable
 fun PreviewPaymentDateField() {
     SharedBillTheme {
-        PaymentDateField {
+        PaymentDateField() {
 
         }
     }
