@@ -16,6 +16,9 @@ data class GroupUiModel(
         .plus("\n\n" + balance.map { entry -> "${entry.key.name} ${entry.value}" }.joinToString("\n"))
         .plus("\n\nTotal $total")
 
+    val membersToSelect: Map<GroupMemberUiModel, Boolean>
+        get() = members.associateWith { it.uid == members.first().uid }
+
     companion object {
         fun sample() = GroupUiModel(
             id = UUID.randomUUID().toString(),

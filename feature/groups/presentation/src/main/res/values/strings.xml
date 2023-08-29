@@ -72,11 +72,11 @@
 
     <string name="error_generic">Something went wrong</string>
     <string name="error_payment_user_not_in_group">You are not in this group anymore</string>
-    <string name="error_payment_payer_not_in_group">The selected payer is not in the group anymore</string>
+    <string name="error_payment_payer_not_in_group">You cannot select this member as payer</string>
     <string name="error_payment_description_empty">Please provide a description</string>
     <string name="error_payment_value_empty">Please provide a value</string>
     <string name="error_payment_date_empty">Please provide a date</string>
-    <string name="error_payment_empty_related_members">Please select some related members</string>
+    <string name="error_payment_empty_related_members">Please select at least one member</string>
     <string name="error_removing_member_with_non_zero_balance">You cannot remove this user until settle up him</string>
     <string name="error_removing_owner_member">You cannot remove the group owner</string>
     <string name="error_deleting_group_from_non_owner">Only the owner can delete this group</string>

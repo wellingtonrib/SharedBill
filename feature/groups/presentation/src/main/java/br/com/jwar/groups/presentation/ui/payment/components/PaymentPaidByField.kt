@@ -26,7 +26,7 @@ fun PaymentPaidByField(
     modifier: Modifier = Modifier,
     paidByOptions: Map<GroupMemberUiModel, Boolean> = emptyMap(),
     paidBy: GroupMemberUiModel = GroupMemberUiModel(),
-    error: PaymentUiError.InvalidPaidByError? = null,
+    error: PaymentUiError? = null,
     onValueChange: (GroupMemberUiModel) -> Unit,
 ) {
     val isPaidBySelecting = remember { mutableStateOf(false) }
@@ -74,7 +74,6 @@ fun PreviewPaymentPaidByField() {
     SharedBillTheme {
         PaymentPaidByField(
             paidBy = GroupMemberUiModel.sample(),
-            error = PaymentUiError.InvalidPaidByError
         ) {
 
         }

@@ -25,7 +25,6 @@ import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.utility.extensions.format
-import br.com.jwar.sharedbill.core.utility.extensions.parse
 import java.util.Calendar
 import java.util.Date
 
@@ -33,22 +32,26 @@ import java.util.Date
 fun PaymentDateField(
     modifier: Modifier = Modifier,
     imeAction: ImeAction = ImeAction.Next,
-    date: String = Date().format(),
-    error: PaymentUiError.InvalidDateError? = null,
-    onValueChange: (String) -> Unit,
+    dateTime: Long = Date().time,
+    error: PaymentUiError? = null,
+    onValueChange: (Long) -> Unit,
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+    val calendar = remember { Calendar.getInstance().apply { time = Date(dateTime) } }
 
-    var formattedDateValue by remember { mutableStateOf(TextFieldValue(date.format())) }
+    var formattedDateValue by remember { mutableStateOf(TextFieldValue(Date(dateTime).format())) }
 
     val datePickerDialog = remember {
-        val calendar = Calendar.getInstance().apply { time = date.parse() }
         DatePickerDialog(
             context,
             { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
                 "$dayOfMonth/${month + 1}/$year".let { dataString ->
                     formattedDateValue = TextFieldValue(dataString)
+                    calendar.set(Calendar.YEAR, year)
+                    calendar.set(Calendar.MONTH, month)
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                    onValueChange(calendar.timeInMillis)
                 }
             },
             calendar.get(Calendar.YEAR),
@@ -70,7 +73,7 @@ fun PaymentDateField(
         value = formattedDateValue,
         label = { Text(text = stringResource(R.string.label_date)) },
         placeholder = { Text(text = stringResource(R.string.placeholder_payment_date)) },
-        onValueChange = { onValueChange(it.text) },
+        onValueChange = { },
         keyboardOptions = KeyboardOptions(
             imeAction = imeAction
         ),

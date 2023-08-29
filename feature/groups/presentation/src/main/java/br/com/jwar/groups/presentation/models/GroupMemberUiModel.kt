@@ -35,6 +35,9 @@ data class GroupMemberUiModel(
     override val selectableLabel: String
         get() = name
 
+    override val selectableId: String
+        get() = uid
+
     val firstName
         get() = name.split(" ").first()
 }

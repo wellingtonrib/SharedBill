@@ -2,7 +2,6 @@ package br.com.jwar.sharedbill.core.designsystem.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -10,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -29,7 +27,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import kotlinx.coroutines.delay
 
 @Composable
 fun TextFieldWithSuggestions(
@@ -43,7 +40,6 @@ fun TextFieldWithSuggestions(
     suggestions: List<String>,
     isError: Boolean = false,
     supportingText: @Composable() (() -> Unit)? = null,
-
     onValueChange: (TextFieldValue) -> Unit = {}
 ) {
     var textFieldValue by remember { mutableStateOf(TextFieldValue(text)) }

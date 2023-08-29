@@ -4,7 +4,7 @@ import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import java.util.Date
 import java.util.UUID
 
-class PaymentUiModel(
+data class PaymentUiModel(
     val id: String = "",
     val description: String = "",
     val value: String = "",

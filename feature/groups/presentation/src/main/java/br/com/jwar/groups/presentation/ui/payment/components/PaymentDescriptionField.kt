@@ -19,17 +19,17 @@ import br.com.jwar.sharedbill.groups.presentation.R
 @Composable
 fun PaymentDescriptionField(
     modifier: Modifier = Modifier,
-    focusRequester: FocusRequester = FocusRequester(),
+    focusRequester: FocusRequester? = FocusRequester(),
     imeAction: ImeAction = ImeAction.Next,
     description: String = "",
-    error: PaymentUiError.InvalidDescriptionError? = null,
+    error: PaymentUiError? = null,
     onValueChange: (TextFieldValue) -> Unit = {},
 ) {
     val suggestions = stringArrayResource(R.array.samples_payment_description)
 
     TextFieldWithSuggestions(
         modifier = modifier.fillMaxWidth(),
-        focusRequester = focusRequester,
+        focusRequester = focusRequester ?: FocusRequester(),
         label = { Text(text = stringResource(R.string.label_payment_description)) },
         placeholder = { Text(text = stringResource(R.string.placeholder_payment_description)) },
         text = description,

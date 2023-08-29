@@ -24,7 +24,6 @@ import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerSmall
-import br.com.jwar.sharedbill.core.designsystem.util.UiText
 import br.com.jwar.sharedbill.core.utility.extensions.toCurrency
 import br.com.jwar.sharedbill.groups.presentation.R
 import java.math.BigDecimal
@@ -36,7 +35,7 @@ fun PaymentPaidToField(
     sharedValue: BigDecimal = BigDecimal.ZERO,
     paidToOptions: List<GroupMemberUiModel> = emptyList(),
     paidTo: List<GroupMemberUiModel> = emptyList(),
-    error: PaymentUiError.InvalidPaidToError? = null,
+    error: PaymentUiError? = null,
     onValueChange: (List<GroupMemberUiModel>) -> Unit,
 ) {
     var selection by remember { mutableStateOf(paidTo) }
@@ -54,13 +53,13 @@ fun PaymentPaidToField(
             if (isExpense) {
                 items(paidToOptions) { member ->
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CheckboxWitText(
                             modifier = Modifier.weight(1f),
                             text = member.name,
-                            isChecked = selection.contains(member),
+                            isChecked = selection.any { it.uid == member.uid },
                             onCheckedChange = { checked ->
                                 selection = if (checked) {
                                     selection.toMutableList().apply { add(member) }
@@ -88,8 +87,8 @@ fun PaymentPaidToField(
                     )
                 }
             }
-            if (error != null) {
-                item { error.message.AsText(AppTheme.colors.error) }
+            item {
+                error?.message?.AsText(AppTheme.colors.error)
             }
         }
     }
@@ -103,7 +102,6 @@ fun PreviewPaymentPaidToField() {
             sharedValue = BigDecimal.TEN,
             paidTo = listOf(GroupMemberUiModel.sample().copy(uid = "1")),
             paidToOptions = listOf(GroupMemberUiModel.sample().copy(uid = "1")),
-            error = PaymentUiError.InvalidPaidToError
         ) {
 
         }

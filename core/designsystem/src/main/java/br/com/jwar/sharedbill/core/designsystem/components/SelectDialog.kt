@@ -19,6 +19,7 @@ import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
 
 interface Selectable {
     val selectableLabel: String
+    val selectableId: String
 }
 
 @Composable
@@ -50,7 +51,7 @@ fun <T: Selectable> SelectDialog(
                         Text(text = message)
                     }
                     itemsIndexed(optionsKeys) { index, item ->
-                        SelectOption(optionsKeys[index], selection.contains(item), isMultiChoice) { checked ->
+                        SelectOption(optionsKeys[index], selection.any { it.selectableId == item.selectableId }, isMultiChoice) { checked ->
                             selection = if (isMultiChoice) {
                                 selection.apply {
                                     if (checked) {
@@ -130,6 +131,8 @@ fun PreviewSelectDialogContent() {
                     object: Selectable {
                         override val selectableLabel: String
                             get() = "Test"
+                        override val selectableId: String
+                            get() = "1"
                     } to true,
                 ),
                 action = "Ok",
