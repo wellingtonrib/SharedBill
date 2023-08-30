@@ -141,7 +141,7 @@ class PaymentViewModel @Inject constructor(
     private fun setErrorState(throwable: Throwable) =
         setState { state ->
             val error = PaymentUiError.mapFrom(throwable)
-            val inputFields = state.inputFields.mapError(error)
+            val inputFields = state.inputFields.mapErrorHandler(error)
             val genericError = error.takeIf { inputFields.none { it.hasError } }
             state.copy(
                 isLoading = false,
@@ -150,19 +150,17 @@ class PaymentViewModel @Inject constructor(
             )
         }
 
-    private fun List<PaymentContract.Field>.mapError(error: PaymentUiError) = this.map { field ->
-        when(field) {
-            is PaymentContract.Field.DescriptionField ->
-                field.copy(error = error as? PaymentUiError.InvalidDescriptionError)
-            is PaymentContract.Field.ValueField ->
-                field.copy(error = error as? PaymentUiError.InvalidValueError)
-            is PaymentContract.Field.DateField ->
-                field.copy(error = error as? PaymentUiError.InvalidDateError)
-            is PaymentContract.Field.PaidByField ->
-                field.copy(error = error as? PaymentUiError.InvalidPaidByError)
-            is PaymentContract.Field.PaidToField ->
-                field.copy(error = error as? PaymentUiError.InvalidPaidToError)
-            else -> field
+    private fun List<PaymentContract.Field>.mapErrorHandler(error: PaymentUiError) = this.map { field ->
+        if (field::class == error.errorHandler) {
+            when (field) {
+                is PaymentContract.Field.DescriptionField -> field.copy(error = error)
+                is PaymentContract.Field.ValueField -> field.copy(error = error)
+                is PaymentContract.Field.DateField -> field.copy(error = error)
+                is PaymentContract.Field.PaidByField -> field.copy(error = error)
+                is PaymentContract.Field.PaidToField -> field.copy(error = error)
+            }
+        } else {
+            field
         }
     }
 
