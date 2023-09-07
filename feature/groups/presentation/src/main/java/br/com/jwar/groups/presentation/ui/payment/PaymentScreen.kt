@@ -1,40 +1,45 @@
 package br.com.jwar.groups.presentation.ui.payment
 
-import android.annotation.SuppressLint
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.groups.presentation.ui.payment.components.PaymentContent
-import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
+import com.google.common.collect.ImmutableSet
 
 @Composable
 fun PaymentScreen(
     state: PaymentContract.State,
-    onPaymentParamsChange: (PaymentContract.PaymentParams) -> Unit = {},
+    onDescriptionChange: (String) -> Unit = {},
+    onValueChange: (String) -> Unit = {},
+    onDateChange: (Long) -> Unit = {},
+    onPaidByChange: (GroupMemberUiModel) -> Unit = {},
+    onPaidToChange: (ImmutableSet<GroupMemberUiModel>) -> Unit = {},
     onSaveClick: () -> Unit = {},
     onNavigateBack: () -> Unit = {},
 ) {
-    when {
-        state.isLoading -> LoadingContent()
-        state.params != null -> PaymentContent(
-            params = state.params,
-            onParamsChange = onPaymentParamsChange,
-            onSaveClick = onSaveClick,
-            onNavigateBack = onNavigateBack
-        )
-    }
+    LogCompositions("PaymentScreen")
+
+    PaymentContent(
+        state = state,
+        onSaveClick = onSaveClick,
+        onDescriptionChange = onDescriptionChange,
+        onValueChange = onValueChange,
+        onDateChange = onDateChange,
+        onPaidByChange = onPaidByChange,
+        onPaidToChange = onPaidToChange,
+        onNavigateBack = onNavigateBack
+    )
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
 fun PreviewPaymentContent() {
     SharedBillTheme {
-        Scaffold {
-            PaymentScreen(
-                state = PaymentContract.State(params = PaymentContract.PaymentParams.sample()),
-            )
-        }
+        PaymentScreen(
+            state = PaymentContract.State(),
+            onSaveClick = {},
+        )
     }
 }

@@ -29,7 +29,7 @@ class CreatePaymentUseCaseImplTest {
     fun `invoke should create payment and return success result`() = runTest {
         val description = "Payment description"
         val value = "100.00"
-        val date = Date()
+        val dateTime = Date().time
         val paidById = "payer_id"
         val paidToIds = listOf("member_id_1", "member_id_2")
         val groupId = "group_id"
@@ -41,7 +41,7 @@ class CreatePaymentUseCaseImplTest {
         val result = createPaymentUseCase.invoke(
             description = description,
             value = value,
-            date = date,
+            dateTime = dateTime,
             paidById = paidById,
             paidToIds = paidToIds,
             groupId = groupId,
@@ -55,7 +55,7 @@ class CreatePaymentUseCaseImplTest {
             value = value,
             paidBy = payer,
             paidTo = members,
-            createdAt = date,
+            createdAt = Date(dateTime),
             createdBy = payer
         )
 

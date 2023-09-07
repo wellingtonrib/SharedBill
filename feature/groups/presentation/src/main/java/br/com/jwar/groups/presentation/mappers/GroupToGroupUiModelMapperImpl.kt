@@ -5,6 +5,8 @@ import br.com.jwar.sharedbill.core.utility.extensions.toBigDecimalOrZero
 import br.com.jwar.sharedbill.core.utility.extensions.toCurrency
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
+import com.google.common.collect.ImmutableMap
+import com.google.common.collect.ImmutableSet
 import javax.inject.Inject
 
 class GroupToGroupUiModelMapperImpl @Inject constructor(
@@ -15,7 +17,6 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
         GroupUiModel(
             id = from.id,
             title = from.title,
-            membersNames = mapMembersNames(from),
             members = mapMembers(from),
             payments = mapPayments(from),
             balance = mapBalance(from),
@@ -23,28 +24,31 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
             isCurrentUserOwner = mapIsCurrentUserOwner(from)
         )
 
-    private fun mapTotal(from: Group) =
+    private fun mapTotal(from: Group) = from.payments
+        .filter { it.paymentType == PaymentType.EXPENSE }
+        .sumOf { it.value.toBigDecimalOrZero() }.toCurrency()
+
+    private fun mapPayments(from: Group) = ImmutableSet.copyOf(
         from.payments
-            .filter { it.paymentType == PaymentType.EXPENSE }
-            .sumOf { it.value.toBigDecimalOrZero() }.toCurrency()
+            .sortedByDescending { it.createdAt }
+            .map { paymentToPaymentUiModelMapper.mapFrom(it) }
+    )
 
-    private fun mapPayments(from: Group) =
-        from.payments.sortedByDescending { it.createdAt }.map { paymentToPaymentUiModelMapper.mapFrom(it) }
-
-    private fun mapMembers(from: Group) =
-        from.members.map { userToGroupMemberUiModelMapper.mapFrom(it) }
-
-    private fun mapMembersNames(from: Group) =
-        from.members.joinToString(", ") { it.firstName }
+    private fun mapMembers(from: Group) = ImmutableSet.copyOf(
+        from.members
+            .sortedByDescending { it.isCurrentUser }
+            .map { userToGroupMemberUiModelMapper.mapFrom(it) }
+    )
 
     private fun mapIsCurrentUserOwner(from: Group) =
         from.members.firstOrNull { it.isCurrentUser }?.firebaseUserId == from.owner.firebaseUserId
 
-    private fun mapBalance(from: Group) =
+    private fun mapBalance(from: Group) = ImmutableMap.copyOf(
         from.balance.mapNotNull {
             val member = from.findMemberById(it.key)
             if (member != null) {
                 userToGroupMemberUiModelMapper.mapFrom(member) to it.value.toBigDecimalOrZero()
             } else null
         }.associateBy({it.first}, {it.second})
+    )
 }

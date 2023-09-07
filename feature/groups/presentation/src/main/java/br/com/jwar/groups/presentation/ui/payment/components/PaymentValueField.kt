@@ -6,33 +6,54 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.PaymentUiError
-import br.com.jwar.groups.presentation.ui.payment.PaymentContract
+import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
 fun PaymentValueField(
-    params: PaymentContract.PaymentParams,
-    onPaymentParamsChange: (PaymentContract.PaymentParams) -> Unit = {}
+    modifier: Modifier = Modifier,
+    focusRequester: FocusRequester? = FocusRequester(),
+    imeAction: ImeAction = ImeAction.Next,
+    value: String = "",
+    error: PaymentUiError? = null,
+    onValueChange: (String) -> Unit,
 ) {
-    val isError = params.error is PaymentUiError.EmptyValueError
+    LogCompositions("PaymentContent PaymentValueField")
+    var textFieldValue by remember { mutableStateOf(TextFieldValue(value)) }
+
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier
+            .focusRequester(focusRequester ?: FocusRequester())
+            .fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        value = params.value,
+        value = textFieldValue,
         label = { Text(text = stringResource(id = R.string.label_payment_value)) },
         placeholder = { Text(text = stringResource(id = R.string.placeholder_payment_value)) },
-        onValueChange = { onPaymentParamsChange(params.copy(value = it)) },
+        onValueChange = { newValue ->
+            textFieldValue = newValue
+            onValueChange(newValue.text)
+        },
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Decimal
+            keyboardType = KeyboardType.Decimal,
+            imeAction = imeAction
         ),
-        isError = isError,
-        supportingText = { if (isError) params.error?.message?.asText() }
+        isError = error?.message?.asString().isNullOrBlank().not(),
+        supportingText = { error?.message?.AsText(AppTheme.colors.error) },
     )
 }
 
@@ -40,6 +61,8 @@ fun PaymentValueField(
 @Composable
 fun PreviewPaymentValueField() {
     SharedBillTheme {
-        PaymentValueField(PaymentContract.PaymentParams.sample())
+        PaymentValueField() {
+
+        }
     }
 }

@@ -1,14 +1,11 @@
 package br.com.jwar.groups.presentation.ui.payment.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,27 +14,36 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
-import br.com.jwar.groups.presentation.ui.payment.PaymentContract
+import br.com.jwar.groups.presentation.models.PaymentUiError
+import br.com.jwar.sharedbill.core.designsystem.components.CheckboxWitText
+import br.com.jwar.sharedbill.core.designsystem.components.RadioButtonWitText
+import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerSmall
-import br.com.jwar.sharedbill.core.designsystem.theme.paddingSmall
-import br.com.jwar.sharedbill.groups.domain.model.PaymentType
+import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.groups.presentation.R
+import com.google.common.collect.ImmutableSet
 
 @Composable
 fun PaymentPaidToField(
-    params: PaymentContract.PaymentParams,
-    onPaymentParamsChange: (PaymentContract.PaymentParams) -> Unit = {}
+    modifier: Modifier = Modifier,
+    isMultiSelect: Boolean = true,
+    sharedValue: String = "",
+    options: ImmutableSet<GroupMemberUiModel> = ImmutableSet.of(),
+    value: ImmutableSet<GroupMemberUiModel> = ImmutableSet.of(),
+    error: PaymentUiError? = null,
+    onValueChange: (ImmutableSet<GroupMemberUiModel>) -> Unit,
 ) {
-    var selection by remember { mutableStateOf(params.paidTo) }
+    LogCompositions("PaymentContent PaymentPaidToField")
+
+    var selection by remember { mutableStateOf(value) }
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top
     ) {
         Column {
@@ -46,92 +52,47 @@ fun PaymentPaidToField(
         }
         HorizontalSpacerMedium()
         LazyColumn {
-            if (params.paymentType == PaymentType.EXPENSE) {
-                items(params.group.members) { member ->
-                    CheckboxWitText(
-                        member = member,
-                        isChecked = selection.contains(member),
-                        onCheckedChange = { checked ->
-                            selection = if (checked) {
-                                selection.toMutableList().apply { add(member) }
-                            } else {
-                                selection.toMutableList().apply { remove(member) }
+            if (isMultiSelect) {
+                items(options.asList()) { member ->
+                    Row(
+                        modifier = modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CheckboxWitText(
+                            modifier = Modifier.weight(1f),
+                            text = member.name,
+                            isChecked = selection.any { it.uid == member.uid },
+                            onCheckedChange = { checked ->
+                                selection = if (checked) {
+                                    ImmutableSet.copyOf(selection.toMutableList().apply { add(member) })
+                                } else {
+                                    ImmutableSet.copyOf(selection.toMutableList().apply { remove(member) })
+                                }
+                                onValueChange(selection)
                             }
-                            onPaymentParamsChange(params.copy(paidTo = selection))
-                        }
-                    )
+                        )
+                        Text(
+                            modifier = Modifier.padding(end = AppTheme.dimens.space_4),
+                            text = if (selection.contains(member)) sharedValue else "-"
+                        )
+                    }
                 }
             } else {
-                items(params.group.members) { member ->
+                items(options.asList()) { member ->
                     RadioButtonWitText(
-                        member = member,
+                        text = member.name,
                         isChecked = selection.contains(member),
                         onCheckedChange = { checked ->
-                            selection = if (checked) listOf(member) else emptyList()
-                            onPaymentParamsChange(params.copy(paidTo = selection))
+                            selection = if (checked) ImmutableSet.of(member) else ImmutableSet.of()
+                            onValueChange(selection)
                         }
                     )
                 }
             }
+            item {
+                error?.message?.AsText(AppTheme.colors.error)
+            }
         }
-    }
-}
-
-@Composable
-fun CheckboxWitText(
-    member: GroupMemberUiModel,
-    isChecked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-) {
-    var checkedState by remember { mutableStateOf(isChecked) }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                val newValue = !checkedState
-                checkedState = newValue
-                onCheckedChange(newValue)
-            },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Checkbox(
-            modifier = Modifier,
-            checked = checkedState,
-            onCheckedChange = { checkedState = it }
-        )
-        Text(
-            text = member.name,
-            color = if (checkedState) LocalContentColor.current else Color.Gray
-        )
-    }
-}
-
-@Composable
-fun RadioButtonWitText(
-    member: GroupMemberUiModel,
-    isChecked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .paddingSmall()
-            .fillMaxWidth()
-            .clickable {
-                onCheckedChange(true)
-            },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        RadioButton(
-            modifier = Modifier,
-            selected = isChecked,
-            onClick = null
-        )
-        HorizontalSpacerMedium()
-        Text(
-            text = member.name,
-            color = if (isChecked) LocalContentColor.current else Color.Gray
-        )
     }
 }
 
@@ -140,7 +101,11 @@ fun RadioButtonWitText(
 fun PreviewPaymentPaidToField() {
     SharedBillTheme {
         PaymentPaidToField(
-            PaymentContract.PaymentParams.sample()
-        )
+            sharedValue = "",
+            value = ImmutableSet.of(GroupMemberUiModel.sample().copy(uid = "1")),
+            options = ImmutableSet.of(GroupMemberUiModel.sample().copy(uid = "1")),
+        ) {
+
+        }
     }
 }

@@ -11,6 +11,7 @@ class UserToGroupMemberUiModelMapperImpl @Inject constructor(): UserToGroupMembe
             name = from.name,
             email = from.email,
             imageUrl = from.photoUrl.orEmpty(),
-            inviteCode = from.inviteCode
+            inviteCode = from.inviteCode,
+            isCurrentUser = from.isCurrentUser,
         )
 }

@@ -1,6 +1,7 @@
 package br.com.jwar.sharedbill.core.designsystem.components
 
-import androidx.annotation.ColorRes
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,10 +22,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
+import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 
 /**
  * items : list of items to be render
@@ -36,13 +40,13 @@ import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 @Composable
 fun SegmentedControl(
     modifier: Modifier = Modifier,
-    horizontalArrangement: Arrangement.Horizontal,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     items: List<String>,
     defaultSelectedItemIndex: Int = 0,
     useFixedWidth: Boolean = false,
+    colorScheme: ColorScheme = MaterialTheme.colorScheme,
     itemWidth: Dp = 120.dp,
     cornerRadius : Int = 50,
-    @ColorRes color : Color = AppTheme.colors.primary,
     onItemSelection: (selectedItemIndex: Int) -> Unit
 ) {
     var selectedIndex by remember { mutableIntStateOf(defaultSelectedItemIndex) }
@@ -112,18 +116,14 @@ fun SegmentedControl(
                     )
                 },
                 border = BorderStroke(
-                    1.dp, if (selectedIndex == index) {
-                        color
-                    } else {
-                        color.copy(alpha = 0.75f)
-                    }
+                    1.dp, colorScheme.outline
                 ),
                 colors = if (selectedIndex == index) {
                     /**
                      * selected colors
                      */
                     ButtonDefaults.outlinedButtonColors(
-                        containerColor = color
+                        containerColor = colorScheme.secondaryContainer
                     )
                 } else {
                     /**
@@ -137,13 +137,25 @@ fun SegmentedControl(
                         text = item,
                         fontWeight = FontWeight.Normal,
                         color = if (selectedIndex == index) {
-                            Color.White
+                            colorScheme.onSecondaryContainer
                         } else {
-                            color.copy(alpha = 0.9f)
-                        },
+                            colorScheme.onSurface
+                        }
                     )
                 }
             }
         }
+    }
+}
+
+@Preview(uiMode = UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(uiMode = UI_MODE_NIGHT_NO, showBackground = true)
+@Composable
+fun PreviewSegmentedControl() {
+    SharedBillTheme {
+        SegmentedControl(
+            items = listOf("Item 1", "Item 2", "Item 3"),
+            onItemSelection = {}
+        )
     }
 }

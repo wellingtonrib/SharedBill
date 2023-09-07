@@ -9,7 +9,8 @@ data class GroupMemberUiModel(
     val name: String = "",
     val email: String = "",
     val imageUrl: String = "",
-    val inviteCode: String? = null
+    val inviteCode: String? = null,
+    val isCurrentUser: Boolean = false,
 ) : Selectable {
 
     companion object {
@@ -19,6 +20,7 @@ data class GroupMemberUiModel(
             email = "user@email.com",
             imageUrl = "",
             inviteCode = "",
+            isCurrentUser = true,
         )
     }
 
@@ -32,4 +34,10 @@ data class GroupMemberUiModel(
 
     override val selectableLabel: String
         get() = name
+
+    override val selectableId: String
+        get() = uid
+
+    val firstName
+        get() = name.split(" ").first()
 }

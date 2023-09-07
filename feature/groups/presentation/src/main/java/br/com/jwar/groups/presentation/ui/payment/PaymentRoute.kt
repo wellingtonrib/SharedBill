@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.groups.presentation.ui.payment.PaymentContract.Effect
 import br.com.jwar.groups.presentation.ui.payment.PaymentContract.Event
+import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 
 @Composable
 fun PaymentRoute(
@@ -17,10 +18,16 @@ fun PaymentRoute(
 ) {
     val state = viewModel.uiState.collectAsState().value
 
+    LogCompositions("PaymentRoute")
+
     PaymentScreen(
         state = state,
-        onPaymentParamsChange = { viewModel.emitEvent { Event.OnParamsChange(it) }},
-        onSaveClick = { viewModel.emitEvent { Event.OnSavePayment } },
+        onDescriptionChange = { viewModel.emitEvent { Event.OnDescriptionChange(it) } },
+        onValueChange = { viewModel.emitEvent { Event.OnValueChange(it) } },
+        onDateChange = { viewModel.emitEvent { Event.OnDateChange(it) } },
+        onPaidByChange = { viewModel.emitEvent { Event.OnPaidByChange(it) } },
+        onPaidToChange = { viewModel.emitEvent { Event.OnPaidToChange(it) } },
+        onSaveClick = { viewModel.emitEvent { Event.OnSavePayment }},
         onNavigateBack = onNavigateBack,
     )
 
@@ -32,3 +39,4 @@ fun PaymentRoute(
         }
     }
 }
+
