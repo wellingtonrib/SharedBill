@@ -1,61 +1,108 @@
 package br.com.jwar.groups.presentation.ui.payment
 
+import androidx.annotation.StringRes
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.groups.presentation.models.PaymentUiError
-import br.com.jwar.groups.presentation.models.PaymentUiModel
 import br.com.jwar.sharedbill.core.common.UiEffect
 import br.com.jwar.sharedbill.core.common.UiEvent
 import br.com.jwar.sharedbill.core.common.UiState
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
+import br.com.jwar.sharedbill.groups.presentation.R
+import com.google.common.collect.ImmutableMap
+import com.google.common.collect.ImmutableSet
+import java.util.Date
 
 class PaymentContract {
 
     sealed class Event: UiEvent {
-        data class OnSavePayment(val payment: PaymentUiModel) : Event()
+        object OnSavePayment : Event()
+        data class OnDescriptionChange(val description: String) : Event()
+        data class OnValueChange(val value: String) : Event()
+        data class OnDateChange(val dateTime: Long) : Event()
+        data class OnPaidByChange(val paidBy: GroupMemberUiModel) : Event()
+        data class OnPaidToChange(val paidTo: ImmutableSet<GroupMemberUiModel>) : Event()
     }
 
     data class State(
         val isLoading: Boolean = false,
-        val title: String = "",
-        val inputFields: List<Field> = emptyList(),
+        val inputFields: ImmutableSet<Field> = ImmutableSet.of(),
         val genericError: PaymentUiError? = null,
-        val paymentUiModel: PaymentUiModel = PaymentUiModel()
-    ): UiState
+        val paymentType: PaymentType = PaymentType.EXPENSE,
+    ): UiState {
 
-    sealed class Field {
+        @get:StringRes
+        val titleRes: Int
+            get() = when (paymentType) {
+                PaymentType.EXPENSE -> R.string.label_payment_new_expense
+                PaymentType.SETTLEMENT -> R.string.label_payment_new_settlement
+            }
+
+        val visibleFields: ImmutableSet<Field>
+            get() = ImmutableSet.copyOf(inputFields.filter { it.visible })
+    }
+
+    sealed class Field(
+        open val value: Any,
+        open val visible: Boolean = true,
+        open val error: PaymentUiError? = null,
+    ) {
         data class DescriptionField(
-            override val requestFocus: Boolean = false,
+            override val value: String = "",
+            override val visible: Boolean = true,
             override val error: PaymentUiError? = null,
-        ): Field(), Focusable, ErrorHandler
+        ): Field(value)
         data class ValueField(
-            override val requestFocus: Boolean = false,
+            override val value: String = "",
+            override val visible: Boolean = true,
             override val error: PaymentUiError? = null,
-        ): Field(), Focusable, ErrorHandler
+        ): Field(value)
         data class DateField(
+            override val value: Long = Date().time,
+            override val visible: Boolean = true,
             override val error: PaymentUiError? = null,
-        ): Field(), ErrorHandler
+        ): Field(value)
         data class PaidByField(
-            val options: Map<GroupMemberUiModel, Boolean>,
+            override val value: GroupMemberUiModel = GroupMemberUiModel(),
+            override val visible: Boolean = true,
             override val error: PaymentUiError? = null,
-        ): Field(), ErrorHandler
+            val options: ImmutableMap<GroupMemberUiModel, Boolean>,
+        ): Field(value)
         data class PaidToField(
-            val options: List<GroupMemberUiModel>,
-            val isMultiSelect: Boolean = true,
+            override val value: ImmutableSet<GroupMemberUiModel> = ImmutableSet.of(),
+            override val visible: Boolean = true,
             override val error: PaymentUiError? = null,
-        ): Field(), ErrorHandler
+            val options: ImmutableSet<GroupMemberUiModel>,
+            val isMultiSelect: Boolean = true,
+            val sharedValue: String = "",
+        ): Field(value)
 
         val hasError: Boolean
-            get() = this is ErrorHandler && error != null
-    }
-
-    interface Focusable {
-        val requestFocus: Boolean
-    }
-
-    interface ErrorHandler {
-        val error: PaymentUiError?
+            get() = error != null
     }
 
     sealed class Effect: UiEffect {
         object Finish: Effect()
     }
 }
+
+inline fun <reified T : PaymentContract.Field> PaymentContract.State.updateField(
+    updater: (T) -> PaymentContract.Field
+): PaymentContract.State {
+    val updatedFields = this.inputFields.map { field ->
+        if (field is T) updater(field) else field
+    }
+    return this.copy(inputFields = ImmutableSet.copyOf(updatedFields))
+}
+
+inline fun PaymentContract.State.updateFields(
+    updater: (PaymentContract.Field) -> PaymentContract.Field
+): PaymentContract.State {
+    val updatedFields = this.inputFields.map {
+        field -> updater(field)
+    }
+    return this.copy(inputFields = ImmutableSet.copyOf(updatedFields))
+}
+
+@SuppressWarnings("unchecked")
+inline fun <reified T: PaymentContract.Field, V> PaymentContract.State.getFieldValue(
+) = this.inputFields.filterIsInstance<T>().firstOrNull()?.value as? V

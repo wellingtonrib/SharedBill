@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
@@ -30,8 +31,9 @@ fun PaymentValueField(
     imeAction: ImeAction = ImeAction.Next,
     value: String = "",
     error: PaymentUiError? = null,
-    onValueChange: (TextFieldValue) -> Unit,
+    onValueChange: (String) -> Unit,
 ) {
+    LogCompositions("PaymentContent PaymentValueField")
     var textFieldValue by remember { mutableStateOf(TextFieldValue(value)) }
 
     OutlinedTextField(
@@ -44,7 +46,7 @@ fun PaymentValueField(
         placeholder = { Text(text = stringResource(id = R.string.placeholder_payment_value)) },
         onValueChange = { newValue ->
             textFieldValue = newValue
-            onValueChange(newValue)
+            onValueChange(newValue.text)
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,

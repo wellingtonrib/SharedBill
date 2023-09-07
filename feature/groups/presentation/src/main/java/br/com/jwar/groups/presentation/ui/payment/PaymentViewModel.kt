@@ -1,15 +1,20 @@
 package br.com.jwar.groups.presentation.ui.payment
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.groups.presentation.mappers.GroupToGroupUiModelMapper
-import br.com.jwar.groups.presentation.models.GroupUiModel
+import br.com.jwar.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.groups.presentation.models.PaymentUiError
-import br.com.jwar.groups.presentation.models.PaymentUiModel
 import br.com.jwar.groups.presentation.navigation.GROUP_ID_ARG
 import br.com.jwar.groups.presentation.navigation.PAYMENT_TYPE_ARG
 import br.com.jwar.groups.presentation.ui.payment.PaymentContract.Effect
 import br.com.jwar.groups.presentation.ui.payment.PaymentContract.Event
+import br.com.jwar.groups.presentation.ui.payment.PaymentContract.Field.DateField
+import br.com.jwar.groups.presentation.ui.payment.PaymentContract.Field.DescriptionField
+import br.com.jwar.groups.presentation.ui.payment.PaymentContract.Field.PaidByField
+import br.com.jwar.groups.presentation.ui.payment.PaymentContract.Field.PaidToField
+import br.com.jwar.groups.presentation.ui.payment.PaymentContract.Field.ValueField
 import br.com.jwar.groups.presentation.ui.payment.PaymentContract.State
 import br.com.jwar.sharedbill.core.common.BaseViewModel
 import br.com.jwar.sharedbill.core.utility.StringProvider
@@ -19,20 +24,22 @@ import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.domain.usecases.CreatePaymentUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.SendPaymentUseCase
-import br.com.jwar.sharedbill.groups.presentation.R
+import com.google.common.collect.ImmutableSet
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    override val stringProvider: StringProvider,
     private val sendPaymentUseCase: SendPaymentUseCase,
     private val createPaymentUseCase: CreatePaymentUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
-    private val stringProvider: StringProvider,
-): BaseViewModel<Event, State, Effect>() {
+): BaseViewModel<Event, State, Effect>(), PaymentProcessor {
 
     private val groupId: String = checkNotNull(savedStateHandle[GROUP_ID_ARG])
     private val paymentType = PaymentType.valueOf(checkNotNull(savedStateHandle[PAYMENT_TYPE_ARG]))
@@ -43,43 +50,78 @@ class PaymentViewModel @Inject constructor(
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnSavePayment -> onSavePayment(event.payment)
+            is Event.OnDescriptionChange -> onDescriptionChange(event.description)
+            is Event.OnValueChange -> onValueChange(event.value)
+            is Event.OnDateChange -> onDateChange(event.dateTime)
+            is Event.OnPaidByChange -> onPaidByChange(event.paidBy)
+            is Event.OnPaidToChange -> onPaidToChange(event.paidTo)
+            is Event.OnSavePayment -> onSavePayment()
         }
     }
 
     private fun onInit(groupId: String, paymentType: PaymentType) = viewModelScope.launch {
         getGroupByIdUseCase(groupId, false)
-            .onSuccess { group -> onGroupLoaded(group, paymentType) }
+            .onSuccess { group -> setLoadedState(group, paymentType) }
             .onFailure { setErrorState(it) }
     }
 
-    private fun onGroupLoaded(group: Group, paymentType: PaymentType) =
-        setLoadedState(group, paymentType)
-
-    private fun onSavePayment(payment: PaymentUiModel) = viewModelScope.launch {
-        setPaymentState(payment)
-        createPayment(payment)
+    private fun onDescriptionChange(description: String) = setState { state ->
+        state.updateField<DescriptionField> { field -> field.copy(value = description, error = null) }
     }
 
-    private suspend fun createPayment(payment: PaymentUiModel) = with(payment) {
-        createPaymentUseCase(
-            description = description,
-            value = value,
-            date = createdAt,
-            paidById = paidBy.uid,
-            paidToIds = paidTo.map { it.uid },
-            groupId = groupId,
-            paymentType = paymentType,
-        ).onSuccess { onPaymentCreated(it) }
-            .onFailure { setErrorState(it) }
+    private fun onValueChange(value: String) = setState { state ->
+        val updatedState = state.updateFields { field ->
+            when (field) {
+                is ValueField -> field.copy(value = value, error = null)
+                is PaidToField -> field.copy(sharedValue = calculateSharedValue(value, field.value.size))
+                else -> field
+            }
+        }
+        updatedState
     }
 
-    private fun onPaymentCreated(payment: Payment) = viewModelScope.launch {
-        setLoadingState()
-        sendPayment(payment)
+    private fun onDateChange(dateTime: Long) = setState { state ->
+        state.updateField<DateField> { field -> field.copy(value = dateTime, error = null) }
+    }
+
+    private fun onPaidByChange(paidBy: GroupMemberUiModel) = setState { state ->
+        state.updateField<PaidByField> { field -> field.copy(value = paidBy, error = null) }
+    }
+
+    private fun onPaidToChange(paidTo: ImmutableSet<GroupMemberUiModel>) = setState { state ->
+        val currentValue = state.getFieldValue<ValueField, String>().orEmpty()
+        state.updateField<PaidToField> { field -> field.copy(
+            value = paidTo,
+            error = null,
+            sharedValue = calculateSharedValue(
+                value = currentValue,
+                paidToCount = paidTo.size
+            )
+        )}
+    }
+
+    private fun onSavePayment() = viewModelScope.launch {
+        uiState.value.let { state ->
+            val description = state.getFieldValue<DescriptionField, String>()
+            val value = state.getFieldValue<ValueField, String>()
+            val dateTime = state.getFieldValue<DateField, Long>()
+            val paidById = state.getFieldValue<PaidByField, GroupMemberUiModel>()
+            val paidToIds = state.getFieldValue<PaidToField, ImmutableSet<GroupMemberUiModel>>()
+            createPaymentUseCase(
+                description = description.orEmpty(),
+                value = value.orEmpty(),
+                dateTime = dateTime ?: Calendar.getInstance().timeInMillis,
+                paidById = paidById?.uid.orEmpty(),
+                paidToIds = paidToIds?.map { it.uid }.orEmpty(),
+                groupId = groupId,
+                paymentType = paymentType,
+            ).onSuccess { sendPayment(it) }
+                .onFailure { setErrorState(it) }
+        }
     }
 
     private suspend fun sendPayment(payment: Payment) {
+        setLoadingState()
         sendPaymentUseCase(payment)
             .onSuccess { sendFinishEffect() }
             .onFailure { setErrorState(it) }
@@ -87,82 +129,28 @@ class PaymentViewModel @Inject constructor(
 
     private fun setLoadingState() = setState { it.copy(isLoading = true) }
 
-    private fun setPaymentState(payment: PaymentUiModel) =
-        setState { it.copy(paymentUiModel = payment) }
-
     private fun setLoadedState(group: Group, paymentType: PaymentType) =
-        setState { state ->
-            val groupUiModel = groupToGroupUiModelMapper.mapFrom(group)
-            state.copy(
-                isLoading = false,
-                title = getLoadedStateTitle(paymentType),
-                inputFields = getLoadedStateFields(groupUiModel, paymentType),
-                paymentUiModel = getLoadedStatePayment(groupUiModel, paymentType),
-            )
+        groupToGroupUiModelMapper.mapFrom(group).let { groupUiModel ->
+            setState { state ->
+                state.copy(
+                    isLoading = false,
+                    paymentType = paymentType,
+                    inputFields = getInputFields(groupUiModel, paymentType)
+                )
+            }
         }
-
-    private fun getLoadedStateTitle(paymentType: PaymentType) = stringProvider.getString(
-        when (paymentType) {
-            PaymentType.EXPENSE -> R.string.label_payment_new_expense
-            PaymentType.SETTLEMENT -> R.string.label_payment_new_settlement
-        }
-    )
-
-    private fun getLoadedStateFields(
-        groupUiModel: GroupUiModel,
-        paymentType: PaymentType
-    ) = (paymentType == PaymentType.EXPENSE).let { isExpense ->
-        listOfNotNull<PaymentContract.Field>(
-            PaymentContract.Field.DescriptionField(requestFocus = isExpense).takeIf { isExpense },
-            PaymentContract.Field.ValueField(requestFocus = isExpense.not()),
-            PaymentContract.Field.DateField().takeIf { isExpense },
-            PaymentContract.Field.PaidByField(options = groupUiModel.membersToSelect),
-            PaymentContract.Field.PaidToField(options = groupUiModel.members, isMultiSelect = isExpense)
-        )
-    }
-
-    private fun getLoadedStatePayment(
-        groupUiModel: GroupUiModel,
-        paymentType: PaymentType
-    ) = when (paymentType) {
-        PaymentType.EXPENSE -> PaymentUiModel(
-            paidBy = groupUiModel.members.first(),
-            paidTo = groupUiModel.members,
-            paymentType = paymentType,
-        )
-        PaymentType.SETTLEMENT -> PaymentUiModel(
-            description = stringProvider.getString(R.string.label_settlement),
-            paidBy = groupUiModel.members.first(),
-            paidTo = groupUiModel.members.take(1),
-            paymentType = paymentType,
-        )
-    }
 
     private fun setErrorState(throwable: Throwable) =
         setState { state ->
             val error = PaymentUiError.mapFrom(throwable)
-            val inputFields = state.inputFields.mapErrorHandler(error)
+            val inputFields = mapErrorHandler(state.inputFields, error)
             val genericError = error.takeIf { inputFields.none { it.hasError } }
             state.copy(
                 isLoading = false,
-                inputFields = inputFields,
+                inputFields = ImmutableSet.copyOf(inputFields),
                 genericError = genericError
             )
         }
-
-    private fun List<PaymentContract.Field>.mapErrorHandler(error: PaymentUiError) = this.map { field ->
-        if (field::class == error.errorHandler) {
-            when (field) {
-                is PaymentContract.Field.DescriptionField -> field.copy(error = error)
-                is PaymentContract.Field.ValueField -> field.copy(error = error)
-                is PaymentContract.Field.DateField -> field.copy(error = error)
-                is PaymentContract.Field.PaidByField -> field.copy(error = error)
-                is PaymentContract.Field.PaidToField -> field.copy(error = error)
-            }
-        } else {
-            field
-        }
-    }
 
     private fun sendFinishEffect() = sendEffect { Effect.Finish }
 }

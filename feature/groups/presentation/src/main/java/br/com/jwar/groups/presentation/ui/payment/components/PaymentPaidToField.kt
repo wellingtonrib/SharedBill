@@ -24,21 +24,23 @@ import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerSmall
-import br.com.jwar.sharedbill.core.utility.extensions.toCurrency
+import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.groups.presentation.R
-import java.math.BigDecimal
+import com.google.common.collect.ImmutableSet
 
 @Composable
 fun PaymentPaidToField(
     modifier: Modifier = Modifier,
-    isExpense: Boolean = true,
-    sharedValue: BigDecimal = BigDecimal.ZERO,
-    paidToOptions: List<GroupMemberUiModel> = emptyList(),
-    paidTo: List<GroupMemberUiModel> = emptyList(),
+    isMultiSelect: Boolean = true,
+    sharedValue: String = "",
+    options: ImmutableSet<GroupMemberUiModel> = ImmutableSet.of(),
+    value: ImmutableSet<GroupMemberUiModel> = ImmutableSet.of(),
     error: PaymentUiError? = null,
-    onValueChange: (List<GroupMemberUiModel>) -> Unit,
+    onValueChange: (ImmutableSet<GroupMemberUiModel>) -> Unit,
 ) {
-    var selection by remember { mutableStateOf(paidTo) }
+    LogCompositions("PaymentContent PaymentPaidToField")
+
+    var selection by remember { mutableStateOf(value) }
 
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -50,8 +52,8 @@ fun PaymentPaidToField(
         }
         HorizontalSpacerMedium()
         LazyColumn {
-            if (isExpense) {
-                items(paidToOptions) { member ->
+            if (isMultiSelect) {
+                items(options.asList()) { member ->
                     Row(
                         modifier = modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
@@ -62,26 +64,26 @@ fun PaymentPaidToField(
                             isChecked = selection.any { it.uid == member.uid },
                             onCheckedChange = { checked ->
                                 selection = if (checked) {
-                                    selection.toMutableList().apply { add(member) }
+                                    ImmutableSet.copyOf(selection.toMutableList().apply { add(member) })
                                 } else {
-                                    selection.toMutableList().apply { remove(member) }
+                                    ImmutableSet.copyOf(selection.toMutableList().apply { remove(member) })
                                 }
                                 onValueChange(selection)
                             }
                         )
                         Text(
                             modifier = Modifier.padding(end = AppTheme.dimens.space_4),
-                            text = if (selection.contains(member)) sharedValue.toCurrency() else "-"
+                            text = if (selection.contains(member)) sharedValue else "-"
                         )
                     }
                 }
             } else {
-                items(paidToOptions) { member ->
+                items(options.asList()) { member ->
                     RadioButtonWitText(
                         text = member.name,
                         isChecked = selection.contains(member),
                         onCheckedChange = { checked ->
-                            selection = if (checked) listOf(member) else emptyList()
+                            selection = if (checked) ImmutableSet.of(member) else ImmutableSet.of()
                             onValueChange(selection)
                         }
                     )
@@ -99,9 +101,9 @@ fun PaymentPaidToField(
 fun PreviewPaymentPaidToField() {
     SharedBillTheme {
         PaymentPaidToField(
-            sharedValue = BigDecimal.TEN,
-            paidTo = listOf(GroupMemberUiModel.sample().copy(uid = "1")),
-            paidToOptions = listOf(GroupMemberUiModel.sample().copy(uid = "1")),
+            sharedValue = "",
+            value = ImmutableSet.of(GroupMemberUiModel.sample().copy(uid = "1")),
+            options = ImmutableSet.of(GroupMemberUiModel.sample().copy(uid = "1")),
         ) {
 
         }

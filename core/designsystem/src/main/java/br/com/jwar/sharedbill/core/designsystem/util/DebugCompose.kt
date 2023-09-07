@@ -10,12 +10,14 @@ import br.com.jwar.sharedbill.core.designsystem.BuildConfig
 import kotlin.random.Random
 
 @SuppressLint("UnnecessaryComposedModifier")
-fun Modifier.debugRecomposition() =
-    composed { if (BuildConfig.DEBUG) {
-        Modifier.border(2.dp, getRandomColor())
-    } else {
-        this
-    } }
+fun Modifier.highlightComposition() =
+    composed {
+        if (BuildConfig.DEBUG) {
+            Modifier.border(2.dp, getRandomColor())
+        } else {
+            this
+        }
+    }
 
 fun getRandomColor() =  Color(
     red = Random.nextInt(256),

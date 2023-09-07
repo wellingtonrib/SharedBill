@@ -9,8 +9,8 @@ sealed class PaymentUiError(val message: UiText) {
 
     object InvalidPaidByError: PaymentUiError(UiText.StringResource(R.string.error_payment_payer_not_in_group))
     object InvalidDescriptionError: PaymentUiError(UiText.StringResource(R.string.error_payment_description_empty))
-    object InvalidValueError: PaymentUiError(UiText.StringResource(R.string.error_payment_value_empty))
-    object InvalidDateError: PaymentUiError(UiText.StringResource(R.string.error_payment_date_empty))
+    object InvalidValueError: PaymentUiError(UiText.StringResource(R.string.error_payment_value_invalid))
+    object InvalidDateError: PaymentUiError(UiText.StringResource(R.string.error_payment_date_invalid))
     object InvalidPaidToError: PaymentUiError(UiText.StringResource(R.string.error_payment_empty_related_members))
     object GenericError: PaymentUiError(UiText.StringResource(R.string.error_generic))
 

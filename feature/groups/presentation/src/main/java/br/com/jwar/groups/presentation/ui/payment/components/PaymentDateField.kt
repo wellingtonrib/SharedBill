@@ -24,6 +24,7 @@ import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.core.utility.extensions.format
 import java.util.Calendar
 import java.util.Date
@@ -32,10 +33,12 @@ import java.util.Date
 fun PaymentDateField(
     modifier: Modifier = Modifier,
     imeAction: ImeAction = ImeAction.Next,
-    dateTime: Long = Date().time,
+    dateTime: Long = 0L,
     error: PaymentUiError? = null,
     onValueChange: (Long) -> Unit,
 ) {
+    LogCompositions("PaymentContent PaymentDateField")
+
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val calendar = remember { Calendar.getInstance().apply { time = Date(dateTime) } }
@@ -57,7 +60,9 @@ fun PaymentDateField(
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-        )
+        ).apply {
+//            datePicker.maxDate = calendar.timeInMillis
+        }
     }
 
     OutlinedTextField(

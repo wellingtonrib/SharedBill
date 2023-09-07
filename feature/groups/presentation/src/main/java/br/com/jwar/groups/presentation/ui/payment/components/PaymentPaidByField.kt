@@ -19,23 +19,27 @@ import br.com.jwar.sharedbill.core.designsystem.components.SelectDialog
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.groups.presentation.R
+import com.google.common.collect.ImmutableMap
 
 @Composable
 fun PaymentPaidByField(
     modifier: Modifier = Modifier,
-    paidByOptions: Map<GroupMemberUiModel, Boolean> = emptyMap(),
-    paidBy: GroupMemberUiModel = GroupMemberUiModel(),
+    options: ImmutableMap<GroupMemberUiModel, Boolean> = ImmutableMap.of(),
+    value: GroupMemberUiModel = GroupMemberUiModel(),
     error: PaymentUiError? = null,
     onValueChange: (GroupMemberUiModel) -> Unit,
 ) {
+    LogCompositions("PaymentContent PaymentPaidByField")
+
     val isPaidBySelecting = remember { mutableStateOf(false) }
     if (isPaidBySelecting.value) {
         SelectDialog(
             title = stringResource(id = R.string.label_payment_paid_by),
             message = stringResource(id = R.string.placeholder_payment_paid_by),
-            options = paidByOptions,
-            defaultSelection = listOf(paidBy),
+            options = options,
+            defaultSelection = listOf(value),
             isMultiChoice = false,
             onDismiss = {
                 isPaidBySelecting.value = false
@@ -61,7 +65,7 @@ fun PaymentPaidByField(
                 onClick = { isPaidBySelecting.value = true },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = paidBy.name)
+                Text(text = value.name)
             }
             error?.message?.AsText(AppTheme.colors.error)
         }
@@ -73,7 +77,7 @@ fun PaymentPaidByField(
 fun PreviewPaymentPaidByField() {
     SharedBillTheme {
         PaymentPaidByField(
-            paidBy = GroupMemberUiModel.sample(),
+            value = GroupMemberUiModel.sample(),
         ) {
 
         }

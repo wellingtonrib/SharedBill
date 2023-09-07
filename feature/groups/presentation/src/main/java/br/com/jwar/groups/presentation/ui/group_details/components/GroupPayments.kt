@@ -17,7 +17,7 @@ fun GroupPayments(
         state = listState,
         verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4)
     ) {
-        items(group.payments) { payment ->
+        items(group.payments.asList()) { payment ->
             GroupPaymentCard(payment, group)
         }
     }

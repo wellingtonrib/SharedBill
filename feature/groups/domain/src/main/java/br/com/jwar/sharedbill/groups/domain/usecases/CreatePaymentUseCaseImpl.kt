@@ -7,6 +7,7 @@ import br.com.jwar.sharedbill.groups.domain.model.Payment
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import java.math.BigDecimal
+import java.util.Calendar
 import java.util.Date
 import java.util.UUID
 
@@ -16,7 +17,7 @@ class CreatePaymentUseCaseImpl(
     override suspend fun invoke(
         description: String,
         value: String,
-        date: Date,
+        dateTime: Long,
         paidById: String,
         paidToIds: List<String>,
         groupId: String,
@@ -25,6 +26,9 @@ class CreatePaymentUseCaseImpl(
         if (description.isEmpty()) throw PaymentException.InvalidDescriptionException
         if (value.toBigDecimalOrZero() == BigDecimal.ZERO) throw PaymentException.InvalidValueException
         if (paidToIds.isEmpty()) throw PaymentException.InvalidPaidToException
+
+        val date = Date(dateTime)
+        if (date.after(Calendar.getInstance().time)) throw PaymentException.InvalidDateException
 
         val group = groupRepository.getGroupById(groupId, true)
         val paidBy = group.findMemberById(paidById)
@@ -42,7 +46,7 @@ class CreatePaymentUseCaseImpl(
             value = value,
             paidBy = paidBy,
             paidTo = paidTo,
-            createdAt = date,
+            createdAt = Date(dateTime),
             createdBy = createdBy,
             paymentType = paymentType,
         )

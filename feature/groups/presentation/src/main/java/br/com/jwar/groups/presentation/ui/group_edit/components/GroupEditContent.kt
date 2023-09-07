@@ -97,7 +97,7 @@ fun GroupEditContent(
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
             ) {
-                items(group.members) { member ->
+                items(group.members.asList()) { member ->
                     GroupMemberCard(
                         member = member,
                         onMemberSelect = { onMemberSelectionChange(it) }

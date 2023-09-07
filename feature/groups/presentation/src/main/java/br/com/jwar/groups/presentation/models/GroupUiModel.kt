@@ -1,14 +1,16 @@
 package br.com.jwar.groups.presentation.models
 
+import com.google.common.collect.ImmutableMap
+import com.google.common.collect.ImmutableSet
 import java.math.BigDecimal
 import java.util.UUID
 
 data class GroupUiModel(
     val id: String = "",
     val title: String = "",
-    val members: List<GroupMemberUiModel> = emptyList(),
-    val payments: List<PaymentUiModel> = emptyList(),
-    val balance: Map<GroupMemberUiModel, BigDecimal> = mapOf(),
+    val members: ImmutableSet<GroupMemberUiModel> = ImmutableSet.of(),
+    val payments: ImmutableSet<PaymentUiModel> = ImmutableSet.of(),
+    val balance: ImmutableMap<GroupMemberUiModel, BigDecimal> = ImmutableMap.of(),
     val total: String = "",
     val isCurrentUserOwner: Boolean = false
 ) {
@@ -16,27 +18,29 @@ data class GroupUiModel(
         .plus("\n\n" + balance.map { entry -> "${entry.key.name} ${entry.value}" }.joinToString("\n"))
         .plus("\n\nTotal $total")
 
-    val membersToSelect: Map<GroupMemberUiModel, Boolean>
-        get() = members.associateWith { it.uid == members.first().uid }
+    val membersToSelect: ImmutableMap<GroupMemberUiModel, Boolean>
+        get() = ImmutableMap.copyOf(members.associateWith { it.uid == members.first().uid })
 
     companion object {
         fun sample() = GroupUiModel(
             id = UUID.randomUUID().toString(),
             title = "Group Sample",
-            members = listOf(
+            members = ImmutableSet.of(
                 GroupMemberUiModel.sample(),
                 GroupMemberUiModel.sample(),
                 GroupMemberUiModel.sample(),
             ),
-            payments = listOf(
+            payments = ImmutableSet.of(
                 PaymentUiModel.sample(),
                 PaymentUiModel.sample(),
                 PaymentUiModel.sample(),
             ),
-            balance = mapOf(
-                GroupMemberUiModel.sample() to BigDecimal("100"),
-                GroupMemberUiModel.sample() to BigDecimal("-100"),
-                GroupMemberUiModel.sample() to BigDecimal.ZERO,
+            balance = ImmutableMap.copyOf(
+                mapOf(
+                    GroupMemberUiModel.sample() to BigDecimal("100"),
+                    GroupMemberUiModel.sample() to BigDecimal("-100"),
+                    GroupMemberUiModel.sample() to BigDecimal.ZERO,
+                )
             ),
             total = "$300"
         )
