@@ -102,7 +102,6 @@ fun GroupsDetailsContent(
                     SegmentedControl(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
-                        cornerRadius = 40,
                         items = pages.map { it.second },
                         onItemSelection = { index -> scope.launch { pagerState.scrollToPage(index) } }
                     )
