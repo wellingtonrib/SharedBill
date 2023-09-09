@@ -49,6 +49,9 @@ coil-compose                            = { module = "io.coil-kt:coil-compose", 
 firebase-auth                           = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom                            = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBoM" }
 firebase-firestore                      = { module = "com.google.firebase:firebase-firestore-ktx" }
+firebase-appcheck-playintegrity         = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
+firebase-appcheck-ktx                   = { module = "com.google.firebase:firebase-appcheck-ktx" }
+firebase-appcheck-debug                 = { module = "com.google.firebase:firebase-appcheck-debug" }
 google-playServices-auth                = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 hilt-android                            = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler                   = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }

@@ -3,7 +3,12 @@ const admin = require("firebase-admin");
 
 admin.initializeApp();
 
-exports.processPayment = functions.firestore.document("/unprocessedPayments/{paymentId}")
+exports.processPayment = functions
+    .runWith({
+      enforceAppCheck: true,
+    })
+    .firestore
+    .document("/unprocessedPayments/{paymentId}")
     .onCreate(async (paymentSnapshot, context) => {      
       const paymentData = paymentSnapshot.data();  
       const groupRef = admin.firestore().collection("groups").doc(paymentData.groupId);

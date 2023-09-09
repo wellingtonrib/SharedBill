@@ -2,14 +2,19 @@ package br.com.jwar.sharedbill.di
 
 import android.app.Application
 import android.content.Context
+import br.com.jwar.sharedbill.BuildConfig
 import br.com.jwar.sharedbill.core.utility.NetworkManager
 import br.com.jwar.sharedbill.core.utility.StringProvider
 import br.com.jwar.sharedbill.utility.AndroidStringProvider
 import br.com.jwar.sharedbill.utility.NetworkManagerImpl
+import com.google.firebase.appcheck.AppCheckProviderFactory
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -29,4 +34,14 @@ class AppModule {
     fun provideStringProvider(
         context: Context
     ): StringProvider = AndroidStringProvider(context)
+
+    @Provides
+    @Singleton
+    fun provideAppCheckFactory(): AppCheckProviderFactory {
+        return if (BuildConfig.DEBUG) {
+            DebugAppCheckProviderFactory.getInstance()
+        } else {
+            PlayIntegrityAppCheckProviderFactory.getInstance()
+        }
+    }
 }

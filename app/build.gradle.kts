@@ -43,12 +43,17 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.kotlinx.coroutines.playServices)
-    implementation(libs.hilt.android)
     implementation(libs.bundles.compose)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.appcheck.playintegrity)
+    implementation(libs.firebase.appcheck.debug)
+    implementation(libs.firebase.appcheck.ktx)
 
+    implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.androidTest)
+
     debugImplementation(libs.bundles.debug)
 }
