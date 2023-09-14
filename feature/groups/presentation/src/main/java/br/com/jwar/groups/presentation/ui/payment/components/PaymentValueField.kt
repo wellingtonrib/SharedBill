@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,7 +28,7 @@ import br.com.jwar.sharedbill.groups.presentation.R
 @Composable
 fun PaymentValueField(
     modifier: Modifier = Modifier,
-    focusRequester: FocusRequester? = FocusRequester(),
+    autoFocusable: Boolean = false,
     imeAction: ImeAction = ImeAction.Next,
     value: String = "",
     error: PaymentUiError? = null,
@@ -35,10 +36,15 @@ fun PaymentValueField(
 ) {
     LogCompositions("PaymentContent PaymentValueField")
     var textFieldValue by remember { mutableStateOf(TextFieldValue(value)) }
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        if(autoFocusable) focusRequester.requestFocus()
+    }
 
     OutlinedTextField(
         modifier = modifier
-            .focusRequester(focusRequester ?: FocusRequester())
+            .focusRequester(focusRequester)
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
         value = textFieldValue,

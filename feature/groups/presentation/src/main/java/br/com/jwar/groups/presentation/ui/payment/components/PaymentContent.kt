@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -29,7 +28,6 @@ import br.com.jwar.sharedbill.core.designsystem.components.CloseNavigationIcon
 import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.horizontalPaddingMedium
-import br.com.jwar.sharedbill.core.utility.extensions.ifOrNull
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import br.com.jwar.sharedbill.core.designsystem.R as DSR
@@ -51,7 +49,6 @@ fun PaymentContent(
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
-    val focusManager = remember { FocusRequester() }
 
     LaunchedEffect(state.genericError) {
         state.genericError?.message?.asString(context)?.let { snackbarHostState.showSnackbar(it) }
@@ -87,7 +84,6 @@ fun PaymentContent(
                     is PaymentContract.Field.DescriptionField -> {
                         Field {
                             PaymentDescriptionField(
-                                focusRequester = ifOrNull(index == 0) { focusManager },
                                 imeAction = ImeAction.Next,
                                 description = field.value,
                                 error = field.error,
@@ -98,7 +94,7 @@ fun PaymentContent(
                     is PaymentContract.Field.ValueField -> {
                         Field {
                             PaymentValueField(
-                                focusRequester = ifOrNull(index == 0) { focusManager },
+                                autoFocusable = index == 0,
                                 imeAction = ImeAction.Next,
                                 value = field.value,
                                 error = field.error,
@@ -139,7 +135,6 @@ fun PaymentContent(
                         }
                     }
                 }
-                LaunchedEffect(Unit) { focusManager.requestFocus() }
             }
         }
     }

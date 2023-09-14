@@ -29,9 +29,6 @@ import br.com.jwar.sharedbill.core.designsystem.components.AppTopBar
 import br.com.jwar.sharedbill.core.designsystem.components.CloseNavigationIcon
 import br.com.jwar.sharedbill.core.designsystem.components.TextFieldWithSuggestions
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
-import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
-import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
-import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.core.designsystem.R as DSR
 
@@ -83,10 +80,9 @@ fun GroupEditContent(
                 placeholder = { Text(stringResource(R.string.placeholder_group_title)) },
                 text = group.title,
                 suggestions = suggestions.toList(),
-                onValueChange = { newValue ->
-                    onGroupUpdated(group.copy(title = newValue.text))
-                },
-            )
+            ) { newValue ->
+                onGroupUpdated(group.copy(title = newValue.text))
+            }
             Text(
                 modifier = Modifier.padding(vertical = AppTheme.dimens.space_8),
                 text = stringResource(R.string.label_group_members),
