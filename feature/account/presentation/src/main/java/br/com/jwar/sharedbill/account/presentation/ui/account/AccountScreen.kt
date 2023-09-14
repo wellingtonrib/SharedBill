@@ -14,9 +14,8 @@ import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 fun AccountScreen(
     state: State,
     onSignOutClick: () -> Unit = {},
-    onSupportClick: () -> Unit = {},
+    onContactClick: () -> Unit = {},
     onAboutClick: () -> Unit = {},
-    onAboutDismiss: () -> Unit = {},
     onTermsClick: () -> Unit = {},
     onPrivacyClick: () -> Unit = {},
     onRateUsClick: () -> Unit = {},
@@ -24,9 +23,8 @@ fun AccountScreen(
     AccountContent(
         state = state,
         onSignOutClick = onSignOutClick,
-        onSupportClick = onSupportClick,
+        onContactClick = onContactClick,
         onAboutClick = onAboutClick,
-        onAboutDismiss = onAboutDismiss,
         onTermsClick = onTermsClick,
         onPrivacyClick = onPrivacyClick,
         onRateUsClick = onRateUsClick,

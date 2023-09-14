@@ -9,9 +9,8 @@ class AccountContract {
     sealed class Event: UiEvent {
         object OnInit : Event()
         object OnSignOutClick : Event()
-        object OnSupportClick : Event()
+        object OnContactClick : Event()
         object OnAboutClick : Event()
-        object OnAboutDismiss : Event()
         object OnTermsClick : Event()
         object OnPrivacyClick : Event()
         object OnRateUsClick : Event()
@@ -26,9 +25,10 @@ class AccountContract {
 
     sealed class Effect: UiEffect {
         object NavigateToAuth: Effect()
-        object LaunchSupportIntent : Effect()
-        object NavigateToTerms : Effect()
-        object NavigateToPrivacy : Effect()
+        object LaunchContactIntent : Effect()
+        object LaunchToTermsIntent : Effect()
+        object LaunchPrivacyIntent : Effect()
         object LaunchRateUsIntent : Effect()
+        object LaunchAboutIntent : Effect()
     }
 }

@@ -25,9 +25,8 @@ fun AccountRoute(
     AccountScreen(
         state = state,
         onSignOutClick = { viewModel.emitEvent { Event.OnSignOutClick } },
-        onSupportClick = { viewModel.emitEvent { Event.OnSupportClick } },
+        onContactClick = { viewModel.emitEvent { Event.OnContactClick } },
         onAboutClick = { viewModel.emitEvent { Event.OnAboutClick } },
-        onAboutDismiss = { viewModel.emitEvent { Event.OnAboutDismiss } },
         onRateUsClick = { viewModel.emitEvent { Event.OnRateUsClick } },
         onTermsClick = { viewModel.emitEvent { Event.OnTermsClick } },
         onPrivacyClick = { viewModel.emitEvent { Event.OnPrivacyClick } },
@@ -39,14 +38,17 @@ fun AccountRoute(
                 is Effect.NavigateToAuth -> {
                     onNavigateToAuth()
                 }
-                is Effect.LaunchSupportIntent -> {
+                is Effect.LaunchContactIntent -> {
                     context.launchSupportIntent()
                 }
-                is Effect.NavigateToTerms -> {
+                is Effect.LaunchToTermsIntent -> {
                     context.launchTermsIntent()
                 }
-                is Effect.NavigateToPrivacy -> {
+                is Effect.LaunchPrivacyIntent -> {
                     context.launchPrivacyIntent()
+                }
+                is Effect.LaunchAboutIntent -> {
+                    context.launchAboutIntent()
                 }
                 is Effect.LaunchRateUsIntent -> {}
             }
@@ -55,8 +57,8 @@ fun AccountRoute(
 }
 
 private fun Context.launchSupportIntent() = this.sendEmail(
-    addresses = arrayOf(this.getString(R.string.app_support_mail)),
-    subject = this.getString(R.string.app_support_subject)
+    addresses = arrayOf(this.getString(R.string.app_contact_mail)),
+    subject = this.getString(R.string.app_contact_subject)
 )
 
 private fun Context.launchTermsIntent() =
@@ -64,5 +66,8 @@ private fun Context.launchTermsIntent() =
 
 private fun Context.launchPrivacyIntent() =
     this.openUrl(this.getString(R.string.app_privacy_link))
+
+private fun Context.launchAboutIntent() =
+    this.openUrl(this.getString(R.string.app_about_link))
 
 

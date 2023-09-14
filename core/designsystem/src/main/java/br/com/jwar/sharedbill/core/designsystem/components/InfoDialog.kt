@@ -1,12 +1,12 @@
 package br.com.jwar.sharedbill.core.designsystem.components
 
-import android.text.Spannable
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,12 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
-import androidx.core.text.HtmlCompat
-import androidx.core.text.buildSpannedString
 import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
@@ -31,6 +30,7 @@ fun InfoDialog(
     @DrawableRes image: Int? = R.drawable.ic_baseline_info_24,
     title: String,
     message: String,
+    messageAlign: TextAlign = TextAlign.Center,
     action: String = stringResource(id = R.string.label_ok),
     onDismiss: () -> Unit,
     onAction: () -> Unit
@@ -42,6 +42,7 @@ fun InfoDialog(
             image = image,
             title = title,
             message = message,
+            messageAlign = messageAlign,
             action = action,
             onAction = onAction
         )
@@ -53,6 +54,7 @@ private fun InfoDialogContent(
     image: Int?,
     title: String,
     message: String,
+    messageAlign: TextAlign = TextAlign.Center,
     action: String,
     onAction: () -> Unit
 ) {
@@ -71,9 +73,16 @@ private fun InfoDialogContent(
                     contentDescription = null
                 )
             }
-            Text(text = title, style = MaterialTheme.typography.titleLarge)
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge
+            )
             VerticalSpacerMedium()
-            Text(text = message, textAlign = TextAlign.Center)
+            Text(
+                text = message,
+                textAlign = messageAlign,
+                style = LocalTextStyle.current.copy(textDirection = TextDirection.Content)
+            )
             VerticalSpacerMedium()
             Button(
                 onClick = { onAction() }

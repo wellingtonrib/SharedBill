@@ -3,6 +3,7 @@ package br.com.jwar.groups.presentation.ui.group_details.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +29,7 @@ fun GroupBalanceItem(
     entry: Map.Entry<GroupMemberUiModel, BigDecimal>,
 ) {
     val (member, value) = entry
-    OutlinedCard(
+    ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
     ) {

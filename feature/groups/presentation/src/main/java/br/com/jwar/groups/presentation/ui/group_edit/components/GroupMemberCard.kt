@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.SwipeToDismiss
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -42,7 +43,7 @@ fun GroupMemberCard(
             )
         }
     ) {
-        OutlinedCard(
+        ElevatedCard(
             onClick = { onMemberSelect(member) }
         ) {
             Row(

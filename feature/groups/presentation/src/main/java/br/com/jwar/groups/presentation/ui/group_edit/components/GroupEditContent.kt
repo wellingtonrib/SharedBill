@@ -29,6 +29,8 @@ import br.com.jwar.sharedbill.core.designsystem.components.AppTopBar
 import br.com.jwar.sharedbill.core.designsystem.components.CloseNavigationIcon
 import br.com.jwar.sharedbill.core.designsystem.components.TextFieldWithSuggestions
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
+import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
+import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.core.designsystem.R as DSR
@@ -72,12 +74,11 @@ fun GroupEditContent(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
+                .padding(start = AppTheme.dimens.space_8, end = AppTheme.dimens.space_8)
                 .fillMaxSize()
         ) {
             TextFieldWithSuggestions(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = AppTheme.dimens.space_8, end = AppTheme.dimens.space_8),
+                modifier = Modifier.fillMaxWidth(),
                 label = { Text(stringResource(R.string.label_group_title)) },
                 placeholder = { Text(stringResource(R.string.placeholder_group_title)) },
                 text = group.title,
@@ -87,13 +88,11 @@ fun GroupEditContent(
                 },
             )
             Text(
-                modifier = Modifier.paddingMedium(),
+                modifier = Modifier.padding(vertical = AppTheme.dimens.space_8),
                 text = stringResource(R.string.label_group_members),
-                style = AppTheme.typo.titleLarge,
+                style = AppTheme.typo.titleMedium,
             )
             LazyColumn(
-                modifier = Modifier
-                    .padding(start = AppTheme.dimens.space_8, end = AppTheme.dimens.space_8),
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
             ) {
