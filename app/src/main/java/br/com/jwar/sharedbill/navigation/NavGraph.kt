@@ -16,7 +16,6 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 @ExperimentalAnimationApi
 fun NavGraph(
     navController: NavHostController,
-    snackbarHostState: SnackbarHostState
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -26,12 +25,10 @@ fun NavGraph(
     ) {
         accountNav(
             navController = navController,
-            snackbarHostState = snackbarHostState,
             onNavigateToHome = { navController.navigate(GROUP_LIST_ROUTE) }
         )
         groupsNav(
             navController = navController,
-            snackbarHostState = snackbarHostState,
             onNavigateAccount = { navController.navigate(ACCOUNT_ROUTE) }
         )
     }

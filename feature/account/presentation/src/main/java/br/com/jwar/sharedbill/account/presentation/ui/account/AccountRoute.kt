@@ -16,7 +16,6 @@ import br.com.jwar.sharedbill.core.utility.extensions.sendEmail
 @Composable
 fun AccountRoute(
     viewModel: AccountViewModel = hiltViewModel(),
-    snackbarHostState: SnackbarHostState,
     onNavigateToAuth: () -> Unit,
 ) {
     val state = viewModel.uiState.collectAsState().value

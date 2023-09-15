@@ -12,12 +12,10 @@ const val AUTH_ROUTE = "auth"
 
 fun NavGraphBuilder.accountNav(
     navController: NavHostController,
-    snackbarHostState: SnackbarHostState,
     onNavigateToHome: () -> Unit,
 ) {
     composable(route = ACCOUNT_ROUTE) {
         AccountRoute(
-            snackbarHostState = snackbarHostState,
             onNavigateToAuth = {
                 navController.navigate(AUTH_ROUTE)
             }
@@ -25,7 +23,6 @@ fun NavGraphBuilder.accountNav(
     }
     composable(route = AUTH_ROUTE) {
         AuthRoute(
-            snackbarHostState = snackbarHostState,
             onNavigateToHome = onNavigateToHome
         )
     }
