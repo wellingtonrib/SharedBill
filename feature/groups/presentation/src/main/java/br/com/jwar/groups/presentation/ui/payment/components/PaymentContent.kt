@@ -21,13 +21,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
-import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.groups.presentation.ui.payment.PaymentContract
 import br.com.jwar.sharedbill.core.designsystem.components.AppTopBar
 import br.com.jwar.sharedbill.core.designsystem.components.CloseNavigationIcon
-import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.horizontalPaddingMedium
+import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import br.com.jwar.sharedbill.core.designsystem.R as DSR
@@ -82,57 +81,47 @@ fun PaymentContent(
             state.visibleFields.forEachIndexed { index, field ->
                 when(field) {
                     is PaymentContract.Field.DescriptionField -> {
-                        Field {
-                            PaymentDescriptionField(
-                                imeAction = ImeAction.Next,
-                                description = field.value,
-                                error = field.error,
-                                onValueChange = onDescriptionChange
-                            )
-                        }
+                        PaymentDescriptionField(
+                            imeAction = ImeAction.Next,
+                            description = field.value,
+                            error = field.error,
+                            onValueChange = onDescriptionChange
+                        )
                     }
                     is PaymentContract.Field.ValueField -> {
-                        Field {
-                            PaymentValueField(
-                                autoFocusable = index == 0,
-                                imeAction = ImeAction.Next,
-                                value = field.value,
-                                error = field.error,
-                                onValueChange = onValueChange
-                            )
-                        }
+                        PaymentValueField(
+                            autoFocusable = index == 0,
+                            imeAction = ImeAction.Next,
+                            value = field.value,
+                            error = field.error,
+                            onValueChange = onValueChange
+                        )
                     }
                     is PaymentContract.Field.DateField -> {
-                        Field {
-                            PaymentDateField(
-                                imeAction = ImeAction.Done,
-                                dateTime = field.value,
-                                error = field.error,
-                                onValueChange = onDateChange
-                            )
-                        }
+                        PaymentDateField(
+                            imeAction = ImeAction.Done,
+                            dateTime = field.value,
+                            error = field.error,
+                            onValueChange = onDateChange
+                        )
                     }
                     is PaymentContract.Field.PaidByField -> {
-                        Field {
-                            PaymentPaidByField(
-                                value = field.value,
-                                options = field.options,
-                                error = field.error,
-                                onValueChange = onPaidByChange
-                            )
-                        }
+                        PaymentPaidByField(
+                            value = field.value,
+                            options = field.options,
+                            error = field.error,
+                            onValueChange = onPaidByChange
+                        )
                     }
                     is PaymentContract.Field.PaidToField -> {
-                        Field {
-                            PaymentPaidToField(
-                                value = field.value,
-                                sharedValue = field.sharedValue,
-                                options = field.options,
-                                isMultiSelect = field.isMultiSelect,
-                                error = field.error,
-                                onValueChange = onPaidToChange
-                            )
-                        }
+                        PaymentPaidToField(
+                            value = field.value,
+                            sharedValue = field.sharedValue,
+                            options = field.options,
+                            isMultiSelect = field.isMultiSelect,
+                            error = field.error,
+                            onValueChange = onPaidToChange
+                        )
                     }
                 }
             }

@@ -2,6 +2,7 @@ package br.com.jwar.groups.presentation.ui.payment
 
 import androidx.annotation.StringRes
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
+import br.com.jwar.groups.presentation.models.GroupUiModel
 import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.common.UiEffect
 import br.com.jwar.sharedbill.core.common.UiEvent
@@ -26,6 +27,7 @@ class PaymentContract {
     data class State(
         val isLoading: Boolean = false,
         val inputFields: ImmutableSet<Field> = ImmutableSet.of(),
+        val groupUiModel: GroupUiModel = GroupUiModel(),
         val genericError: PaymentUiError? = null,
         val paymentType: PaymentType = PaymentType.EXPENSE,
     ): UiState {

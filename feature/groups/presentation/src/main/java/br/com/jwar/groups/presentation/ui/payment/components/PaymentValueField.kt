@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.PaymentUiError
+import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
@@ -34,33 +35,35 @@ fun PaymentValueField(
     error: PaymentUiError? = null,
     onValueChange: (String) -> Unit,
 ) {
-    LogCompositions("PaymentContent PaymentValueField")
-    var textFieldValue by remember { mutableStateOf(TextFieldValue(value)) }
-    val focusRequester = remember { FocusRequester() }
+    Field {
+        LogCompositions("PaymentContent PaymentValueField")
+        var textFieldValue by remember { mutableStateOf(TextFieldValue(value)) }
+        val focusRequester = remember { FocusRequester() }
 
-    LaunchedEffect(Unit) {
-        if(autoFocusable) focusRequester.requestFocus()
+        LaunchedEffect(Unit) {
+            if(autoFocusable) focusRequester.requestFocus()
+        }
+
+        OutlinedTextField(
+            modifier = modifier
+                .focusRequester(focusRequester)
+                .fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            value = textFieldValue,
+            label = { Text(text = stringResource(id = R.string.label_payment_value)) },
+            placeholder = { Text(text = stringResource(id = R.string.placeholder_payment_value)) },
+            onValueChange = { newValue ->
+                textFieldValue = newValue
+                onValueChange(newValue.text)
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = imeAction
+            ),
+            isError = error?.message?.asString().isNullOrBlank().not(),
+            supportingText = { error?.message?.AsText(AppTheme.colors.error) },
+        )
     }
-
-    OutlinedTextField(
-        modifier = modifier
-            .focusRequester(focusRequester)
-            .fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        value = textFieldValue,
-        label = { Text(text = stringResource(id = R.string.label_payment_value)) },
-        placeholder = { Text(text = stringResource(id = R.string.placeholder_payment_value)) },
-        onValueChange = { newValue ->
-            textFieldValue = newValue
-            onValueChange(newValue.text)
-        },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Decimal,
-            imeAction = imeAction
-        ),
-        isError = error?.message?.asString().isNullOrBlank().not(),
-        supportingText = { error?.message?.AsText(AppTheme.colors.error) },
-    )
 }
 
 @Preview(showBackground = true)

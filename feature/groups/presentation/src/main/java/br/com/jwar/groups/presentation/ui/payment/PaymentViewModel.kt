@@ -39,7 +39,7 @@ class PaymentViewModel @Inject constructor(
     private val createPaymentUseCase: CreatePaymentUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
-): BaseViewModel<Event, State, Effect>(), PaymentProcessor {
+): BaseViewModel<Event, State, Effect>(), PaymentTrait {
 
     private val groupId: String = checkNotNull(savedStateHandle[GROUP_ID_ARG])
     private val paymentType = PaymentType.valueOf(checkNotNull(savedStateHandle[PAYMENT_TYPE_ARG]))
@@ -85,16 +85,28 @@ class PaymentViewModel @Inject constructor(
     }
 
     private fun onPaidByChange(paidBy: GroupMemberUiModel) = setState { state ->
-        state.updateField<PaidByField> { field -> field.copy(value = paidBy, error = null) }
+        val updatedState = state.updateFields { field ->
+            when {
+                field is PaidByField -> field.copy(value = paidBy, error = null)
+                field is PaidToField && state.paymentType == PaymentType.SETTLEMENT -> {
+                    val updatedOptions = state.groupUiModel.members.filterNot { it == paidBy }
+                    field.copy(
+                        value = ImmutableSet.copyOf(if (field.value.contains(paidBy)) updatedOptions else field.value),
+                        options = ImmutableSet.copyOf(updatedOptions)
+                    )
+                }
+                else -> field
+            }
+        }
+        updatedState
     }
 
     private fun onPaidToChange(paidTo: ImmutableSet<GroupMemberUiModel>) = setState { state ->
-        val currentValue = state.getFieldValue<ValueField, String>().orEmpty()
         state.updateField<PaidToField> { field -> field.copy(
             value = paidTo,
             error = null,
             sharedValue = calculateSharedValue(
-                value = currentValue,
+                value = state.getFieldValue<ValueField, String>().orEmpty(),
                 paidToCount = paidTo.size
             )
         )}
@@ -134,6 +146,7 @@ class PaymentViewModel @Inject constructor(
             setState { state ->
                 state.copy(
                     isLoading = false,
+                    groupUiModel = groupUiModel,
                     paymentType = paymentType,
                     inputFields = getInputFields(groupUiModel, paymentType)
                 )
