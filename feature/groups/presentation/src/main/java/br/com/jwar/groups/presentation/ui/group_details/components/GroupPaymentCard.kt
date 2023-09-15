@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -32,6 +31,7 @@ fun GroupPaymentCard(
     group: GroupUiModel
 ) {
     val showingPaymentInfo = paymentInfoDialog(payment)
+
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth(),
@@ -87,14 +87,15 @@ private fun paymentInfoDialog(payment: PaymentUiModel): MutableState<Boolean> {
 
 @Composable
 private fun PaymentUiModel.getInfo() =
-    StringBuilder().apply {
-        append(stringResource(R.string.message_payment_description, description + "\n"))
-        append(stringResource(R.string.message_payment_value, value + "\n"))
-        append(stringResource(R.string.message_payment_paid_by, paidBy.firstName) + "\n")
-        append(stringResource(R.string.message_payment_paid_to, paidTo.joinToString { it.name }) + "\n")
-        append(stringResource(R.string.message_payment_created_by, createdBy.name + "\n"))
-        append(stringResource(R.string.message_payment_created_at, createdAt.format(DATE_FORMAT_SMALL)))
-    }.toString()
+    stringResource(
+        R.string.message_payment_description,
+        description,
+        value,
+        paidBy.firstName,
+        paidTo.joinToString { it.name },
+        createdBy.name,
+        createdAt.format(DATE_FORMAT_SMALL)
+    )
 
 @Composable
 fun PaymentUiModel.getMessage(group: GroupUiModel) =
