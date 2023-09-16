@@ -3,7 +3,7 @@ package br.com.jwar.groups.presentation.ui.group_details.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -31,7 +31,8 @@ fun GroupPaymentCard(
     group: GroupUiModel
 ) {
     val showingPaymentInfo = paymentInfoDialog(payment)
-    OutlinedCard(
+
+    Card(
         modifier = Modifier
             .fillMaxWidth(),
         onClick = { showingPaymentInfo.value = true }
@@ -87,12 +88,19 @@ private fun paymentInfoDialog(payment: PaymentUiModel): MutableState<Boolean> {
 @Composable
 private fun PaymentUiModel.getInfo() =
     StringBuilder().apply {
-        append(stringResource(R.string.message_payment_description, description + "\n"))
-        append(stringResource(R.string.message_payment_value, value + "\n"))
-        append(stringResource(R.string.message_payment_paid_by, paidBy.firstName) + "\n")
-        append(stringResource(R.string.message_payment_paid_to, paidTo.joinToString { it.name }) + "\n")
-        append(stringResource(R.string.message_payment_created_by, createdBy.name + "\n"))
-        append(stringResource(R.string.message_payment_created_at, createdAt.format(DATE_FORMAT_SMALL)))
+        appendLine(
+            stringResource(
+                R.string.message_payment_description,
+                description,
+                value,
+                paidBy.firstName,
+                paidTo.joinToString { it.firstName },
+                createdAt.format("dd.MM.yy HH:mm")
+            )
+        )
+        if (paidBy.uid != createdBy.uid) {
+            appendLine(stringResource(R.string.message_payment_created_by, createdBy.firstName))
+        }
     }.toString()
 
 @Composable

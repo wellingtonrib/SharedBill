@@ -4,9 +4,6 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 exports.processPayment = functions
-    .runWith({
-      enforceAppCheck: true,
-    })
     .firestore
     .document("/unprocessedPayments/{paymentId}")
     .onCreate(async (paymentSnapshot, context) => {      

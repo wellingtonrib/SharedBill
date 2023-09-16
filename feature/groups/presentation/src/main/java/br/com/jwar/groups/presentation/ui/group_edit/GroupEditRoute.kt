@@ -1,10 +1,17 @@
 package br.com.jwar.groups.presentation.ui.group_edit
 
+import android.annotation.SuppressLint
 import android.content.Context
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.groups.presentation.ui.group_edit.GroupEditContract.Effect
@@ -12,27 +19,32 @@ import br.com.jwar.groups.presentation.ui.group_edit.GroupEditContract.Event
 import br.com.jwar.sharedbill.core.utility.extensions.shareText
 import br.com.jwar.sharedbill.groups.presentation.R
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun GroupEditRoute(
     groupId: String,
     viewModel: GroupEditViewModel = hiltViewModel(),
-    snackbarHostState: SnackbarHostState,
     onNavigateToDetails: (String) -> Unit = {},
     onNavigateBack: () -> Unit = {}
 ) {
     val state = viewModel.uiState.collectAsState().value
     val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    GroupEditScreen(
-        state = state,
-        onGroupUpdated = { group -> viewModel.emitEvent { Event.OnGroupUpdated(group) } },
-        onSaveMemberClick = { userName -> viewModel.emitEvent { Event.OnSaveMember(userName, groupId) } },
-        onMemberSelectionChange = { user -> viewModel.emitEvent { Event.OnMemberSelect(user) } },
-        onMemberDeleteClick = { userId -> viewModel.emitEvent { Event.OnMemberDelete(userId, groupId) } },
-        onShareInviteCodeClick = { inviteCode -> viewModel.emitEvent { Event.OnShareInviteCode(inviteCode) } },
-        onSaveClick = { viewModel.emitEvent { Event.OnSaveGroup } },
-        onNavigateBack = onNavigateBack
-    )
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+    ) {
+        GroupEditScreen(
+            state = state,
+            onGroupUpdated = { group -> viewModel.emitEvent { Event.OnGroupUpdated(group) } },
+            onSaveMemberClick = { userName -> viewModel.emitEvent { Event.OnSaveMember(userName, groupId) } },
+            onMemberSelectionChange = { user -> viewModel.emitEvent { Event.OnMemberSelect(user) } },
+            onMemberDeleteClick = { userId -> viewModel.emitEvent { Event.OnMemberDelete(userId, groupId) } },
+            onShareInviteCodeClick = { inviteCode -> viewModel.emitEvent { Event.OnShareInviteCode(inviteCode) } },
+            onSaveClick = { viewModel.emitEvent { Event.OnSaveGroup } },
+            onNavigateBack = onNavigateBack
+        )
+    }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->

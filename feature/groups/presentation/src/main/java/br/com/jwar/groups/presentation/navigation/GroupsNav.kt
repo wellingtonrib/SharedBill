@@ -20,12 +20,10 @@ const val PAYMENT_ROUTE = "payment/{$GROUP_ID_ARG}/{$PAYMENT_TYPE_ARG}"
 
 fun NavGraphBuilder.groupsNav(
     navController: NavHostController,
-    snackbarHostState: SnackbarHostState,
     onNavigateAccount: () -> Unit,
 ) {
     composable(route = GROUP_LIST_ROUTE) {
         GroupListRoute(
-            snackbarHostState = snackbarHostState,
             onNavigateToGroupDetails = { groupId ->
                 navController.navigate(GROUP_DETAILS_ROUTE.bindGroupId(groupId))
             },
@@ -51,7 +49,6 @@ fun NavGraphBuilder.groupsNav(
     composable(route = GROUP_EDIT_ROUTE) { backStackEntry ->
         GroupEditRoute(
             groupId = backStackEntry.getGroupId(),
-            snackbarHostState = snackbarHostState,
             onNavigateToDetails = { groupId ->
                 navController.popBackStack()
                 navController.navigate(GROUP_DETAILS_ROUTE.bindGroupId(groupId))

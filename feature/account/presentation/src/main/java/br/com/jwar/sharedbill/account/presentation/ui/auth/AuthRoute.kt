@@ -1,29 +1,38 @@
 package br.com.jwar.sharedbill.account.presentation.ui.auth
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.sharedbill.account.presentation.ui.auth.AuthContract.Effect
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AuthRoute(
     viewModel: AuthViewModel = hiltViewModel(),
-    snackbarHostState: SnackbarHostState,
     onNavigateToHome: () -> Unit,
 ) {
     val state = viewModel.uiState.collectAsState().value
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    AuthScreen(
-        state = state,
-        onSignInClick = { viewModel.emitEvent { AuthContract.Event.OnRequestSignIn } },
-    )
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+    ) {
+        AuthScreen(
+            state = state,
+            onSignInClick = { viewModel.emitEvent { AuthContract.Event.OnRequestSignIn } },
+        )
+    }
 
     val launcherForActivityResult = rememberLauncherForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()

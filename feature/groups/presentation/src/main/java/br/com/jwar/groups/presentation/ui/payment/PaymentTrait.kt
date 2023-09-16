@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableSet
 import java.math.BigDecimal
 import java.util.Calendar
 
-interface PaymentProcessor {
+interface PaymentTrait {
 
     val stringProvider: StringProvider
 
@@ -66,7 +66,7 @@ interface PaymentProcessor {
         ),
         PaymentContract.Field.PaidToField(
             value = ImmutableSet.copyOf(groupUiModel.members.take(1)),
-            options = groupUiModel.members,
+            options = ImmutableSet.copyOf(groupUiModel.members.drop(1)),
             visible = true,
             isMultiSelect = false,
         )

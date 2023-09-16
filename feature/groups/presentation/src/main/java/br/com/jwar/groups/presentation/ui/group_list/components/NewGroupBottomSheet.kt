@@ -1,5 +1,6 @@
 package br.com.jwar.groups.presentation.ui.group_list.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.core.designsystem.components.InputDialog
+import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.core.designsystem.R as DSR
@@ -39,7 +41,7 @@ fun NewGroupBottomSheet(
         modifier = Modifier
             .heightIn(min = 200.dp, max = 200.dp)
             .paddingMedium()
-            .padding(bottom = 80.dp)
+            .padding(bottom = 100.dp)
             .fillMaxWidth(),
         horizontalAlignment = CenterHorizontally
     ) {
@@ -52,10 +54,13 @@ fun NewGroupBottomSheet(
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
 fun PreviewNewGroupBottomSheet() {
-    Scaffold {
-        NewGroupBottomSheet()
+    SharedBillTheme {
+        Scaffold {
+            NewGroupBottomSheet()
+        }
     }
 }

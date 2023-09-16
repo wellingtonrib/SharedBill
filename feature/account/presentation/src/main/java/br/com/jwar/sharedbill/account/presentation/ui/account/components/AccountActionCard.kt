@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,18 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.account.presentation.R
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
+import br.com.jwar.sharedbill.core.designsystem.R as DSR
 
 @Composable
-fun AccountAction(
+fun AccountActionCard(
     imageVector: ImageVector,
     title: String,
     onClick: () -> Unit = {},
 ) {
-    OutlinedCard {
+    Card {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -46,7 +46,7 @@ fun AccountAction(
             )
             Icon(
                 modifier = Modifier.paddingMedium(),
-                imageVector = ImageVector.vectorResource(R.drawable.ic_chevron_right),
+                imageVector = ImageVector.vectorResource(DSR.drawable.ic_chevron_right),
                 contentDescription = null
             )
         }
@@ -58,7 +58,7 @@ fun AccountAction(
 @Preview
 fun PreviewAccountAction() {
     SharedBillTheme {
-        AccountAction(
+        AccountActionCard(
             imageVector = Icons.Outlined.Info,
             title = "Info",
         )

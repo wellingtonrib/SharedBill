@@ -29,9 +29,8 @@ class AccountViewModel @Inject constructor(
         when (event) {
             is Event.OnInit -> onInit()
             is Event.OnSignOutClick -> onSignOut()
-            is Event.OnSupportClick -> onSupport()
+            is Event.OnContactClick -> onContact()
             is Event.OnAboutClick -> onAbout()
-            is Event.OnAboutDismiss -> onAboutDismiss()
             is Event.OnTermsClick -> onTerms()
             is Event.OnPrivacyClick -> onPrivacy()
             is Event.OnRateUsClick -> onRateUs()
@@ -52,24 +51,20 @@ class AccountViewModel @Inject constructor(
             .onFailure { handleException(it) }
     }
 
-    private fun onSupport() {
-        sendEffect { Effect.LaunchSupportIntent }
+    private fun onContact() {
+        sendEffect { Effect.LaunchContactIntent }
     }
 
     private fun onTerms() {
-        sendEffect { Effect.NavigateToTerms }
+        sendEffect { Effect.LaunchToTermsIntent }
     }
 
     private fun onAbout() {
-        setState { it.copy(showAboutDialog = true) }
-    }
-
-    private fun onAboutDismiss() {
-        setState { it.copy(showAboutDialog = false) }
+        sendEffect { Effect.LaunchAboutIntent }
     }
 
     private fun onPrivacy() {
-        sendEffect { Effect.NavigateToPrivacy }
+        sendEffect { Effect.LaunchPrivacyIntent }
     }
 
     private fun onRateUs() {

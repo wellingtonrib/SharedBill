@@ -19,8 +19,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -31,8 +29,6 @@ import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 @Composable
 fun TextFieldWithSuggestions(
     modifier: Modifier = Modifier,
-    focusRequester: FocusRequester = FocusRequester(),
-    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     imeAction: ImeAction = ImeAction.Next,
     label: @Composable() (() -> Unit)? = null,
     placeholder: @Composable() (() -> Unit)? = null,
@@ -45,6 +41,7 @@ fun TextFieldWithSuggestions(
     var textFieldValue by remember { mutableStateOf(TextFieldValue(text)) }
     var dropDownWidth by remember { mutableIntStateOf(0) }
     val isDropdownVisible = remember { mutableStateOf(text.isBlank()) }
+    val focusRequester = remember { FocusRequester() }
 
     Column {
         OutlinedTextField(
@@ -73,7 +70,7 @@ fun TextFieldWithSuggestions(
             onDismissRequest = {
                 isDropdownVisible.value = false
                 if (textFieldValue.text.isEmpty()) {
-                    keyboardController?.show()
+                    focusRequester.requestFocus()
                 }
             }
         ) {
@@ -83,8 +80,8 @@ fun TextFieldWithSuggestions(
                         textFieldValue = TextFieldValue(suggestion)
                             .copy(selection = TextRange(suggestion.length))
                         isDropdownVisible.value = false
-                        keyboardController?.show()
                         onValueChange(textFieldValue)
+                        focusRequester.requestFocus()
                     },
                     text = { Text(suggestion) }
                 )

@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.groups.presentation.models.PaymentUiError
+import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.components.SelectDialog
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
@@ -31,43 +32,45 @@ fun PaymentPaidByField(
     error: PaymentUiError? = null,
     onValueChange: (GroupMemberUiModel) -> Unit,
 ) {
-    LogCompositions("PaymentContent PaymentPaidByField")
+    Field {
+        LogCompositions("PaymentContent PaymentPaidByField")
 
-    val isPaidBySelecting = remember { mutableStateOf(false) }
-    if (isPaidBySelecting.value) {
-        SelectDialog(
-            title = stringResource(id = R.string.label_payment_paid_by),
-            message = stringResource(id = R.string.placeholder_payment_paid_by),
-            options = options,
-            defaultSelection = listOf(value),
-            isMultiChoice = false,
-            onDismiss = {
-                isPaidBySelecting.value = false
-            },
-            onSelect = {
-                isPaidBySelecting.value = false
-                onValueChange(it.first())
-            }
-        )
-    }
+        val isPaidBySelecting = remember { mutableStateOf(false) }
+        if (isPaidBySelecting.value) {
+            SelectDialog(
+                title = stringResource(id = R.string.label_payment_paid_by),
+                message = stringResource(id = R.string.placeholder_payment_paid_by),
+                options = options,
+                defaultSelection = listOf(value),
+                isMultiChoice = false,
+                onDismiss = {
+                    isPaidBySelecting.value = false
+                },
+                onSelect = {
+                    isPaidBySelecting.value = false
+                    onValueChange(it.first())
+                }
+            )
+        }
 
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.Top
-    ) {
-        Text(
-            modifier = Modifier.padding(top = AppTheme.dimens.space_4),
-            text = stringResource(R.string.label_payment_paid_by)
-        )
-        HorizontalSpacerMedium()
-        Column(modifier = Modifier.weight(1f)) {
-            Button(
-                onClick = { isPaidBySelecting.value = true },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = value.name)
+        Row(
+            modifier = modifier,
+            verticalAlignment = Alignment.Top
+        ) {
+            Text(
+                modifier = Modifier.padding(top = AppTheme.dimens.space_4),
+                text = stringResource(R.string.label_payment_paid_by)
+            )
+            HorizontalSpacerMedium()
+            Column(modifier = Modifier.weight(1f)) {
+                Button(
+                    onClick = { isPaidBySelecting.value = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = value.name)
+                }
+                error?.message?.AsText(AppTheme.colors.error)
             }
-            error?.message?.AsText(AppTheme.colors.error)
         }
     }
 }

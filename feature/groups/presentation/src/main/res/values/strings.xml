@@ -51,12 +51,8 @@
     <string name="message_paid_to_all">All</string>
     <string name="message_invite_code">Invite code: %1$s</string>
     <string name="message_groups_empty">No groups, create or join one\nClick on + New Group button below</string>
-    <string name="message_payment_description">Description %1$s</string>
-    <string name="message_payment_value">Value %1$s</string>
-    <string name="message_payment_paid_by">Paid by %1$s</string>
-    <string name="message_payment_paid_to">Paid to %1$s</string>
-    <string name="message_payment_created_at">Created at %1$s</string>
-    <string name="message_payment_created_by">Created by %1$s</string>
+    <string name="message_payment_description">%1$s - %2$s, paid by %3$s to %4$s\nCreated at %5$s</string>
+    <string name="message_payment_created_by">by %1$s</string>
     <string name="message_group_saved_success">Group updated with success</string>
     <string name="message_confirm_user_remove">Are you sure about removing this user?</string>
     <string name="message_confirm_group_delete">Are you sure about deleting this group?</string>

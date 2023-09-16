@@ -18,7 +18,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -55,6 +60,7 @@ fun GroupsDetailsContent(
         ImageVector.vectorResource(R.drawable.ic_receipt) to stringResource(R.string.label_group_payments),
         ImageVector.vectorResource(R.drawable.ic_balance) to stringResource(R.string.label_group_balance),
     )
+    var selectedPageIndex by rememberSaveable { mutableIntStateOf(0) }
     val pagerState = rememberPagerState(
         initialPage = PAGE_PAYMENTS,
         initialPageOffsetFraction = 0f
@@ -102,8 +108,12 @@ fun GroupsDetailsContent(
                     SegmentedControl(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
+                        selectedIndex = selectedPageIndex,
                         items = pages.map { it.second },
-                        onItemSelection = { index -> scope.launch { pagerState.scrollToPage(index) } }
+                        onItemSelection = { index ->
+                            selectedPageIndex = index
+                            scope.launch { pagerState.scrollToPage(index) }
+                        }
                     )
                     VerticalSpacerSmall()
                     HorizontalPager(

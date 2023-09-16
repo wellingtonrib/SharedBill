@@ -42,15 +42,13 @@ fun SegmentedControl(
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     items: List<String>,
-    defaultSelectedItemIndex: Int = 0,
+    selectedIndex: Int = 0,
     useFixedWidth: Boolean = false,
     colorScheme: ColorScheme = MaterialTheme.colorScheme,
     itemWidth: Dp = 120.dp,
     cornerRadius : Int = 50,
     onItemSelection: (selectedItemIndex: Int) -> Unit
 ) {
-    var selectedIndex by remember { mutableIntStateOf(defaultSelectedItemIndex) }
-
     Row(
         modifier = modifier,
         horizontalArrangement = horizontalArrangement
@@ -83,8 +81,7 @@ fun SegmentedControl(
                     }
                 },
                 onClick = {
-                    selectedIndex = index
-                    onItemSelection(selectedIndex)
+                    onItemSelection(index)
                 },
                 shape = when (index) {
                     /**

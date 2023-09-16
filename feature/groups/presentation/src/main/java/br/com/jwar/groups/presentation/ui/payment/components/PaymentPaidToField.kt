@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.designsystem.components.CheckboxWitText
+import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.components.RadioButtonWitText
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
@@ -38,59 +39,61 @@ fun PaymentPaidToField(
     error: PaymentUiError? = null,
     onValueChange: (ImmutableSet<GroupMemberUiModel>) -> Unit,
 ) {
-    LogCompositions("PaymentContent PaymentPaidToField")
+    Field {
+        LogCompositions("PaymentContent PaymentPaidToField")
 
-    var selection by remember { mutableStateOf(value) }
+        var selection by remember { mutableStateOf(value) }
 
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.Top
-    ) {
-        Column {
-            VerticalSpacerSmall()
-            Text(text = stringResource(R.string.label_payment_paid_to))
-        }
-        HorizontalSpacerMedium()
-        LazyColumn {
-            if (isMultiSelect) {
-                items(options.asList()) { member ->
-                    Row(
-                        modifier = modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        CheckboxWitText(
-                            modifier = Modifier.weight(1f),
-                            text = member.name,
-                            isChecked = selection.any { it.uid == member.uid },
-                            onCheckedChange = { checked ->
-                                selection = if (checked) {
-                                    ImmutableSet.copyOf(selection.toMutableList().apply { add(member) })
-                                } else {
-                                    ImmutableSet.copyOf(selection.toMutableList().apply { remove(member) })
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Top
+        ) {
+            Column {
+                VerticalSpacerSmall()
+                Text(text = stringResource(R.string.label_payment_paid_to))
+            }
+            HorizontalSpacerMedium()
+            LazyColumn {
+                if (isMultiSelect) {
+                    items(options.asList()) { member ->
+                        Row(
+                            modifier = modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            CheckboxWitText(
+                                modifier = Modifier.weight(1f),
+                                text = member.name,
+                                isChecked = selection.any { it.uid == member.uid },
+                                onCheckedChange = { checked ->
+                                    selection = if (checked) {
+                                        ImmutableSet.copyOf(selection.toMutableList().apply { add(member) })
+                                    } else {
+                                        ImmutableSet.copyOf(selection.toMutableList().apply { remove(member) })
+                                    }
+                                    onValueChange(selection)
                                 }
+                            )
+                            Text(
+                                modifier = Modifier.padding(end = AppTheme.dimens.space_4),
+                                text = if (selection.contains(member)) sharedValue else "-"
+                            )
+                        }
+                    }
+                } else {
+                    items(options.asList()) { member ->
+                        RadioButtonWitText(
+                            text = member.name,
+                            isChecked = selection.contains(member),
+                            onCheckedChange = { checked ->
+                                selection = if (checked) ImmutableSet.of(member) else ImmutableSet.of()
                                 onValueChange(selection)
                             }
                         )
-                        Text(
-                            modifier = Modifier.padding(end = AppTheme.dimens.space_4),
-                            text = if (selection.contains(member)) sharedValue else "-"
-                        )
                     }
                 }
-            } else {
-                items(options.asList()) { member ->
-                    RadioButtonWitText(
-                        text = member.name,
-                        isChecked = selection.contains(member),
-                        onCheckedChange = { checked ->
-                            selection = if (checked) ImmutableSet.of(member) else ImmutableSet.of()
-                            onValueChange(selection)
-                        }
-                    )
+                item {
+                    error?.message?.AsText(AppTheme.colors.error)
                 }
-            }
-            item {
-                error?.message?.AsText(AppTheme.colors.error)
             }
         }
     }
