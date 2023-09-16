@@ -8,7 +8,7 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
-internal fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, *>, ) {
+internal fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, *, *>, ) {
     commonExtension.apply {
         val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
@@ -19,12 +19,12 @@ internal fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, 
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
 
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = JavaVersion.VERSION_17.toString()
             allWarningsAsErrors = false
             freeCompilerArgs = freeCompilerArgs + listOf(
                 "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
@@ -38,6 +38,6 @@ internal fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, 
     }
 }
 
-fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
+fun CommonExtension<*, *, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
 }
