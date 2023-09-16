@@ -62,7 +62,7 @@ fun GroupListContent(
     ) {
         Scaffold(
             modifier = Modifier
-                .padding(bottom = 80.dp)
+                .padding(bottom = 100.dp)
                 .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
             topBar = {
                 MediumTopAppBar(
