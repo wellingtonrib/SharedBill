@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Scaffold
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.navigation.NavGraph
@@ -18,6 +19,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             val navController = rememberAnimatedNavController(bottomSheetNavigator)

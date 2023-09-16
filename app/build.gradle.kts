@@ -41,6 +41,9 @@ dependencies {
     implementation(projects.feature.groups.presentation)
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.kotlinx.coroutines.playServices)
     implementation(libs.bundles.compose)
