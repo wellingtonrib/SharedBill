@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,12 +21,12 @@ import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.core.designsystem.R as DSR
 
 @Composable
-fun AccountAction(
+fun AccountActionCard(
     imageVector: ImageVector,
     title: String,
     onClick: () -> Unit = {},
 ) {
-    ElevatedCard {
+    Card {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -58,7 +58,7 @@ fun AccountAction(
 @Preview
 fun PreviewAccountAction() {
     SharedBillTheme {
-        AccountAction(
+        AccountActionCard(
             imageVector = Icons.Outlined.Info,
             title = "Info",
         )

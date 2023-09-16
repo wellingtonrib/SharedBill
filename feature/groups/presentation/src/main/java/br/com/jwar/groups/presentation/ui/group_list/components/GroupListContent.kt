@@ -100,7 +100,7 @@ fun GroupListContent(
                     verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
                     content = {
                         items(groups) { group ->
-                            GroupListItem(group, onGroupClick, onGroupDelete, onGroupLeave)
+                            GroupCard(group, onGroupClick, onGroupDelete, onGroupLeave)
                         }
                     }
                 )

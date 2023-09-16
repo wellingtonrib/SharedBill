@@ -24,7 +24,7 @@ fun GroupBalance(
         verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
     ) {
         items(group.balance.entries.toList()) { entry ->
-            GroupBalanceItem(entry)
+            GroupMemberBalanceCard(entry)
         }
         item {
             Text(

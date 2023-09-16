@@ -61,12 +61,12 @@ fun AccountContent(
             verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            AccountAction(
+            AccountActionCard(
                 imageVector = Icons.Outlined.Info,
                 title = stringResource(R.string.label_about),
                 onClick = onAboutClick,
             )
-            AccountAction(
+            AccountActionCard(
                 imageVector = Icons.Outlined.Email,
                 title = stringResource(R.string.label_contact),
                 onClick = onContactClick,
@@ -76,12 +76,12 @@ fun AccountContent(
 //                title = stringResource(R.string.label_rate),
 //                onClick = onRateUsClick,
 //            )
-            AccountAction(
+            AccountActionCard(
                 imageVector = Icons.Outlined.Menu,
                 title = stringResource(R.string.label_terms),
                 onClick = onTermsClick,
             )
-            AccountAction(
+            AccountActionCard(
                 imageVector = Icons.Outlined.Lock,
                 title = stringResource(R.string.label_privacy),
                 onClick = onPrivacyClick,

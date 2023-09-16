@@ -3,8 +3,7 @@ package br.com.jwar.groups.presentation.ui.group_details.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,11 +24,12 @@ import br.com.jwar.sharedbill.groups.presentation.R
 import java.math.BigDecimal
 
 @Composable
-fun GroupBalanceItem(
+fun GroupMemberBalanceCard(
     entry: Map.Entry<GroupMemberUiModel, BigDecimal>,
 ) {
     val (member, value) = entry
-    ElevatedCard(
+
+    Card(
         modifier = Modifier
             .fillMaxWidth()
     ) {
@@ -87,7 +87,7 @@ private fun GroupBalanceValue(
 @Composable
 fun PreviewGroupBalanceItem() {
     SharedBillTheme {
-        GroupBalanceItem(
+        GroupMemberBalanceCard(
             entry = hashMapOf(GroupMemberUiModel.sample() to BigDecimal.ZERO).entries.first(),
         )
     }

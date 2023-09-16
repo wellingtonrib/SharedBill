@@ -3,7 +3,7 @@ package br.com.jwar.groups.presentation.ui.group_details.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -32,7 +32,7 @@ fun GroupPaymentCard(
 ) {
     val showingPaymentInfo = paymentInfoDialog(payment)
 
-    ElevatedCard(
+    Card(
         modifier = Modifier
             .fillMaxWidth(),
         onClick = { showingPaymentInfo.value = true }
@@ -87,15 +87,21 @@ private fun paymentInfoDialog(payment: PaymentUiModel): MutableState<Boolean> {
 
 @Composable
 private fun PaymentUiModel.getInfo() =
-    stringResource(
-        R.string.message_payment_description,
-        description,
-        value,
-        paidBy.firstName,
-        paidTo.joinToString { it.name },
-        createdBy.name,
-        createdAt.format(DATE_FORMAT_SMALL)
-    )
+    StringBuilder().apply {
+        appendLine(
+            stringResource(
+                R.string.message_payment_description,
+                description,
+                value,
+                paidBy.firstName,
+                paidTo.joinToString { it.firstName },
+                createdAt.format("dd.MM.yy HH:mm")
+            )
+        )
+        if (paidBy.uid != createdBy.uid) {
+            appendLine(stringResource(R.string.message_payment_created_by, createdBy.firstName))
+        }
+    }.toString()
 
 @Composable
 fun PaymentUiModel.getMessage(group: GroupUiModel) =
