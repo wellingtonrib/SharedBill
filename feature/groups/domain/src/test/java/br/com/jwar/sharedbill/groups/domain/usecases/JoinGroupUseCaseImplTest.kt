@@ -43,7 +43,7 @@ class JoinGroupUseCaseImplTest {
 
         val result = joinGroupUseCase.invoke(invitedCode)
 
-        coVerify { groupRepository.joinGroup(group.id, invitedUser, joinedUser) }
+        coVerify { groupRepository.joinGroup(group.id, invitedCode, joinedUser) }
         assertEquals(Result.success(group.id), result)
     }
 

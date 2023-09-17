@@ -11,4 +11,6 @@ android {
 dependencies {
     implementation(projects.core.utility)
     implementation(projects.feature.account.domain)
+
+    testImplementation(projects.core.testing)
 }
