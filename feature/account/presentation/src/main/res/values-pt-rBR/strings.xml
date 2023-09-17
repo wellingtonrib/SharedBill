@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_contact_subject">Contas compartilhadas - Contato</string>
+    <string name="label_account">Conta</string>
+    <string name="label_logout">Sair</string>
+    <string name="label_sign_in">Entrar</string>
+    <string name="label_sign_in_with_google">Faça login com o Google</string>
+    <string name="label_contact">Contato</string>
+    <string name="label_about">Sobre nós</string>
+    <string name="label_rate">Avalie-nos</string>
+    <string name="label_terms">Termos de Uso</string>
+    <string name="label_privacy">Política de Privacidade</string>
+
+    <string name="message_privacy_police">Ao fazer login, você concorda com a\nPolítica de Privacidade</string>
+
+    <string name="description_app_logo">Logotipo do aplicativo</string>
+
+    <string name="onboarding_title_1">Crie grupos personalizados</string>
+    <string name="onboarding_message_1">para organizar cada tipo de despesa sem esforço</string>
+    <string name="onboarding_title_2">Registre despesas e pagamentos com facilidade</string>
+    <string name="onboarding_message_2">e deixe-nos cuidar dos cálculos para você</string>
+    <string name="onboarding_title_3">Rastreie quem deve a quem</string>
+    <string name="onboarding_message_3">e resolva com alguns cliques</string>
+</resources>
