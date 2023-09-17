@@ -12,6 +12,7 @@ class AuthContract {
         object OnRequestSignUp : Event()
         class OnRequestSignInFirebase(val data: Intent?) : Event()
         object OnRequestSignInFirebaseFailed : Event()
+        object OnPrivacyPolicyClick: Event()
     }
 
     sealed class State : UiState {
@@ -23,5 +24,6 @@ class AuthContract {
         object LoggedIn : Effect()
         class LaunchSignInResult(val signInResult: BeginSignInResult): Effect()
         class ShowError(val message: String): Effect()
+        object LaunchPrivacyPolicyIntent : Effect()
     }
 }

@@ -11,5 +11,6 @@ dependencies {
 
     implementation(projects.core.testing)
     implementation(projects.core.utility)
+    implementation(projects.core.common)
     implementation(projects.feature.account.domain)
 }

@@ -15,10 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -151,7 +147,7 @@ fun SegmentedControl(
 fun PreviewSegmentedControl() {
     SharedBillTheme {
         SegmentedControl(
-            items = listOf("Item 1", "Item 2", "Item 3"),
+            items = listOf("Item 1", "Item 2"),
             onItemSelection = {}
         )
     }

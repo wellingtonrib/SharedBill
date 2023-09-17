@@ -13,11 +13,12 @@ import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 @Composable
 fun AuthScreen(
     state: State,
-    onSignInClick: () -> Unit = {}
+    onSignInClick: () -> Unit = {},
+    onPrivacyClick: () -> Unit = {},
 ) {
     when(state) {
         is Loading -> LoadingContent()
-        is Idle -> AuthContent(onSignInClick)
+        is Idle -> AuthContent(onSignInClick, onPrivacyClick)
     }
 }
 
@@ -28,7 +29,7 @@ fun PreviewAuthScreen() {
     SharedBillTheme {
         Scaffold {
             AuthScreen(
-                state = Idle
+                state = Idle,
             )
         }
     }

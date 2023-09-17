@@ -29,6 +29,7 @@ class AuthViewModel @Inject constructor(
             is Event.OnRequestSignUp -> onSignUp()
             is Event.OnRequestSignInFirebase -> onSignInFirebase(event.data)
             is Event.OnRequestSignInFirebaseFailed -> onSignInFirebaseFailed()
+            is Event.OnPrivacyPolicyClick -> onPrivacyPolicyClick()
         }
     }
 
@@ -52,6 +53,8 @@ class AuthViewModel @Inject constructor(
             .onSuccess { sendLoggedEffect() }
             .onFailure { sendErrorEffect(it) }
     }
+
+    private fun onPrivacyPolicyClick() = sendEffect { Effect.LaunchPrivacyPolicyIntent }
 
     private fun onSignInFirebaseFailed() {
         setState { State.Idle }

@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.utility)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 }
