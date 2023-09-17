@@ -6,6 +6,7 @@
     <string name="app_privacy_link">https://wellingtonribeiro.notion.site/Shared-Bills-Privacy-Policy-330d883162064eec99897719236f6f33?pvs=4</string>
     <string name="app_about_link">https://wellingtonribeiro.notion.site/Shared-Bills-01cea5fe2d994825895f2a513f34eef4?pvs=4</string>
 
+    <string name="label_account">Account</string>
     <string name="label_logout">Logout</string>
     <string name="label_sign_in">Sign In</string>
     <string name="label_sign_in_with_google">Sign in with Google</string>

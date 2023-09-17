@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="label_groups">Groups</string>
     <string name="label_group_balance">Balance</string>
     <string name="label_group_payments">Payments</string>
     <string name="label_group_details">Group Details</string>
