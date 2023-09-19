@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="label_groups">Grupos</string>
+    <string name="label_group_balance">Saldo</string>
+    <string name="label_group_payments">Pagamentos</string>
+    <string name="label_group_details">Detalhes do grupo</string>
+    <string name="label_group_title">Título do grupo</string>
+    <string name="label_group_manage">Gerenciar</string>
+    <string name="label_group_members">Membros</string>
+    <string name="label_group_info">Informações</string>
+    <string name="label_group_add_member">Adicionar membro</string>
+    <string name="label_group_invite_link">Link de convite</string>
+    <string name="label_group_new">Novo grupo</string>
+    <string name="label_group_create">Criar um novo grupo</string>
+    <string name="label_group_join">Participar de um grupo existente</string>
+    <string name="label_group_invite_code">Insira o código do convite</string>
+    <string name="label_group_edit">Editar grupo</string>
+    <string name="label_group_list">Grupos</string>
+    <string name="label_my_groups">Meus grupos</string>
+    <string name="label_group_total_spent">Total gasto</string>
+    <plurals name="label_group_members_count">
+        <item quantity="one">%1$d membro</item>
+        <item quantity="many">%1$d membros</item>
+    </plurals>
+    <string name="label_payment_detail">Detalhes do pagamento</string>
+    <string name="label_payment_new">Novo pagamento</string>
+    <string name="label_payment_new_expense">Nova despesa</string>
+    <string name="label_payment_new_settlement">Novo acerto de contas</string>
+    <string name="label_payment_description">Descrição</string>
+    <string name="label_payment_value">Valor</string>
+    <string name="label_payment_paid_by">Pago por</string>
+    <string name="label_payment_paid_to">Pago para</string>
+    <string name="label_payment_received_by">Pagamento para %1$s</string>
+    <string name="label_payment_created_at">Criado em</string>
+    <string name="label_payment_created_by">Criado por</string>
+    <string name="label_joined">Ingressado</string>
+    <string name="label_account">Conta</string>
+    <string name="label_unnamed">Sem nome</string>
+    <string name="label_share_invite_code">Compartilhar código de convite</string>
+    <string name="label_share_balance">Saldo de compartilhamento</string>
+    <string name="label_total_spent">Total gasto %1$s</string>
+    <string name="label_suggestion">Sugestões</string>
+    <string name="label_settlement">🤝 Acerto de contas</string>
+
+    <string name="message_welcome">Bem-vindo %1$s</string>
+    <string name="message_owes">Deve %1$s</string>
+    <string name="message_is_owned">Pertence a %1$s</string>
+    <string name="message_no_expenses">Nenhum pagamento, adicione um\nClique no botão + Novo pagamento abaixo</string>
+    <string name="message_settled_up">Acertado</string>
+    <string name="message_payment_detail">Pago por %1$s a %2$s</string>
+    <string name="message_payment_detail_to_all">Pago por %1$s</string>
+    <string name="message_invite_code">Código do convite: %1$s</string>
+    <string name="message_groups_empty">Nenhum grupo, crie ou participe de um\nClique no botão + Novo grupo abaixo</string>
+    <string name="message_payment_description">%1$s - %2$s, pago por %3$s a %4$s\nCriado em %5$s</string>
+    <string name="message_payment_created_by">por %1$s</string>
+    <string name="message_group_saved_success">Grupo atualizado com sucesso</string>
+    <string name="message_confirm_user_remove">Tem certeza de que deseja remover este usuário?</string>
+    <string name="message_confirm_group_delete">Tem certeza de que deseja excluir este grupo?</string>
+    <string name="message_share_invite_code">Use este código para se juntar a nós: %1$s</string>
+
+    <string name="placeholder_user_name">Insira o nome e o sobrenome</string>
+    <string name="placeholder_group_title">Ex. 🏠 Minha casa</string>
+    <string name="placeholder_add_member_name">Ex. Walter White</string>
+    <string name="placeholder_payment_description">Ex. Comida</string>
+    <string name="placeholder_payment_paid_by">Selecione um pagador</string>
+    <string name="placeholder_payment_paid_to">Selecionar membros relacionados</string>
+    <string name="placeholder_payment_value">R$0,00</string>
+
+    <string name="error_generic">Algo deu errado</string>
+    <string name="error_payment_user_not_in_group">Você não está mais neste grupo</string>
+    <string name="error_payment_payer_not_in_group">Você não pode selecionar este membro como pagador</string>
+    <string name="error_payment_description_empty">Forneça uma descrição</string>
+    <string name="error_payment_value_invalid">Informe um valor válido</string>
+    <string name="error_payment_date_invalid">Informe uma data válida</string>
+    <string name="error_payment_empty_related_members">Selecione pelo menos um membro</string>
+    <string name="error_removing_member_with_non_zero_balance">Você não pode remover este usuário até resolvê-lo</string>
+    <string name="error_removing_owner_member">Você não pode remover o proprietário do grupo</string>
+    <string name="error_deleting_group_from_non_owner">Somente o proprietário pode excluir este grupo</string>
+    <string name="error_group_invalid_title">Informe um título válido</string>
+    <string name="error_invalid_user_name">Informe o nome e o sobrenome</string>
+    <string name="error_unauthenticated_user">Você precisa fazer login primeiro</string>
+
+    <string name="description_group_image">Imagem de grupo</string>
+    <string name="description_back">Ação de retorno</string>
+    <string name="description_close">Ação de fechamento</string>
+    <string name="description_user_image">Imagem do usuário</string>
+
+    <array name="samples_group_title">
+        <item>🏠 Minha casa</item>
+        <item>️❤️ Eu&amp;Você</item>
+        <item>🚙 Viagem</item>
+        <item>🎸 Minha banda</item>
+        <item>⚽ Meu time</item>
+        <item>🍻 Happy Hour</item>
+        <item>💼 Colegas de trabalho</item>
+    </array>
+
+    <array name="samples_payment_description">
+        <item>️🧾 Contas</item>
+        <item>🛒 Mercearia</item>
+        <item>🔧 Serviços</item>
+        <item>🚙 Transporte</item>
+        <item>🍸 Lazer</item>
+        <item>🛏️ Alojamento</item>
+        <item>💓 Saúde</item>
+        <item>🛍 Compras</item>
+        <item>🧰 Utilitários</item>
+        <item>🧩 Diversos</item>
+    </array>
+</resources>

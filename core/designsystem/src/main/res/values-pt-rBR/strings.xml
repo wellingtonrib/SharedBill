@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Contas compartilhadas</string>
+
+    <string name="label_loading">Carregando</string>
+    <string name="label_ok">Entendi</string>
+    <string name="label_save">Salvar</string>
+    <string name="label_confirm">Confirmar</string>
+    <string name="label_send">Enviar</string>
+    <string name="label_yes">Sim</string>
+    <string name="label_cancel">Cancelar</string>
+    <string name="label_verify">Verificar</string>
+    <string name="label_create">Criar</string>
+    <string name="label_date">Data</string>
+    <string name="label_try_again">Tentar novamente</string>
+    <string name="label_delete">Excluir</string>
+    <string name="label_leave">Sair</string>
+    <string name="label_done">Feito</string>
+
+    <string name="message_empty_content">Nada aqui</string>
+    <string name="message_error_content">Alguma coisa deu errado</string>
+    <string name="message_confirm_action">Está certo disso? Esta ação não poderá ser desfeita.</string>
+
+    <string name="description_delete">Ação de excluir</string>
+    <string name="description_leave">Ação de sair</string>
+    <string name="description_back">Voltar</string>
+    <string name="description_close">Fechar</string>
+    <string name="description_done">Ação de concluir</string>
+    <string name="description_user_avatar">Avatar do usuário</string>
+    <string name="description_empty">Imagem de estado vazio</string>
+</resources>

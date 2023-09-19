@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.sharedbill.account.presentation.ui.auth.AuthContract.Effect
+import br.com.jwar.sharedbill.core.common.extensions.launchPrivacyIntent
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -23,6 +25,7 @@ fun AuthRoute(
     onNavigateToHome: () -> Unit,
 ) {
     val state = viewModel.uiState.collectAsState().value
+    val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -31,6 +34,7 @@ fun AuthRoute(
         AuthScreen(
             state = state,
             onSignInClick = { viewModel.emitEvent { AuthContract.Event.OnRequestSignIn } },
+            onPrivacyClick = { viewModel.emitEvent { AuthContract.Event.OnPrivacyPolicyClick } },
         )
     }
 
@@ -61,6 +65,9 @@ fun AuthRoute(
                 }
                 is Effect.LoggedIn -> {
                     onNavigateToHome()
+                }
+                is Effect.LaunchPrivacyPolicyIntent -> {
+                    context.launchPrivacyIntent()
                 }
             }
         }

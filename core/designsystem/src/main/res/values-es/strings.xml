@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Facturas compartidas</string>
+
+    <string name="label_loading">Cargando</string>
+    <string name="label_ok">Aceptar</string>
+    <string name="label_save">Guardar</string>
+    <string name="label_confirm">Confirmar</string>
+    <string name="label_send">Enviar</string>
+    <string name="label_yes">Sí</string>
+    <string name="label_cancel">Cancelar</string>
+    <string name="label_verify">Verificar</string>
+    <string name="label_create">Crear</string>
+    <string name="label_date">Fecha</string>
+    <string name="label_try_again">Inténtalo de nuevo</string>
+    <string name="label_delete">Eliminar</string>
+    <string name="label_leave">Salir</string>
+    <string name="label_done">Listo</string>
+
+    <string name="message_empty_content">Nada aquí</string>
+    <string name="message_error_content">Algo salió mal</string>
+    <string name="message_confirm_action">¿Estás seguro de esto? Esto no se puede deshacer.</string>
+
+    <string name="description_delete">Eliminar acción</string>
+    <string name="description_leave">Dejar acción</string>
+    <string name="description_back">Volver</string>
+    <string name="description_close">Cerrar</string>
+    <string name="description_done">Acción realizada</string>
+    <string name="description_user_avatar">Avatar de usuario</string>
+    <string name="description_empty">Imagen de estado vacía</string>
+</resources>

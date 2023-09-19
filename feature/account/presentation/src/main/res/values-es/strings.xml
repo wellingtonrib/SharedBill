@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_contact_subject">Facturas compartidas - Contacto</string>
+    <string name="label_account">Cuenta</string>
+    <string name="label_logout">Cerrar sesión</string>
+    <string name="label_sign_in">Iniciar sesión</string>
+    <string name="label_sign_in_with_google">Inicia sesión con Google</string>
+    <string name="label_contact">Contacto</string>
+    <string name="label_about">Acerca de nosotros</string>
+    <string name="label_rate">Califícanos</string>
+    <string name="label_terms">Términos de uso</string>
+    <string name="label_privacy">Política de privacidad</string>
+
+    <string name="message_privacy_police">Al iniciar sesión, aceptas\nPolítica de privacidad</string>
+
+    <string name="description_app_logo">Logotipo de la aplicación</string>
+
+    <string name="onboarding_title_1">Crear grupos personalizados</string>
+    <string name="onboarding_message_1">para organizar cada tipo de gasto sin esfuerzo</string>
+    <string name="onboarding_title_2">Registra gastos y pagos con facilidad</string>
+    <string name="onboarding_message_2">y permítanos manejar los cálculos por usted</string>
+    <string name="onboarding_title_3">Seguimiento de quién le debe a quién</string>
+    <string name="onboarding_message_3">y liquida con solo unos pocos toques</string>
+</resources>

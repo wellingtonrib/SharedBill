@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_contact_mail">wellington.rib@gmail.com</string>
-    <string name="app_contact_subject">Shared Bill - Contact</string>
-    <string name="app_terms_link">https://wellingtonribeiro.notion.site/Shared-Bills-Terms-of-Use-0eb3a1a4930242c1bd3d90446a4b4f14?pvs=4</string>
-    <string name="app_privacy_link">https://wellingtonribeiro.notion.site/Shared-Bills-Privacy-Policy-330d883162064eec99897719236f6f33?pvs=4</string>
-    <string name="app_about_link">https://wellingtonribeiro.notion.site/Shared-Bills-01cea5fe2d994825895f2a513f34eef4?pvs=4</string>
-
+    <string name="label_account">Account</string>
     <string name="label_logout">Logout</string>
     <string name="label_sign_in">Sign In</string>
     <string name="label_sign_in_with_google">Sign in with Google</string>
@@ -25,9 +20,4 @@
     <string name="onboarding_message_2">and let us handle the calculations for you</string>
     <string name="onboarding_title_3">Track who owes who</string>
     <string name="onboarding_message_3">and settle up with just a few taps</string>
-
-    <string name="message_about">
-        Welcome to Shared Bill\n\n
-        Your ultimate solution for simplifying group expenses, splitting bills, and settling debts effortlessly. Our app is designed to streamline the process of managing shared expenses among friends, family, roommates, or colleagues, making financial collaborations hassle-free and transparent.
-    </string>
 </resources>

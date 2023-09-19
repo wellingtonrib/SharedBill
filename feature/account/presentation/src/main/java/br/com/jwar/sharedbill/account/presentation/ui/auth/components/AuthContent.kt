@@ -13,7 +13,8 @@ import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 
 @Composable
 fun AuthContent(
-    onSignInClick: () -> Unit = {}
+    onSignInClick: () -> Unit = {},
+    onPrivacyClick: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -30,7 +31,7 @@ fun AuthContent(
         ) {
             SignInButton(onSignInClick = onSignInClick)
             VerticalSpacerLarge()
-            PrivacyPolicy()
+            PrivacyPolicy(onPrivacyClick = onPrivacyClick)
             VerticalSpacerLarge()
         }
     }
