@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,17 +30,20 @@ fun GroupDetailsFloatingButtons(
     onNewPaymentClick: (PaymentType) -> Unit,
 ) {
     val showSettlement by remember { derivedStateOf { group.members.size > 1 } }
+    val firstIndexVisible by remember {
+        derivedStateOf { listState.firstVisibleItemIndex == 0 }
+    }
 
     if (showSettlement) {
-        NewPaymentGroupedButtons(listState, onNewPaymentClick)
+        NewPaymentGroupedButtons(firstIndexVisible, onNewPaymentClick)
     } else {
-        NewExpenseButton(listState, onNewPaymentClick)
+        NewExpenseButton(firstIndexVisible, onNewPaymentClick)
     }
 }
 
 @Composable
 private fun NewPaymentGroupedButtons(
-    listState: LazyListState,
+    firstIndexVisible: Boolean,
     onNewPaymentClick: (PaymentType) -> Unit
 ) {
     var actionButtonsVisible by remember { mutableStateOf(false) }
@@ -51,12 +53,12 @@ private fun NewPaymentGroupedButtons(
         verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4)
     ) {
         if (actionButtonsVisible) {
-            NewExpenseButton(listState, onNewPaymentClick)
-            NewSettlementButton(onNewPaymentClick)
+            NewExpenseButton(true, onNewPaymentClick)
+            NewSettlementButton(true, onNewPaymentClick)
         }
         ExtendedFloatingActionButton(
             onClick = { actionButtonsVisible = !actionButtonsVisible },
-            expanded = listState.isScrollingUp() && !actionButtonsVisible,
+            expanded = firstIndexVisible && actionButtonsVisible.not() ,
             icon = { Icon(Icons.Filled.Add, stringResource(R.string.label_payment_new)) },
             text = { Text(stringResource(R.string.label_payment_new)) },
         )
@@ -65,11 +67,12 @@ private fun NewPaymentGroupedButtons(
 
 @Composable
 private fun NewSettlementButton(
+    expanded: Boolean,
     onNewPaymentClick: (PaymentType) -> Unit
 ) {
     ExtendedFloatingActionButton(
         onClick = { onNewPaymentClick(PaymentType.SETTLEMENT) },
-        expanded = true,
+        expanded = expanded,
         icon = {
             Icon(
                 Icons.Outlined.ThumbUp,
@@ -81,10 +84,13 @@ private fun NewSettlementButton(
 }
 
 @Composable
-private fun NewExpenseButton(listState: LazyListState, onNewPaymentClick: (PaymentType) -> Unit) {
+private fun NewExpenseButton(
+    expanded: Boolean,
+    onNewPaymentClick: (PaymentType) -> Unit
+) {
     ExtendedFloatingActionButton(
         onClick = { onNewPaymentClick(PaymentType.EXPENSE) },
-        expanded = listState.isScrollingUp(),
+        expanded = expanded,
         icon = {
             Icon(
                 Icons.Outlined.ShoppingCart,
@@ -93,26 +99,4 @@ private fun NewExpenseButton(listState: LazyListState, onNewPaymentClick: (Payme
         },
         text = { Text(stringResource(R.string.label_payment_new_expense)) },
     )
-}
-
-@Composable
-private fun LazyListState.isScrollingUp() : Boolean {
-    var previousIndex by remember(this) {
-        mutableIntStateOf(firstVisibleItemIndex)
-    }
-    var previousScrollOffset by remember(this) {
-        mutableIntStateOf(firstVisibleItemScrollOffset)
-    }
-    return remember(this) {
-        derivedStateOf {
-            if (previousIndex != firstVisibleItemIndex) {
-                previousIndex > firstVisibleItemIndex
-            } else {
-                previousScrollOffset >= firstVisibleItemScrollOffset
-            }.also {
-                previousIndex = firstVisibleItemIndex
-                previousScrollOffset = firstVisibleItemScrollOffset
-            }
-        }.value
-    }
 }

@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -32,7 +34,6 @@ import br.com.jwar.sharedbill.core.designsystem.model.UserUiModel
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerSmall
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerLarge
 
 @Composable
 fun AccountContent(
@@ -47,7 +48,9 @@ fun AccountContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(vertical = AppTheme.dimens.space_10)
+            .padding(vertical = 100.dp)
+            .statusBarsPadding()
+            .navigationBarsPadding()
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_10)
@@ -103,7 +106,6 @@ fun AccountContent(
                 Text(stringResource(R.string.label_logout))
             }
         }
-        VerticalSpacerLarge()
     }
 }
 

@@ -15,6 +15,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -24,13 +26,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.EmptyContent
 import br.com.jwar.sharedbill.core.designsystem.components.Title
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
+import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -46,7 +48,11 @@ fun GroupListContent(
     val newGroupBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val groupListState = rememberLazyListState()
     val topBarScrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    val floatingActionButtonExpanded = remember { groupListState.firstVisibleItemIndex == 0 }
+    val floatingActionButtonExpanded by remember {
+        derivedStateOf {
+            groupListState.firstVisibleItemIndex == 0
+        }
+    }
 
     BackHandler(newGroupBottomSheetState.isVisible) {
         coroutineScope.launch { newGroupBottomSheetState.hide() }
