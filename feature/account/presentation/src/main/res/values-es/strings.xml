@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_contact_subject">Facturas compartidas - Contacto</string>
     <string name="label_account">Cuenta</string>
     <string name="label_logout">Cerrar sesión</string>
     <string name="label_sign_in">Iniciar sesión</string>

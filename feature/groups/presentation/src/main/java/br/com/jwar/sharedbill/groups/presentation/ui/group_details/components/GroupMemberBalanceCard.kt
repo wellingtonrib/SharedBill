@@ -62,15 +62,15 @@ private fun GroupBalanceValue(
     value: BigDecimal
 ) {
     when {
-        value > BigDecimal.ZERO ->
+        value < BigDecimal.ZERO ->
             Pill(
-                text = "+${value.toCurrency()}",
+                text = "+${value.abs().toCurrency()}",
                 textColor = AppTheme.colors.primary,
                 backgroundColor = AppTheme.colors.primaryContainer
             )
-        value < BigDecimal.ZERO ->
+        value > BigDecimal.ZERO ->
             Pill(
-                text = value.toCurrency(),
+                text = "-${value.abs().toCurrency()}",
                 textColor = AppTheme.colors.error,
                 backgroundColor = AppTheme.colors.errorContainer
             )

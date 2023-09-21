@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_contact_subject">Contas compartilhadas - Contato</string>
     <string name="label_account">Conta</string>
     <string name="label_logout">Sair</string>
     <string name="label_sign_in">Entrar</string>

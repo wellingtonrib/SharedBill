@@ -37,7 +37,7 @@
     <string name="label_account">Conta</string>
     <string name="label_unnamed">Sem nome</string>
     <string name="label_share_invite_code">Compartilhar código de convite</string>
-    <string name="label_share_balance">Saldo de compartilhamento</string>
+    <string name="label_share_balance">Compartilhar saldo</string>
     <string name="label_total_spent">Total gasto %1$s</string>
     <string name="label_suggestion">Sugestões</string>
     <string name="label_settlement">🤝 Acerto de contas</string>
@@ -46,12 +46,12 @@
     <string name="message_owes">Deve %1$s</string>
     <string name="message_is_owned">Pertence a %1$s</string>
     <string name="message_no_expenses">Nenhum pagamento, adicione um\nClique no botão + Novo pagamento abaixo</string>
-    <string name="message_settled_up">Acertado</string>
-    <string name="message_payment_detail">Pago por %1$s a %2$s</string>
+    <string name="message_settled_up">Resolvido</string>
+    <string name="message_payment_detail">Pago por %1$s para %2$s</string>
     <string name="message_payment_detail_to_all">Pago por %1$s</string>
     <string name="message_invite_code">Código do convite: %1$s</string>
     <string name="message_groups_empty">Nenhum grupo, crie ou participe de um\nClique no botão + Novo grupo abaixo</string>
-    <string name="message_payment_description">%1$s - %2$s, pago por %3$s a %4$s\nCriado em %5$s</string>
+    <string name="message_payment_description">%1$s - %2$s, pago por %3$s para %4$s\nCriado em %5$s</string>
     <string name="message_payment_created_by">por %1$s</string>
     <string name="message_group_saved_success">Grupo atualizado com sucesso</string>
     <string name="message_confirm_user_remove">Tem certeza de que deseja remover este usuário?</string>

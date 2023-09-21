@@ -6,6 +6,7 @@ import br.com.jwar.sharedbill.core.utility.StringProvider
 import br.com.jwar.sharedbill.core.utility.extensions.toCurrency
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.presentation.R
+import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import com.google.common.collect.ImmutableSet
 import java.math.BigDecimal
 import java.util.Calendar
@@ -34,7 +35,7 @@ interface PaymentTrait {
             visible = true,
         ),
         PaymentContract.Field.PaidByField(
-            value = groupUiModel.members.first(),
+            value = groupUiModel.members.firstOrNull() ?: GroupMemberUiModel(),
             options = groupUiModel.membersToSelect,
             visible = true,
         ),
@@ -60,12 +61,12 @@ interface PaymentTrait {
             visible = false,
         ),
         PaymentContract.Field.PaidByField(
-            value = groupUiModel.members.first(),
+            value = groupUiModel.members.firstOrNull() ?: GroupMemberUiModel(),
             options = groupUiModel.membersToSelect,
             visible = true,
         ),
         PaymentContract.Field.PaidToField(
-            value = ImmutableSet.copyOf(groupUiModel.members.take(1)),
+            value = ImmutableSet.copyOf(groupUiModel.members.drop(1).take(1)),
             options = ImmutableSet.copyOf(groupUiModel.members.drop(1)),
             visible = true,
             isMultiSelect = false,

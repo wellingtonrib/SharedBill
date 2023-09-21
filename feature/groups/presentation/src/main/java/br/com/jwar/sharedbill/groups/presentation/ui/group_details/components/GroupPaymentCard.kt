@@ -107,7 +107,7 @@ fun PaymentUiModel.getMessage(group: GroupUiModel) =
     if (paidTo.size == group.members.size) {
         stringResource(R.string.message_payment_detail_to_all, paidBy.firstName)
     } else {
-        stringResource(R.string.message_payment_detail, paidBy.firstName, paidTo.joinToString { it.firstName })
+        stringResource(R.string.message_payment_detail, paidBy.firstName, paidTo.joinToString(limit = 3, truncated = "...") { it.firstName })
     }
 
 @Preview(showBackground = true)

@@ -28,7 +28,7 @@ fun <T: Selectable> SelectDialog(
     message: String,
     options: Map<T, Boolean>,
     defaultSelection: List<T> = options.keys.toList(),
-    action: String = stringResource(id = R.string.label_ok),
+    action: String = stringResource(id = R.string.label_send),
     isMultiChoice: Boolean = true,
     onDismiss: () -> Unit,
     onSelect: (List<T>) -> Unit
