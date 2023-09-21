@@ -89,9 +89,10 @@ class PaymentViewModel @Inject constructor(
             when {
                 field is PaidByField -> field.copy(value = paidBy, error = null)
                 field is PaidToField && state.paymentType == PaymentType.SETTLEMENT -> {
-                    val updatedOptions = state.groupUiModel.members.filterNot { it == paidBy }
+                    val updatedOptions = state.groupUiModel.members.filterNot { it.uid == paidBy.uid }
+                    val updatedValue = if (field.value.contains(paidBy)) updatedOptions.take(1) else field.value
                     field.copy(
-                        value = ImmutableSet.copyOf(if (field.value.contains(paidBy)) updatedOptions else field.value),
+                        value = ImmutableSet.copyOf(updatedValue),
                         options = ImmutableSet.copyOf(updatedOptions)
                     )
                 }

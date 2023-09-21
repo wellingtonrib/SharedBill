@@ -37,7 +37,7 @@
     <string name="label_account">Cuenta</string>
     <string name="label_unnamed">Sin nombre</string>
     <string name="label_share_invite_code">Compartir código de invitación</string>
-    <string name="label_share_balance">Saldo compartido</string>
+    <string name="label_share_balance">Compartir saldo</string>
     <string name="label_total_spent">Total gastado %1$s</string>
     <string name="label_suggestion">Sugerencias</string>
     <string name="label_settlement">🤝 Acuerdo</string>
