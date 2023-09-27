@@ -7,6 +7,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,18 +27,15 @@ import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 fun SignInButton(
     onSignInClick: () -> Unit = {}
 ) {
-    Row(
-        modifier = Modifier
-            .background(
-                color = Color(0XFF4285F4),
-                shape = RoundedCornerShape(4.dp)
-            )
-            .clickable { onSignInClick() },
-        verticalAlignment = Alignment.CenterVertically
+    Button(
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0XFF4285F4),
+            contentColor = Color(0XFFFFFFFF)
+        ),
+        onClick = onSignInClick,
     ) {
         Image(
-            modifier = Modifier
-                .padding(8.dp),
+            modifier = Modifier,
             painter = painterResource(R.drawable.btn_google),
             contentDescription = null
         )

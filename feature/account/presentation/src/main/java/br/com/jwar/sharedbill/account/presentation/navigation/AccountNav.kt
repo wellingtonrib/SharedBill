@@ -16,7 +16,11 @@ fun NavGraphBuilder.accountNav(
     composable(route = ACCOUNT_ROUTE) {
         AccountRoute(
             onNavigateToAuth = {
-                navController.navigate(AUTH_ROUTE)
+                navController.navigate(AUTH_ROUTE) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
             }
         )
     }
