@@ -22,6 +22,7 @@ kotlinxCoroutines          = "1.7.1"
 minSdk                     = "21"
 mockk                      = "1.12.7"
 playServicesAuth           = "20.7.0"
+playIntegrity              = "1.2.0"
 targetSdk                  = "34"
 
 [libraries]
@@ -57,6 +58,7 @@ firebase-appcheck-playintegrity         = { module = "com.google.firebase:fireba
 firebase-appcheck-ktx                   = { module = "com.google.firebase:firebase-appcheck-ktx" }
 firebase-appcheck-debug                 = { module = "com.google.firebase:firebase-appcheck-debug" }
 google-playServices-auth                = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+google-play-integrity                   = { module = "com.google.android.play:integrity", version.ref = "playIntegrity" }
 hilt-android                            = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler                   = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 junit                                   = { module = "junit:junit", version.ref = "junit" }

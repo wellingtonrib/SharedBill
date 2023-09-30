@@ -6,7 +6,7 @@ plugins {
 android {
     defaultConfig {
         applicationId = "br.com.jwar.sharedbill"
-        versionCode = 1
+        versionCode = 4
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.firebase.appcheck.playintegrity)
     implementation(libs.firebase.appcheck.debug)
     implementation(libs.firebase.appcheck.ktx)
+    implementation(libs.google.play.integrity)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
