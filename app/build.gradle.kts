@@ -1,12 +1,25 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     id("sharedbill.android.application")
     id("com.google.gms.google-services")
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            val properties = Properties().apply {
+                load(File("app/signing.properties").reader())
+            }
+            storeFile = File(properties.getProperty("storeFile"))
+            storePassword = properties.getProperty("storePassword")
+            keyPassword = properties.getProperty("keyPassword")
+            keyAlias = properties.getProperty("keyAlias")
+        }
+    }
     defaultConfig {
         applicationId = "br.com.jwar.sharedbill"
-        versionCode = 4
+        versionCode = 6
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -19,6 +32,7 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -51,7 +65,6 @@ dependencies {
     implementation(libs.firebase.appcheck.playintegrity)
     implementation(libs.firebase.appcheck.debug)
     implementation(libs.firebase.appcheck.ktx)
-    implementation(libs.google.play.integrity)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)

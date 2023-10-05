@@ -17,8 +17,4 @@ data class User(
             return characters.shuffled().takeLast(4).joinToString("") + groupId.takeLast(2).uppercase()
         }
     }
-
-    @get:Exclude
-    val firstName
-        get() = name.split(" ").first()
 }
