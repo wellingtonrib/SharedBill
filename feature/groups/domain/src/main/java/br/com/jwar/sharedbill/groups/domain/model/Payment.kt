@@ -1,8 +1,10 @@
 package br.com.jwar.sharedbill.groups.domain.model
 
+import androidx.annotation.Keep
 import br.com.jwar.sharedbill.account.domain.model.User
 import java.util.*
 
+@Keep
 data class Payment(
     val groupId: String = "",
     val id: String = "",

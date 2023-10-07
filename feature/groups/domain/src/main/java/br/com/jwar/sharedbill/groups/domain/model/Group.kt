@@ -1,7 +1,9 @@
 package br.com.jwar.sharedbill.groups.domain.model
 
+import androidx.annotation.Keep
 import br.com.jwar.sharedbill.account.domain.model.User
 
+@Keep
 data class Group(
     val id: String = "",
     val title: String = "",
