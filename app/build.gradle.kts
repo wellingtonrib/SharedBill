@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId = "br.com.jwar.sharedbill"
-        versionCode = 7
+        versionCode = 8
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
