@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Contas compartilhadas</string>
+    <string name="app_name">Contas Compartilhadas</string>
 
     <string name="label_loading">Carregando</string>
     <string name="label_ok">Entendi</string>

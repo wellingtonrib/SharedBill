@@ -1,13 +1,13 @@
 [versions]
 accompanist                = "0.31.5-beta"
-androidActivity            = "1.8.0-beta01"
-androidComposeBom          = "2023.09.00"
+androidActivity            = "1.8.0"
+androidComposeBom          = "2023.10.00"
 androidComposeHilt         = "1.0.0"
 androidCoreKtx             = "1.12.0"
 androidCoreTesting         = "2.2.0"
 androidExpresso            = "3.5.1"
 androidExtjunit            = "1.1.5"
-androidGradlePlugin        = "8.1.1"
+androidGradlePlugin        = "8.1.2"
 androidLifecycle           = "2.7.0-alpha02"
 coilCompose                = "2.4.0"
 compileSdk                 = "34"
@@ -22,6 +22,7 @@ kotlinxCoroutines          = "1.7.1"
 minSdk                     = "21"
 mockk                      = "1.12.7"
 playServicesAuth           = "20.7.0"
+playIntegrity              = "1.2.0"
 targetSdk                  = "34"
 
 [libraries]
@@ -57,6 +58,7 @@ firebase-appcheck-playintegrity         = { module = "com.google.firebase:fireba
 firebase-appcheck-ktx                   = { module = "com.google.firebase:firebase-appcheck-ktx" }
 firebase-appcheck-debug                 = { module = "com.google.firebase:firebase-appcheck-debug" }
 google-playServices-auth                = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+google-play-integrity                   = { module = "com.google.android.play:integrity", version.ref = "playIntegrity" }
 hilt-android                            = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler                   = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 junit                                   = { module = "junit:junit", version.ref = "junit" }

@@ -24,11 +24,19 @@ fun NavGraph(
     ) {
         accountNav(
             navController = navController,
-            onNavigateToHome = { navController.navigate(GROUP_LIST_ROUTE) }
+            onNavigateToHome = {
+                navController.navigate(GROUP_LIST_ROUTE) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
+            }
         )
         groupsNav(
             navController = navController,
-            onNavigateAccount = { navController.navigate(ACCOUNT_ROUTE) }
+            onNavigateAccount = {
+                navController.navigate(ACCOUNT_ROUTE)
+            }
         )
     }
 }

@@ -67,7 +67,10 @@ class AuthViewModel @Inject constructor(
 
     private fun setLoadingState() = setState { State.Loading }
 
-    private fun sendLoggedEffect() { sendEffect { Effect.LoggedIn } }
+    private fun sendLoggedEffect() {
+        setState { State.Idle }
+        sendEffect { Effect.LoggedIn }
+    }
 
     private fun sendErrorEffect(throwable: Throwable) {
         setState { State.Idle }
