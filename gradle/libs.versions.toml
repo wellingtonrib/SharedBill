@@ -24,6 +24,7 @@ mockk                      = "1.12.7"
 playServicesAuth           = "20.7.0"
 playIntegrity              = "1.2.0"
 targetSdk                  = "34"
+splashScreen               = "1.0.1"
 
 [libraries]
 accompanist-navigation-animation        = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
@@ -67,6 +68,7 @@ kotlin-test                             = { module = "org.jetbrains.kotlin:kotli
 kotlinx-coroutines-playServices         = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test                 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 mockk                                   = { module = "io.mockk:mockk", version.ref = "mockk" }
+splashscreen                            = { group  = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
 
 [bundles]
 androidTest                             = ["androidx-test-ext-junit", "androidx-test-espresso-core", "androidx-compose-ui-test-junit4"]

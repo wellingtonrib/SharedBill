@@ -3,22 +3,23 @@ package br.com.jwar.sharedbill.navigation
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.navigation.compose.NavHost
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import br.com.jwar.sharedbill.groups.presentation.navigation.groupsNav
-import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GROUP_LIST_ROUTE
+import androidx.navigation.compose.NavHost
 import br.com.jwar.sharedbill.account.presentation.navigation.ACCOUNT_ROUTE
 import br.com.jwar.sharedbill.account.presentation.navigation.accountNav
+import br.com.jwar.sharedbill.groups.presentation.navigation.groupsNav
+import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GROUP_LIST_ROUTE
 
 @Composable
 @ExperimentalAnimationApi
 fun NavGraph(
     navController: NavHostController,
+    startDestination: String = GROUP_LIST_ROUTE
 ) {
     NavHost(
         navController = navController,
-        startDestination = GROUP_LIST_ROUTE,
+        startDestination = startDestination,
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
     ) {
