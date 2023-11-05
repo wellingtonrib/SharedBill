@@ -44,6 +44,7 @@ fun GroupEditRoute(
     }
 
     LaunchedEffect(Unit) {
+        viewModel.emitEvent { Event.OnInit(groupId) }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.ShowError ->

@@ -16,14 +16,16 @@ sealed class GroupUiError(val message: UiText) {
     object UserNotFoundException: GroupUiError(UiText.StringResource(R.string.error_unauthenticated_user))
 
     companion object {
-        fun mapFrom(throwable: Throwable) = when(throwable) {
-            is GroupException.RemovingMemberWithNonZeroBalanceException -> RemoveMemberWithNonZeroBalanceError
-            is GroupException.RemovingOwnerException -> RemovingOwnerError
-            is GroupException.DeletingFromNonOwnerException -> DeletingFromNonOwnerError
-            is GroupException.InvalidUserNameException -> InvalidUserNameError
-            is GroupException.InvalidTitle -> EmptyTitleError
-            is UserException.UserNotFoundException -> UserNotFoundException
-            else -> GroupGenericError
+        fun mapFrom(throwable: Throwable): GroupUiError {
+            return when(throwable) {
+                is GroupException.RemovingMemberWithNonZeroBalanceException -> GroupUiError.RemoveMemberWithNonZeroBalanceError
+                is GroupException.RemovingOwnerException -> RemovingOwnerError
+                is GroupException.DeletingFromNonOwnerException -> DeletingFromNonOwnerError
+                is GroupException.InvalidUserNameException -> InvalidUserNameError
+                is GroupException.InvalidTitle -> EmptyTitleError
+                is UserException.UserNotFoundException -> UserNotFoundException
+                else -> GroupGenericError
+            }
         }
     }
 }
