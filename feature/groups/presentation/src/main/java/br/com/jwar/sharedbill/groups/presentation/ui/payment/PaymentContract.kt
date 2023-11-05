@@ -16,7 +16,8 @@ import java.util.Date
 class PaymentContract {
 
     sealed class Event: UiEvent {
-        object OnSavePayment : Event()
+        data class OnInit(val groupId: String, val paymentType: PaymentType) : Event()
+        data class OnSavePayment(val groupId: String, val paymentType: PaymentType) : Event()
         data class OnDescriptionChange(val description: String) : Event()
         data class OnValueChange(val value: String) : Event()
         data class OnDateChange(val dateTime: Long) : Event()

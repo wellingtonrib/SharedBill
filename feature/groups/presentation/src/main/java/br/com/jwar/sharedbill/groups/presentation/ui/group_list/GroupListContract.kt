@@ -9,7 +9,7 @@ import br.com.jwar.sharedbill.core.designsystem.util.UiText
 class GroupListContract {
 
     sealed class Event: UiEvent {
-        object OnTryAgain : Event()
+        object OnInit : Event()
         class OnGroupCreate(val title: String): Event()
         class OnGroupJoin(val inviteCode: String): Event()
         class OnGroupSelect(val groupId: String): Event()

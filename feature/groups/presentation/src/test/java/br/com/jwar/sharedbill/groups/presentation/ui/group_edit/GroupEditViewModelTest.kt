@@ -17,7 +17,11 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.verify
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -48,7 +52,7 @@ class GroupEditViewModelTest {
     }
 
     @Test
-    fun onInit_withSuccess_shouldSetEditingGroupState() = runTest {
+    fun `onInit with success should set uiModel and isLoading to false`() = runTest {
         val groupId = UUID.randomUUID().toString()
         val group = Group()
         val groupUiModel = GroupUiModel()
@@ -63,7 +67,7 @@ class GroupEditViewModelTest {
     }
 
     @Test
-    fun onInit_withSuccessAndSelectedMember_shouldSetEditingGroupStateWithSelectedMember() = runTest {
+    fun `onInit with selected member id should set selected member to the ui state`() = runTest {
         val groupId = UUID.randomUUID().toString()
         val group = Group()
         val selectedMemberId = UUID.randomUUID().toString()
@@ -77,53 +81,68 @@ class GroupEditViewModelTest {
     }
 
     @Test
-    fun onInit_withError_shouldSendErrorEffect() = runTest {
+    fun `onInit with error should send ShowError effect`() = runTest {
         val exception = Exception()
         val error =  GroupUiError.GroupGenericError
-        prepareScenario(getGroupResult = Result.failure(exception), groupUiError = error)
+        val effectList = mutableListOf<GroupEditContract.Effect>()
+        prepareScenario(
+            getGroupResult = Result.failure(exception),
+            groupUiError = error,
+            effectList = effectList
+        )
 
         viewModel.emitEvent { GroupEditContract.Event.OnInit("") }
 
         assertFalse(viewModel.uiState.value.isLoading)
-        assertIs<GroupEditContract.Effect.ShowError>(viewModel.uiEffect.first())
+        assertIs<GroupEditContract.Effect.ShowError>(viewModel.uiEffect.last())
     }
 
     @Test
-    fun onSaveGroup_withSuccessWithFinishFlag_shouldSendSuccessEffect() {
+    fun `onSaveGroup with success should send NavigateToGroupDetails effect`() = runTest {
+        val groupId = UUID.randomUUID().toString()
+        val title = viewModel.uiState.value.uiModel?.title.orEmpty()
+        val effectList = mutableListOf<GroupEditContract.Effect>()
+        prepareScenario(updateGroupResult = Result.success(Unit), effectList = effectList)
 
+        viewModel.emitEvent { GroupEditContract.Event.OnSaveGroup(groupId, true) }
+
+        coVerify { updateGroupUseCase(groupId, title ) }
+        assertIs<GroupEditContract.Effect.NavigateToGroupDetails>(effectList.last())
+        assertFalse(viewModel.uiState.value.isLoading)
     }
 
     @Test
-    fun onSaveGroup_withSuccessWithoutFinishFlag_shouldNotSendSuccessEffect() {
-
-    }
-
-    @Test
-    fun onSaveGroup_withError_shouldSendErrorEffect() {
-
-    }
-
-    @Test
-    fun onSaveMember_withSuccess_shouldEmitOnInitEvent() {
-
-    }
-
-    @Test
-    fun onSaveMember_withError_shouldSendErrorEffect() {
+    fun `onSaveGroup without finish flag should not send NavigateToGroupDetails effect`() {
 
     }
 
     @Test
-    fun onDeleteMember_withSuccess_shouldEmitOnInitEvent() {
+    fun `onSaveGroup with error should send ShowError effect`() {
 
     }
 
     @Test
-    fun onDeleteMember_withError_shouldSendErrorEffect() {
+    fun `onSaveMember with success emit OnInit event`() {
 
     }
 
-    private fun prepareScenario(
+    @Test
+    fun `onSaveMember with error should send ShowError effect`() {
+
+    }
+
+    @Test
+    fun `onDeleteMember with success emit OnInit event`() {
+
+    }
+
+    @Test
+    fun `onDeleteMember with error should send ShowError effect`() {
+
+    }
+
+    private fun TestScope.prepareScenario(
+        effectList: MutableList<GroupEditContract.Effect> = mutableListOf(),
         getGroupResult: Result<Group> = Result.success(Group()),
         addMemberResult: Result<String> = Result.success(""),
         updateGroupResult: Result<Unit> = Result.success(Unit),
@@ -131,6 +150,9 @@ class GroupEditViewModelTest {
         groupUiModel: GroupUiModel = GroupUiModel(),
         groupUiError: GroupUiError = GroupUiError.GroupGenericError,
     ) {
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.uiEffect.toList(effectList)
+        }
         mockkObject(GroupUiError.Companion)
         every { GroupUiError.Companion.mapFrom(any()) } returns groupUiError
         coEvery { getGroupByIdUseCase(any()) } returns getGroupResult

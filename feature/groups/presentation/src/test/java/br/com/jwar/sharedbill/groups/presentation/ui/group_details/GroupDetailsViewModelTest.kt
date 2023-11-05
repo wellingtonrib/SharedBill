@@ -38,7 +38,7 @@ internal class GroupDetailsViewModelTest {
     }
 
     @Test
-    fun onInit_shouldCallGetGroupByIdStreamUseCase() = runTest {
+    fun `onInit should get group stream and map result`() = runTest {
         val group = Group()
         val groupId = UUID.randomUUID().toString()
         prepareScenario(groupResult = Result.success(group),)
@@ -50,7 +50,7 @@ internal class GroupDetailsViewModelTest {
     }
 
     @Test
-    fun onInit_withSucceededLoadedGroup_shouldUpdateUiState() = runTest {
+    fun `onInit succeeded should update ui state`() = runTest {
         val groupId = UUID.randomUUID().toString()
         val groupUiModel = GroupUiModel()
         val stateList = mutableListOf<GroupDetailsContract.State>()
@@ -63,7 +63,7 @@ internal class GroupDetailsViewModelTest {
     }
 
     @Test
-    fun onInit_withFailedLoadedGroup_shouldUpdateUiState() = runTest {
+    fun `onInit failed should update ui state`() = runTest {
         val groupId = UUID.randomUUID().toString()
         val exception = Exception()
         val stateList = mutableListOf<GroupDetailsContract.State>()
@@ -73,6 +73,21 @@ internal class GroupDetailsViewModelTest {
 
         assertEquals(GroupDetailsContract.State.Loading, stateList.first())
         assertEquals(GroupDetailsContract.State.Error(exception.message.orEmpty()), stateList.drop(1).first())
+    }
+
+    @Test
+    fun `onEditGroup should send NavigateToGroupEdit effect`() = runTest {
+
+    }
+
+    @Test
+    fun `onNewPayment should send NavigateToNewPayment effect`() = runTest {
+
+    }
+
+    @Test
+    fun `onShareBalance should send ShareBalance effect`() = runTest {
+
     }
 
     private fun TestScope.prepareScenario(

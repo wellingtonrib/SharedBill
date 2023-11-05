@@ -22,7 +22,7 @@ class AuthContract {
 
     sealed class Effect: UiEffect {
         object LoggedIn : Effect()
-        class LaunchSignInResult(val signInResult: BeginSignInResult): Effect()
+        class SignedIn(val signInResult: BeginSignInResult): Effect()
         class ShowError(val message: String): Effect()
         object LaunchPrivacyPolicyIntent : Effect()
     }

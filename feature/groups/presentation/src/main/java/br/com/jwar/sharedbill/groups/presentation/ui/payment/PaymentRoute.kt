@@ -27,11 +27,12 @@ fun PaymentRoute(
         onDateChange = { viewModel.emitEvent { Event.OnDateChange(it) } },
         onPaidByChange = { viewModel.emitEvent { Event.OnPaidByChange(it) } },
         onPaidToChange = { viewModel.emitEvent { Event.OnPaidToChange(it) } },
-        onSaveClick = { viewModel.emitEvent { Event.OnSavePayment }},
+        onSaveClick = { viewModel.emitEvent { Event.OnSavePayment(groupId, paymentType) }},
         onNavigateBack = onNavigateBack,
     )
 
     LaunchedEffect(Unit) {
+        viewModel.emitEvent { Event.OnInit(groupId, paymentType) }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.Finish -> onNavigateBack()

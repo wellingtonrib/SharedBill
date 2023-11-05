@@ -16,7 +16,7 @@ class GroupEditContract {
         class OnMemberDelete(val userId: String, val groupId: String) : Event()
         class OnShareInviteCode(val inviteCode: String) : Event()
         class OnGroupUpdated(val group: GroupUiModel) : Event()
-        object OnSaveGroup: Event()
+        class OnSaveGroup(val groupId: String, val finish: Boolean = false): Event()
     }
 
     data class State(

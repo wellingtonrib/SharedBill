@@ -31,6 +31,7 @@ fun AccountRoute(
     )
 
     LaunchedEffect(Unit) {
+        viewModel.emitEvent { Event.OnInit }
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is Effect.NavigateToAuth -> {

@@ -1,13 +1,10 @@
 package br.com.jwar.sharedbill.groups.presentation.ui.payment
 
 import androidx.compose.runtime.Stable
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.groups.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
-import br.com.jwar.sharedbill.groups.presentation.navigation.GROUP_ID_ARG
-import br.com.jwar.sharedbill.groups.presentation.navigation.PAYMENT_TYPE_ARG
 import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Effect
 import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Event
 import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Field.DateField
@@ -33,7 +30,6 @@ import javax.inject.Inject
 @Stable
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     override val stringProvider: StringProvider,
     private val sendPaymentUseCase: SendPaymentUseCase,
     private val createPaymentUseCase: CreatePaymentUseCase,
@@ -41,21 +37,17 @@ class PaymentViewModel @Inject constructor(
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
 ): BaseViewModel<Event, State, Effect>(), PaymentTrait {
 
-    private val groupId: String = checkNotNull(savedStateHandle[GROUP_ID_ARG])
-    private val paymentType = PaymentType.valueOf(checkNotNull(savedStateHandle[PAYMENT_TYPE_ARG]))
-
-    init { onInit(groupId, paymentType) }
-
     override fun getInitialState(): State = State(isLoading = true)
 
     override fun handleEvent(event: Event) {
         when(event) {
+            is Event.OnInit -> onInit(event.groupId, event.paymentType)
             is Event.OnDescriptionChange -> onDescriptionChange(event.description)
             is Event.OnValueChange -> onValueChange(event.value)
             is Event.OnDateChange -> onDateChange(event.dateTime)
             is Event.OnPaidByChange -> onPaidByChange(event.paidBy)
             is Event.OnPaidToChange -> onPaidToChange(event.paidTo)
-            is Event.OnSavePayment -> onSavePayment()
+            is Event.OnSavePayment -> onSavePayment(event.groupId, event.paymentType)
         }
     }
 
@@ -113,7 +105,7 @@ class PaymentViewModel @Inject constructor(
         )}
     }
 
-    private fun onSavePayment() = viewModelScope.launch {
+    private fun onSavePayment(groupId: String, paymentType: PaymentType) = viewModelScope.launch {
         uiState.value.let { state ->
             val description = state.getFieldValue<DescriptionField, String>()
             val value = state.getFieldValue<ValueField, String>()

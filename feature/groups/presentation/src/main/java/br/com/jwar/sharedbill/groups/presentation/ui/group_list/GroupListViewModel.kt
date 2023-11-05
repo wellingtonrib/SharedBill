@@ -29,13 +29,11 @@ class GroupListViewModel @Inject constructor(
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
 ): BaseViewModel<Event, State, Effect>() {
 
-    init { onInit() }
-
     override fun getInitialState(): State = State.Loading
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnTryAgain -> onInit()
+            is Event.OnInit -> onInit()
             is Event.OnGroupCreate -> onGroupCreate(event.title)
             is Event.OnGroupSelect -> onGroupSelect(event.groupId)
             is Event.OnGroupJoin -> onGroupJoin(event.inviteCode)
@@ -49,7 +47,7 @@ class GroupListViewModel @Inject constructor(
             .onStart { setLoadingState() }
             .collect { result ->
                 result.onSuccess { setLoadedState(it) }
-                    .onFailure { setErrorState(it, Event.OnTryAgain) }
+                    .onFailure { setErrorState(it, Event.OnInit) }
             }
     }
 
@@ -57,7 +55,7 @@ class GroupListViewModel @Inject constructor(
         setLoadingState()
         createGroupUseCase(title)
             .onSuccess { onGroupCreated(it) }
-            .onFailure { setErrorState(it, Event.OnTryAgain) }
+            .onFailure { setErrorState(it, Event.OnInit) }
     }
 
     private fun onGroupCreated(groupId: String) =
@@ -67,7 +65,7 @@ class GroupListViewModel @Inject constructor(
         setLoadingState()
         joinGroupUseCase(code)
             .onSuccess { onGroupSelect(it) }
-            .onFailure { setErrorState(it, Event.OnTryAgain) }
+            .onFailure { setErrorState(it, Event.OnInit) }
     }
 
     private fun onGroupDelete(groupId: String) = viewModelScope.launch {

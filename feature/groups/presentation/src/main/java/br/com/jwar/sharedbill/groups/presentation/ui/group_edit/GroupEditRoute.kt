@@ -38,7 +38,7 @@ fun GroupEditRoute(
             onMemberSelectionChange = { user -> viewModel.emitEvent { Event.OnMemberSelect(user) } },
             onMemberDeleteClick = { userId -> viewModel.emitEvent { Event.OnMemberDelete(userId, groupId) } },
             onShareInviteCodeClick = { inviteCode -> viewModel.emitEvent { Event.OnShareInviteCode(inviteCode) } },
-            onSaveClick = { viewModel.emitEvent { Event.OnSaveGroup } },
+            onSaveClick = { viewModel.emitEvent { Event.OnSaveGroup(groupId) } },
             onNavigateBack = onNavigateBack
         )
     }

@@ -1,12 +1,10 @@
-package br.com.jwar.sharedbill.account.presentation
+package br.com.jwar.sharedbill.account.presentation.ui.account
 
 
 import br.com.jwar.sharedbill.account.domain.exceptions.UserException
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.account.domain.usecases.*
 import br.com.jwar.sharedbill.account.presentation.mappers.UserToUserUiModelMapper
-import br.com.jwar.sharedbill.account.presentation.ui.account.AccountContract
-import br.com.jwar.sharedbill.account.presentation.ui.account.AccountViewModel
 import br.com.jwar.sharedbill.core.designsystem.model.UserUiModel
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
 import io.mockk.*
@@ -39,7 +37,7 @@ internal class AccountViewModelTest {
     }
 
     @Test
-    fun `GIVEN a logged in user WHEN init SHOULD get current and map the user`() = runTest {
+    fun `onInit should get current and map the user`() = runTest {
         val user = User()
         prepareScenario(userResult = Result.success(user))
 
@@ -50,7 +48,7 @@ internal class AccountViewModelTest {
     }
 
     @Test
-    fun `GIVEN a logged in user WHEN init SHOULD update the ui state`() = runTest {
+    fun `onInit when succeeded should update the ui state`() = runTest {
         val userUiModel = UserUiModel()
         val stateList = mutableListOf<AccountContract.State>()
         prepareScenario(
@@ -65,7 +63,7 @@ internal class AccountViewModelTest {
     }
 
     @Test
-    fun `GIVEN UserNotFoundException WHEN init SHOULD send NavigateToAuth effect`() = runTest {
+    fun `onInit when failed should send NavigateToAuth effect`() = runTest {
         val effectList = mutableListOf<AccountContract.Effect>()
         prepareScenario(
             effectList = effectList,
@@ -78,7 +76,7 @@ internal class AccountViewModelTest {
     }
 
     @Test
-    fun `GIVEN a logged in user WHEN SignOut event SHOULD call signOutUseCase`() = runTest {
+    fun `onSignOut event should call signOutUseCase`() = runTest {
         prepareScenario()
 
         viewModel.emitEvent { AccountContract.Event.OnSignOutClick }
@@ -87,7 +85,7 @@ internal class AccountViewModelTest {
     }
 
     @Test
-    fun `GIVEN logged in user WHEN SignOut event SHOULD send NavigateToAuth effect`() = runTest {
+    fun `onSignOut event succeeded should send NavigateToAuth effect`() = runTest {
         val effectList = mutableListOf<AccountContract.Effect>()
         prepareScenario(effectList = effectList)
 
