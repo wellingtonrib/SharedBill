@@ -32,9 +32,9 @@ class GroupEditViewModel @Inject constructor(
     override fun handleEvent(event: Event) {
         when(event) {
             is Event.OnInit -> onInit(event.groupId, event.selectedMemberId)
-            is Event.OnSaveGroup -> onSaveGroup(event.groupId, event.finish)
+            is Event.OnSaveGroup -> onSaveGroup(event.groupId)
             is Event.OnSaveMember -> onSaveMember(event.groupId, event.userName)
-            is Event.OnMemberSelect -> onSelectMember(event.user)
+            is Event.OnMemberSelectionChange -> onMemberSelectionChange(event.user)
             is Event.OnMemberDelete -> onDeleteMember(event.groupId, event.userId)
             is Event.OnGroupUpdated -> onGroupUpdated(event.group)
             is Event.OnShareInviteCode -> onShareInviteCode(event.inviteCode)
@@ -46,14 +46,13 @@ class GroupEditViewModel @Inject constructor(
         selectedMemberId: String? = null
     ) = viewModelScope.launch {
         getGroupByIdUseCase(groupId)
-            .onSuccess { setEditingGroup(it, selectedMemberId) }
+            .onSuccess { setEditingGroup(it); setSelectedMember(selectedMemberId) }
             .onFailure { sendErrorEffect(it) }
     }
 
     private fun onSaveGroup(groupId: String, finish: Boolean = true) = viewModelScope.launch {
-        val groupEdited = getEditingGroup()
         setLoadingState()
-        updateGroupUseCase(groupId, groupEdited.title)
+        updateGroupUseCase(groupId, getEditingGroup().title)
             .onSuccess { if (finish) sendNavigateToGroupDetailsEffect() }
             .onFailure { sendErrorEffect(it) }
     }
@@ -61,14 +60,14 @@ class GroupEditViewModel @Inject constructor(
     private fun onSaveMember(groupId: String, userName: String) = viewModelScope.launch {
         onSaveGroup(groupId, false)
         addMemberUseCase(userName, groupId)
-            .onSuccess { selectedMemberId -> emitEvent { Event.OnInit(groupId, selectedMemberId) } }
+            .onSuccess { selectedMemberId -> onInit(groupId, selectedMemberId) }
             .onFailure { sendErrorEffect(it) }
     }
 
     private fun onDeleteMember(groupId: String, userId: String) = viewModelScope.launch {
         setLoadingState()
         removeMemberUseCase(userId, groupId)
-            .onSuccess { emitEvent { Event.OnInit(groupId) } }
+            .onSuccess { onInit(groupId) }
             .onFailure { sendErrorEffect(it) }
     }
 
@@ -80,17 +79,22 @@ class GroupEditViewModel @Inject constructor(
 
     private fun getEditingGroup() = uiState.value.uiModel ?: GroupUiModel()
 
-    private fun setEditingGroup(group: Group, selectedMemberId: String?) =
+    private fun setEditingGroup(group: Group) =
         setState { state ->
             val groupUiModel = groupToGroupUiModelMapper.mapFrom(group)
-            val selectedMember = selectedMemberId?.let {
-                groupUiModel.members.firstOrNull { it.uid == selectedMemberId }
-            }
             state.copy(
                 isLoading = false,
                 uiModel = groupUiModel,
-                selectedMember = selectedMember,
             )
+        }
+
+    private fun setSelectedMember(selectedMemberId: String?) =
+        setState { state ->
+            val groupUiModel = getEditingGroup()
+            val selectedMember = selectedMemberId?.let {
+                groupUiModel.members.firstOrNull { it.uid == selectedMemberId }
+            }
+            state.copy(selectedMember = selectedMember)
         }
 
     private fun setEditingGroup(group: GroupUiModel) =
@@ -111,7 +115,7 @@ class GroupEditViewModel @Inject constructor(
 
     private fun onGroupUpdated(group: GroupUiModel) = setEditingGroup(group)
 
-    private fun onSelectMember(user: GroupMemberUiModel?) =
-        setState { it.copy(selectedMember = user) }
+    private fun onMemberSelectionChange(user: GroupMemberUiModel?) =
+        setSelectedMember(user?.uid)
 }
 

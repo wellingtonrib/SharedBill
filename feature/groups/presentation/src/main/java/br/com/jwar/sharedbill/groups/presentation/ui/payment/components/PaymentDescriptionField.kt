@@ -35,9 +35,11 @@ fun PaymentDescriptionField(
             placeholder = { Text(text = stringResource(R.string.placeholder_payment_description)) },
             text = description,
             suggestions = suggestions.toList(),
+            showSuggestions = description.isEmpty(),
             isError = error?.message?.asString().isNullOrBlank().not(),
             supportingText = { error?.message?.AsText(AppTheme.colors.error) },
-        ) { onValueChange(it.text) }
+            { onValueChange(it.text) },
+        )
     }
 }
 

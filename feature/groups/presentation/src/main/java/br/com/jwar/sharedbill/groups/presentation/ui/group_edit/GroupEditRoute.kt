@@ -35,7 +35,7 @@ fun GroupEditRoute(
             state = state,
             onGroupUpdated = { group -> viewModel.emitEvent { Event.OnGroupUpdated(group) } },
             onSaveMemberClick = { userName -> viewModel.emitEvent { Event.OnSaveMember(userName, groupId) } },
-            onMemberSelectionChange = { user -> viewModel.emitEvent { Event.OnMemberSelect(user) } },
+            onMemberSelectionChange = { user -> viewModel.emitEvent { Event.OnMemberSelectionChange(user) } },
             onMemberDeleteClick = { userId -> viewModel.emitEvent { Event.OnMemberDelete(userId, groupId) } },
             onShareInviteCodeClick = { inviteCode -> viewModel.emitEvent { Event.OnShareInviteCode(inviteCode) } },
             onSaveClick = { viewModel.emitEvent { Event.OnSaveGroup(groupId) } },

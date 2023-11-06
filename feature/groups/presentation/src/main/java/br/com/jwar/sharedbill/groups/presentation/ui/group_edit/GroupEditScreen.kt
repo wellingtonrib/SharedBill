@@ -15,6 +15,7 @@ import br.com.jwar.sharedbill.groups.presentation.ui.group_edit.GroupEditContrac
 import br.com.jwar.sharedbill.groups.presentation.ui.group_edit.components.GroupEditContent
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
+import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 
 @Composable
 fun GroupEditScreen(
@@ -22,7 +23,7 @@ fun GroupEditScreen(
     snackHostState: SnackbarHostState = SnackbarHostState(),
     onGroupUpdated: (GroupUiModel) -> Unit = {},
     onSaveMemberClick: (String) -> Unit = {},
-    onMemberSelectionChange: (br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel?) -> Unit = {},
+    onMemberSelectionChange: (GroupMemberUiModel?) -> Unit = {},
     onMemberDeleteClick: (String) -> Unit = {},
     onShareInviteCodeClick: (String) -> Unit = {},
     onSaveClick: () -> Unit = {},
