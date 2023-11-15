@@ -6,6 +6,7 @@ import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.domain.usecases.CreatePaymentUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.SendPaymentUseCase
+import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
@@ -53,7 +54,7 @@ class PaymentViewModelTest {
     }
 
     @Test
-    fun `onInit should get group, map and update ui state`() = runTest {
+    fun `onInit with Expense payment type should get group, map and update ui state`() = runTest {
         val groupId = UUID.randomUUID().toString()
         val paymentType = PaymentType.EXPENSE
         val group = Group()
@@ -78,19 +79,82 @@ class PaymentViewModelTest {
             assertEquals(groupUiModel, this.groupUiModel)
             assertFalse(this.isLoading)
             assertEquals(paymentType, this.paymentType)
+            assertEquals(this.inputFields.size, 5)
             this.inputFields.forEach { field ->
                 assertTrue(field.visible)
                 assertFalse(field.hasError)
-                assertEquals(
-                    when(field) {
-                        is PaymentContract.Field.DescriptionField -> ""
-                        is PaymentContract.Field.ValueField -> ""
-                        is PaymentContract.Field.DateField -> timeInMillis
-                        is PaymentContract.Field.PaidByField -> firstMember
-                        is PaymentContract.Field.PaidToField -> members
-                    },
-                    field.value
-                )
+                when(field) {
+                    is PaymentContract.Field.DescriptionField -> {
+                        assertEquals("", field.value)
+                    }
+                    is PaymentContract.Field.ValueField -> {
+                        assertEquals("", field.value)
+                    }
+                    is PaymentContract.Field.DateField -> {
+                        assertEquals(timeInMillis, field.value)
+                    }
+                    is PaymentContract.Field.PaidByField -> {
+                        assertEquals(firstMember, field.value)
+                    }
+                    is PaymentContract.Field.PaidToField -> {
+                        assertEquals(members, field.value)
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `onInit with Settlement payment type should get group, map and update ui state`() = runTest {
+        val groupId = UUID.randomUUID().toString()
+        val paymentType = PaymentType.SETTLEMENT
+        val group = Group()
+        val firstMember = GroupMemberUiModel(UUID.randomUUID().toString())
+        val secondMember = GroupMemberUiModel(UUID.randomUUID().toString())
+        val members = ImmutableSet.of(firstMember, secondMember)
+        val groupUiModel = GroupUiModel(id = groupId, members = members)
+        val stateList = mutableListOf<PaymentContract.State>()
+        val timeInMillis = 1000L
+        prepareScenario(
+            groupResult = Result.success(group),
+            groupUiModel = groupUiModel,
+            stateList = stateList,
+            timeInMillis = timeInMillis
+        )
+
+        viewModel.emitEvent { PaymentContract.Event.OnInit(groupId, paymentType) }
+
+        coVerify { getGroupByIdUseCase(groupId) }
+        verify { groupToGroupUiModelMapper.mapFrom(group) }
+        with(viewModel.uiState.value) {
+            assertEquals(groupUiModel, this.groupUiModel)
+            assertFalse(this.isLoading)
+            assertEquals(paymentType, this.paymentType)
+            assertEquals(this.inputFields.size, 5)
+            this.inputFields.forEach { field ->
+                assertFalse(field.hasError)
+                when(field) {
+                    is PaymentContract.Field.DescriptionField -> {
+                        assertEquals("Settlement", field.value)
+                        assertFalse(field.visible)
+                    }
+                    is PaymentContract.Field.ValueField -> {
+                        assertEquals("", field.value)
+                        assertTrue(field.visible)
+                    }
+                    is PaymentContract.Field.DateField -> {
+                        assertEquals(timeInMillis, field.value)
+                        assertFalse(field.visible)
+                    }
+                    is PaymentContract.Field.PaidByField -> {
+                        assertEquals(firstMember, field.value)
+                        assertTrue(field.visible)
+                    }
+                    is PaymentContract.Field.PaidToField -> {
+                        assertEquals(members, field.value)
+                        assertTrue(field.visible)
+                    }
+                }
             }
         }
     }
@@ -102,7 +166,13 @@ class PaymentViewModelTest {
 
     @Test
     fun `onDescriptionChange should update Description field on state`() = runTest {
+        prepareScenario()
 
+        viewModel.emitEvent { PaymentContract.Event.OnDescriptionChange("description") }
+
+        with(viewModel.uiState.value) {
+            assertEquals("description", this.inputFields.first { it is PaymentContract.Field.DescriptionField }.value)
+        }
     }
 
     @Test
@@ -154,6 +224,7 @@ class PaymentViewModelTest {
     ) {
         coEvery { getGroupByIdUseCase(any(), any()) } returns groupResult
         coEvery { groupToGroupUiModelMapper.mapFrom(any()) } returns groupUiModel
+        every { stringProvider.getString(R.string.label_settlement) } returns "Settlement"
 
         mockkStatic(Calendar::class)
         every { Calendar.getInstance().timeInMillis } returns timeInMillis

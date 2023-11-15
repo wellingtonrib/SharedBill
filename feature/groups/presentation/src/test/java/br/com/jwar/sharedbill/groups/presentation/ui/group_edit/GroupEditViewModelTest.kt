@@ -17,7 +17,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.verify
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
@@ -94,7 +93,7 @@ class GroupEditViewModelTest {
         viewModel.emitEvent { GroupEditContract.Event.OnInit("") }
 
         assertFalse(viewModel.uiState.value.isLoading)
-        assertIs<GroupEditContract.Effect.ShowError>(viewModel.uiEffect.last())
+        assertIs<GroupEditContract.Effect.ShowError>(effectList.last())
     }
 
     @Test
@@ -104,7 +103,7 @@ class GroupEditViewModelTest {
         val effectList = mutableListOf<GroupEditContract.Effect>()
         prepareScenario(updateGroupResult = Result.success(Unit), effectList = effectList)
 
-        viewModel.emitEvent { GroupEditContract.Event.OnSaveGroup(groupId, true) }
+        viewModel.emitEvent { GroupEditContract.Event.OnSaveGroup(groupId) }
 
         coVerify { updateGroupUseCase(groupId, title ) }
         assertIs<GroupEditContract.Effect.NavigateToGroupDetails>(effectList.last())

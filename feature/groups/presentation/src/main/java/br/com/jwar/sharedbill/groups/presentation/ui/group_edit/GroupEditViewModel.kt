@@ -81,10 +81,9 @@ class GroupEditViewModel @Inject constructor(
 
     private fun setEditingGroup(group: Group) =
         setState { state ->
-            val groupUiModel = groupToGroupUiModelMapper.mapFrom(group)
             state.copy(
                 isLoading = false,
-                uiModel = groupUiModel,
+                uiModel = groupToGroupUiModelMapper.mapFrom(group),
             )
         }
 
