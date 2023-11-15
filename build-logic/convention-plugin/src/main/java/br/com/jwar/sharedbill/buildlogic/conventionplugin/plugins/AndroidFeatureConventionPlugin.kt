@@ -21,6 +21,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             dependencies {
                 "implementation"(project(":core:designsystem"))
                 "implementation"(project(":core:common"))
+                "androidTestImplementation"(platform(libs.findLibrary("androidx-compose-bom").get()))
+                "androidTestImplementation"(libs.findBundle("androidTest").get())
                 "debugImplementation"(libs.findBundle("debug").get())
             }
         }
