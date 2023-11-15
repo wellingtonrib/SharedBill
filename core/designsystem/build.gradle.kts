@@ -8,5 +8,6 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.testing)
     debugImplementation(libs.bundles.debug)
 }
