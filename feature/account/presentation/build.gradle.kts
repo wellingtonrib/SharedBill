@@ -8,9 +8,5 @@ android {
 
 dependencies {
     implementation(libs.google.playServices.auth)
-
-    implementation(projects.core.testing)
-    implementation(projects.core.utility)
-    implementation(projects.core.common)
     implementation(projects.feature.account.domain)
 }

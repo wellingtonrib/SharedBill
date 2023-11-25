@@ -19,7 +19,6 @@ internal fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, 
             vectorDrawables {
                 useSupportLibrary = true
             }
-            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 
         compileOptions {

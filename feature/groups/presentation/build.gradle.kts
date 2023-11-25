@@ -8,8 +8,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.utility)
-    implementation(projects.core.testing)
     implementation(projects.feature.account.domain)
     implementation(projects.feature.groups.domain)
 }

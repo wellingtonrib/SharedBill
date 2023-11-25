@@ -10,6 +10,7 @@ android {
 
 dependencies {
     implementation(libs.google.playServices.auth)
-
     implementation(projects.core.utility)
+
+    testImplementation(projects.core.testing)
 }

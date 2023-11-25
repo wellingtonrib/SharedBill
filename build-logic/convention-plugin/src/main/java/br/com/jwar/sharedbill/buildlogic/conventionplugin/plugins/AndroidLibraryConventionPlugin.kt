@@ -23,10 +23,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 defaultConfig.targetSdk = libs.findVersion("targetSdk").get().requiredVersion.toInt()
                 configureAndroid(this)
             }
-
-            dependencies {
-                "testImplementation"(libs.findBundle("test").get())
-            }
         }
     }
 }
