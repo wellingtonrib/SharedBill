@@ -12,4 +12,5 @@ dependencies {
     api(libs.bundles.androidTest)
 
     implementation(projects.feature.account.domain)
+    implementation(projects.feature.groups.domain)
 }

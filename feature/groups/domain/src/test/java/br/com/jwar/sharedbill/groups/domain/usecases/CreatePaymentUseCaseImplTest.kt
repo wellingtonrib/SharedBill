@@ -5,7 +5,6 @@ import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.model.Payment
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
-import br.com.jwar.sharedbill.groups.domain.usecases.CreatePaymentUseCaseImpl
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
 import io.mockk.coEvery
 import io.mockk.mockk

@@ -6,4 +6,7 @@ object TestTags {
     const val EmptyContent = "EmptyContent"
     const val PaymentContent = "PaymentContent"
     const val GroupListContent = "GroupListContent"
+    const val GroupDetailContent = "GroupDetailContent"
+    const val PaymentList = "PaymentList"
+    const val BalanceList = "BalanceList"
 }

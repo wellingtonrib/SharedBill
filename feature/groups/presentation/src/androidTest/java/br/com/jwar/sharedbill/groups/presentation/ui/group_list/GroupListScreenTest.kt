@@ -1,8 +1,7 @@
 package br.com.jwar.sharedbill.groups.presentation.ui.group_list
 
-import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
@@ -18,7 +17,7 @@ import org.junit.runner.RunWith
 class GroupListScreenTest {
 
     @get:Rule
-    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+    val composeTestRule = createComposeRule()
 
     @Test
     fun groupListScreen_withLoadingState_shouldShowLoadingContent() {

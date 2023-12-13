@@ -25,6 +25,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -38,16 +39,16 @@ import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerSmall
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.testing.TestTags
 import kotlinx.coroutines.launch
 
 private const val PAGE_PAYMENTS = 0
 private const val PAGE_BALANCE = 1
 
-typealias Page = Pair<ImageVector, String>
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GroupsDetailsContent(
+    modifier: Modifier = Modifier,
     group: GroupUiModel,
     onNewPaymentClick: (PaymentType)-> Unit = {},
     onEditClick: () -> Unit = {},
@@ -67,6 +68,7 @@ fun GroupsDetailsContent(
     val scope = rememberCoroutineScope()
 
     Scaffold(
+        modifier = modifier.testTag(TestTags.GroupDetailContent),
         topBar = {
             AppTopBar(
                 title = group.title,
@@ -120,8 +122,8 @@ fun GroupsDetailsContent(
                         userScrollEnabled = false
                     ) { page ->
                         when (page) {
-                            PAGE_PAYMENTS -> GroupPayments(group, listState)
-                            PAGE_BALANCE -> GroupBalance(group)
+                            PAGE_PAYMENTS -> GroupPayments(group = group, listState = listState)
+                            PAGE_BALANCE -> GroupBalance(group = group)
                         }
                     }
                 }
@@ -136,7 +138,7 @@ fun GroupsDetailsContent(
 fun PreviewGroupDetails() {
     SharedBillTheme {
         Scaffold {
-            GroupsDetailsContent(GroupUiModel.sample())
+            GroupsDetailsContent(group = GroupUiModel.sample())
         }
     }
 }

@@ -2,7 +2,6 @@ package br.com.jwar.sharedbill.groups.domain.usecases
 
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
-import br.com.jwar.sharedbill.groups.domain.usecases.GetGroupsStreamUseCaseImpl
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
 import io.mockk.coEvery
 import io.mockk.mockk

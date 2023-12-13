@@ -3,7 +3,7 @@ package br.com.jwar.sharedbill.account.data.repositories
 import br.com.jwar.sharedbill.account.data.datasources.UserDataSource
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
-import br.com.jwar.sharedbill.testing.Fakes
+import br.com.jwar.sharedbill.testing.fakes.FakeFactory
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -26,7 +26,7 @@ internal class DefaultUserRepositoryTest {
 
     @Test
     fun `getCurrentUser should call userDataSource getCurrentUser and return it`() = runTest {
-        val currentUser = Fakes.makeUser()
+        val currentUser = FakeFactory.makeUser()
         prepareScenario(currentUser = currentUser)
 
         val result = repository.getCurrentUser()
@@ -37,7 +37,7 @@ internal class DefaultUserRepositoryTest {
 
     @Test
     fun `saveUser should call userDataSource saveUser`() = runTest {
-        val user = Fakes.makeUser()
+        val user = FakeFactory.makeUser()
         prepareScenario()
 
         repository.saveUser(user)
@@ -56,7 +56,7 @@ internal class DefaultUserRepositoryTest {
     }
 
     private fun prepareScenario(
-        currentUser: User = Fakes.makeUser()
+        currentUser: User = FakeFactory.makeUser()
     ) {
         coEvery { userDataSource.getCurrentUser() } returns currentUser
         coEvery { userDataSource.saveUser(any()) } returns mockk()

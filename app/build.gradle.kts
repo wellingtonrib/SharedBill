@@ -21,6 +21,7 @@ android {
         applicationId = "br.com.jwar.sharedbill"
         versionCode = 9
         versionName = "1.0.1"
+        testInstrumentationRunner = "br.com.jwar.sharedbill.testing.HiltTestRunner"
     }
 
     buildTypes {
@@ -37,7 +38,6 @@ android {
 dependencies {
     implementation(projects.core.designsystem)
     implementation(projects.core.utility)
-    implementation(projects.core.testing)
     implementation(projects.feature.account.domain)
     implementation(projects.feature.account.data)
     implementation(projects.feature.account.presentation)
@@ -57,12 +57,16 @@ dependencies {
     implementation(libs.firebase.appcheck.debug)
     implementation(libs.firebase.appcheck.ktx)
     implementation(libs.splashscreen)
-
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    implementation(libs.google.playServices.auth)
 
     testImplementation(libs.bundles.test)
+
     androidTestImplementation(libs.bundles.androidTest)
+    androidTestImplementation(projects.core.testing)
+
+    kapt(libs.hilt.android.compiler)
+    kaptAndroidTest(libs.hilt.android.compiler)
 
     debugImplementation(libs.bundles.debug)
 }

@@ -71,10 +71,11 @@ kotlin-test                             = { module = "org.jetbrains.kotlin:kotli
 kotlinx-coroutines-playServices         = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test                 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 mockk                                   = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-android                           = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 splashscreen                            = { group  = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
 
 [bundles]
-androidTest                             = ["androidx-test-ext-junit", "androidx-test-espresso-core", "androidx-compose-ui-test-junit4", "hilt-android-testing", "androidx-runner"]
+androidTest                             = ["androidx-test-ext-junit", "androidx-test-espresso-core", "androidx-compose-ui-test-junit4", "hilt-android-testing", "androidx-runner", "mockk-android"]
 compose                                 = ["androidx-compose-foundation","accompanist-navigation-material", "accompanist-navigation-animation", "accompanist-swiperefresh", "androidx-compose-ui", "androidx-compose-ui-tooling-preview", "androidx-compose-material", "androidx-compose-material3", "androidx-navigation-compose", "androidx-hilt-navigation-compose", "coil-compose"]
 debug                                   = ["androidx-compose-ui-tooling", "androidx-compose-ui-test-manifest"]
 firebase                                = ["firebase-auth", "firebase-firestore"]

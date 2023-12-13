@@ -13,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import javax.inject.Singleton
@@ -37,7 +38,7 @@ class FirebaseModule {
     @Provides
     @Singleton
     fun provideSignInClient(
-        context: Context
+        @ApplicationContext context: Context
     ) = Identity.getSignInClient(context)
 
     @Provides

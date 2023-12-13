@@ -1,8 +1,7 @@
 package br.com.jwar.sharedbill.groups.presentation.ui.payment
 
-import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
@@ -16,7 +15,7 @@ import org.junit.runner.RunWith
 class PaymentScreenTest {
 
     @get:Rule
-    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+    val composeTestRule = createComposeRule()
 
     @Test
     fun paymentScreen_withIsLoadingTrue_shouldShowLoadingContent() {

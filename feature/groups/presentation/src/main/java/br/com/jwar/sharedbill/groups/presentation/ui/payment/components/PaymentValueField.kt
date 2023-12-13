@@ -19,12 +19,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.groups.presentation.R
+import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
 
 @Composable
 fun PaymentValueField(

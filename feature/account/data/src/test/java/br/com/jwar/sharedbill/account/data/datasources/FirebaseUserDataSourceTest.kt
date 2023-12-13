@@ -4,7 +4,7 @@ import br.com.jwar.sharedbill.account.data.mappers.FirebaseUserToUserMapper
 import br.com.jwar.sharedbill.account.domain.exceptions.UserException
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
-import br.com.jwar.sharedbill.testing.Fakes
+import br.com.jwar.sharedbill.testing.fakes.FakeFactory
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -79,7 +79,7 @@ internal class FirebaseUserDataSourceTest {
 
     @Test
     fun `saveUser should get firestore document from firebaseUserId and set user`() = runTest  {
-        val user = Fakes.makeUser()
+        val user = FakeFactory.makeUser()
         val documentReference = mockk<DocumentReference>()
         prepareScenario(documentReference = documentReference)
 

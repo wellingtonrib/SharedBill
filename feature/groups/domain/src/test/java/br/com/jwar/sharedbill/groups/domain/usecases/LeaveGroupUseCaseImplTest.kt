@@ -4,8 +4,6 @@ import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
-import br.com.jwar.sharedbill.groups.domain.usecases.LeaveGroupUseCaseImpl
-import br.com.jwar.sharedbill.groups.domain.usecases.RemoveMemberUseCase
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
