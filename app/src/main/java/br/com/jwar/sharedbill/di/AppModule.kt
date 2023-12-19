@@ -1,6 +1,5 @@
 package br.com.jwar.sharedbill.di
 
-import android.app.Application
 import android.content.Context
 import br.com.jwar.sharedbill.BuildConfig
 import br.com.jwar.sharedbill.core.utility.NetworkManager
@@ -13,6 +12,7 @@ import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderF
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -21,18 +21,13 @@ import javax.inject.Singleton
 class AppModule {
 
     @Provides
-    fun provideContext(
-        app: Application
-    ): Context = app.applicationContext
-
-    @Provides
     fun provideNetworkManager(
-        context: Context
+        @ApplicationContext context: Context
     ): NetworkManager = NetworkManagerImpl(context)
 
     @Provides
     fun provideStringProvider(
-        context: Context
+        @ApplicationContext context: Context
     ): StringProvider = AndroidStringProvider(context)
 
     @Provides

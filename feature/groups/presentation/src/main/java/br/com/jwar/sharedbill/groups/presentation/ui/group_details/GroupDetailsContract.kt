@@ -9,7 +9,7 @@ import br.com.jwar.sharedbill.core.common.UiState
 class GroupDetailsContract {
 
     sealed class Event: UiEvent {
-        object OnRefreshGroup : Event()
+        class OnInit(val groupId: String) : Event()
         object OnEditGroup : Event()
         class OnNewPayment(val paymentType: PaymentType) : Event()
 
@@ -18,8 +18,8 @@ class GroupDetailsContract {
 
     sealed class State: UiState {
         object Loading: State()
-        class Loaded(val uiModel: GroupUiModel): State()
-        class Error(val message: String): State()
+        data class Loaded(val uiModel: GroupUiModel): State()
+        data class Error(val message: String): State()
     }
 
     sealed class Effect: UiEffect {

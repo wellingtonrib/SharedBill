@@ -3,7 +3,6 @@ package br.com.jwar.sharedbill.groups.domain.usecases
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.groups.domain.model.Payment
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
-import br.com.jwar.sharedbill.groups.domain.usecases.SendPaymentUseCaseImpl
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify

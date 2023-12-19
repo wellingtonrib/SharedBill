@@ -1,11 +1,6 @@
 package br.com.jwar.sharedbill.groups.presentation.ui.group_list
 
 import androidx.lifecycle.viewModelScope
-import br.com.jwar.sharedbill.groups.presentation.mappers.GroupToGroupUiModelMapper
-import br.com.jwar.sharedbill.groups.presentation.models.GroupUiError
-import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GroupListContract.Effect
-import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GroupListContract.Event
-import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GroupListContract.State
 import br.com.jwar.sharedbill.account.domain.exceptions.UserException.UserNotFoundException
 import br.com.jwar.sharedbill.core.common.BaseViewModel
 import br.com.jwar.sharedbill.groups.domain.model.Group
@@ -14,6 +9,11 @@ import br.com.jwar.sharedbill.groups.domain.usecases.DeleteGroupUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.GetGroupsStreamUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.JoinGroupUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.LeaveGroupUseCase
+import br.com.jwar.sharedbill.groups.presentation.mappers.GroupToGroupUiModelMapper
+import br.com.jwar.sharedbill.groups.presentation.models.GroupUiError
+import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GroupListContract.Effect
+import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GroupListContract.Event
+import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GroupListContract.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -29,13 +29,11 @@ class GroupListViewModel @Inject constructor(
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
 ): BaseViewModel<Event, State, Effect>() {
 
-    init { onInit() }
-
     override fun getInitialState(): State = State.Loading
 
     override fun handleEvent(event: Event) {
         when(event) {
-            is Event.OnTryAgain -> onInit()
+            is Event.OnInit -> onInit()
             is Event.OnGroupCreate -> onGroupCreate(event.title)
             is Event.OnGroupSelect -> onGroupSelect(event.groupId)
             is Event.OnGroupJoin -> onGroupJoin(event.inviteCode)
@@ -49,7 +47,7 @@ class GroupListViewModel @Inject constructor(
             .onStart { setLoadingState() }
             .collect { result ->
                 result.onSuccess { setLoadedState(it) }
-                    .onFailure { setErrorState(it, Event.OnTryAgain) }
+                    .onFailure { setErrorState(it, Event.OnInit) }
             }
     }
 
@@ -57,7 +55,7 @@ class GroupListViewModel @Inject constructor(
         setLoadingState()
         createGroupUseCase(title)
             .onSuccess { onGroupCreated(it) }
-            .onFailure { setErrorState(it, Event.OnTryAgain) }
+            .onFailure { setErrorState(it, Event.OnInit) }
     }
 
     private fun onGroupCreated(groupId: String) =
@@ -67,7 +65,7 @@ class GroupListViewModel @Inject constructor(
         setLoadingState()
         joinGroupUseCase(code)
             .onSuccess { onGroupSelect(it) }
-            .onFailure { setErrorState(it, Event.OnTryAgain) }
+            .onFailure { setErrorState(it, Event.OnInit) }
     }
 
     private fun onGroupDelete(groupId: String) = viewModelScope.launch {

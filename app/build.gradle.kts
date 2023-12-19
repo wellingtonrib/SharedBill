@@ -21,11 +21,7 @@ android {
         applicationId = "br.com.jwar.sharedbill"
         versionCode = 9
         versionName = "1.0.1"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        testInstrumentationRunner = "br.com.jwar.sharedbill.testing.HiltTestRunner"
     }
 
     buildTypes {
@@ -34,11 +30,6 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
-    }
-
-    packagingOptions {
-        resources.excludes.add("META-INF/LICENSE.md")
-        resources.excludes.add("META-INF/LICENSE-notice.md")
     }
 
     namespace = "br.com.jwar.sharedbill"
@@ -66,12 +57,16 @@ dependencies {
     implementation(libs.firebase.appcheck.debug)
     implementation(libs.firebase.appcheck.ktx)
     implementation(libs.splashscreen)
-
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    implementation(libs.google.playServices.auth)
 
     testImplementation(libs.bundles.test)
+
     androidTestImplementation(libs.bundles.androidTest)
+    androidTestImplementation(projects.core.testing)
+
+    kapt(libs.hilt.android.compiler)
+    kaptAndroidTest(libs.hilt.android.compiler)
 
     debugImplementation(libs.bundles.debug)
 }

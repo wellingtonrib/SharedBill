@@ -9,6 +9,7 @@ androidExpresso            = "3.5.1"
 androidExtjunit            = "1.1.5"
 androidGradlePlugin        = "8.1.2"
 androidLifecycle           = "2.7.0-alpha02"
+androidRunner              = "1.5.2"
 coilCompose                = "2.4.0"
 compileSdk                 = "34"
 composeCompiler            = "1.4.4"
@@ -20,7 +21,7 @@ junit                      = "4.13.2"
 kotlin                     = "1.8.10"
 kotlinxCoroutines          = "1.7.1"
 minSdk                     = "21"
-mockk                      = "1.12.7"
+mockk                      = "1.13.3"
 playServicesAuth           = "20.7.0"
 playIntegrity              = "1.2.0"
 targetSdk                  = "34"
@@ -51,6 +52,7 @@ androidx-lifecycle-viewmodel-ktx        = { module = "androidx.lifecycle:lifecyc
 androidx-navigation-compose             = { module = "androidx.navigation:navigation-compose" }
 androidx-test-espresso-core             = { module = "androidx.test.espresso:espresso-core", version.ref = "androidExpresso" }
 androidx-test-ext-junit                 = { module = "androidx.test.ext:junit", version.ref = "androidExtjunit" }
+androidx-runner                         = { group = "androidx.test", name = "runner", version = "androidRunner" }
 coil-compose                            = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 firebase-auth                           = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom                            = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBoM" }
@@ -62,16 +64,18 @@ google-playServices-auth                = { module = "com.google.android.gms:pla
 google-play-integrity                   = { module = "com.google.android.play:integrity", version.ref = "playIntegrity" }
 hilt-android                            = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler                   = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+hilt-android-testing                    = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
 junit                                   = { module = "junit:junit", version.ref = "junit" }
 kotlin-gradle-plugin                    = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-test                             = { module = "org.jetbrains.kotlin:kotlin-test" }
 kotlinx-coroutines-playServices         = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test                 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 mockk                                   = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-android                           = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 splashscreen                            = { group  = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
 
 [bundles]
-androidTest                             = ["androidx-test-ext-junit", "androidx-test-espresso-core", "androidx-compose-ui-test-junit4"]
+androidTest                             = ["androidx-test-ext-junit", "androidx-test-espresso-core", "androidx-compose-ui-test-junit4", "hilt-android-testing", "androidx-runner", "mockk-android"]
 compose                                 = ["androidx-compose-foundation","accompanist-navigation-material", "accompanist-navigation-animation", "accompanist-swiperefresh", "androidx-compose-ui", "androidx-compose-ui-tooling-preview", "androidx-compose-material", "androidx-compose-material3", "androidx-navigation-compose", "androidx-hilt-navigation-compose", "coil-compose"]
 debug                                   = ["androidx-compose-ui-tooling", "androidx-compose-ui-test-manifest"]
 firebase                                = ["firebase-auth", "firebase-firestore"]

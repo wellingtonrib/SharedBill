@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +28,7 @@ import br.com.jwar.sharedbill.core.designsystem.components.CloseNavigationIcon
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.horizontalPaddingMedium
 import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
+import br.com.jwar.sharedbill.testing.TestTags
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import br.com.jwar.sharedbill.core.designsystem.R as DSR
@@ -54,7 +56,7 @@ fun PaymentContent(
     }
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.testTag(TestTags.PaymentContent),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             AppTopBar(

@@ -22,6 +22,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +34,7 @@ import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
+import br.com.jwar.sharedbill.testing.TestTags
 import kotlinx.coroutines.launch
 
 @Composable
@@ -68,6 +70,7 @@ fun GroupListContent(
     ) {
         Scaffold(
             modifier = Modifier
+                .testTag(TestTags.GroupListContent)
                 .padding(bottom = 80.dp)
                 .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
             topBar = {

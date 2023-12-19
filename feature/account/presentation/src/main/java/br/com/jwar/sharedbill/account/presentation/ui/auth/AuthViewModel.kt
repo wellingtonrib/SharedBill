@@ -61,7 +61,7 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun sendSignedInEffect(result: BeginSignInResult) =
-        sendEffect { Effect.LaunchSignInResult(result) }
+        sendEffect { Effect.SignedIn(result) }
 
     private fun emitOnRequestSignUpEvent() = emitEvent { Event.OnRequestSignUp }
 

@@ -2,6 +2,7 @@ package br.com.jwar.sharedbill.groups.presentation.ui.payment
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.groups.presentation.ui.payment.components.PaymentContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
@@ -21,16 +22,19 @@ fun PaymentScreen(
 ) {
     LogCompositions("PaymentScreen")
 
-    PaymentContent(
-        state = state,
-        onSaveClick = onSaveClick,
-        onDescriptionChange = onDescriptionChange,
-        onValueChange = onValueChange,
-        onDateChange = onDateChange,
-        onPaidByChange = onPaidByChange,
-        onPaidToChange = onPaidToChange,
-        onNavigateBack = onNavigateBack
-    )
+    when {
+        state.isLoading -> LoadingContent()
+        else -> PaymentContent(
+            state = state,
+            onSaveClick = onSaveClick,
+            onDescriptionChange = onDescriptionChange,
+            onValueChange = onValueChange,
+            onDateChange = onDateChange,
+            onPaidByChange = onPaidByChange,
+            onPaidToChange = onPaidToChange,
+            onNavigateBack = onNavigateBack
+        )
+    }
 }
 
 @Preview

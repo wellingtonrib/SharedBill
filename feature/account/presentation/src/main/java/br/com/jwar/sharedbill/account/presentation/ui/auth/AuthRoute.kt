@@ -57,7 +57,7 @@ fun AuthRoute(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                is Effect.LaunchSignInResult -> {
+                is Effect.SignedIn -> {
                     launchSignInResult(effect.signInResult)
                 }
                 is Effect.ShowError -> {

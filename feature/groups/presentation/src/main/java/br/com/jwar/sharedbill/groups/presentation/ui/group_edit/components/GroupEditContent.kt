@@ -18,6 +18,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringArrayResource
@@ -47,6 +49,7 @@ fun GroupEditContent(
     val listState = rememberLazyListState()
     val suggestions = stringArrayResource(R.array.samples_group_title)
     val keyboardController = LocalSoftwareKeyboardController.current
+    val showSuggestions = remember { mutableStateOf(group.title.isEmpty()) }
 
     SelectedMemberDialog(selectedMember, onMemberSelectionChange, onShareInviteCodeClick)
 
@@ -64,7 +67,10 @@ fun GroupEditContent(
             )
         },
         floatingActionButton = {
-            GroupEditFooter(listState, onSaveMemberClick)
+            GroupEditFooter(
+                listState = listState,
+                onSaveMemberClick = onSaveMemberClick
+            )
         },
         floatingActionButtonPosition = FabPosition.End,
     ) { innerPadding ->
@@ -80,6 +86,7 @@ fun GroupEditContent(
                 placeholder = { Text(stringResource(R.string.placeholder_group_title)) },
                 text = group.title,
                 suggestions = suggestions.toList(),
+                showSuggestions = showSuggestions.value,
             ) { newValue ->
                 onGroupUpdated(group.copy(title = newValue.text))
             }

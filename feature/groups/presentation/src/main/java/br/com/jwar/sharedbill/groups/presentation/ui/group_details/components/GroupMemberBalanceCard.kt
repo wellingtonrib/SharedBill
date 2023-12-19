@@ -39,6 +39,7 @@ fun GroupMemberBalanceCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
+                modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 UserAvatar(
@@ -52,30 +53,34 @@ fun GroupMemberBalanceCard(
                 )
             }
             HorizontalSpacerMedium()
-            GroupBalanceValue(value)
+            GroupBalanceValue(value = value)
         }
     }
 }
 
 @Composable
 private fun GroupBalanceValue(
+    modifier: Modifier = Modifier,
     value: BigDecimal
 ) {
     when {
         value < BigDecimal.ZERO ->
             Pill(
+                modifier = modifier,
                 text = "+${value.abs().toCurrency()}",
                 textColor = AppTheme.colors.primary,
                 backgroundColor = AppTheme.colors.primaryContainer
             )
         value > BigDecimal.ZERO ->
             Pill(
+                modifier = modifier,
                 text = "-${value.abs().toCurrency()}",
                 textColor = AppTheme.colors.error,
                 backgroundColor = AppTheme.colors.errorContainer
             )
         else ->
             Pill(
+                modifier = modifier,
                 text = stringResource(R.string.message_settled_up),
                 textColor = AppTheme.colors.onSurface,
                 backgroundColor = AppTheme.colors.surface
@@ -88,7 +93,9 @@ private fun GroupBalanceValue(
 fun PreviewGroupBalanceItem() {
     SharedBillTheme {
         GroupMemberBalanceCard(
-            entry = hashMapOf(GroupMemberUiModel.sample() to BigDecimal.ZERO).entries.first(),
+            entry = hashMapOf(
+                GroupMemberUiModel.sample().copy(name = "José Wellington Alves Ribeiro") to BigDecimal.ZERO
+            ).entries.first(),
         )
     }
 }

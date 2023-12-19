@@ -34,13 +34,14 @@ fun TextFieldWithSuggestions(
     placeholder: @Composable() (() -> Unit)? = null,
     text: String,
     suggestions: List<String>,
+    showSuggestions: Boolean = false,
     isError: Boolean = false,
     supportingText: @Composable() (() -> Unit)? = null,
     onValueChange: (TextFieldValue) -> Unit = {}
 ) {
     var textFieldValue by remember { mutableStateOf(TextFieldValue(text)) }
     var dropDownWidth by remember { mutableIntStateOf(0) }
-    val isDropdownVisible = remember { mutableStateOf(text.isBlank()) }
+    val isDropdownVisible = remember { mutableStateOf(showSuggestions) }
     val focusRequester = remember { FocusRequester() }
 
     Column {

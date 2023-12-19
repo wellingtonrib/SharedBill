@@ -16,6 +16,9 @@ internal fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, 
 
         defaultConfig {
             minSdk = libs.findVersion("minSdk").get().requiredVersion.toInt()
+            vectorDrawables {
+                useSupportLibrary = true
+            }
         }
 
         compileOptions {
@@ -34,6 +37,11 @@ internal fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, 
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
             )
+        }
+
+        packagingOptions {
+            resources.excludes.add("META-INF/LICENSE.md")
+            resources.excludes.add("META-INF/LICENSE-notice.md")
         }
     }
 }

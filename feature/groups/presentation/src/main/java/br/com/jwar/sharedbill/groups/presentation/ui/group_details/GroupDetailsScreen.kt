@@ -20,7 +20,6 @@ fun GroupDetailsScreen(
     state: State,
     onNavigateBack: () -> Unit = {},
     onNewPaymentClick: (PaymentType) -> Unit = {},
-    onRefresh: () -> Unit = {},
     onEditClick: () -> Unit = {},
     onShareBalance: (String) -> Unit = {},
 ) {

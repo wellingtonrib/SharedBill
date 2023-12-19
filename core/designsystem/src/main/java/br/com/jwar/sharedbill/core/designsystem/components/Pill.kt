@@ -13,12 +13,13 @@ import br.com.jwar.sharedbill.core.designsystem.theme.paddingSmall
 
 @Composable
 fun Pill(
+    modifier: Modifier = Modifier,
     text: String,
     textColor: Color,
     backgroundColor: Color,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .background(
                 color = backgroundColor,
                 shape = RoundedCornerShape(size = 8.dp)
