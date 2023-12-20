@@ -16,7 +16,6 @@ import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.components.RadioButtonWitText
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
@@ -33,7 +32,6 @@ fun PaymentPaidToField(
     onValueChange: (ImmutableSet<GroupMemberUiModel>) -> Unit,
 ) {
     Field {
-        LogCompositions("PaymentContent PaymentPaidToField")
 
         Row(
             modifier = modifier.fillMaxWidth(),

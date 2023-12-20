@@ -22,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.core.utility.compose.CurrencyVisualTransformation
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
@@ -37,7 +36,6 @@ fun PaymentValueField(
     onValueChange: (String) -> Unit,
 ) {
     Field {
-        LogCompositions("PaymentContent PaymentValueField")
         var textFieldValue by remember { mutableStateOf(TextFieldValue(value)) }
         val focusRequester = remember { FocusRequester() }
         val currencyVisualTransformation = remember { CurrencyVisualTransformation() }

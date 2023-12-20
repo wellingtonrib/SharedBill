@@ -13,15 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
-import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.components.SelectDialog
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.groups.presentation.R
+import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
+import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
 import com.google.common.collect.ImmutableMap
 
 @Composable
@@ -33,7 +32,6 @@ fun PaymentPaidByField(
     onValueChange: (GroupMemberUiModel) -> Unit,
 ) {
     Field {
-        LogCompositions("PaymentContent PaymentPaidByField")
 
         val isPaidBySelecting = remember { mutableStateOf(false) }
         if (isPaidBySelecting.value) {

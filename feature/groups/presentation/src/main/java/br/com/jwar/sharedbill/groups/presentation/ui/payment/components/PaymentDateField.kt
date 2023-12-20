@@ -20,13 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
 import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.core.utility.extensions.format
+import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
 import java.util.Calendar
 import java.util.Date
 
@@ -39,7 +38,6 @@ fun PaymentDateField(
     onValueChange: (Long) -> Unit,
 ) {
     Field {
-        LogCompositions("PaymentContent PaymentDateField")
 
         val context = LocalContext.current
         val focusManager = LocalFocusManager.current

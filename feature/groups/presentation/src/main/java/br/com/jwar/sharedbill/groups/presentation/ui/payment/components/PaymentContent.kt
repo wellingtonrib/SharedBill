@@ -21,13 +21,12 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract
 import br.com.jwar.sharedbill.core.designsystem.components.AppTopBar
 import br.com.jwar.sharedbill.core.designsystem.components.CloseNavigationIcon
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.horizontalPaddingMedium
-import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
+import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
+import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract
 import br.com.jwar.sharedbill.testing.TestTags
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
@@ -45,7 +44,6 @@ fun PaymentContent(
     onSaveClick: () -> Unit = {},
     onNavigateBack: () -> Unit = {}
 ) {
-    LogCompositions("PaymentContent")
 
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
