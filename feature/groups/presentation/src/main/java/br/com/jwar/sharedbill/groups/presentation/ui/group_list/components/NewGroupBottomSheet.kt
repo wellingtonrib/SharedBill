@@ -41,7 +41,7 @@ fun NewGroupBottomSheet(
         modifier = Modifier
             .heightIn(min = 200.dp, max = 200.dp)
             .paddingMedium()
-            .padding(bottom = 100.dp)
+            .padding(bottom = 120.dp)
             .fillMaxWidth(),
         horizontalAlignment = CenterHorizontally
     ) {

@@ -37,7 +37,8 @@ fun PaymentDescriptionField(
             suggestions = suggestions.toList(),
             showSuggestions = description.isEmpty(),
             isError = error?.message?.asString().isNullOrBlank().not(),
-            supportingText = { error?.message?.AsText(AppTheme.colors.error) },
+            maxLength = 50,
+            supportingText = error?.message?.let { { it.AsText(AppTheme.colors.error) } },
             { onValueChange(it.text) },
         )
     }

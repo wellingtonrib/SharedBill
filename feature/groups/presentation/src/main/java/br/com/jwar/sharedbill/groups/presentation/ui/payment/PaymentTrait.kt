@@ -9,6 +9,7 @@ import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import com.google.common.collect.ImmutableSet
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.Calendar
 
 interface PaymentTrait {
@@ -76,7 +77,7 @@ interface PaymentTrait {
     fun calculateSharedValue(value: String, paidToCount: Int): String {
         val valueInBigDecimal = value.toBigDecimalOrNull() ?: BigDecimal.ZERO
         val paidToCountInBigDecimal = BigDecimal.valueOf(paidToCount.toLong().takeIf { it > 0 } ?: 1)
-        return (valueInBigDecimal / paidToCountInBigDecimal).toCurrency()
+        return (valueInBigDecimal.div(paidToCountInBigDecimal)).toCurrency()
     }
 
     fun mapErrorHandler(inputFields: ImmutableSet<PaymentContract.Field>, error: PaymentUiError) =

@@ -87,6 +87,7 @@ fun GroupEditContent(
                 text = group.title,
                 suggestions = suggestions.toList(),
                 showSuggestions = showSuggestions.value,
+                maxLength = 30,
             ) { newValue ->
                 onGroupUpdated(group.copy(title = newValue.text))
             }

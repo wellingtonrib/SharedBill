@@ -56,7 +56,7 @@
     <string name="message_group_saved_success">Group updated with success</string>
     <string name="message_confirm_user_remove">Are you sure about removing this user?</string>
     <string name="message_confirm_group_delete">Are you sure about deleting this group?</string>
-    <string name="message_share_invite_code">Use this code to join us: %1$s</string>
+    <string name="message_share_invite_code">Use this code to join us on Shared Bills App: %1$s\nhttps://play.google.com/store/apps/details?id=br.com.jwar.sharedbill</string>
 
     <string name="placeholder_user_name">Enter the first and last name</string>
     <string name="placeholder_group_title">Ex. 🏠 Home</string>

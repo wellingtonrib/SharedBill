@@ -62,10 +62,11 @@ class PaymentViewModel @Inject constructor(
     }
 
     private fun onValueChange(value: String) = setState { state ->
+        val currencyValue = value.toDoubleOrNull()?.div(100).toString()
         val updatedState = state.updateFields { field ->
             when (field) {
-                is ValueField -> field.copy(value = value, error = null)
-                is PaidToField -> field.copy(sharedValue = calculateSharedValue(value, field.value.size))
+                is ValueField -> field.copy(value = currencyValue, error = null)
+                is PaidToField -> field.copy(sharedValue = calculateSharedValue(currencyValue, field.value.size))
                 else -> field
             }
         }
