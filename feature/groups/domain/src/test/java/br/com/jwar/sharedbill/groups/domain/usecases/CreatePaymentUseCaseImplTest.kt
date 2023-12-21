@@ -53,10 +53,10 @@ class CreatePaymentUseCaseImplTest {
             id = result.getOrNull()?.id ?: "",
             description = description,
             value = value,
-            paidBy = payer,
-            paidTo = members,
+            paidBy = payer.id,
+            paidTo = members.associate { it.id to 1 },
             createdAt = Date(dateTime),
-            createdBy = payer
+            createdBy = payer.id,
         )
 
         assertEquals(Result.success(expectedPayment), result)

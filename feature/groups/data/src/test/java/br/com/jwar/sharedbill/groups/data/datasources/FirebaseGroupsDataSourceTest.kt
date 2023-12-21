@@ -80,10 +80,21 @@ internal class FirebaseGroupsDataSourceTest {
     }
 
     @Test
+    fun `getGroupById with refresh true but not connected get from CACHE`() = runTest {
+        val groupId = UUID.randomUUID().toString()
+        val groupsQuery: Query = mockk()
+        prepareScenario(isConnected = false, groupId = groupId, groupsQuery = groupsQuery)
+
+        firebaseGroupsDataSource.getGroupById(groupId, refresh = false)
+
+        verify { groupsQuery.get(Source.CACHE) }
+    }
+
+    @Test
     fun `getGroupById with refresh true get from SERVER`() = runTest {
         val groupId = UUID.randomUUID().toString()
         val groupsQuery: Query = mockk()
-        prepareScenario(groupId = groupId, groupsQuery = groupsQuery)
+        prepareScenario(isConnected = true, groupId = groupId, groupsQuery = groupsQuery)
 
         firebaseGroupsDataSource.getGroupById(groupId, refresh = true)
 
@@ -91,11 +102,93 @@ internal class FirebaseGroupsDataSourceTest {
     }
 
     @Test
-    fun `getGroupById with unprocessed payments should process payments`() = runTest {
+    fun `getGroupById with unprocessed payments should update balance equality`() = runTest {
+        val groupId = UUID.randomUUID().toString()
+        val unprocessedPayments = listOf(
+            Payment(
+                groupId = groupId,
+                value = "3000",
+                paidBy = "payer",
+                paidTo = mapOf(
+                    "payer" to 1,
+                    "other" to 1,
+                    "another" to 1
+                )
+            )
+        )
+        prepareScenario(groupId = groupId, unprocessedPayments = unprocessedPayments)
 
+        val result = firebaseGroupsDataSource.getGroupById(groupId, refresh = false)
+
+        assertEquals(
+            mapOf(
+                "payer" to "-2000.00",
+                "other" to "1000.00",
+                "another" to "1000.00",
+            ),
+            result.balance
+        )
+    }
+
+    @Test
+    fun `getGroupById with unprocessed payments should update balance based on weight`() = runTest {
+        val groupId = UUID.randomUUID().toString()
+        val unprocessedPayments = listOf(
+            Payment(
+                groupId = groupId,
+                value = "4000",
+                paidBy = "payer",
+                paidTo = mapOf(
+                    "payer" to 2,
+                    "other" to 1,
+                    "another" to 1
+                )
+            )
+        )
+        prepareScenario(groupId = groupId, unprocessedPayments = unprocessedPayments)
+
+        val result = firebaseGroupsDataSource.getGroupById(groupId, refresh = false)
+
+        assertEquals(
+            mapOf(
+                "payer" to "-2000.00",
+                "other" to "1000.00",
+                "another" to "1000.00",
+            ),
+            result.balance
+        )
+    }
+
+    @Test
+    fun `getGroupById with unprocessed payments should update balance of payer`() = runTest {
+        val groupId = UUID.randomUUID().toString()
+        val unprocessedPayments = listOf(
+            Payment(
+                groupId = groupId,
+                value = "1000",
+                paidBy = "payer",
+                paidTo = mapOf(
+                    "other" to 1,
+                    "another" to 1
+                )
+            )
+        )
+        prepareScenario(groupId = groupId, unprocessedPayments = unprocessedPayments)
+
+        val result = firebaseGroupsDataSource.getGroupById(groupId, refresh = false)
+
+        assertEquals(
+            mapOf(
+                "payer" to "-1000.00",
+                "other" to "500.00",
+                "another" to "500.00",
+            ),
+            result.balance
+        )
     }
 
     private fun prepareScenario(
+        isConnected: Boolean = true,
         firebaseUser: FirebaseUser = mockk(),
         firebaseUserUid: String = UUID.randomUUID().toString(),
         groupId: String = UUID.randomUUID().toString(),
@@ -112,6 +205,7 @@ internal class FirebaseGroupsDataSourceTest {
         unprocessedPaymentsSnapshot: QuerySnapshot = mockk(),
         unprocessedPayments: List<Payment> = emptyList(),
     ) {
+        every { networkManager.isConnected() } returns isConnected
         every { firebaseAuth.currentUser } returns firebaseUser
         every { firebaseUser.uid } returns firebaseUserUid
         every { firestore.collection(GROUPS_REF) } returns groupsCollectionReference

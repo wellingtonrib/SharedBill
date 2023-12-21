@@ -14,15 +14,21 @@ exports.processPayment = functions
 
       const groupCurrentBalance = groupData.balance || {};
       const paymentTotalValue = Number(paymentData.value || 0);
-      const paymentSharedValue = Number(paymentTotalValue / (paymentData.paidTo.length || 1));
+      const paymentTotalWeight = Object.values(paymentData.paidTo).reduce((sum, weight) => sum + weight, 0);
 
-      paymentData.paidTo.forEach(member => {        
-        const currentPaidToKeyBalance = Number(groupCurrentBalance[member.id] || 0);
-        groupCurrentBalance[member.id] = String(currentPaidToKeyBalance + paymentSharedValue);
-      });      
-      const currentPaidByKeyBalance = Number(groupCurrentBalance[paymentData.paidBy.id] || 0);
-      groupCurrentBalance[paymentData.paidBy.id] = String(currentPaidByKeyBalance - paymentTotalValue);
-              
+      Object.entries(paymentData.paidTo).forEach(([memberId, memberWeight]) => {
+        const paymentSharedValue = paymentTotalValue * (memberWeight / paymentTotalWeight);
+        const adjustment = memberId === paymentData.paidBy ? (paymentTotalValue - paymentSharedValue) * -1 : paymentSharedValue;
+        const currentPaidToKeyBalance = Number(groupCurrentBalance[memberId] || 0);
+
+        groupCurrentBalance[memberId] = String(currentPaidToKeyBalance + adjustment);
+      });
+
+      if (!paymentData.paidTo.hasOwnProperty(paymentData.paidBy)) {
+        const currentBalance = Number(groupCurrentBalance[paymentData.paidBy] || 0);
+        groupCurrentBalance[paymentData.paidBy] = String(currentBalance - paymentTotalValue);
+      }
+
       paymentSnapshot.ref.delete();
       return groupRef.update({balance: groupCurrentBalance});
     });

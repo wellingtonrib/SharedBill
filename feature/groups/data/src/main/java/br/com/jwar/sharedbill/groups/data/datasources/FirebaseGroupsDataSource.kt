@@ -32,8 +32,6 @@ class FirebaseGroupsDataSource @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): GroupsDataSource {
 
-
-
     companion object {
         const val GROUPS_REF = "groups"
         const val GROUP_ID_FIELD = "id"
@@ -49,7 +47,7 @@ class FirebaseGroupsDataSource @Inject constructor(
     override suspend fun getGroupsStream(): Flow<List<Group>> =
         getUserGroupsQuery()
             .snapshots()
-            .map { docs -> docs.mapNotNull { mapGroupFromSnapshot(it) } }
+            .map { docs -> docs.mapNotNull { tryMapGroupFromSnapshot(it) } }
             .flowOn(ioDispatcher)
 
     override suspend fun getGroupByIdStream(groupId: String) =
@@ -147,6 +145,9 @@ class FirebaseGroupsDataSource @Inject constructor(
         return group.byProcessingPayments(groupUnprocessedPayments).byHandlingCurrentUser()
     }
 
+    private suspend fun tryMapGroupFromSnapshot(snapshot: DocumentSnapshot?): Group? =
+        try { mapGroupFromSnapshot(snapshot) } catch (e: Exception) { null }
+
     private suspend fun getUnprocessedPayments(groupId: String) =
         withContext(ioDispatcher) {
             return@withContext firestore.collection(UNPROCESSED_PAYMENTS_REF)
@@ -165,15 +166,22 @@ class FirebaseGroupsDataSource @Inject constructor(
 
     private fun Group.byProcessingPayments(groupUnprocessedPayments: List<Payment>): Group {
         val balance = this.balance.toMutableMap()
+
         groupUnprocessedPayments.forEach { payment ->
             val total = payment.value.toBigDecimal().orZero().setScale(2, RoundingMode.CEILING)
-            val shared = total.div(payment.paidTo.size.toBigDecimal()).setScale(2, RoundingMode.CEILING)
+            val totalWeight = payment.paidTo.values.sum()
 
-            payment.paidTo.forEach { member ->
-                balance[member.id] =
-                    balance[member.id]?.toBigDecimal().orZero().plus(shared).toString()
+            payment.paidTo.forEach { (memberId, weight) ->
+                val shared = total.multiply(weight.toBigDecimal()).divide(totalWeight.toBigDecimal(), 2, RoundingMode.CEILING)
+                val adjustment = if (memberId == payment.paidBy) -(total - shared) else shared
+                val currentBalance = balance[memberId]?.toBigDecimal().orZero()
+                balance[memberId] = currentBalance.plus(adjustment).toString()
             }
-            balance[payment.paidBy.id] = balance[payment.paidBy.id]?.toBigDecimal()?.minus(total).toString()
+
+            if (payment.paidTo.containsKey(payment.paidBy).not()) {
+                val currentBalance = balance[payment.paidBy]?.toBigDecimal().orZero()
+                balance[payment.paidBy] = currentBalance.minus(total).toString()
+            }
         }
         return this.copy(balance = balance)
     }

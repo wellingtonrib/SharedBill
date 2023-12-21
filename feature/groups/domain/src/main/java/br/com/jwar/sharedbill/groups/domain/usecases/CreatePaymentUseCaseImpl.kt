@@ -37,17 +37,17 @@ class CreatePaymentUseCaseImpl(
             ?: throw PaymentException.InvalidPaidByException
         val paidTo = group.members.filter { member ->
             paidToIds.contains(member.id)
-        }
+        }.associate { it.id to 1 }
 
         val payment = Payment(
             groupId = group.id,
             id = UUID.randomUUID().toString(),
             description = description,
             value = value,
-            paidBy = paidBy,
+            paidBy = paidBy.id,
             paidTo = paidTo,
             createdAt = Date(dateTime),
-            createdBy = createdBy,
+            createdBy = createdBy.id,
             paymentType = paymentType,
         )
         return Result.success(payment)

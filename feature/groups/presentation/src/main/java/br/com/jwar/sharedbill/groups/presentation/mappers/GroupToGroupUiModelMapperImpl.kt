@@ -31,7 +31,7 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
     private fun mapPayments(from: Group) = ImmutableSet.copyOf(
         from.payments
             .sortedByDescending { it.createdAt }
-            .map { paymentToPaymentUiModelMapper.mapFrom(it) }
+            .map { paymentToPaymentUiModelMapper.mapFrom(it, from) }
     )
 
     private fun mapMembers(from: Group) = ImmutableSet.copyOf(
