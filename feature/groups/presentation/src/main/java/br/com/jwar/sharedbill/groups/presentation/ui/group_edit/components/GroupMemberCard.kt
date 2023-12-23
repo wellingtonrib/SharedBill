@@ -1,6 +1,7 @@
 package br.com.jwar.sharedbill.groups.presentation.ui.group_edit.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.SwipeToDismiss
@@ -11,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissBackground
@@ -21,6 +24,7 @@ import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.sizeMedium
+import br.com.jwar.sharedbill.groups.presentation.R
 
 @Composable
 fun GroupMemberCard(
@@ -58,7 +62,19 @@ fun GroupMemberCard(
                     UserAvatar(user = member.toUserUiModel())
                 }
                 HorizontalSpacerMedium()
-                Text(text = member.name, style = AppTheme.typo.titleMedium)
+                Column {
+                    Text(
+                        text = member.name,
+                        style = AppTheme.typo.titleMedium
+                    )
+                    if (member.inviteCode.isNullOrBlank().not()) {
+                        Text(
+                            text = stringResource(R.string.message_has_not_joined),
+                            style = AppTheme.typo.bodySmall,
+                            fontStyle = FontStyle.Italic,
+                        )
+                    }
+                }
             }
         }
     }
@@ -68,7 +84,7 @@ fun GroupMemberCard(
 @Composable
 fun GroupMemberCard() {
     MaterialTheme {
-        GroupMemberCard(GroupMemberUiModel.sample())
+        GroupMemberCard(GroupMemberUiModel.sample().copy(inviteCode = "123"))
     }
 }
 

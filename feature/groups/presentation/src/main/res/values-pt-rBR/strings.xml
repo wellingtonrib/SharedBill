@@ -59,6 +59,8 @@
     <string name="message_confirm_user_remove">Tem certeza de que deseja remover este usuário?</string>
     <string name="message_confirm_group_delete">Tem certeza de que deseja excluir este grupo?</string>
     <string name="message_share_invite_code">Use este código para se juntar a nós no Contas Compartilhadas: %1$s\nhttps://play.google.com/store/apps/details?id=br.com.jwar.sharedbill</string>
+    <string name="message_add_members">Adicione novos membros ao grupo para começar a dividir as contas!</string>
+    <string name="message_has_not_joined">Convidar para participar</string>
 
     <string name="placeholder_user_name">Insira o nome e o sobrenome</string>
     <string name="placeholder_group_title">Ex. 🏠 Minha casa</string>

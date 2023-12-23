@@ -93,7 +93,7 @@ fun TextFieldWithSuggestions(
                             .copy(selection = TextRange(suggestion.length))
                         isDropdownVisible.value = false
                         onValueChange(textFieldValue)
-                        focusRequester.requestFocus()
+                        focusRequester.freeFocus()
                     },
                     text = { Text(suggestion) }
                 )
