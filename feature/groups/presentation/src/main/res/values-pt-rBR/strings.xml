@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="label_groups">Grupos</string>
     <string name="label_group_balance">Saldo</string>
     <string name="label_group_payments">Pagamentos</string>
@@ -42,6 +42,7 @@
     <string name="label_total_spent">Total gasto %1$s</string>
     <string name="label_suggestion">Sugestões</string>
     <string name="label_settlement">🤝 Acerto de contas</string>
+    <string name="label_select">Selecionar</string>
 
     <string name="message_welcome">Bem-vindo %1$s</string>
     <string name="message_owes">Deve %1$s</string>

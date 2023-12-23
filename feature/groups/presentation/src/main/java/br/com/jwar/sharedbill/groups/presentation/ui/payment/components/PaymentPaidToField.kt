@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.groups.presentation.ui.payment.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,9 +35,8 @@ fun PaymentPaidToField(
 ) {
     Field {
 
-        Row(
+        Column(
             modifier = modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Top
         ) {
             Text(
                 modifier = Modifier.padding(top = AppTheme.dimens.space_4),
@@ -47,7 +47,8 @@ fun PaymentPaidToField(
                 }
             )
             LazyColumn(
-                modifier = Modifier.padding(start = AppTheme.dimens.space_4)
+                modifier = Modifier
+                    .padding(start = AppTheme.dimens.space_4, top = AppTheme.dimens.space_4),
             ) {
                 if (isMultiSelect) {
                     items(options.asList()) { member ->

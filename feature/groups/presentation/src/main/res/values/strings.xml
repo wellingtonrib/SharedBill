@@ -30,7 +30,7 @@
     <string name="label_payment_value">Value</string>
     <string name="label_payment_paid_by">Paid by</string>
     <string name="label_payment_paid_to">Paid to</string>
-    <string name="label_payment_divided_by">Divided by</string>
+    <string name="label_payment_divided_by">Split by</string>
     <string name="label_payment_received_by">Payment to %1$s</string>
     <string name="label_payment_created_at">Created at</string>
     <string name="label_payment_created_by">Created by</string>
@@ -42,6 +42,7 @@
     <string name="label_total_spent">Total spent %1$s</string>
     <string name="label_suggestion">Suggestions</string>
     <string name="label_settlement">🤝 Settlement</string>
+    <string name="label_select">Select</string>
 
     <string name="message_welcome">Welcome %1$s</string>
     <string name="message_owes">Owes %1$s</string>

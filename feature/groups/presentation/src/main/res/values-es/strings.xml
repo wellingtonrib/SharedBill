@@ -42,6 +42,7 @@
     <string name="label_total_spent">Total gastado %1$s</string>
     <string name="label_suggestion">Sugerencias</string>
     <string name="label_settlement">🤝 Acuerdo</string>
+    <string name="label_select">Selecionar</string>
 
     <string name="message_welcome">Bienvenido %1$s</string>
     <string name="message_owes">Debe %1$s</string>

@@ -38,6 +38,7 @@ fun PaymentPaidByField(
             SelectDialog(
                 title = stringResource(id = R.string.label_payment_paid_by),
                 message = stringResource(id = R.string.placeholder_payment_paid_by),
+                action = stringResource(id = R.string.label_select),
                 options = options,
                 defaultSelection = listOf(value),
                 isMultiChoice = false,
