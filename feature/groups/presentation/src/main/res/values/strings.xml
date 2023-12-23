@@ -54,6 +54,7 @@
     <string name="message_invite_code">Invite code: %1$s</string>
     <string name="message_groups_empty">No groups, create or join one\nClick on + New Group button below</string>
     <string name="message_payment_description">%1$s - %2$s, paid by %3$s to %4$s\nCreated at %5$s</string>
+    <string name="message_payment_split_description">%1$s - %2$s, paid by %3$s splitted to %4$s\nCreated at %5$s</string>
     <string name="message_payment_created_by">by %1$s</string>
     <string name="message_group_saved_success">Group updated with success</string>
     <string name="message_confirm_user_remove">Are you sure about removing this user?</string>

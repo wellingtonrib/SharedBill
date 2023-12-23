@@ -19,7 +19,9 @@ import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.core.utility.extensions.DATE_FORMAT_DEFAULT
+import br.com.jwar.sharedbill.core.utility.extensions.defaultFormat
 import br.com.jwar.sharedbill.core.utility.extensions.format
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiModel
@@ -89,12 +91,16 @@ private fun PaymentUiModel.getInfo() =
     StringBuilder().apply {
         appendLine(
             stringResource(
-                R.string.message_payment_description,
+                if (paymentType == PaymentType.EXPENSE) {
+                    R.string.message_payment_split_description
+                } else {
+                    R.string.message_payment_description
+                },
                 description,
                 value,
                 paidBy.firstName,
                 paidTo.joinToString { it.firstName },
-                createdAt.format("dd.MM.yy HH:mm")
+                createdAt.defaultFormat()
             )
         )
         if (paidBy.uid != createdBy.uid) {

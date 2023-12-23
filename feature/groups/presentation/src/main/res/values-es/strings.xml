@@ -54,6 +54,7 @@
     <string name="message_invite_code">Código de invitación: %1$s</string>
     <string name="message_groups_empty">No hay grupos, cree o únase a uno\nHaga clic en el botón + Nuevo grupo a continuación</string>
     <string name="message_payment_description">%1$s - %2$s, pagado por %3$s a %4$s\nCreado en %5$s</string>
+    <string name="message_payment_split_description">%1$s - %2$s, pagado por %3$s dividido por %4$s\nCreado en %5$s</string>
     <string name="message_payment_created_by">por %1$s</string>
     <string name="message_group_saved_success">Grupo actualizado con éxito</string>
     <string name="message_confirm_user_remove">¿Estás seguro de eliminar este usuario?</string>

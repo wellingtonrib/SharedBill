@@ -1,6 +1,7 @@
 package br.com.jwar.sharedbill.core.utility.extensions
 
 import java.math.BigDecimal
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -11,6 +12,9 @@ const val ZERO = "0"
 
 fun Date.format(pattern: String = DATE_FORMAT_DEFAULT): String =
     SimpleDateFormat(pattern, Locale.getDefault()).format(this)
+
+fun Date.defaultFormat(format: Int = DateFormat.DEFAULT): String =
+    DateFormat.getDateInstance(format, Locale.getDefault()).format(this)
 
 fun String.parse(pattern: String = DATE_FORMAT_DEFAULT, default: Date = Date()): Date =
     SimpleDateFormat(pattern, Locale.getDefault()).parse(this) ?: default
