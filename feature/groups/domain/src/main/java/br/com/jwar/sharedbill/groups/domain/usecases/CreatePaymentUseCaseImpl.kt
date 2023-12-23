@@ -19,7 +19,7 @@ class CreatePaymentUseCaseImpl(
         value: String,
         dateTime: Long,
         paidById: String,
-        paidToIds: List<String>,
+        paidToIds: Map<String, Int>,
         groupId: String,
         paymentType: PaymentType,
     ): Result<Payment> = resultOf {
@@ -35,9 +35,6 @@ class CreatePaymentUseCaseImpl(
             ?: throw PaymentException.InvalidPaidByException
         val createdBy = group.findCurrentUser()
             ?: throw PaymentException.InvalidPaidByException
-        val paidTo = group.members.filter { member ->
-            paidToIds.contains(member.id)
-        }.associate { it.id to 1 }
 
         val payment = Payment(
             groupId = group.id,
@@ -45,7 +42,7 @@ class CreatePaymentUseCaseImpl(
             description = description,
             value = value,
             paidBy = paidBy.id,
-            paidTo = paidTo,
+            paidTo = paidToIds,
             createdAt = Date(dateTime),
             createdBy = createdBy.id,
             paymentType = paymentType,

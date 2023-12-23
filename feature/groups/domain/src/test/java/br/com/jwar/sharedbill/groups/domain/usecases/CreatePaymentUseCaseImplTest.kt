@@ -31,7 +31,7 @@ class CreatePaymentUseCaseImplTest {
         val value = "100.00"
         val dateTime = Date().time
         val paidById = "payer_id"
-        val paidToIds = listOf("member_id_1", "member_id_2")
+        val paidToIds = listOf("member_id_1", "member_id_2").associateWith { 1 }
         val groupId = "group_id"
         val payer = User(id = paidById, isCurrentUser = true)
         val members = listOf(User(id = "member_id_1"), User(id = "member_id_2"))

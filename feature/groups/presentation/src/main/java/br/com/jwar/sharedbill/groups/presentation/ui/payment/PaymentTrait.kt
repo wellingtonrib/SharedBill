@@ -7,6 +7,7 @@ import br.com.jwar.sharedbill.core.utility.extensions.toCurrency
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
+import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -41,7 +42,7 @@ interface PaymentTrait {
             visible = true,
         ),
         PaymentContract.Field.PaidToField(
-            value = groupUiModel.members,
+            value = ImmutableMap.copyOf(groupUiModel.members.associateWith { 1 }),
             options = groupUiModel.members,
             visible = true,
             isMultiSelect = true,
@@ -67,17 +68,26 @@ interface PaymentTrait {
             visible = true,
         ),
         PaymentContract.Field.PaidToField(
-            value = ImmutableSet.copyOf(groupUiModel.members.drop(1).take(1)),
+            value = ImmutableMap.copyOf(groupUiModel.members.drop(1).take(1).associateWith { 1 }),
             options = ImmutableSet.copyOf(groupUiModel.members.drop(1)),
             visible = true,
             isMultiSelect = false,
         )
     )
 
-    fun calculateSharedValue(value: String, paidToCount: Int): String {
-        val valueInBigDecimal = value.toBigDecimalOrNull() ?: BigDecimal.ZERO
-        val paidToCountInBigDecimal = BigDecimal.valueOf(paidToCount.toLong().takeIf { it > 0 } ?: 1)
-        return (valueInBigDecimal.div(paidToCountInBigDecimal)).toCurrency()
+    fun calculateSharedValue(
+        value: String,
+        paidTo: ImmutableMap<GroupMemberUiModel, Int>
+    ): ImmutableMap<GroupMemberUiModel, String> {
+        val valueToShare = value.toBigDecimalOrNull() ?: BigDecimal.ZERO
+        val weights = paidTo.values.sum().toBigDecimal().takeIf { it > BigDecimal.ZERO } ?: BigDecimal.ONE
+        return ImmutableMap.copyOf(
+            paidTo.entries.filter { it.value > 0 }.associate {
+                val currentValue = it.value.toBigDecimal()
+                val sharedValue = valueToShare.multiply(currentValue).divide(weights, 2, RoundingMode.CEILING)
+                it.key to sharedValue.toCurrency()
+            }
+        )
     }
 
     fun mapErrorHandler(inputFields: ImmutableSet<PaymentContract.Field>, error: PaymentUiError) =

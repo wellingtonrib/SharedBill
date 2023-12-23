@@ -21,6 +21,7 @@ import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import br.com.jwar.sharedbill.groups.domain.usecases.CreatePaymentUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.GetGroupByIdUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.SendPaymentUseCase
+import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -66,7 +67,7 @@ class PaymentViewModel @Inject constructor(
         val updatedState = state.updateFields { field ->
             when (field) {
                 is ValueField -> field.copy(value = currencyValue, error = null)
-                is PaidToField -> field.copy(sharedValue = calculateSharedValue(currencyValue, field.value.size))
+                is PaidToField -> field.copy(sharedValue = calculateSharedValue(currencyValue, field.value))
                 else -> field
             }
         }
@@ -83,9 +84,13 @@ class PaymentViewModel @Inject constructor(
                 field is PaidByField -> field.copy(value = paidBy, error = null)
                 field is PaidToField && state.paymentType == PaymentType.SETTLEMENT -> {
                     val updatedOptions = state.groupUiModel.members.filterNot { it.uid == paidBy.uid }
-                    val updatedValue = if (field.value.contains(paidBy)) updatedOptions.take(1) else field.value
+                    val updatedValue = if (field.value.keys.contains(paidBy)) {
+                        updatedOptions.take(1).associateWith { 1 }
+                    } else {
+                        field.value
+                    }
                     field.copy(
-                        value = ImmutableSet.copyOf(updatedValue),
+                        value = ImmutableMap.copyOf(updatedValue),
                         options = ImmutableSet.copyOf(updatedOptions)
                     )
                 }
@@ -95,13 +100,13 @@ class PaymentViewModel @Inject constructor(
         updatedState
     }
 
-    private fun onPaidToChange(paidTo: ImmutableSet<GroupMemberUiModel>) = setState { state ->
+    private fun onPaidToChange(paidTo: ImmutableMap<GroupMemberUiModel, Int>) = setState { state ->
         state.updateField<PaidToField> { field -> field.copy(
-            value = paidTo,
+            value = ImmutableMap.copyOf(paidTo),
             error = null,
             sharedValue = calculateSharedValue(
                 value = state.getFieldValue<ValueField, String>().orEmpty(),
-                paidToCount = paidTo.size
+                paidTo = paidTo
             )
         )}
     }
@@ -112,13 +117,13 @@ class PaymentViewModel @Inject constructor(
             val value = state.getFieldValue<ValueField, String>()
             val dateTime = state.getFieldValue<DateField, Long>()
             val paidById = state.getFieldValue<PaidByField, GroupMemberUiModel>()
-            val paidToIds = state.getFieldValue<PaidToField, ImmutableSet<GroupMemberUiModel>>()
+            val paidToIds = state.getFieldValue<PaidToField, Map<GroupMemberUiModel, Int>>()
             createPaymentUseCase(
                 description = description.orEmpty(),
                 value = value.orEmpty(),
                 dateTime = dateTime ?: Calendar.getInstance().timeInMillis,
                 paidById = paidById?.uid.orEmpty(),
-                paidToIds = paidToIds?.map { it.uid }.orEmpty(),
+                paidToIds = paidToIds?.entries?.associate { it.key.uid to it.value }.orEmpty(),
                 groupId = groupId,
                 paymentType = paymentType,
             ).onSuccess { sendPayment(it) }

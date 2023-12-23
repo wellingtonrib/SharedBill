@@ -6,7 +6,7 @@ import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.groups.presentation.ui.payment.components.PaymentContent
-import com.google.common.collect.ImmutableSet
+import com.google.common.collect.ImmutableMap
 
 @Composable
 fun PaymentScreen(
@@ -15,7 +15,7 @@ fun PaymentScreen(
     onValueChange: (String) -> Unit = {},
     onDateChange: (Long) -> Unit = {},
     onPaidByChange: (GroupMemberUiModel) -> Unit = {},
-    onPaidToChange: (ImmutableSet<GroupMemberUiModel>) -> Unit = {},
+    onPaidToChange: (ImmutableMap<GroupMemberUiModel, Int>) -> Unit = {},
     onSaveClick: () -> Unit = {},
     onNavigateBack: () -> Unit = {},
 ) {

@@ -30,6 +30,7 @@
     <string name="label_payment_value">Valor</string>
     <string name="label_payment_paid_by">Pagado por</string>
     <string name="label_payment_paid_to">Pagado a</string>
+    <string name="label_payment_divided_by">Dividido por</string>
     <string name="label_payment_received_by">Pago a %1$s</string>
     <string name="label_payment_created_at">Creado en</string>
     <string name="label_payment_created_by">Creado por</string>

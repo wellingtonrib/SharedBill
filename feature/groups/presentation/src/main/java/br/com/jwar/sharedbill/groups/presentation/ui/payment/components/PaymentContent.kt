@@ -40,7 +40,7 @@ fun PaymentContent(
     onValueChange: (String) -> Unit = {},
     onDateChange: (Long) -> Unit = {},
     onPaidByChange: (GroupMemberUiModel) -> Unit = {},
-    onPaidToChange: (ImmutableSet<GroupMemberUiModel>) -> Unit = {},
+    onPaidToChange: (ImmutableMap<GroupMemberUiModel, Int>) -> Unit = {},
     onSaveClick: () -> Unit = {},
     onNavigateBack: () -> Unit = {}
 ) {
