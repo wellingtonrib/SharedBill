@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,10 +26,12 @@ fun GroupPayments(
     modifier: Modifier = Modifier,
     group: GroupUiModel,
     listState: LazyListState,
-    onDeletePayment: (String) -> Unit,
+    onDeletePayment: (String, String) -> Unit = { _, _ -> },
 ) {
     var selectedPayment by remember { mutableStateOf<PaymentUiModel?>(null) }
-    if (selectedPayment != null) {
+    val shouldShowPaymentInfo by remember { derivedStateOf { selectedPayment != null } }
+
+    if (shouldShowPaymentInfo) {
         InfoDialog(
             image = null,
             title = stringResource(R.string.label_payment_detail),
@@ -46,11 +49,10 @@ fun GroupPayments(
         items(group.payments.asList()) { payment ->
             GroupPaymentCard(
                 payment = payment,
-                group = group
-            ) {
-//                selectedPayment = payment
-                onDeletePayment(payment.id)
-            }
+                group = group,
+                onClick = { selectedPayment = payment },
+                onDelete = { onDeletePayment(payment.id, group.id) }
+            )
         }
     }
 }

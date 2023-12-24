@@ -13,6 +13,7 @@ class PaymentToPaymentUiModelMapperImpl @Inject constructor(
 ): PaymentToPaymentUiModelMapper {
     override fun mapFrom(from: Payment, group: Group) =
         PaymentUiModel(
+            id = from.id,
             description = from.description,
             value = from.value.toCurrency(),
             paidBy = mapMemberById(from.paidBy, group),

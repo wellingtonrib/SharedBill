@@ -38,6 +38,7 @@ class PaymentContract {
             get() = when (paymentType) {
                 PaymentType.EXPENSE -> R.string.label_payment_new_expense
                 PaymentType.SETTLEMENT -> R.string.label_payment_new_settlement
+                else -> R.string.label_payment_refund
             }
 
         val visibleFields: ImmutableSet<Field>

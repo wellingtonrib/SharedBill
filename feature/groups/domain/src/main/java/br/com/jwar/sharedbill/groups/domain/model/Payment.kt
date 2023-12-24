@@ -19,5 +19,6 @@ data class Payment(
 
 enum class PaymentType {
     EXPENSE,
-    SETTLEMENT
+    SETTLEMENT,
+    REFUND
 }

@@ -34,6 +34,7 @@
     <string name="label_payment_received_by">Pago a %1$s</string>
     <string name="label_payment_created_at">Creado en</string>
     <string name="label_payment_created_by">Creado por</string>
+    <string name="label_payment_refund">Inversión</string>
     <string name="label_joined">Unido</string>
     <string name="label_account">Cuenta</string>
     <string name="label_unnamed">Sin nombre</string>
@@ -62,6 +63,7 @@
     <string name="message_share_invite_code">Utiliza este código para unirte a nosotro en las Facturas Compartidas: %1$s\\nhttps://play.google.com/store/apps/details?id=br.com.jwar.sharedbill</string>
     <string name="message_add_members">¡Agrega nuevos miembros al grupo para comenzar a dividir facturas!</string>
     <string name="message_has_not_joined">Invitar a unirse</string>
+    <string name="message_payment_refund">Inversión a %1$s</string>
 
     <string name="placeholder_user_name">Ingrese el nombre y apellido</string>
     <string name="placeholder_group_title">Ej. 🏠 Mi casa</string>

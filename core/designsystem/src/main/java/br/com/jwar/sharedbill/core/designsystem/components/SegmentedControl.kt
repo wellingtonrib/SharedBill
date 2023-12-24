@@ -39,7 +39,7 @@ fun SegmentedControl(
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     items: List<String>,
     selectedIndex: Int = 0,
-    useFixedWidth: Boolean = false,
+    useFixedWidth: Boolean = true,
     colorScheme: ColorScheme = MaterialTheme.colorScheme,
     itemWidth: Dp = 120.dp,
     cornerRadius : Int = 50,
@@ -133,7 +133,8 @@ fun SegmentedControl(
                             colorScheme.onSecondaryContainer
                         } else {
                             colorScheme.onSurface
-                        }
+                        },
+                        maxLines = 1
                     )
                 }
             }

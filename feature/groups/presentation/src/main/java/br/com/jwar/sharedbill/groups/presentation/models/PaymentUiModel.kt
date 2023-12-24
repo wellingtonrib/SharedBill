@@ -57,8 +57,15 @@ fun PaymentUiModel.getInfo() =
 
 @Composable
 fun PaymentUiModel.getMessage(group: GroupUiModel) =
-    if (paidTo.size == group.members.size) {
-        stringResource(R.string.message_payment_detail_to_all, paidBy.firstName)
-    } else {
-        stringResource(R.string.message_payment_detail, paidBy.firstName, paidTo.joinToString(limit = 3, truncated = "...") { it.firstName })
+    when {
+        paymentType == PaymentType.REFUND -> {
+            stringResource(R.string.message_payment_refund, paidTo.joinToString(limit = 3, truncated = "...") { it.firstName })
+        }
+        paidTo.size == group.members.size -> {
+            stringResource(R.string.message_payment_detail_to_all, paidBy.firstName)
+        }
+        else -> {
+            stringResource(R.string.message_payment_detail, paidBy.firstName, paidTo.joinToString(limit = 3, truncated = "...") { it.firstName })
+
+        }
     }

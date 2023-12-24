@@ -21,6 +21,7 @@ interface PaymentTrait {
         when (paymentType) {
             PaymentType.EXPENSE -> getExpenseFields(groupUiModel)
             PaymentType.SETTLEMENT -> getSettlementFields(groupUiModel)
+            else -> ImmutableSet.of()
         }
 
     private fun getExpenseFields(groupUiModel: GroupUiModel) = ImmutableSet.of(

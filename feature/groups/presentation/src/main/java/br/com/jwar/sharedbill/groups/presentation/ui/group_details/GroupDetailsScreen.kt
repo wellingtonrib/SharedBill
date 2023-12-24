@@ -22,7 +22,7 @@ fun GroupDetailsScreen(
     onNewPaymentClick: (PaymentType) -> Unit = {},
     onEditClick: () -> Unit = {},
     onShareBalance: (String) -> Unit = {},
-    onDeletePayment: (String) -> Unit = {},
+    onDeletePayment: (String, String) -> Unit = { _, _ -> },
 ) {
     when(state) {
         is Loading -> LoadingContent()
