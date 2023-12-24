@@ -18,7 +18,7 @@ import javax.inject.Inject
 class GroupDetailsViewModel @Inject constructor(
     private val getGroupByIdStreamUseCase: GetGroupByIdStreamUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
-): BaseViewModel<Event, State, Effect>() {
+    ): BaseViewModel<Event, State, Effect>() {
 
     override fun getInitialState(): State = State.Loading
 
@@ -28,6 +28,7 @@ class GroupDetailsViewModel @Inject constructor(
             is Event.OnEditGroup -> onEditGroup()
             is Event.OnNewPayment -> onNewPayment(event.paymentType)
             is Event.OnShareBalance -> onShareBalance(event.balance)
+            is Event.OnDeletePayment -> onDeletePayment(event.paymentId)
         }
     }
 
@@ -43,6 +44,10 @@ class GroupDetailsViewModel @Inject constructor(
 
     private fun onNewPayment(paymentType: PaymentType) =
         sendEffect { Effect.NavigateToNewPayment(paymentType) }
+
+    private fun onDeletePayment(paymentId: String) = viewModelScope.launch{
+        //TODO: Not implemented yet
+    }
 
     private fun onShareBalance(balance: String) {
         sendEffect { Effect.ShareBalance(balance) }

@@ -168,12 +168,18 @@ class FirebaseGroupsDataSource @Inject constructor(
         val balance = this.balance.toMutableMap()
 
         groupUnprocessedPayments.forEach { payment ->
-            val valueToShare = payment.value.toBigDecimal().orZero().setScale(2, RoundingMode.CEILING)
+            val valueToShare = payment.value.toBigDecimal().orZero()
             val paidToWeights = payment.paidTo.values.sum()
 
             payment.paidTo.forEach { (memberId, weight) ->
-                val sharedValue = valueToShare.multiply(weight.toBigDecimal()).divide(paidToWeights.toBigDecimal(), 2, RoundingMode.CEILING)
-                val adjustment = if (memberId == payment.paidBy) -(valueToShare - sharedValue) else sharedValue
+                val sharedValue = valueToShare
+                    .multiply(weight.toBigDecimal())
+                    .div(paidToWeights.toBigDecimal())
+                val adjustment = if (memberId == payment.paidBy) {
+                    -(valueToShare - sharedValue)
+                } else {
+                    sharedValue
+                }
                 val currentBalance = balance[memberId]?.toBigDecimal().orZero()
                 balance[memberId] = currentBalance.plus(adjustment).toString()
             }

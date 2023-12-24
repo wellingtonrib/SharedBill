@@ -50,9 +50,10 @@ private const val PAGE_BALANCE = 1
 fun GroupsDetailsContent(
     modifier: Modifier = Modifier,
     group: GroupUiModel,
-    onNewPaymentClick: (PaymentType)-> Unit = {},
+    onNewPaymentClick: (PaymentType) -> Unit = {},
     onEditClick: () -> Unit = {},
     onShareBalance: (String) -> Unit = {},
+    onDeletePayment: (String) -> Unit = {},
     onNavigateBack: () -> Unit = {},
 ) {
     val listState = rememberLazyListState()
@@ -111,6 +112,7 @@ fun GroupsDetailsContent(
                         horizontalArrangement = Arrangement.Center,
                         selectedIndex = selectedPageIndex,
                         items = pages.map { it.second },
+                        useFixedWidth = true,
                         onItemSelection = { index ->
                             selectedPageIndex = index
                             scope.launch { pagerState.scrollToPage(index) }
@@ -122,7 +124,11 @@ fun GroupsDetailsContent(
                         userScrollEnabled = false
                     ) { page ->
                         when (page) {
-                            PAGE_PAYMENTS -> GroupPayments(group = group, listState = listState)
+                            PAGE_PAYMENTS -> GroupPayments(
+                                group = group,
+                                listState = listState,
+                                onDeletePayment = onDeletePayment,
+                            )
                             PAGE_BALANCE -> GroupBalance(group = group)
                         }
                     }
@@ -138,7 +144,9 @@ fun GroupsDetailsContent(
 fun PreviewGroupDetails() {
     SharedBillTheme {
         Scaffold {
-            GroupsDetailsContent(group = GroupUiModel.sample())
+            GroupsDetailsContent(
+                group = GroupUiModel.sample()
+            ) {}
         }
     }
 }

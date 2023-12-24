@@ -12,8 +12,8 @@ class GroupDetailsContract {
         class OnInit(val groupId: String) : Event()
         object OnEditGroup : Event()
         class OnNewPayment(val paymentType: PaymentType) : Event()
-
         class OnShareBalance(val balance: String) : Event()
+        class OnDeletePayment(val paymentId: String) : Event()
     }
 
     sealed class State: UiState {

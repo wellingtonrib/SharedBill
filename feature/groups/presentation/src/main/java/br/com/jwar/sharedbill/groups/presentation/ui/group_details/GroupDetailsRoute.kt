@@ -27,6 +27,7 @@ fun GroupDetailsRoute(
         onNewPaymentClick = { type -> viewModel.emitEvent { Event.OnNewPayment(type) } },
         onEditClick = { viewModel.emitEvent { Event.OnEditGroup } },
         onShareBalance = { balance -> viewModel.emitEvent { Event.OnShareBalance(balance) }},
+        onDeletePayment = { paymentId -> viewModel.emitEvent { Event.OnDeletePayment(paymentId) }},
     )
 
     LaunchedEffect(Unit) {

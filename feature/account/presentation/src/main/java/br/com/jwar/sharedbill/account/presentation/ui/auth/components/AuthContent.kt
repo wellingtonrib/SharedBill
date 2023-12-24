@@ -21,6 +21,7 @@ fun AuthContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+        VerticalSpacerLarge()
         Onboarding(modifier = Modifier.paddingMedium())
         VerticalSpacerLarge()
         SignInButton(onSignInClick = onSignInClick)

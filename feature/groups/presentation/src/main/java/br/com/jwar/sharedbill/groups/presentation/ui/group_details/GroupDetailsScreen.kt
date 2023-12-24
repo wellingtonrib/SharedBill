@@ -22,6 +22,7 @@ fun GroupDetailsScreen(
     onNewPaymentClick: (PaymentType) -> Unit = {},
     onEditClick: () -> Unit = {},
     onShareBalance: (String) -> Unit = {},
+    onDeletePayment: (String) -> Unit = {},
 ) {
     when(state) {
         is Loading -> LoadingContent()
@@ -30,6 +31,7 @@ fun GroupDetailsScreen(
             onNewPaymentClick = { onNewPaymentClick(it) },
             onEditClick = onEditClick,
             onShareBalance = onShareBalance,
+            onDeletePayment = onDeletePayment,
             onNavigateBack = onNavigateBack
         )
         is Error -> ErrorContent()
@@ -42,7 +44,9 @@ fun GroupDetailsScreen(
 fun PreviewGroupDetailsContent() {
     SharedBillTheme {
         Scaffold {
-            GroupDetailsScreen(state = Loaded(GroupUiModel.sample()))
+            GroupDetailsScreen(
+                state = Loaded(GroupUiModel.sample()),
+            )
         }
     }
 }
