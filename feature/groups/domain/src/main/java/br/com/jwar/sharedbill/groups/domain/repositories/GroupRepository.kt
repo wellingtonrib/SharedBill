@@ -17,4 +17,5 @@ interface GroupRepository {
     suspend fun removeMember(user: User, groupId: String)
     suspend fun sendPayment(payment: Payment)
     suspend fun deleteGroup(groupId: String)
+    suspend fun deletePayment(payment: Payment, refundSuffix: String)
 }

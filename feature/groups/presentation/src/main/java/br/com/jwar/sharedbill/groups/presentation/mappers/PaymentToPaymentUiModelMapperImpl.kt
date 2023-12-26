@@ -21,6 +21,7 @@ class PaymentToPaymentUiModelMapperImpl @Inject constructor(
             createdAt = from.createdAt,
             createdBy = mapMemberById(from.createdBy, group),
             paymentType = from.paymentType,
+            isReversed = from.reversed ?: false,
         )
 
     private fun mapPaidTo(from: Payment, group: Group): ImmutableSet<GroupMemberUiModel> {

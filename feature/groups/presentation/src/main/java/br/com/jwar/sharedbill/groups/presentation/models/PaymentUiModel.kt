@@ -18,6 +18,7 @@ data class PaymentUiModel(
     val createdAt: Date = Date(),
     val createdBy: GroupMemberUiModel = GroupMemberUiModel(),
     val paymentType: PaymentType = PaymentType.EXPENSE,
+    val isReversed: Boolean = false,
 ) {
     companion object {
         fun sample() = PaymentUiModel(
@@ -58,8 +59,11 @@ fun PaymentUiModel.getInfo() =
 @Composable
 fun PaymentUiModel.getMessage(group: GroupUiModel) =
     when {
-        paymentType == PaymentType.REFUND -> {
-            stringResource(R.string.message_payment_refund, paidTo.joinToString(limit = 3, truncated = "...") { it.firstName })
+        paymentType == PaymentType.REVERSE -> {
+            stringResource(R.string.message_payment_reverse, paidTo.joinToString(limit = 3, truncated = "...") { it.firstName })
+        }
+        isReversed -> {
+            stringResource(R.string.message_payment_reversed)
         }
         paidTo.size == group.members.size -> {
             stringResource(R.string.message_payment_detail_to_all, paidBy.firstName)

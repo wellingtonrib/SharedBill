@@ -63,7 +63,8 @@
     <string name="message_share_invite_code">Utiliza este código para unirte a nosotro en las Facturas Compartidas: %1$s\\nhttps://play.google.com/store/apps/details?id=br.com.jwar.sharedbill</string>
     <string name="message_add_members">¡Agrega nuevos miembros al grupo para comenzar a dividir facturas!</string>
     <string name="message_has_not_joined">Invitar a unirse</string>
-    <string name="message_payment_refund">Inversión a %1$s</string>
+    <string name="message_payment_reverse">Inversión a %1$s</string>
+    <string name="message_payment_reversed">Invertido</string>
 
     <string name="placeholder_user_name">Ingrese el nombre y apellido</string>
     <string name="placeholder_group_title">Ej. 🏠 Mi casa</string>
