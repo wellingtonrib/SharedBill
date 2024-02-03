@@ -215,19 +215,19 @@ class FirebaseGroupsDataSource @Inject constructor(
             payment.paidTo.forEach { (memberId, weight) ->
                 val sharedValue = valueToShare
                     .multiply(weight.toBigDecimal())
-                    .div(paidToWeights.toBigDecimal())
+                    .divide(paidToWeights.toBigDecimal(), 2, RoundingMode.HALF_UP)
                 val adjustment = if (memberId == payment.paidBy) {
                     -(valueToShare - sharedValue)
                 } else {
                     sharedValue
                 }
                 val currentBalance = balance[memberId]?.toBigDecimal().orZero()
-                balance[memberId] = currentBalance.plus(adjustment).toString()
+                balance[memberId] = currentBalance.plus(adjustment).setScale(2, RoundingMode.HALF_UP).toString()
             }
 
             if (payment.paidTo.containsKey(payment.paidBy).not()) {
                 val currentBalance = balance[payment.paidBy]?.toBigDecimal().orZero()
-                balance[payment.paidBy] = currentBalance.minus(valueToShare).toString()
+                balance[payment.paidBy] = currentBalance.minus(valueToShare).setScale(2, RoundingMode.HALF_UP).toString()
             }
         }
         return this.copy(balance = balance)

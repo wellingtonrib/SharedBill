@@ -187,6 +187,78 @@ internal class FirebaseGroupsDataSourceTest {
         )
     }
 
+    @Test
+    fun `getGroupById with unprocessed payments should update balance correctly`() = runTest {
+        val groupId = UUID.randomUUID().toString()
+        val group = Group(
+            id = groupId,
+            title = "Test Group",
+            balance = mapOf(
+                "m1" to "0.00",
+                "m2" to "0.00",
+                "m3" to "0.00",
+            )
+        )
+        val unprocessedPayments = listOf(
+            Payment(
+                groupId = group.id,
+                value = "100",
+                paidBy = "m1",
+                paidTo = mapOf(
+                    "m1" to 1,
+                    "m2" to 1,
+                    "m3" to 1
+                )
+            )
+        )
+        prepareScenario(groupId = groupId, group = group, unprocessedPayments = unprocessedPayments)
+
+        val result = firebaseGroupsDataSource.getGroupById(group.id, refresh = false)
+
+        assertEquals(
+            mapOf(
+                "m1" to "-66.67",
+                "m2" to "33.33",
+                "m3" to "33.33",
+            ),
+            result.balance
+        )
+    }
+
+    @Test
+    fun `getGroupById with unprocessed settlement payments should update balance correctly`() = runTest {
+        val groupId = UUID.randomUUID().toString()
+        val group = Group(
+            id = groupId,
+            title = "Test Group",
+            balance = mapOf(
+                "owes" to "33.33",
+                "owned" to "-33.34",
+            )
+        )
+        val unprocessedPayments = listOf(
+            Payment(
+                groupId = group.id,
+                value = "33.33",
+                paidBy = "owes",
+                paidTo = mapOf(
+                    "owned" to 1
+                )
+            )
+        )
+        prepareScenario(groupId = groupId, group = group, unprocessedPayments = unprocessedPayments)
+
+        val result = firebaseGroupsDataSource.getGroupById(group.id, refresh = false)
+
+        assertEquals(
+            mapOf(
+                "owes" to "0.00",
+                "owned" to "-0.01",
+            ),
+            result.balance
+        )
+    }
+
     private fun prepareScenario(
         isConnected: Boolean = true,
         firebaseUser: FirebaseUser = mockk(),

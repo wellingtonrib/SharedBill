@@ -18,15 +18,19 @@ exports.processPayment = functions
 
       Object.entries(paymentData.paidTo).forEach(([memberId, memberWeight]) => {
         const paymentSharedValue = paymentTotalValue * (memberWeight / paymentTotalWeight);
-        const adjustment = memberId === paymentData.paidBy ? (paymentTotalValue - paymentSharedValue) * -1 : paymentSharedValue;
-        const currentPaidToKeyBalance = Number(groupCurrentBalance[memberId] || 0);
-
-        groupCurrentBalance[memberId] = String(currentPaidToKeyBalance + adjustment);
+        const paymentSharedValueFixed = Number(paymentSharedValue.toFixed(2));
+        const adjustment = memberId === paymentData.paidBy ? (paymentTotalValue - paymentSharedValueFixed) * -1 : paymentSharedValueFixed;
+        const currentBalance = Number(groupCurrentBalance[memberId] || 0);
+        const updatedBalance = currentBalance + adjustment;
+        const updatedBalanceFixed = Number(updatedBalance.toFixed(2));
+        groupCurrentBalance[memberId] = String(updatedBalanceFixed);
       });
 
       if (!paymentData.paidTo.hasOwnProperty(paymentData.paidBy)) {
         const currentBalance = Number(groupCurrentBalance[paymentData.paidBy] || 0);
-        groupCurrentBalance[paymentData.paidBy] = String(currentBalance - paymentTotalValue);
+        const updatedBalance = currentBalance - paymentTotalValue;
+        const updatedBalanceFixed = Number(updatedBalance);
+        groupCurrentBalance[paymentData.paidBy] = String(updatedBalanceFixed);
       }
 
       paymentSnapshot.ref.delete();
