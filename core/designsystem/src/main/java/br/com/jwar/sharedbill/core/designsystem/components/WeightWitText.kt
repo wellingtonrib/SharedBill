@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.core.designsystem.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -9,7 +10,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -36,6 +39,7 @@ fun WeightWitText(
     modifier: Modifier = Modifier,
     text: String,
     weight: Int,
+    colorScheme: ColorScheme = MaterialTheme.colorScheme,
     onWeightChange: (Int) -> Unit,
 ) {
     var currentWeight by remember { mutableIntStateOf(weight) }
@@ -67,7 +71,8 @@ fun WeightWitText(
                         onWeightChange(currentWeight)
                     },
                     imageVector = Icons.Outlined.KeyboardArrowUp,
-                    contentDescription = stringResource(id = R.string.description_increment)
+                    contentDescription = stringResource(id = R.string.description_increment),
+                    tint = colorScheme.primary,
                 )
             }
             Button(onClick = { showSideButtons() }) {
@@ -82,7 +87,8 @@ fun WeightWitText(
                         onWeightChange(currentWeight)
                     },
                     imageVector = Icons.Outlined.KeyboardArrowDown,
-                    contentDescription = stringResource(id = R.string.description_decrement)
+                    contentDescription = stringResource(id = R.string.description_decrement),
+                    tint = colorScheme.primary,
                 )
             }
         }
@@ -94,9 +100,22 @@ fun WeightWitText(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun PreviewPaymentPaidToField() {
+    SharedBillTheme {
+        WeightWitText(
+            text = "Test",
+            weight = 0,
+        ) {
+
+        }
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewPaymentPaidToFieldDarkMode() {
     SharedBillTheme {
         WeightWitText(
             text = "Test",
