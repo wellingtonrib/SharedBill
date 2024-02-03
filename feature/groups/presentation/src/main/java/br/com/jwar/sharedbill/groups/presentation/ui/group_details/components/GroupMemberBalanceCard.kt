@@ -64,26 +64,26 @@ private fun GroupBalanceValue(
     value: BigDecimal
 ) {
     when {
-        value < BigDecimal.ZERO ->
+        value.abs() < BigDecimal.valueOf(0.05) ->
+            Pill(
+                modifier = modifier,
+                text = stringResource(R.string.message_settled_up),
+                textColor = AppTheme.colors.onSurface,
+                backgroundColor = AppTheme.colors.surface
+            )
+        value.signum() < 0 ->
             Pill(
                 modifier = modifier,
                 text = "+${value.abs().toCurrency()}",
                 textColor = AppTheme.colors.primary,
                 backgroundColor = AppTheme.colors.primaryContainer
             )
-        value > BigDecimal.ZERO ->
+        value.signum() > 0 ->
             Pill(
                 modifier = modifier,
                 text = "-${value.abs().toCurrency()}",
                 textColor = AppTheme.colors.error,
                 backgroundColor = AppTheme.colors.errorContainer
-            )
-        else ->
-            Pill(
-                modifier = modifier,
-                text = stringResource(R.string.message_settled_up),
-                textColor = AppTheme.colors.onSurface,
-                backgroundColor = AppTheme.colors.surface
             )
     }
 }
@@ -94,7 +94,8 @@ fun PreviewGroupBalanceItem() {
     SharedBillTheme {
         GroupMemberBalanceCard(
             entry = hashMapOf(
-                GroupMemberUiModel.sample().copy(name = "José Wellington Alves Ribeiro") to BigDecimal.ZERO
+                GroupMemberUiModel.sample()
+                    .copy(name = "José Wellington Alves Ribeiro") to BigDecimal.valueOf(0.05)
             ).entries.first(),
         )
     }

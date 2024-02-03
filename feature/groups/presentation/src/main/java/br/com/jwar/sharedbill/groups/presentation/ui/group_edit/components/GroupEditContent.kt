@@ -113,7 +113,7 @@ fun GroupEditContent(
             if (group.members.size == 1) {
                 EmptyContent(
                     modifier = Modifier.weight(1f),
-                    image = painterResource(DSR.drawable.add_member_img),
+                    image = painterResource(R.drawable.add_member_img),
                     message = stringResource(R.string.message_add_members),
                 )
             }

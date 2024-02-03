@@ -48,7 +48,7 @@
     <string name="message_welcome">Bienvenido %1$s</string>
     <string name="message_owes">Debe %1$s</string>
     <string name="message_is_owned">Es propiedad de %1$s</string>
-    <string name="message_no_expenses">Sin pagos, agregue uno\nHaga clic en el botón + Nuevo pago a continuación</string>
+    <string name="message_no_expenses">Sin pagos, agregue uno\nHaga clic en el botón + Nuevo gasto a continuación</string>
     <string name="message_settled_up">Resolvedo</string>
     <string name="message_payment_detail">Pagado por %1$s a %2$s</string>
     <string name="message_payment_detail_to_all">Pagado por %1$s</string>
@@ -81,6 +81,7 @@
     <string name="error_payment_value_invalid">Proporcione un valor válido</string>
     <string name="error_payment_date_invalid">Proporcione una fecha válida</string>
     <string name="error_payment_empty_related_members">Seleccione al menos un miembro</string>
+    <string name="error_payment_members_size_invalid">El grupo debe tener al menos dos miembros. Por favor agregue un nuevo miembro al grupo</string>
     <string name="error_removing_member_with_non_zero_balance">No puedes eliminar a este usuario hasta que lo liquides</string>
     <string name="error_removing_owner_member">No puedes eliminar al propietario del grupo</string>
     <string name="error_deleting_group_from_non_owner">Solo el propietario puede eliminar este grupo</string>

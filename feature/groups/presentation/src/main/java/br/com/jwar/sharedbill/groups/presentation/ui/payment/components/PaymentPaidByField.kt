@@ -42,6 +42,7 @@ fun PaymentPaidByField(
                 options = options,
                 defaultSelection = listOf(value),
                 isMultiChoice = false,
+                needConfirm = false,
                 onDismiss = {
                     isPaidBySelecting.value = false
                 },

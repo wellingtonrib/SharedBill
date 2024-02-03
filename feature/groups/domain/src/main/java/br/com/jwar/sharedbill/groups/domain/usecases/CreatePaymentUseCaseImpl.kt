@@ -31,6 +31,8 @@ class CreatePaymentUseCaseImpl(
         if (date.after(Calendar.getInstance().time)) throw PaymentException.InvalidDateException
 
         val group = groupRepository.getGroupById(groupId, true)
+        if (group.members.size == 1) throw PaymentException.InvalidGroupMembersSize
+
         val paidBy = group.findMemberById(paidById)
             ?: throw PaymentException.InvalidPaidByException
         val createdBy = group.findCurrentUser()

@@ -25,7 +25,6 @@ class GroupDetailsContract {
     sealed class Effect: UiEffect {
         object NavigateToGroupEdit: Effect()
         class NavigateToNewPayment(val paymentType: PaymentType): Effect()
-
         class ShareBalance(val balance: String): Effect()
     }
 

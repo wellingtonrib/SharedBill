@@ -38,6 +38,7 @@ android {
 dependencies {
     implementation(projects.core.designsystem)
     implementation(projects.core.utility)
+    implementation(projects.core.common)
     implementation(projects.feature.account.domain)
     implementation(projects.feature.account.data)
     implementation(projects.feature.account.presentation)
