@@ -1,6 +1,6 @@
 package br.com.jwar.sharedbill.groups.presentation.models
 
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract
 import br.com.jwar.sharedbill.groups.domain.exceptions.PaymentException
 import br.com.jwar.sharedbill.core.designsystem.util.UiText
 import br.com.jwar.sharedbill.groups.presentation.R

@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.groups.presentation.ui.payment.components
+package br.com.jwar.sharedbill.groups.presentation.ui.group_payment.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions

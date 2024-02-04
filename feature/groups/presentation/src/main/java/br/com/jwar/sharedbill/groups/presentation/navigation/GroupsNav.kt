@@ -9,7 +9,7 @@ import br.com.jwar.sharedbill.groups.presentation.ui.group_details.GroupDetailsR
 import br.com.jwar.sharedbill.groups.presentation.ui.group_edit.GroupEditRoute
 import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GROUP_LIST_ROUTE
 import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GroupListRoute
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentRoute
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentRoute
 
 const val GROUP_ID_ARG = "groupId"
 const val PAYMENT_TYPE_ARG = "paymentType"

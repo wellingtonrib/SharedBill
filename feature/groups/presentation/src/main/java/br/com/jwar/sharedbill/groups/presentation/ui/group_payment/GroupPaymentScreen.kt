@@ -1,11 +1,11 @@
-package br.com.jwar.sharedbill.groups.presentation.ui.payment
+package br.com.jwar.sharedbill.groups.presentation.ui.group_payment
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.components.PaymentContent
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.components.PaymentContent
 import com.google.common.collect.ImmutableMap
 
 @Composable
