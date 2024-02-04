@@ -30,10 +30,10 @@ class SendPaymentUseCaseImplTest {
             id = "1",
             description = "Test Payment",
             value = "10",
-            paidBy = User("1", "User 1"),
-            paidTo = listOf(User("2", "User 2"), User("3", "User 3")),
+            paidBy = "User 1",
+            paidTo = mapOf("User 1" to 1, "User 2" to 1),
             createdAt = Date(),
-            createdBy = User("1", "User 1")
+            createdBy = "User 1"
         )
         coEvery { groupRepository.sendPayment(payment) } returns Unit
 

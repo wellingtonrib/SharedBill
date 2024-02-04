@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
+import br.com.jwar.sharedbill.core.utility.compose.CurrencyVisualTransformation
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
 
@@ -36,9 +36,9 @@ fun PaymentValueField(
     onValueChange: (String) -> Unit,
 ) {
     Field {
-        LogCompositions("PaymentContent PaymentValueField")
         var textFieldValue by remember { mutableStateOf(TextFieldValue(value)) }
         val focusRequester = remember { FocusRequester() }
+        val currencyVisualTransformation = remember { CurrencyVisualTransformation() }
 
         LaunchedEffect(Unit) {
             if(autoFocusable) focusRequester.requestFocus()
@@ -53,13 +53,18 @@ fun PaymentValueField(
             label = { Text(text = stringResource(id = R.string.label_payment_value)) },
             placeholder = { Text(text = stringResource(id = R.string.placeholder_payment_value)) },
             onValueChange = { newValue ->
-                textFieldValue = newValue
-                onValueChange(newValue.text)
+                textFieldValue = if (newValue.text.startsWith("0")) {
+                    TextFieldValue("")
+                } else {
+                    newValue
+                }
+                onValueChange(textFieldValue.text)
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Decimal,
+                keyboardType = KeyboardType.NumberPassword,
                 imeAction = imeAction
             ),
+            visualTransformation = currencyVisualTransformation,
             isError = error?.message?.asString().isNullOrBlank().not(),
             supportingText = { error?.message?.AsText(AppTheme.colors.error) },
         )

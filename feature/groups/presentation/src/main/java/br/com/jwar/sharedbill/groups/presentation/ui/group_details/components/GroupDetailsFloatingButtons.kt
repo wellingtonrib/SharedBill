@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -28,16 +29,17 @@ fun GroupDetailsFloatingButtons(
     group: GroupUiModel,
     listState: LazyListState,
     onNewPaymentClick: (PaymentType) -> Unit,
+    onNewMemberClick: () -> Unit,
 ) {
-    val showSettlement by remember { derivedStateOf { group.members.size > 1 } }
+    val showPaymentButtons by remember { derivedStateOf { group.members.size > 1 } }
     val firstIndexVisible by remember {
         derivedStateOf { listState.firstVisibleItemIndex == 0 }
     }
 
-    if (showSettlement) {
+    if (showPaymentButtons) {
         NewPaymentGroupedButtons(firstIndexVisible, onNewPaymentClick)
     } else {
-        NewExpenseButton(firstIndexVisible, onNewPaymentClick)
+        NewMemberButton(onNewMemberClick)
     }
 }
 
@@ -98,5 +100,22 @@ private fun NewExpenseButton(
             )
         },
         text = { Text(stringResource(R.string.label_payment_new_expense)) },
+    )
+}
+
+@Composable
+private fun NewMemberButton(
+    onNewMemberClick: () -> Unit
+) {
+    ExtendedFloatingActionButton(
+        onClick = { onNewMemberClick() },
+        expanded = true,
+        icon = {
+            Icon(
+                Icons.Outlined.Person,
+                stringResource(R.string.label_group_add_member)
+            )
+        },
+        text = { Text(stringResource(R.string.label_group_add_member)) },
     )
 }

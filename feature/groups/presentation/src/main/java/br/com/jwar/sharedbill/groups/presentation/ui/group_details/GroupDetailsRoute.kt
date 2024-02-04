@@ -3,6 +3,11 @@ package br.com.jwar.sharedbill.groups.presentation.ui.group_details
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
@@ -20,6 +25,7 @@ fun GroupDetailsRoute(
 ) {
     val state = viewModel.uiState.collectAsState().value
     val context = LocalContext.current
+    var isInitialized by rememberSaveable { mutableStateOf(false) }
 
     GroupDetailsScreen(
         state = state,
@@ -27,10 +33,14 @@ fun GroupDetailsRoute(
         onNewPaymentClick = { type -> viewModel.emitEvent { Event.OnNewPayment(type) } },
         onEditClick = { viewModel.emitEvent { Event.OnEditGroup } },
         onShareBalance = { balance -> viewModel.emitEvent { Event.OnShareBalance(balance) }},
+        onDeletePayment = { paymentId, groupId -> viewModel.emitEvent { Event.OnDeletePayment(paymentId, groupId) }},
     )
 
     LaunchedEffect(Unit) {
-        viewModel.emitEvent { Event.OnInit(groupId) }
+        if (!isInitialized) {
+            viewModel.emitEvent { Event.OnInit(groupId) }
+            isInitialized = true
+        }
         viewModel.uiEffect.collect { effect ->
             when(effect) {
                 is Effect.NavigateToGroupEdit -> {

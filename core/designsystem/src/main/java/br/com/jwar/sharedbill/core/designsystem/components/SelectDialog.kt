@@ -30,6 +30,7 @@ fun <T: Selectable> SelectDialog(
     defaultSelection: List<T> = options.keys.toList(),
     action: String = stringResource(id = R.string.label_send),
     isMultiChoice: Boolean = true,
+    needConfirm: Boolean = true,
     onDismiss: () -> Unit,
     onSelect: (List<T>) -> Unit
 ) {
@@ -63,15 +64,20 @@ fun <T: Selectable> SelectDialog(
                             } else {
                                 mutableListOf(item)
                             }
-                        }
-                    }
-                    item {
-                        Button(
-                            onClick = {
+                            if (!needConfirm) {
                                 onSelect(selection)
                             }
-                        ) {
-                            Text(text = action)
+                        }
+                    }
+                    if (needConfirm) {
+                        item {
+                            Button(
+                                onClick = {
+                                    onSelect(selection)
+                                }
+                            ) {
+                                Text(text = action)
+                            }
                         }
                     }
                 }

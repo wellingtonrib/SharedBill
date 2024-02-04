@@ -19,8 +19,8 @@ android {
     }
     defaultConfig {
         applicationId = "br.com.jwar.sharedbill"
-        versionCode = 9
-        versionName = "1.0.1"
+        versionCode = 11
+        versionName = "1.0.3"
         testInstrumentationRunner = "br.com.jwar.sharedbill.testing.HiltTestRunner"
     }
 
@@ -38,6 +38,7 @@ android {
 dependencies {
     implementation(projects.core.designsystem)
     implementation(projects.core.utility)
+    implementation(projects.core.common)
     implementation(projects.feature.account.domain)
     implementation(projects.feature.account.data)
     implementation(projects.feature.account.presentation)

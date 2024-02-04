@@ -30,9 +30,11 @@
     <string name="label_payment_value">Valor</string>
     <string name="label_payment_paid_by">Pagado por</string>
     <string name="label_payment_paid_to">Pagado a</string>
+    <string name="label_payment_divided_by">Dividido por</string>
     <string name="label_payment_received_by">Pago a %1$s</string>
     <string name="label_payment_created_at">Creado en</string>
     <string name="label_payment_created_by">Creado por</string>
+    <string name="label_payment_refund">Inversión</string>
     <string name="label_joined">Unido</string>
     <string name="label_account">Cuenta</string>
     <string name="label_unnamed">Sin nombre</string>
@@ -41,22 +43,28 @@
     <string name="label_total_spent">Total gastado %1$s</string>
     <string name="label_suggestion">Sugerencias</string>
     <string name="label_settlement">🤝 Acuerdo</string>
+    <string name="label_select">Selecionar</string>
 
     <string name="message_welcome">Bienvenido %1$s</string>
     <string name="message_owes">Debe %1$s</string>
     <string name="message_is_owned">Es propiedad de %1$s</string>
-    <string name="message_no_expenses">Sin pagos, agregue uno\nHaga clic en el botón + Nuevo pago a continuación</string>
+    <string name="message_no_expenses">Sin pagos, agregue uno\nHaga clic en el botón + Nuevo gasto a continuación</string>
     <string name="message_settled_up">Resolvedo</string>
     <string name="message_payment_detail">Pagado por %1$s a %2$s</string>
     <string name="message_payment_detail_to_all">Pagado por %1$s</string>
     <string name="message_invite_code">Código de invitación: %1$s</string>
     <string name="message_groups_empty">No hay grupos, cree o únase a uno\nHaga clic en el botón + Nuevo grupo a continuación</string>
     <string name="message_payment_description">%1$s - %2$s, pagado por %3$s a %4$s\nCreado en %5$s</string>
+    <string name="message_payment_split_description">%1$s - %2$s, pagado por %3$s dividido por %4$s\nCreado en %5$s</string>
     <string name="message_payment_created_by">por %1$s</string>
     <string name="message_group_saved_success">Grupo actualizado con éxito</string>
     <string name="message_confirm_user_remove">¿Estás seguro de eliminar este usuario?</string>
     <string name="message_confirm_group_delete">¿Estás seguro de que deseas eliminar este grupo?</string>
-    <string name="message_share_invite_code">Utiliza este código para unirte a nosotros: %1$s</string>
+    <string name="message_share_invite_code">Utiliza este código para unirte a nosotro en las Facturas Compartidas: %1$s\\nhttps://play.google.com/store/apps/details?id=br.com.jwar.sharedbill</string>
+    <string name="message_add_members">¡Agrega nuevos miembros al grupo para comenzar a dividir facturas!</string>
+    <string name="message_has_not_joined">Invitar a unirse</string>
+    <string name="message_payment_reverse">Inversión a %1$s</string>
+    <string name="message_payment_reversed">Invertido</string>
 
     <string name="placeholder_user_name">Ingrese el nombre y apellido</string>
     <string name="placeholder_group_title">Ej. 🏠 Mi casa</string>
@@ -73,6 +81,7 @@
     <string name="error_payment_value_invalid">Proporcione un valor válido</string>
     <string name="error_payment_date_invalid">Proporcione una fecha válida</string>
     <string name="error_payment_empty_related_members">Seleccione al menos un miembro</string>
+    <string name="error_payment_members_size_invalid">El grupo debe tener al menos dos miembros. Por favor agregue un nuevo miembro al grupo</string>
     <string name="error_removing_member_with_non_zero_balance">No puedes eliminar a este usuario hasta que lo liquides</string>
     <string name="error_removing_owner_member">No puedes eliminar al propietario del grupo</string>
     <string name="error_deleting_group_from_non_owner">Solo el propietario puede eliminar este grupo</string>

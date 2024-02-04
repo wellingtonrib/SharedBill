@@ -8,10 +8,12 @@ import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException.GroupNotFoundException
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.model.Payment
+import br.com.jwar.sharedbill.groups.domain.model.PaymentType
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.snapshots
@@ -23,6 +25,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.math.RoundingMode
+import java.util.UUID
 import javax.inject.Inject
 
 class FirebaseGroupsDataSource @Inject constructor(
@@ -31,8 +34,6 @@ class FirebaseGroupsDataSource @Inject constructor(
     private val networkManager: NetworkManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): GroupsDataSource {
-
-
 
     companion object {
         const val GROUPS_REF = "groups"
@@ -49,7 +50,7 @@ class FirebaseGroupsDataSource @Inject constructor(
     override suspend fun getGroupsStream(): Flow<List<Group>> =
         getUserGroupsQuery()
             .snapshots()
-            .map { docs -> docs.mapNotNull { mapGroupFromSnapshot(it) } }
+            .map { docs -> docs.mapNotNull { tryMapGroupFromSnapshot(it) } }
             .flowOn(ioDispatcher)
 
     override suspend fun getGroupByIdStream(groupId: String) =
@@ -136,6 +137,44 @@ class FirebaseGroupsDataSource @Inject constructor(
             firestore.collection(UNPROCESSED_PAYMENTS_REF).document(payment.id).set(payment)
         }
 
+    override suspend fun deletePayment(payment: Payment, refundSuffix: String): Unit =
+        withContext(ioDispatcher) {
+            try {
+                firestore.runTransaction { transaction ->
+                    val groupDoc = firestore.document("$GROUPS_REF/${payment.groupId}")
+                    val groupSnapshot = transaction.get(groupDoc)
+                    val currentPayments = groupSnapshot.toObject(Group::class.java)?.payments.orEmpty()
+                    val updatedPayments = currentPayments.map {
+                        if (it.id == payment.id) it.copy(reversed = true) else it
+                    }
+                    val reversePayments = payment.paidTo.entries.map { (memberId, weight) ->
+                        val refundValue = payment.value.toBigDecimal()
+                            .multiply(weight.toBigDecimal())
+                            .div(payment.paidTo.values.sum().toBigDecimal())
+                            .setScale(2, RoundingMode.HALF_EVEN)
+                        val refund = Payment(
+                            groupId = payment.groupId,
+                            id = UUID.randomUUID().toString(),
+                            description = payment.description.plus(" ($refundSuffix)"),
+                            value = refundValue.toString(),
+                            paidBy = memberId,
+                            paidTo = mapOf(payment.paidBy to 1),
+                            paymentType = PaymentType.REVERSE
+                        )
+                        val unprocessedRefundDoc = firestore
+                            .collection(UNPROCESSED_PAYMENTS_REF)
+                            .document(refund.id)
+                        transaction.set(unprocessedRefundDoc, refund)
+                        refund
+                    }
+                    transaction.update(groupDoc, GROUP_PAYMENTS_FIELD, updatedPayments + reversePayments)
+                    null
+                }
+            } catch (e: FirebaseFirestoreException) {
+                e.printStackTrace()
+            }
+        }
+
     override suspend fun deleteGroup(groupId: String) {
         val groupDoc = firestore.document("$GROUPS_REF/${groupId}")
         groupDoc.delete()
@@ -146,6 +185,9 @@ class FirebaseGroupsDataSource @Inject constructor(
         val groupUnprocessedPayments = getUnprocessedPayments(group.id)
         return group.byProcessingPayments(groupUnprocessedPayments).byHandlingCurrentUser()
     }
+
+    private suspend fun tryMapGroupFromSnapshot(snapshot: DocumentSnapshot?): Group? =
+        try { mapGroupFromSnapshot(snapshot) } catch (e: Exception) { e.printStackTrace(); null }
 
     private suspend fun getUnprocessedPayments(groupId: String) =
         withContext(ioDispatcher) {
@@ -165,15 +207,28 @@ class FirebaseGroupsDataSource @Inject constructor(
 
     private fun Group.byProcessingPayments(groupUnprocessedPayments: List<Payment>): Group {
         val balance = this.balance.toMutableMap()
-        groupUnprocessedPayments.forEach { payment ->
-            val total = payment.value.toBigDecimal().orZero().setScale(2, RoundingMode.CEILING)
-            val shared = total.div(payment.paidTo.size.toBigDecimal()).setScale(2, RoundingMode.CEILING)
 
-            payment.paidTo.forEach { member ->
-                balance[member.id] =
-                    balance[member.id]?.toBigDecimal().orZero().plus(shared).toString()
+        groupUnprocessedPayments.forEach { payment ->
+            val valueToShare = payment.value.toBigDecimal().orZero()
+            val paidToWeights = payment.paidTo.values.sum()
+
+            payment.paidTo.forEach { (memberId, weight) ->
+                val sharedValue = valueToShare
+                    .multiply(weight.toBigDecimal())
+                    .divide(paidToWeights.toBigDecimal(), 2, RoundingMode.HALF_UP)
+                val adjustment = if (memberId == payment.paidBy) {
+                    -(valueToShare - sharedValue)
+                } else {
+                    sharedValue
+                }
+                val currentBalance = balance[memberId]?.toBigDecimal().orZero()
+                balance[memberId] = currentBalance.plus(adjustment).setScale(2, RoundingMode.HALF_UP).toString()
             }
-            balance[payment.paidBy.id] = balance[payment.paidBy.id]?.toBigDecimal()?.minus(total).toString()
+
+            if (payment.paidTo.containsKey(payment.paidBy).not()) {
+                val currentBalance = balance[payment.paidBy]?.toBigDecimal().orZero()
+                balance[payment.paidBy] = currentBalance.minus(valueToShare).setScale(2, RoundingMode.HALF_UP).toString()
+            }
         }
         return this.copy(balance = balance)
     }

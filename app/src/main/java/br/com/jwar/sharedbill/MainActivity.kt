@@ -7,12 +7,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import br.com.jwar.sharedbill.MainContract.*
+import br.com.jwar.sharedbill.account.presentation.navigation.AUTH_ROUTE
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.navigation.NavGraph
 import br.com.jwar.sharedbill.ui.AppBottomBar
@@ -29,24 +30,38 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                mainViewModel.uiState.value == MainViewModel.UiState.Loading
-            }
+            setKeepOnScreenCondition { mainViewModel.uiState.value is State.Initializing }
         }
         setContent {
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             val navController = rememberNavController(bottomSheetNavigator)
             val state = mainViewModel.uiState.collectAsState().value
-            val startDestination by remember(state) { derivedStateOf { state.startDestination } }
+
+            LaunchedEffect(Unit) {
+                initializeIfNeeded(state)
+                observeEffects(navController)
+            }
+
             SharedBillTheme {
                 Scaffold(
                     bottomBar = { AppBottomBar(navController = navController) }
                 ) {
-                    NavGraph(
-                        navController = navController,
-                        startDestination = startDestination
-                    )
+                    NavGraph(navController = navController)
                 }
+            }
+        }
+    }
+
+    private fun initializeIfNeeded(state: State) {
+        if (state !is State.Initialized) {
+            mainViewModel.emitEvent { Event.OnInit }
+        }
+    }
+
+    private suspend fun observeEffects(navController: NavHostController) {
+        mainViewModel.uiEffect.collect { effect ->
+            when (effect) {
+                is Effect.NavigateToAuth -> navController.navigate(AUTH_ROUTE)
             }
         }
     }

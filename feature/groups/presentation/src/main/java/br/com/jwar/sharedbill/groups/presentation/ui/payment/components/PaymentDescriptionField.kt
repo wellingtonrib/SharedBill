@@ -12,7 +12,6 @@ import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.components.TextFieldWithSuggestions
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
 
@@ -25,7 +24,6 @@ fun PaymentDescriptionField(
     onValueChange: (String) -> Unit = {},
 ) {
     Field {
-        LogCompositions("PaymentContent PaymentDescriptionField")
         val suggestions = stringArrayResource(R.array.samples_payment_description)
 
         TextFieldWithSuggestions(
@@ -37,7 +35,8 @@ fun PaymentDescriptionField(
             suggestions = suggestions.toList(),
             showSuggestions = description.isEmpty(),
             isError = error?.message?.asString().isNullOrBlank().not(),
-            supportingText = { error?.message?.AsText(AppTheme.colors.error) },
+            maxLength = 50,
+            supportingText = error?.message?.let { { it.AsText(AppTheme.colors.error) } },
             { onValueChange(it.text) },
         )
     }

@@ -28,4 +28,6 @@
     <string name="description_done">Ação de concluir</string>
     <string name="description_user_avatar">Avatar do usuário</string>
     <string name="description_empty">Imagem de estado vazio</string>
+    <string name="description_increment">Incrementar</string>
+    <string name="description_decrement">Diminuir</string>
 </resources>

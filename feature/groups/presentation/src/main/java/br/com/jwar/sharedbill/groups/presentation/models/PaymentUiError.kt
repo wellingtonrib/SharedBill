@@ -12,6 +12,7 @@ sealed class PaymentUiError(val message: UiText) {
     object InvalidValueError: PaymentUiError(UiText.StringResource(R.string.error_payment_value_invalid))
     object InvalidDateError: PaymentUiError(UiText.StringResource(R.string.error_payment_date_invalid))
     object InvalidPaidToError: PaymentUiError(UiText.StringResource(R.string.error_payment_empty_related_members))
+    object InvalidGroupMemberSizeError: PaymentUiError(UiText.StringResource(R.string.error_payment_members_size_invalid))
     object GenericError: PaymentUiError(UiText.StringResource(R.string.error_generic))
 
     val errorHandler get() = when(this) {
@@ -30,6 +31,7 @@ sealed class PaymentUiError(val message: UiText) {
             is PaymentException.InvalidDateException -> InvalidDateError
             is PaymentException.InvalidPaidByException -> InvalidPaidByError
             is PaymentException.InvalidPaidToException -> InvalidPaidToError
+            is PaymentException.InvalidGroupMembersSize -> InvalidGroupMemberSizeError
             else -> GenericError
         }
     }

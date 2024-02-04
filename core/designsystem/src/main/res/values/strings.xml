@@ -30,4 +30,6 @@
     <string name="description_done">Done action</string>
     <string name="description_user_avatar">User avatar</string>
     <string name="description_empty">Empty state image</string>
+    <string name="description_increment">Increment</string>
+    <string name="description_decrement">Decrement</string>
 </resources>

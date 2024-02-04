@@ -48,4 +48,7 @@ class DefaultGroupRepository @Inject constructor(
 
     override suspend fun deleteGroup(groupId: String) =
         groupsDataSource.deleteGroup(groupId)
+
+    override suspend fun deletePayment(payment: Payment, refundSuffix: String) =
+        groupsDataSource.deletePayment(payment, refundSuffix)
 }

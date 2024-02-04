@@ -22,7 +22,7 @@ class PaymentContract {
         data class OnValueChange(val value: String) : Event()
         data class OnDateChange(val dateTime: Long) : Event()
         data class OnPaidByChange(val paidBy: GroupMemberUiModel) : Event()
-        data class OnPaidToChange(val paidTo: ImmutableSet<GroupMemberUiModel>) : Event()
+        data class OnPaidToChange(val paidTo: ImmutableMap<GroupMemberUiModel, Int>) : Event()
     }
 
     data class State(
@@ -38,6 +38,7 @@ class PaymentContract {
             get() = when (paymentType) {
                 PaymentType.EXPENSE -> R.string.label_payment_new_expense
                 PaymentType.SETTLEMENT -> R.string.label_payment_new_settlement
+                else -> R.string.label_payment_refund
             }
 
         val visibleFields: ImmutableSet<Field>
@@ -71,12 +72,12 @@ class PaymentContract {
             val options: ImmutableMap<GroupMemberUiModel, Boolean>,
         ): Field(value)
         data class PaidToField(
-            override val value: ImmutableSet<GroupMemberUiModel> = ImmutableSet.of(),
+            override val value: ImmutableMap<GroupMemberUiModel, Int> = ImmutableMap.of(),
             override val visible: Boolean = true,
             override val error: PaymentUiError? = null,
             val options: ImmutableSet<GroupMemberUiModel>,
             val isMultiSelect: Boolean = true,
-            val sharedValue: String = "",
+            val sharedValue: ImmutableMap<GroupMemberUiModel, String> = ImmutableMap.of(),
         ): Field(value)
 
         val hasError: Boolean

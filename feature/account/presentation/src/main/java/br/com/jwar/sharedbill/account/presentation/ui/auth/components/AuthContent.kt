@@ -18,26 +18,19 @@ fun AuthContent(
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Column(
-            modifier = Modifier.weight(0.6f),
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Onboarding(modifier = Modifier.paddingMedium())
-        }
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            SignInButton(onSignInClick = onSignInClick)
-            VerticalSpacerLarge()
-            PrivacyPolicy(onPrivacyClick = onPrivacyClick)
-            VerticalSpacerLarge()
-        }
+        VerticalSpacerLarge()
+        Onboarding(modifier = Modifier.paddingMedium())
+        VerticalSpacerLarge()
+        SignInButton(onSignInClick = onSignInClick)
+        PrivacyPolicy(onPrivacyClick = onPrivacyClick)
+        VerticalSpacerLarge()
     }
 }
 
-@Preview()
+@Preview(showBackground = true)
 @Composable
 fun PreviewAuthScreen() {
     SharedBillTheme {

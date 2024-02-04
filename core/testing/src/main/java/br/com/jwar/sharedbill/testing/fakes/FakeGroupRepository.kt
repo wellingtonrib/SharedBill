@@ -60,4 +60,7 @@ class FakeGroupRepository @Inject constructor(): GroupRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun deletePayment(payment: Payment, refundSuffix: String) {
+        TODO("Not yet implemented")
+    }
 }

@@ -1,6 +1,10 @@
 package br.com.jwar.sharedbill.groups.presentation.models
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import br.com.jwar.sharedbill.core.utility.extensions.defaultFormat
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
+import br.com.jwar.sharedbill.groups.presentation.R
 import com.google.common.collect.ImmutableSet
 import java.util.Date
 import java.util.UUID
@@ -14,6 +18,7 @@ data class PaymentUiModel(
     val createdAt: Date = Date(),
     val createdBy: GroupMemberUiModel = GroupMemberUiModel(),
     val paymentType: PaymentType = PaymentType.EXPENSE,
+    val isReversed: Boolean = false,
 ) {
     companion object {
         fun sample() = PaymentUiModel(
@@ -28,3 +33,43 @@ data class PaymentUiModel(
         )
     }
 }
+
+@Composable
+fun PaymentUiModel.getInfo() =
+    StringBuilder().apply {
+        appendLine(
+            stringResource(
+                if (paymentType == PaymentType.EXPENSE) {
+                    R.string.message_payment_split_description
+                } else {
+                    R.string.message_payment_description
+                },
+                description,
+                value,
+                paidBy.firstName,
+                paidTo.joinToString { it.firstName },
+                createdAt.defaultFormat()
+            )
+        )
+        if (paidBy.uid != createdBy.uid) {
+            appendLine(stringResource(R.string.message_payment_created_by, createdBy.firstName))
+        }
+    }.toString()
+
+@Composable
+fun PaymentUiModel.getMessage(group: GroupUiModel) =
+    when {
+        paymentType == PaymentType.REVERSE -> {
+            stringResource(R.string.message_payment_reverse, paidTo.joinToString(limit = 3, truncated = "...") { it.firstName })
+        }
+        isReversed -> {
+            stringResource(R.string.message_payment_reversed)
+        }
+        paidTo.size == group.members.size -> {
+            stringResource(R.string.message_payment_detail_to_all, paidBy.firstName)
+        }
+        else -> {
+            stringResource(R.string.message_payment_detail, paidBy.firstName, paidTo.joinToString(limit = 3, truncated = "...") { it.firstName })
+
+        }
+    }

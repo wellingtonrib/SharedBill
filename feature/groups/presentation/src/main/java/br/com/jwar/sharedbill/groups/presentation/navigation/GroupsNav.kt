@@ -19,7 +19,7 @@ const val PAYMENT_ROUTE = "payment/{$GROUP_ID_ARG}/{$PAYMENT_TYPE_ARG}"
 
 fun NavGraphBuilder.groupsNav(
     navController: NavHostController,
-    onNavigateAccount: () -> Unit,
+    onNavigateToAuth: () -> Unit,
 ) {
     composable(route = GROUP_LIST_ROUTE) {
         GroupListRoute(
@@ -30,7 +30,7 @@ fun NavGraphBuilder.groupsNav(
                 navController.navigate(GROUP_EDIT_ROUTE.bindGroupId(groupId))
             },
             onNavigateToAuth = {
-                onNavigateAccount()
+                onNavigateToAuth()
             }
         )
     }

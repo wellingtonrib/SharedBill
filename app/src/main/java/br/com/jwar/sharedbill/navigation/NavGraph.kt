@@ -6,7 +6,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import br.com.jwar.sharedbill.account.presentation.navigation.ACCOUNT_ROUTE
+import br.com.jwar.sharedbill.account.presentation.navigation.AUTH_ROUTE
 import br.com.jwar.sharedbill.account.presentation.navigation.accountNav
 import br.com.jwar.sharedbill.groups.presentation.navigation.groupsNav
 import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GROUP_LIST_ROUTE
@@ -35,8 +35,8 @@ fun NavGraph(
         )
         groupsNav(
             navController = navController,
-            onNavigateAccount = {
-                navController.navigate(ACCOUNT_ROUTE)
+            onNavigateToAuth = {
+                navController.navigate(AUTH_ROUTE)
             }
         )
     }

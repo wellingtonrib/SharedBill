@@ -9,7 +9,7 @@ interface CreatePaymentUseCase {
         value: String,
         dateTime: Long,
         paidById: String,
-        paidToIds: List<String>,
+        paidToIds: Map<String, Int>,
         groupId: String,
         paymentType: PaymentType
     ): Result<Payment>

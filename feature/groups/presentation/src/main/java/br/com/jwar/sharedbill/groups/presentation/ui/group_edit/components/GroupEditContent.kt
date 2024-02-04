@@ -22,16 +22,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
-import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.designsystem.components.AppTopBar
 import br.com.jwar.sharedbill.core.designsystem.components.CloseNavigationIcon
+import br.com.jwar.sharedbill.core.designsystem.components.EmptyContent
 import br.com.jwar.sharedbill.core.designsystem.components.TextFieldWithSuggestions
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.groups.presentation.R
+import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
+import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
+import com.google.common.collect.ImmutableSet
 import br.com.jwar.sharedbill.core.designsystem.R as DSR
 
 @Composable
@@ -87,6 +90,7 @@ fun GroupEditContent(
                 text = group.title,
                 suggestions = suggestions.toList(),
                 showSuggestions = showSuggestions.value,
+                maxLength = 30,
             ) { newValue ->
                 onGroupUpdated(group.copy(title = newValue.text))
             }
@@ -106,6 +110,13 @@ fun GroupEditContent(
                     ) { onMemberDeleteClick(it) }
                 }
             }
+            if (group.members.size == 1) {
+                EmptyContent(
+                    modifier = Modifier.weight(1f),
+                    image = painterResource(R.drawable.add_member_img),
+                    message = stringResource(R.string.message_add_members),
+                )
+            }
         }
     }
 }
@@ -114,6 +125,12 @@ fun GroupEditContent(
 @Composable
 fun PreviewGroupEditForm() {
     MaterialTheme {
-        GroupEditContent(group = GroupUiModel.sample(),)
+        GroupEditContent(
+            group = GroupUiModel.sample().copy(
+                members = ImmutableSet.of(
+                    GroupMemberUiModel.sample(),
+                )
+            )
+        )
     }
 }

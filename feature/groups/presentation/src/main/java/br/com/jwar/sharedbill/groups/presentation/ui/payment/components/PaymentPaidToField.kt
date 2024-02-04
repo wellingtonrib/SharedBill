@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.groups.presentation.ui.payment.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,61 +12,64 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.jwar.sharedbill.core.designsystem.components.CheckboxWitText
+import br.com.jwar.sharedbill.core.designsystem.components.WeightWitText
 import br.com.jwar.sharedbill.core.designsystem.components.Field
 import br.com.jwar.sharedbill.core.designsystem.components.RadioButtonWitText
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
-import br.com.jwar.sharedbill.core.designsystem.util.LogCompositions
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
+import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 
 @Composable
 fun PaymentPaidToField(
     modifier: Modifier = Modifier,
     isMultiSelect: Boolean = true,
-    sharedValue: String = "",
+    sharedValue: ImmutableMap<GroupMemberUiModel, String> = ImmutableMap.of(),
     options: ImmutableSet<GroupMemberUiModel> = ImmutableSet.of(),
-    value: ImmutableSet<GroupMemberUiModel> = ImmutableSet.of(),
+    value: ImmutableMap<GroupMemberUiModel, Int> = ImmutableMap.of(),
     error: PaymentUiError? = null,
-    onValueChange: (ImmutableSet<GroupMemberUiModel>) -> Unit,
+    onValueChange: (ImmutableMap<GroupMemberUiModel, Int>) -> Unit,
 ) {
     Field {
-        LogCompositions("PaymentContent PaymentPaidToField")
 
-        Row(
+        Column(
             modifier = modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Top
         ) {
             Text(
                 modifier = Modifier.padding(top = AppTheme.dimens.space_4),
-                text = stringResource(R.string.label_payment_paid_to)
+                text = if (isMultiSelect) {
+                    stringResource(R.string.label_payment_divided_by)
+                } else {
+                    stringResource(R.string.label_payment_paid_to)
+                }
             )
-            LazyColumn {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(start = AppTheme.dimens.space_4, top = AppTheme.dimens.space_4),
+            ) {
                 if (isMultiSelect) {
                     items(options.asList()) { member ->
                         Row(
                             modifier = modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            CheckboxWitText(
+                            WeightWitText(
                                 modifier = Modifier.weight(1f),
                                 text = member.name,
-                                isChecked = value.any { it.uid == member.uid },
-                                onCheckedChange = { checked ->
-                                    val newValue = if (checked) {
-                                        ImmutableSet.copyOf(value.toMutableList().apply { add(member) })
-                                    } else {
-                                        ImmutableSet.copyOf(value.toMutableList().apply { remove(member) })
-                                    }
+                                weight = value[member] ?: 0,
+                                onWeightChange = { weight ->
+                                    val newValue = ImmutableMap.copyOf(value.toMutableMap().apply {
+                                        this[member] = weight
+                                    })
                                     onValueChange(newValue)
                                 }
                             )
                             Text(
                                 modifier = Modifier.padding(end = AppTheme.dimens.space_4),
-                                text = if (value.contains(member)) sharedValue else "-"
+                                text = sharedValue[member] ?: "-"
                             )
                         }
                     }
@@ -75,7 +79,11 @@ fun PaymentPaidToField(
                             text = member.name,
                             isChecked = value.contains(member),
                             onCheckedChange = { checked ->
-                                val newValue = if (checked) ImmutableSet.of(member) else ImmutableSet.of()
+                                val newValue = if (checked) {
+                                    ImmutableMap.of(member, 1)
+                                } else {
+                                    ImmutableMap.of()
+                                }
                                 onValueChange(newValue)
                             }
                         )
@@ -94,9 +102,11 @@ fun PaymentPaidToField(
 fun PreviewPaymentPaidToField() {
     SharedBillTheme {
         PaymentPaidToField(
-            sharedValue = "",
-            value = ImmutableSet.of(
-                GroupMemberUiModel.sample().copy(uid = "1")
+            sharedValue = ImmutableMap.of(
+                GroupMemberUiModel.sample().copy(uid = "1"), "1"
+            ),
+            value = ImmutableMap.of(
+                GroupMemberUiModel.sample().copy(uid = "1"), 1
             ),
             options = ImmutableSet.of(
                 GroupMemberUiModel.sample().copy(uid = "1"),

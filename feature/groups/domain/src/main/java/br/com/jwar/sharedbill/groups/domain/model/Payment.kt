@@ -1,7 +1,6 @@
 package br.com.jwar.sharedbill.groups.domain.model
 
 import androidx.annotation.Keep
-import br.com.jwar.sharedbill.account.domain.model.User
 import java.util.*
 
 @Keep
@@ -10,14 +9,16 @@ data class Payment(
     val id: String = "",
     val description: String = "",
     val value: String = "",
-    val paidBy: User = User(),
-    val paidTo: List<User> = emptyList(),
+    val paidBy: String = "",
+    val paidTo: Map<String, Int> = mapOf(),
     val createdAt: Date = Date(),
-    val createdBy: User = User(),
+    val createdBy: String = "",
     val paymentType: PaymentType = PaymentType.EXPENSE,
+    val reversed: Boolean? = false,
 )
 
 enum class PaymentType {
     EXPENSE,
-    SETTLEMENT
+    SETTLEMENT,
+    REVERSE
 }

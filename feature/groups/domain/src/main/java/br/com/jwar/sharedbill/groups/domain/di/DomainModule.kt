@@ -89,4 +89,10 @@ class DomainModule {
         groupRepository: GroupRepository,
         removeMemberUseCase: RemoveMemberUseCase
     ): LeaveGroupUseCase = LeaveGroupUseCaseImpl(groupRepository, removeMemberUseCase)
+
+    @Provides
+    @Singleton
+    fun providesDeletePaymentUseCase(
+        groupRepository: GroupRepository,
+    ): DeletePaymentUseCase = DeletePaymentUseCaseImpl(groupRepository)
 }

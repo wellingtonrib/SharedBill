@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.core.designsystem.components.AppTopBar
 import br.com.jwar.sharedbill.core.designsystem.components.EmptyContent
 import br.com.jwar.sharedbill.core.designsystem.components.SegmentedControl
@@ -50,9 +51,10 @@ private const val PAGE_BALANCE = 1
 fun GroupsDetailsContent(
     modifier: Modifier = Modifier,
     group: GroupUiModel,
-    onNewPaymentClick: (PaymentType)-> Unit = {},
+    onNewPaymentClick: (PaymentType) -> Unit = {},
     onEditClick: () -> Unit = {},
     onShareBalance: (String) -> Unit = {},
+    onDeletePayment: (String, String) -> Unit = { _, _ -> },
     onNavigateBack: () -> Unit = {},
 ) {
     val listState = rememberLazyListState()
@@ -89,7 +91,8 @@ fun GroupsDetailsContent(
             GroupDetailsFloatingButtons(
                 group = group,
                 listState = listState,
-                onNewPaymentClick = onNewPaymentClick
+                onNewPaymentClick = onNewPaymentClick,
+                onNewMemberClick = onEditClick
             )
         },
         floatingActionButtonPosition = FabPosition.End,
@@ -98,10 +101,17 @@ fun GroupsDetailsContent(
             modifier = Modifier.padding(contentPadding)
         ) {
             if (group.payments.isEmpty()) {
-                EmptyContent(
-                    image = painterResource(R.drawable.group_details_empty_img),
-                    message = stringResource(R.string.message_no_expenses),
-                )
+                if (group.members.size == 1) {
+                    EmptyContent(
+                        image = painterResource(R.drawable.add_member_img),
+                        message = stringResource(R.string.message_add_members),
+                    )
+                } else {
+                    EmptyContent(
+                        image = painterResource(R.drawable.group_details_empty_img),
+                        message = stringResource(R.string.message_no_expenses),
+                    )
+                }
             } else {
                 Column(
                     modifier = Modifier.padding(horizontal = AppTheme.dimens.space_8),
@@ -111,6 +121,8 @@ fun GroupsDetailsContent(
                         horizontalArrangement = Arrangement.Center,
                         selectedIndex = selectedPageIndex,
                         items = pages.map { it.second },
+                        useFixedWidth = true,
+                        itemWidth = 140.dp,
                         onItemSelection = { index ->
                             selectedPageIndex = index
                             scope.launch { pagerState.scrollToPage(index) }
@@ -122,7 +134,11 @@ fun GroupsDetailsContent(
                         userScrollEnabled = false
                     ) { page ->
                         when (page) {
-                            PAGE_PAYMENTS -> GroupPayments(group = group, listState = listState)
+                            PAGE_PAYMENTS -> GroupPayments(
+                                group = group,
+                                listState = listState,
+                                onDeletePayment = onDeletePayment,
+                            )
                             PAGE_BALANCE -> GroupBalance(group = group)
                         }
                     }
@@ -133,12 +149,15 @@ fun GroupsDetailsContent(
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Preview(locale = "pt")
 @Preview
 @Composable
 fun PreviewGroupDetails() {
     SharedBillTheme {
         Scaffold {
-            GroupsDetailsContent(group = GroupUiModel.sample())
+            GroupsDetailsContent(
+                group = GroupUiModel.sample()
+            ) {}
         }
     }
 }

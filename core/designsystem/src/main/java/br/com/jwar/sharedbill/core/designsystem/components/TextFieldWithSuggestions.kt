@@ -1,6 +1,7 @@
 package br.com.jwar.sharedbill.core.designsystem.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DropdownMenu
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 
@@ -36,6 +38,7 @@ fun TextFieldWithSuggestions(
     suggestions: List<String>,
     showSuggestions: Boolean = false,
     isError: Boolean = false,
+    maxLength: Int = Int.MAX_VALUE,
     supportingText: @Composable() (() -> Unit)? = null,
     onValueChange: (TextFieldValue) -> Unit = {}
 ) {
@@ -54,12 +57,20 @@ fun TextFieldWithSuggestions(
             label = label,
             placeholder = placeholder,
             onValueChange = { newValue ->
-                textFieldValue = newValue
+                textFieldValue = newValue.copy(text = newValue.text.take(maxLength))
+                onValueChange(textFieldValue)
                 isDropdownVisible.value = newValue.text.isEmpty()
-                onValueChange(newValue)
             },
             isError = isError,
-            supportingText = supportingText,
+            supportingText = supportingText ?: {
+                 if (maxLength < Int.MAX_VALUE) {
+                     Text(
+                         text = "${textFieldValue.text.length}/$maxLength",
+                         modifier = Modifier.fillMaxWidth(),
+                         textAlign = TextAlign.End,
+                     )
+                 }
+            },
             keyboardOptions = KeyboardOptions.Default.copy(
                 capitalization = KeyboardCapitalization.Sentences,
                 imeAction = imeAction
@@ -82,7 +93,7 @@ fun TextFieldWithSuggestions(
                             .copy(selection = TextRange(suggestion.length))
                         isDropdownVisible.value = false
                         onValueChange(textFieldValue)
-                        focusRequester.requestFocus()
+                        focusRequester.freeFocus()
                     },
                     text = { Text(suggestion) }
                 )
