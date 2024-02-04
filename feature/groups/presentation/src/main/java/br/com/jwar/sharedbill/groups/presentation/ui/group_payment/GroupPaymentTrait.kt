@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.groups.presentation.ui.payment
+package br.com.jwar.sharedbill.groups.presentation.ui.group_payment
 
 import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
@@ -13,7 +13,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.Calendar
 
-interface PaymentTrait {
+interface GroupPaymentTrait {
 
     val stringProvider: StringProvider
 

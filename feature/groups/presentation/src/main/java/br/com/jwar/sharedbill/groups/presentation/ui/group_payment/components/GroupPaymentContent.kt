@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.groups.presentation.ui.payment.components
+package br.com.jwar.sharedbill.groups.presentation.ui.group_payment.components
 
 
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,7 @@ import br.com.jwar.sharedbill.core.designsystem.components.CloseNavigationIcon
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.horizontalPaddingMedium
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract
 import br.com.jwar.sharedbill.testing.TestTags
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet

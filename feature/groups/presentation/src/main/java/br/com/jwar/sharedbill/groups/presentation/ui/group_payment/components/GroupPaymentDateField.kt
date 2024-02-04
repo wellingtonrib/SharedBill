@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.groups.presentation.ui.payment.components
+package br.com.jwar.sharedbill.groups.presentation.ui.group_payment.components
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker

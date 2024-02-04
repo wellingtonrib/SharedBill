@@ -1,18 +1,18 @@
-package br.com.jwar.sharedbill.groups.presentation.ui.payment
+package br.com.jwar.sharedbill.groups.presentation.ui.group_payment
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Effect
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Event
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract.Effect
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract.Event
 
 @Composable
 fun PaymentRoute(
     groupId: String,
     paymentType: PaymentType,
-    viewModel: PaymentViewModel = hiltViewModel(),
+    viewModel: GroupPaymentViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit = {}
 ) {
     val state = viewModel.uiState.collectAsState().value

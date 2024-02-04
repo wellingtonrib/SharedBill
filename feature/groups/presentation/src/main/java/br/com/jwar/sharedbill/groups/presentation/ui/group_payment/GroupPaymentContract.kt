@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.groups.presentation.ui.payment
+package br.com.jwar.sharedbill.groups.presentation.ui.group_payment
 
 import androidx.annotation.StringRes
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel

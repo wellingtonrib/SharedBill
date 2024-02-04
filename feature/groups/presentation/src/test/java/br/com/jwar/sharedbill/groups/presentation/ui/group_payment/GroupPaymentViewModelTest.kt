@@ -1,4 +1,4 @@
-package br.com.jwar.sharedbill.groups.presentation.ui.payment
+package br.com.jwar.sharedbill.groups.presentation.ui.group_payment
 
 import br.com.jwar.sharedbill.core.utility.StringProvider
 import br.com.jwar.sharedbill.groups.domain.model.Group
@@ -32,7 +32,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 
-class PaymentViewModelTest {
+class GroupPaymentViewModelTest {
 
     @get:Rule
     val coroutineTestRule = CoroutinesTestRule()
@@ -43,8 +43,8 @@ class PaymentViewModelTest {
     private val getGroupByIdUseCase: GetGroupByIdUseCase = mockk()
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper = mockk()
 
-    private val viewModel: PaymentViewModel by lazy {
-        PaymentViewModel(
+    private val viewModel: GroupPaymentViewModel by lazy {
+        GroupPaymentViewModel(
             stringProvider = stringProvider,
             getGroupByIdUseCase = getGroupByIdUseCase,
             createPaymentUseCase = createPaymentUseCase,

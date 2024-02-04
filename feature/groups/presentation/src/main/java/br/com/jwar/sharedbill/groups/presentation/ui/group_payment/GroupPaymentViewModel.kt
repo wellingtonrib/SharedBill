@@ -1,18 +1,18 @@
-package br.com.jwar.sharedbill.groups.presentation.ui.payment
+package br.com.jwar.sharedbill.groups.presentation.ui.group_payment
 
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.viewModelScope
 import br.com.jwar.sharedbill.groups.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiError
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Effect
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Event
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Field.DateField
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Field.DescriptionField
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Field.PaidByField
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Field.PaidToField
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.Field.ValueField
-import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentContract.State
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract.Effect
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract.Event
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract.Field.DateField
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract.Field.DescriptionField
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract.Field.PaidByField
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract.Field.PaidToField
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract.Field.ValueField
+import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentContract.State
 import br.com.jwar.sharedbill.core.common.BaseViewModel
 import br.com.jwar.sharedbill.core.utility.StringProvider
 import br.com.jwar.sharedbill.groups.domain.model.Group
@@ -30,13 +30,13 @@ import javax.inject.Inject
 
 @Stable
 @HiltViewModel
-class PaymentViewModel @Inject constructor(
+class GroupPaymentViewModel @Inject constructor(
     override val stringProvider: StringProvider,
     private val sendPaymentUseCase: SendPaymentUseCase,
     private val createPaymentUseCase: CreatePaymentUseCase,
     private val getGroupByIdUseCase: GetGroupByIdUseCase,
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper,
-): BaseViewModel<Event, State, Effect>(), PaymentTrait {
+): BaseViewModel<Event, State, Effect>(), GroupPaymentTrait {
 
     override fun getInitialState(): State = State(isLoading = true)
 
