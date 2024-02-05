@@ -21,6 +21,8 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                 apply("dagger.hilt.android.plugin")
                 apply("kotlin-parcelize")
                 apply("kotlin-kapt")
+                apply("com.google.gms.google-services")
+                apply("com.google.firebase.crashlytics")
             }
 
             extensions.configure<ApplicationExtension> {

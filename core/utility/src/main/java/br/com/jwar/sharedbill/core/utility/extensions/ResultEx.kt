@@ -1,6 +1,8 @@
 package br.com.jwar.sharedbill.core.utility.extensions
 
 import kotlinx.coroutines.CancellationException
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 
 // Based on: https://proandroiddev.com/resilient-use-cases-with-kotlin-result-coroutines-and-annotations-511df10e2e16
 
@@ -15,6 +17,7 @@ inline fun <R> resultOf(block: () -> R): Result<R> {
     } catch (e: CancellationException) {
         throw e
     } catch (e: Exception) {
+        Firebase.crashlytics.recordException(e)
         Result.failure(e)
     }
 }
@@ -30,6 +33,7 @@ inline fun <T, R> T.resultOf(block: T.() -> R): Result<R> {
     } catch (e: CancellationException) {
         throw e
     } catch (e: Exception) {
+        Firebase.crashlytics.recordException(e)
         Result.failure(e)
     }
 }

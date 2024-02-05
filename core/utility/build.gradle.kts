@@ -9,4 +9,7 @@ android {
 
 dependencies {
     implementation(libs.kotlinx.coroutines.playServices)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.analytics.ktx)
 }

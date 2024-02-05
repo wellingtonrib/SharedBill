@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     id("sharedbill.android.application")
-    id("com.google.gms.google-services")
 }
 
 android {
@@ -57,6 +56,8 @@ dependencies {
     implementation(libs.firebase.appcheck.playintegrity)
     implementation(libs.firebase.appcheck.debug)
     implementation(libs.firebase.appcheck.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.analytics.ktx)
     implementation(libs.splashscreen)
     implementation(libs.hilt.android)
     implementation(libs.google.playServices.auth)
