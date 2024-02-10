@@ -44,6 +44,7 @@
     <string name="label_suggestion">Sugerencias</string>
     <string name="label_settlement">🤝 Acuerdo</string>
     <string name="label_select">Selecionar</string>
+    <string name="label_refresh_groups">Actualizar grupos</string>
 
     <string name="message_welcome">Bienvenido %1$s</string>
     <string name="message_owes">Debe %1$s</string>
@@ -88,6 +89,9 @@
     <string name="error_group_invalid_title">Proporcione un título válido</string>
     <string name="error_invalid_user_name">Proporcione el nombre y apellido</string>
     <string name="error_unauthenticated_user">Primero debes iniciar sesión</string>
+    <string name="error_group_join">Error al unirte al grupo</string>
+    <string name="error_group_not_found">Grupo no encontrado</string>
+    <string name="error_invalid_invite_code">Código de invitación no válido</string>
 
     <string name="description_group_image">Imagen de grupo</string>
     <string name="description_back">Acción de retroceso</string>

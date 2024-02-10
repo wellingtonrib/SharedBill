@@ -43,7 +43,7 @@ class GroupListScreenTest {
 
     @Test
     fun groupListScreen_withErrorState_shouldShowErrorContent() {
-        prepareScenario(GroupListContract.State.Error(UiText.DynamicString("Error"), GroupListContract.Event.OnInit))
+        prepareScenario(GroupListContract.State.Error(UiText.DynamicString("Error"), UiText.DynamicString("Action"), GroupListContract.Event.OnInit))
 
         composeTestRule.onNodeWithTag(TestTags.ErrorContent).assertIsDisplayed()
     }

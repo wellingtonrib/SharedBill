@@ -32,13 +32,13 @@ fun GroupListRoute(
     ) {
         GroupListScreen(
             state = state,
+            snackbarHostState = snackbarHostState,
             onGroupClick = { viewModel.emitEvent { Event.OnGroupSelect(it) } },
             onGroupCreate = { viewModel.emitEvent { Event.OnGroupCreate(it) } },
             onGroupJoin = { viewModel.emitEvent { Event.OnGroupJoin(it) } },
             onGroupDelete = { viewModel.emitEvent { Event.OnGroupDelete(it) } },
-            onGroupLeave = { viewModel.emitEvent { Event.OnGroupLeave(it) } },
-            onTryAgainClick = { event -> viewModel.emitEvent { event } }
-        )
+            onGroupLeave = { viewModel.emitEvent { Event.OnGroupLeave(it) } }
+        ) { event -> viewModel.emitEvent { event } }
     }
 
     LaunchedEffect(Unit) {
@@ -48,9 +48,7 @@ fun GroupListRoute(
                 is Effect.NavigateToAuth -> onNavigateToAuth()
                 is Effect.NavigateToGroupDetails -> onNavigateToGroupDetails(effect.groupId)
                 is Effect.NavigateToGroupEdit -> onNavigateToGroupEdit(effect.groupId)
-                is Effect.ShowError -> {
-                    snackbarHostState.showSnackbar(effect.message.asString(context))
-                }
+                is Effect.ShowError -> snackbarHostState.showSnackbar(effect.message.asString(context))
             }
         }
     }

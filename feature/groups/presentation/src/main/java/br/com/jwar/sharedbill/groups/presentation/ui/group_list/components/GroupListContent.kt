@@ -17,6 +17,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -28,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.jwar.sharedbill.core.designsystem.components.EmptyContent
+import br.com.jwar.sharedbill.core.designsystem.components.InputDialog
 import br.com.jwar.sharedbill.core.designsystem.components.Title
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
@@ -35,11 +37,14 @@ import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.groups.presentation.R
 import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.testing.TestTags
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import br.com.jwar.sharedbill.core.designsystem.R as DSR
 
 @Composable
 fun GroupListContent(
     groups: List<GroupUiModel>,
+    snackbarHostState: SnackbarHostState = SnackbarHostState(),
     onGroupClick: (groupId: String) -> Unit = {},
     onGroupCreate: (title: String) -> Unit = {},
     onGroupJoin: (inviteCode: String) -> Unit = {},
@@ -55,9 +60,20 @@ fun GroupListContent(
             groupListState.firstVisibleItemIndex == 0
         }
     }
+    fun CoroutineScope.hideNewGroupBottomSheet() = launch { newGroupBottomSheetState.hide() }
 
     BackHandler(newGroupBottomSheetState.isVisible) {
-        coroutineScope.launch { newGroupBottomSheetState.hide() }
+        coroutineScope.hideNewGroupBottomSheet()
+    }
+
+    val openGroupJoinDialog = remember { mutableStateOf(false) }
+    if (openGroupJoinDialog.value) {
+        InputDialog(
+            label = stringResource(R.string.label_group_invite_code),
+            action = stringResource(DSR.string.label_verify),
+            onDismiss = { openGroupJoinDialog.value = false },
+            onAction = { openGroupJoinDialog.value = false; onGroupJoin(it) }
+        )
     }
 
     ModalBottomSheetLayout(
@@ -65,7 +81,16 @@ fun GroupListContent(
         sheetShape = MaterialTheme.shapes.medium,
         sheetBackgroundColor = MaterialTheme.colorScheme.background,
         sheetContent = {
-            NewGroupBottomSheet(onGroupCreate, onGroupJoin)
+            NewGroupBottomSheet(
+                onGroupCreate = {
+                    coroutineScope.hideNewGroupBottomSheet()
+                    onGroupCreate("")
+                },
+                onGroupJoin = {
+                    coroutineScope.hideNewGroupBottomSheet()
+                    openGroupJoinDialog.value = true
+                }
+            )
         }
     ) {
         Scaffold(
@@ -73,6 +98,7 @@ fun GroupListContent(
                 .testTag(TestTags.GroupListContent)
                 .padding(bottom = 80.dp)
                 .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
+            snackbarHost = { SnackbarHost(snackbarHostState) },
             topBar = {
                 MediumTopAppBar(
                     title = { Title(stringResource(R.string.label_my_groups)) },
@@ -129,7 +155,7 @@ fun PreviewGroupList() {
                     GroupUiModel.sample(),
                     GroupUiModel.sample(),
                     GroupUiModel.sample(),
-                )
+                ),
             )
         }
     }
