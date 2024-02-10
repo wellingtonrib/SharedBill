@@ -18,8 +18,8 @@ android {
     }
     defaultConfig {
         applicationId = "br.com.jwar.sharedbill"
-        versionCode = 11
-        versionName = "1.0.3"
+        versionCode = 12
+        versionName = "1.0.4"
         testInstrumentationRunner = "br.com.jwar.sharedbill.testing.HiltTestRunner"
     }
 
