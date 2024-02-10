@@ -44,6 +44,7 @@
     <string name="label_suggestion">Sugestões</string>
     <string name="label_settlement">🤝 Acerto de contas</string>
     <string name="label_select">Selecionar</string>
+    <string name="label_refresh_groups">Atualizar grupos</string>
 
     <string name="message_welcome">Bem-vindo %1$s</string>
     <string name="message_owes">Deve %1$s</string>
@@ -88,6 +89,9 @@
     <string name="error_group_invalid_title">Informe um título válido</string>
     <string name="error_invalid_user_name">Informe o nome e o sobrenome</string>
     <string name="error_unauthenticated_user">Você precisa fazer login primeiro</string>
+    <string name="error_group_join">Não foi possível ingressar nesse grupo</string>
+    <string name="error_group_not_found">Grupo não encontrado</string>
+    <string name="error_invalid_invite_code">Código de convite inválido</string>
 
     <string name="description_group_image">Imagem de grupo</string>
     <string name="description_back">Ação de retorno</string>

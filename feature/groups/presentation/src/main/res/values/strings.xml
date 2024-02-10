@@ -44,6 +44,7 @@
     <string name="label_suggestion">Suggestions</string>
     <string name="label_settlement">🤝 Settlement</string>
     <string name="label_select">Select</string>
+    <string name="label_refresh_groups">Refresh groups</string>
 
     <string name="message_welcome">Welcome %1$s</string>
     <string name="message_owes">Owes %1$s</string>
@@ -88,6 +89,9 @@
     <string name="error_group_invalid_title">Please provide a valid title</string>
     <string name="error_invalid_user_name">Please provide first and last name</string>
     <string name="error_unauthenticated_user">You need to sign in first</string>
+    <string name="error_group_join">Error joining the group</string>
+    <string name="error_group_not_found">Group not found</string>
+    <string name="error_invalid_invite_code">Invalid invite code</string>
 
     <string name="description_group_image">Group Image</string>
     <string name="description_back">Back action</string>

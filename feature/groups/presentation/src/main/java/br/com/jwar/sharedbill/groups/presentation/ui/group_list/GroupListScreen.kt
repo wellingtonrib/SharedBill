@@ -2,6 +2,7 @@ package br.com.jwar.sharedbill.groups.presentation.ui.group_list
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
@@ -14,6 +15,7 @@ import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 @Composable
 fun GroupListScreen(
     state: State,
+    snackbarHostState: SnackbarHostState = SnackbarHostState(),
     onGroupClick: (groupId: String) -> Unit = {},
     onGroupCreate: (title: String) -> Unit = {},
     onGroupJoin: (inviteCode: String) -> Unit = {},
@@ -25,6 +27,7 @@ fun GroupListScreen(
         is State.Loading -> LoadingContent()
         is State.Loaded -> GroupListContent(
             groups = state.uiModel,
+            snackbarHostState = snackbarHostState,
             onGroupClick = onGroupClick,
             onGroupCreate = onGroupCreate,
             onGroupJoin = onGroupJoin,
@@ -33,6 +36,7 @@ fun GroupListScreen(
         )
         is State.Error -> ErrorContent(
             message = state.message.asString(),
+            action = state.action.asString(),
             onAction = { onTryAgainClick(state.event) }
         )
     }

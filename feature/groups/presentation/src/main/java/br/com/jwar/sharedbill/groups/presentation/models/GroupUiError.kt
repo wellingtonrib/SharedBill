@@ -14,16 +14,22 @@ sealed class GroupUiError(val message: UiText) {
     object InvalidUserNameError: GroupUiError(UiText.StringResource(R.string.error_invalid_user_name))
     object GroupGenericError: GroupUiError(UiText.StringResource(R.string.error_generic))
     object UserNotFoundException: GroupUiError(UiText.StringResource(R.string.error_unauthenticated_user))
+    object GroupJoinError: GroupUiError(UiText.StringResource(R.string.error_group_join))
+    object GroupNotFoundError: GroupUiError(UiText.StringResource(R.string.error_group_not_found))
+    object InvalidCodeError: GroupUiError(UiText.StringResource(R.string.error_invalid_invite_code))
 
     companion object {
         fun mapFrom(throwable: Throwable): GroupUiError {
             return when(throwable) {
-                is GroupException.RemovingMemberWithNonZeroBalanceException -> GroupUiError.RemoveMemberWithNonZeroBalanceError
+                is GroupException.RemovingMemberWithNonZeroBalanceException -> RemoveMemberWithNonZeroBalanceError
                 is GroupException.RemovingOwnerException -> RemovingOwnerError
                 is GroupException.DeletingFromNonOwnerException -> DeletingFromNonOwnerError
                 is GroupException.InvalidUserNameException -> InvalidUserNameError
                 is GroupException.InvalidTitle -> EmptyTitleError
                 is UserException.UserNotFoundException -> UserNotFoundException
+                is GroupException.GroupJoinException -> GroupJoinError
+                is GroupException.GroupNotFoundException -> GroupNotFoundError
+                is GroupException.InvalidInviteCodeException -> InvalidCodeError
                 else -> GroupGenericError
             }
         }
