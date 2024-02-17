@@ -24,10 +24,10 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew test
       - name: Restore keystore
-        run: echo $KEYSTORE_FILE | base64 -d > /app/key.jks
+        run: echo $KEYSTORE_FILE | base64 -d > app/key.jks
       - name: Build Release AAB
         run: ./gradlew
-          -PKEYSTORE_FILE="../${{ /app/key.jks }}"
+          -PKEYSTORE_FILE="../${{ app/key.jks }}"
           -PKEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
           -PSIGNING_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}
           -PSIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}
