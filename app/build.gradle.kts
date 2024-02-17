@@ -6,11 +6,13 @@ plugins {
 
 android {
     signingConfigs {
-        create("release") {
-            storeFile = file(project.property("KEYSTORE_FILE").toString())
-            storePassword = project.property("KEYSTORE_PASSWORD").toString()
-            keyAlias = project.property("SIGNING_KEY_ALIAS").toString()
-            keyPassword = project.property("SIGNING_KEY_PASSWORD").toString()
+        if (project.hasProperty("KEYSTORE_FILE")) {
+            create("release") {
+                storeFile = file(project.property("KEYSTORE_FILE").toString())
+                storePassword = project.property("KEYSTORE_PASSWORD").toString()
+                keyAlias = project.property("SIGNING_KEY_ALIAS").toString()
+                keyPassword = project.property("SIGNING_KEY_PASSWORD").toString()
+            }
         }
     }
     defaultConfig {
