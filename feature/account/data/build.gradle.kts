@@ -6,7 +6,7 @@ plugins {
 
 android {
     defaultConfig {
-        buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", project.property("FIREBASE_WEB_CLIENT_ID").toString())
+        buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"${project.property("FIREBASE_WEB_CLIENT_ID").toString()}\"")
     }
 
     buildFeatures {
