@@ -1,8 +1,7 @@
 package br.com.jwar.sharedbill.core.utility.extensions
 
+import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import kotlinx.coroutines.CancellationException
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
 
 // Based on: https://proandroiddev.com/resilient-use-cases-with-kotlin-result-coroutines-and-annotations-511df10e2e16
 
@@ -11,13 +10,13 @@ import com.google.firebase.ktx.Firebase
  *
  * Cancellation exceptions need to be rethrown. See https://github.com/Kotlin/kotlinx.coroutines/issues/1814.
  */
-inline fun <R> resultOf(block: () -> R): Result<R> {
+inline fun <R> resultOf(handler: ExceptionHandler? = null, block: () -> R): Result<R> {
     return try {
         Result.success(block())
     } catch (e: CancellationException) {
         throw e
     } catch (e: Exception) {
-        Firebase.crashlytics.recordException(e)
+        handler?.recordException(e)
         Result.failure(e)
     }
 }
@@ -27,24 +26,14 @@ inline fun <R> resultOf(block: () -> R): Result<R> {
  *
  * Cancellation exceptions need to be rethrown. See https://github.com/Kotlin/kotlinx.coroutines/issues/1814.
  */
-inline fun <T, R> T.resultOf(block: T.() -> R): Result<R> {
+inline fun <T, R> T.resultOf(handler: ExceptionHandler? = null, block: T.() -> R): Result<R> {
     return try {
         Result.success(block())
     } catch (e: CancellationException) {
         throw e
     } catch (e: Exception) {
-        Firebase.crashlytics.recordException(e)
+        handler?.recordException(e)
         Result.failure(e)
     }
 }
 
-/**
- * Like [mapCatching], but uses [resultOf] instead of [runCatching].
- */
-inline fun <R, T> Result<T>.mapResult(transform: (value: T) -> R): Result<R> {
-    val successResult = getOrNull()
-    return when {
-        successResult != null -> resultOf { transform(successResult) }
-        else -> Result.failure(exceptionOrNull() ?: error("Unreachable state"))
-    }
-}

@@ -2,6 +2,7 @@ package br.com.jwar.sharedbill.groups.domain.usecases
 
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
+import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
@@ -21,7 +22,8 @@ class JoinGroupUseCaseImplTest {
 
     private val groupRepository: GroupRepository = mockk()
     private val userRepository: UserRepository = mockk()
-    private val joinGroupUseCase = JoinGroupUseCaseImpl(groupRepository, userRepository)
+    private val exceptionHandler: ExceptionHandler = mockk(relaxed = true)
+    private val joinGroupUseCase = JoinGroupUseCaseImpl(groupRepository, userRepository, exceptionHandler)
 
     @get:Rule
     val coroutineRule = CoroutinesTestRule()

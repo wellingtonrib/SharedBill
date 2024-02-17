@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.groups.domain.usecases
 
+import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
@@ -20,7 +21,8 @@ class GetGroupByIdStreamUseCaseImplTest {
     val coroutineRule = CoroutinesTestRule()
 
     private val groupRepository: GroupRepository = mockk()
-    private val getGroupByIdStreamUseCase = GetGroupByIdStreamUseCaseImpl(groupRepository)
+    private val exceptionHandler: ExceptionHandler = mockk()
+    private val getGroupByIdStreamUseCase = GetGroupByIdStreamUseCaseImpl(groupRepository, exceptionHandler)
 
     @Test
     fun `invoke should return group stream from repository`() = runTest {

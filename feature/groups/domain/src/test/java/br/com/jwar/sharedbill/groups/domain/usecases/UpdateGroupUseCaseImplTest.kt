@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.groups.domain.usecases
 
+import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.groups.domain.exceptions.GroupException
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
@@ -20,7 +21,8 @@ class UpdateGroupUseCaseImplTest {
     val coroutineRule = CoroutinesTestRule()
 
     private val groupRepository: GroupRepository = mockk()
-    private val updateGroupUseCase = UpdateGroupUseCaseImpl(groupRepository)
+    private val exceptionHandler: ExceptionHandler = mockk(relaxed = true)
+    private val updateGroupUseCase = UpdateGroupUseCaseImpl(groupRepository, exceptionHandler)
 
     @Test
     fun `invoke should update group successfully`() = runTest {

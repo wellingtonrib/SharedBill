@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.groups.domain.usecases
 
+import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.groups.domain.usecases.AddMemberUseCaseImpl
 import io.mockk.coEvery
@@ -17,7 +18,8 @@ import org.junit.Test
 internal class AddMemberUseCaseImplTest {
 
     private val groupRepository: GroupRepository = mockk()
-    private val addMemberUseCase = AddMemberUseCaseImpl(groupRepository)
+    private val exceptionHandler: ExceptionHandler = mockk()
+    private val addMemberUseCase = AddMemberUseCaseImpl(groupRepository, exceptionHandler)
 
     @Before
     fun setup() {
