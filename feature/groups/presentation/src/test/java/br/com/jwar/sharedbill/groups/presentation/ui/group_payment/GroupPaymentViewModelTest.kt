@@ -11,6 +11,7 @@ import br.com.jwar.sharedbill.groups.presentation.mappers.GroupToGroupUiModelMap
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
+import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -60,8 +61,8 @@ class GroupPaymentViewModelTest {
         val group = Group()
         val firstMember = GroupMemberUiModel(UUID.randomUUID().toString())
         val secondMember = GroupMemberUiModel(UUID.randomUUID().toString())
-        val members = ImmutableSet.of(firstMember, secondMember)
-        val groupUiModel = GroupUiModel(id = groupId, members = members)
+        val members = ImmutableMap.of(firstMember, 0, secondMember, 0)
+        val groupUiModel = GroupUiModel(id = groupId, members = members.keys)
         val stateList = mutableListOf<PaymentContract.State>()
         val timeInMillis = 1000L
         prepareScenario(
@@ -111,8 +112,8 @@ class GroupPaymentViewModelTest {
         val group = Group()
         val firstMember = GroupMemberUiModel(UUID.randomUUID().toString())
         val secondMember = GroupMemberUiModel(UUID.randomUUID().toString())
-        val members = ImmutableSet.of(firstMember, secondMember)
-        val groupUiModel = GroupUiModel(id = groupId, members = members)
+        val members = ImmutableMap.of(firstMember, 1, secondMember, 1)
+        val groupUiModel = GroupUiModel(id = groupId, members = members.keys)
         val stateList = mutableListOf<PaymentContract.State>()
         val timeInMillis = 1000L
         prepareScenario(
