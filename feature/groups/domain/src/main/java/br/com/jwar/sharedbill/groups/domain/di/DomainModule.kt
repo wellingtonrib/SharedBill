@@ -2,6 +2,7 @@ package br.com.jwar.sharedbill.groups.domain.di
 
 import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
 import br.com.jwar.sharedbill.account.domain.usecases.*
+import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.groups.domain.usecases.*
 import dagger.Module
@@ -17,39 +18,45 @@ class DomainModule {
     @Provides
     @Singleton
     fun provideGetAllGroupsUseCase(
-        groupRepository: GroupRepository
-    ): GetGroupsStreamUseCase = GetGroupsStreamUseCaseImpl(groupRepository)
+        groupRepository: GroupRepository,
+        exceptionHandler: ExceptionHandler,
+    ): GetGroupsStreamUseCase = GetGroupsStreamUseCaseImpl(groupRepository, exceptionHandler)
 
     @Provides
     @Singleton
     fun providesCreateGroupUseCase(
         groupRepository: GroupRepository,
-        userRepository: UserRepository
-    ): CreateGroupUseCase = CreateGroupUseCaseImpl(groupRepository, userRepository)
+        userRepository: UserRepository,
+        exceptionHandler: ExceptionHandler,
+    ): CreateGroupUseCase = CreateGroupUseCaseImpl(groupRepository, userRepository, exceptionHandler)
 
     @Provides
     @Singleton
     fun providesSaveGroupUseCase(
-        groupRepository: GroupRepository
-    ): UpdateGroupUseCase = UpdateGroupUseCaseImpl(groupRepository)
+        groupRepository: GroupRepository,
+        exceptionHandler: ExceptionHandler,
+    ): UpdateGroupUseCase = UpdateGroupUseCaseImpl(groupRepository, exceptionHandler)
 
     @Provides
     @Singleton
     fun providesGetGroupByIdUseCase(
-        groupRepository: GroupRepository
-    ): GetGroupByIdUseCase = GetGroupByIdUseCaseImpl(groupRepository)
+        groupRepository: GroupRepository,
+        exceptionHandler: ExceptionHandler,
+    ): GetGroupByIdUseCase = GetGroupByIdUseCaseImpl(groupRepository, exceptionHandler)
 
     @Provides
     @Singleton
     fun providesGetGroupByIdStreamUseCase(
-        groupRepository: GroupRepository
-    ): GetGroupByIdStreamUseCase = GetGroupByIdStreamUseCaseImpl(groupRepository)
+        groupRepository: GroupRepository,
+        exceptionHandler: ExceptionHandler,
+    ): GetGroupByIdStreamUseCase = GetGroupByIdStreamUseCaseImpl(groupRepository, exceptionHandler)
 
     @Provides
     @Singleton
     fun providesGroupAddMemberUseCase(
-        groupRepository: GroupRepository
-    ): AddMemberUseCase = AddMemberUseCaseImpl(groupRepository)
+        groupRepository: GroupRepository,
+        exceptionHandler: ExceptionHandler,
+    ): AddMemberUseCase = AddMemberUseCaseImpl(groupRepository, exceptionHandler)
 
     @Provides
     @Singleton
@@ -61,26 +68,29 @@ class DomainModule {
     @Singleton
     fun providesGroupJoinUseCase(
         groupRepository: GroupRepository,
-        userRepository: UserRepository
-    ): JoinGroupUseCase = JoinGroupUseCaseImpl(groupRepository, userRepository)
+        userRepository: UserRepository,
+        exceptionHandler: ExceptionHandler,
+    ): JoinGroupUseCase = JoinGroupUseCaseImpl(groupRepository, userRepository, exceptionHandler)
 
     @Provides
     @Singleton
     fun providesSendPaymentUseCase(
-        groupRepository: GroupRepository
-    ): SendPaymentUseCase = SendPaymentUseCaseImpl(groupRepository)
+        groupRepository: GroupRepository,
+        exceptionHandler: ExceptionHandler,
+    ): SendPaymentUseCase = SendPaymentUseCaseImpl(groupRepository, exceptionHandler)
 
     @Provides
     @Singleton
     fun providesCreatePaymentUseCase(
         groupRepository: GroupRepository,
-    ): CreatePaymentUseCase = CreatePaymentUseCaseImpl(groupRepository)
+        exceptionHandler: ExceptionHandler,
+    ): CreatePaymentUseCase = CreatePaymentUseCaseImpl(groupRepository, exceptionHandler)
 
     @Provides
     @Singleton
     fun providesDeleteGroupUseCase(
         groupRepository: GroupRepository,
-        userRepository: UserRepository
+        userRepository: UserRepository,
     ): DeleteGroupUseCase = DeleteGroupUseCaseImpl(groupRepository, userRepository)
 
     @Provides

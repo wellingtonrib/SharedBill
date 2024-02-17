@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.groups.domain.usecases
 
+import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.core.utility.extensions.resultOf
 import br.com.jwar.sharedbill.core.utility.extensions.toBigDecimalOrZero
 import br.com.jwar.sharedbill.groups.domain.exceptions.PaymentException
@@ -13,6 +14,7 @@ import java.util.UUID
 
 class CreatePaymentUseCaseImpl(
     private val groupRepository: GroupRepository,
+    private val exceptionHandler: ExceptionHandler,
 ) : CreatePaymentUseCase {
     override suspend fun invoke(
         description: String,
@@ -22,7 +24,7 @@ class CreatePaymentUseCaseImpl(
         paidToIds: Map<String, Int>,
         groupId: String,
         paymentType: PaymentType,
-    ): Result<Payment> = resultOf {
+    ): Result<Payment> = resultOf(exceptionHandler) {
         if (description.isEmpty()) throw PaymentException.InvalidDescriptionException
         if (value.toBigDecimalOrZero() == BigDecimal.ZERO) throw PaymentException.InvalidValueException
         if (paidToIds.isEmpty()) throw PaymentException.InvalidPaidToException

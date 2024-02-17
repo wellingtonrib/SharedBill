@@ -1,6 +1,7 @@
 package br.com.jwar.sharedbill.groups.domain.usecases
 
 import br.com.jwar.sharedbill.account.domain.model.User
+import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.groups.domain.model.Payment
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
@@ -21,7 +22,8 @@ class SendPaymentUseCaseImplTest {
     val coroutineRule = CoroutinesTestRule()
 
     private val groupRepository: GroupRepository = mockk()
-    private val sendPaymentUseCase = SendPaymentUseCaseImpl(groupRepository)
+    private val exceptionHandler: ExceptionHandler = mockk()
+    private val sendPaymentUseCase = SendPaymentUseCaseImpl(groupRepository, exceptionHandler)
 
     @Test
     fun `invoke should send payment successfully`() = runTest {
