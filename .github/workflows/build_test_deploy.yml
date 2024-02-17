@@ -1,0 +1,41 @@
+# Workflow name
+name: Build, Test and Deploy
+
+# When it will be triggered
+on:
+  push:
+    branches:
+      - 50-configure-cicd
+
+# Where it will run
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          cache: gradle
+      - name: Make Gradlew Executable
+        run: chmod +x gradlew
+      - name: Run Unit Tests
+        run: ./gradlew test
+      - name: Restore keystore
+        run: echo $KEYSTORE_FILE | base64 -d > /app/key.jks
+      - name: Build Release AAB
+        run: ./gradlew
+          -PKEYSTORE_FILE="../${{ /app/key.jks }}"
+          -PKEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+          -PSIGNING_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}
+          -PSIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}
+          app:bundleRelease
+      - name: Deploy to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SECRET }}
+          packageName: br.com.jwar.sharedbill
+          releaseFiles: app/build/outputs/bundle/release/*.aab
+          track: internal

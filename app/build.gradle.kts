@@ -7,13 +7,10 @@ plugins {
 android {
     signingConfigs {
         create("release") {
-            val properties = Properties().apply {
-                load(File("app/signing.properties").reader())
-            }
-            storeFile = File(properties.getProperty("storeFile"))
-            storePassword = properties.getProperty("storePassword")
-            keyPassword = properties.getProperty("keyPassword")
-            keyAlias = properties.getProperty("keyAlias")
+            storeFile = file(project.property("KEYSTORE_FILE").toString())
+            storePassword = project.property("KEYSTORE_PASSWORD").toString()
+            keyAlias = project.property("SIGNING_KEY_ALIAS").toString()
+            keyPassword = project.property("SIGNING_KEY_PASSWORD").toString()
         }
     }
     defaultConfig {
