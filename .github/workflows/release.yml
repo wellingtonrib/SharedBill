@@ -24,7 +24,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
-      - name: Restore keystore
+      - name: Decode keystore and create jks
         run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > keystore.jks
       - name: Restore gradle properties
         run: |
@@ -35,6 +35,8 @@ jobs:
           echo "SIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}" >> ~/.gradle/gradle.properties
           echo "FIREBASE_WEB_CLIENT_ID=${{ secrets.FIREBASE_WEB_CLIENT_ID }}" >> ~/.gradle/gradle.properties
         shell: bash
+      - name: Create google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > /app/google-services.json
       - name: Run Unit Tests
         run: ./gradlew test --no-daemon --scan
       - name: Build App Bundle
