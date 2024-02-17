@@ -35,10 +35,8 @@ jobs:
           echo "SIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}" >> ~/.gradle/gradle.properties
           echo "FIREBASE_WEB_CLIENT_ID=${{ secrets.FIREBASE_WEB_CLIENT_ID }}" >> ~/.gradle/gradle.properties
         shell: bash
-      - name: show files
-        run: ls
       - name: Create google-services.json
-        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > app/google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
       - name: Run Unit Tests
         run: ./gradlew test --no-daemon --scan
       - name: Build App Bundle
