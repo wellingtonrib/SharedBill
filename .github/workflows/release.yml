@@ -3,6 +3,7 @@ name: Build, Test and Deploy
 
 # When it will be triggered
 on:
+  pull_request:
   push:
     branches:
       - 50-configure-cicd
@@ -19,11 +20,23 @@ jobs:
         with:
           java-version: 17
           distribution: 'zulu'
-          cache: gradle
-      - name: Make Gradlew Executable
-        run: chmod +x gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Assemble Debug
+        run: ./gradlew assembleDebug --no-daemon --scan
+      - name: Upload compose reports artifact
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: compose-reports
+          path: |
+            **/build/compose-metrics
+            **/build/compose-reports
+          retention-days: 2
       - name: Run Unit Tests
-        run: ./gradlew test
+        run: ./gradlew test --no-daemon --scan
       - name: Restore keystore
         run: echo $KEYSTORE_FILE | base64 -d > app/key.jks
       - name: Build Release AAB
