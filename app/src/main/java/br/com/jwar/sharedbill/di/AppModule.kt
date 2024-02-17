@@ -2,9 +2,11 @@ package br.com.jwar.sharedbill.di
 
 import android.content.Context
 import br.com.jwar.sharedbill.BuildConfig
+import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.core.utility.NetworkManager
 import br.com.jwar.sharedbill.core.utility.StringProvider
 import br.com.jwar.sharedbill.utility.AndroidStringProvider
+import br.com.jwar.sharedbill.core.utility.FirebaseExceptionHandler
 import br.com.jwar.sharedbill.utility.NetworkManagerImpl
 import com.google.firebase.appcheck.AppCheckProviderFactory
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
@@ -29,6 +31,12 @@ class AppModule {
     fun provideStringProvider(
         @ApplicationContext context: Context
     ): StringProvider = AndroidStringProvider(context)
+
+    @Provides
+    @Singleton
+    fun provideExceptionHandler(): ExceptionHandler {
+        return FirebaseExceptionHandler()
+    }
 
     @Provides
     @Singleton

@@ -2,6 +2,7 @@ package br.com.jwar.sharedbill.groups.domain.usecases
 
 import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
+import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
@@ -28,10 +29,12 @@ class CreateGroupUseCaseImplTest {
 
     private val groupRepository: GroupRepository = mockk()
     private val userRepository: UserRepository = mockk()
+    private val exceptionHandler: ExceptionHandler = mockk()
 
     private val createGroupUseCase = CreateGroupUseCaseImpl(
         groupRepository = groupRepository,
-        userRepository = userRepository
+        userRepository = userRepository,
+        exceptionHandler = exceptionHandler
     )
 
     @Before
