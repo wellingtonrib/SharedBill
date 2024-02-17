@@ -38,7 +38,7 @@ jobs:
       - name: show files
         run: ls
       - name: Create google-services.json
-        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > /app/google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > app/google-services.json
       - name: Run Unit Tests
         run: ./gradlew test --no-daemon --scan
       - name: Build App Bundle
