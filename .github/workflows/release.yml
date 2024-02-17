@@ -15,31 +15,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup JDK
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           java-version: 17
           distribution: 'zulu'
-      - name: Setup Gradle
+      - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v3
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
-      - name: Assemble Debug
-        run: ./gradlew assembleDebug --no-daemon --scan
-      - name: Upload compose reports artifact
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: compose-reports
-          path: |
-            **/build/compose-metrics
-            **/build/compose-reports
-          retention-days: 2
       - name: Run Unit Tests
         run: ./gradlew test --no-daemon --scan
       - name: Restore keystore
         run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > /app/keystore.jks
-      - name: Restore gradle.properties
+      - name: Restore gradle properties
         run: |
           mkdir -p ~/.gradle/
           echo "KEYSTORE_FILE=/app/keystore.jks" >> ~/.gradle/gradle.properties
