@@ -13,18 +13,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup
-        uses: ./.github/actions/setup.yml
+        uses: ./.github/actions/setup
       - name: Restore needed files
-        uses: ./.github/actions/restore_files.yml
+        uses: ./.github/actions/restore_files
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup
-        uses: ./.github/actions/setup.yml
+        uses: ./.github/actions/setup
       - name: Restore needed files
-        uses: ./.github/actions/restore_files.yml
+        uses: ./.github/actions/restore_files
       - name: Run unit tests
         run: ./gradlew test --no-daemon --scan
   deploy:
@@ -33,9 +33,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup
-        uses: ./.github/actions/setup.yml
+        uses: ./.github/actions/setup
       - name: Restore needed files
-        uses: ./.github/actions/restore_files.yml
+        uses: ./.github/actions/restore_files
       - name: Build release bundle
         run: ./gradlew bundleRelease
       #- name: Deploy to Play Store
