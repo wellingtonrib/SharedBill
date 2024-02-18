@@ -3,8 +3,6 @@ name: Setup
 runs:
   using: composite
   steps:
-    - name: Checkout
-      uses: actions/checkout@v2
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
