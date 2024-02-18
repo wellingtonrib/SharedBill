@@ -25,7 +25,11 @@ jobs:
       - name: Validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Decode keystore and create jks
-        run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > keystore.jks
+        #run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > keystore.jks
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: 'keystore.jks'
+          encodedString: ${{ secrets.KEYSTORE_FILE }}
       - name: Restore gradle properties
         run: |
           mkdir -p ~/.gradle/
