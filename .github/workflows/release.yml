@@ -12,6 +12,8 @@ on:
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
+    env:
+      KEYSTORE_FILE_PATH: app/keystore.jks
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,9 +27,7 @@ jobs:
       - name: Validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Decode keystore and create jks
-        run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > app/keystore.jks
-        env:
-          KEYSTORE_FILE_PATH: app/keystore.jks
+        run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > ${{ KEYSTORE_FILE_PATH }}
       - name: Restore gradle properties
         run: |
           mkdir -p ~/.gradle/
