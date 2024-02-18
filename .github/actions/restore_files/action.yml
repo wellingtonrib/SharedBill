@@ -16,3 +16,4 @@ runs:
       shell: bash
     - name: Restore google services json
       run: echo "${{ inputs.secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+      shell: bash
