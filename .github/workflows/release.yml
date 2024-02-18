@@ -16,6 +16,8 @@ jobs:
         uses: ./.github/actions/setup
       - name: Restore needed files
         uses: ./.github/actions/restore_files
+        with:
+          secrets: ${{ secrets }}
   test:
     runs-on: ubuntu-latest
     steps:
