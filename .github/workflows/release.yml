@@ -1,16 +1,13 @@
-# Workflow name
 name: Build, Test and Deploy
 
-# When it will be triggered
 on:
   pull_request:
   push:
     branches:
       - 50-configure-cicd
 
-# Where it will run
 jobs:
-  build-test-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,7 +21,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
       - name: Validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
-      - name: Decode keystore and create jks
+      - name: Decode and create keystore file
         run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > ${GITHUB_WORKSPACE}/app/keystore.jks
       - name: Restore gradle properties
         run: |
@@ -37,18 +34,40 @@ jobs:
         shell: bash
       - name: Restore google services json
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
-      - name: Show gradle properties
-        run: cat ~/.gradle/gradle.properties
-      - name: Show files
-        run: ls
-      #- name: Run unit tests
-      #  run: ./gradlew test --no-daemon --scan
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'zulu'
+      - name: Set up gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Run unit tests
+        run: ./gradlew test --no-daemon --scan
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'zulu'
+      - name: Set up gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
       - name: Build release bundle
         run: ./gradlew bundleRelease
-      - name: Deploy to Play Store
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SECRET }}
-          packageName: br.com.jwar.sharedbill
-          releaseFiles: app/build/outputs/bundle/release/*.aab
-          track: internal
+      #- name: Deploy to Play Store
+      #  uses: r0adkll/upload-google-play@v1
+      #  with:
+      #    serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SECRET }}
+      #    packageName: br.com.jwar.sharedbill
+      #    releaseFiles: app/build/outputs/bundle/release/*.aab
+      #    track: internal
