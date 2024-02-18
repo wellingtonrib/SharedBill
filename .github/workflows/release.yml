@@ -41,8 +41,6 @@ jobs:
         run: cat ~/.gradle/gradle.properties
       - name: Show files
         run: ls
-      - name: Show jks
-        run: echo "${{ KEYSTORE_FILE_PATH }}"
       #- name: Run unit tests
       #  run: ./gradlew test --no-daemon --scan
       - name: Build release bundle
