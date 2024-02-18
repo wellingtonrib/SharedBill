@@ -26,19 +26,25 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
       - name: Decode keystore and create jks
         run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > app/keystore.jks
+        env:
+          KEYSTORE_FILE_PATH: app/keystore.jks
       - name: Restore gradle properties
         run: |
           mkdir -p ~/.gradle/
-          echo "KEYSTORE_FILE=${{ app/keystore.jks }}" >> ~/.gradle/gradle.properties
+          echo "KEYSTORE_FILE=${{ KEYSTORE_FILE_PATH }}" >> ~/.gradle/gradle.properties
           echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> ~/.gradle/gradle.properties
           echo "SIGNING_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}" >> ~/.gradle/gradle.properties
           echo "SIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}" >> ~/.gradle/gradle.properties
           echo "FIREBASE_WEB_CLIENT_ID=${{ secrets.FIREBASE_WEB_CLIENT_ID }}" >> ~/.gradle/gradle.properties
         shell: bash
-      - name: Show gradle properties
-        run: cat ~/.gradle/gradle.properties
       - name: Restore google services json
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+      - name: Show gradle properties
+        run: cat ~/.gradle/gradle.properties
+      - name: Show files
+        run: ls
+      - name: Show jks
+        run: echo "${{ KEYSTORE_FILE_PATH }}"
       #- name: Run unit tests
       #  run: ./gradlew test --no-daemon --scan
       - name: Build release bundle
