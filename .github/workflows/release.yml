@@ -34,6 +34,22 @@ jobs:
         shell: bash
       - name: Restore google services json
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+      - name: Cache gradle properties
+        uses: actions/cache@v2
+        env:
+            cache-name: cache-gradle-properties
+        with:
+          path: ~/.gradle
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+      - name: Cache google services json and keystore
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-google-files
+        with:
+          path: |
+            app/google-services.json
+            ${GITHUB_WORKSPACE}/app/keystore.jks
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
   test:
     runs-on: ubuntu-latest
     steps:
