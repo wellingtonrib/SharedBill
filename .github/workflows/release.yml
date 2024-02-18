@@ -13,7 +13,7 @@ jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
     env:
-      KEYSTORE_FILE_PATH: app/keystore.jks
+      KEYSTORE_FILE_PATH: "app/keystore.jks"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
