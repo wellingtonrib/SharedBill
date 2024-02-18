@@ -29,7 +29,7 @@ jobs:
       - name: Restore gradle properties
         run: |
           mkdir -p ~/.gradle/
-          echo "KEYSTORE_FILE=../${{ app/keystore.jks }}" >> ~/.gradle/gradle.properties
+          echo "KEYSTORE_FILE=../app/keystore.jks" >> ~/.gradle/gradle.properties
           echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> ~/.gradle/gradle.properties
           echo "SIGNING_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}" >> ~/.gradle/gradle.properties
           echo "SIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}" >> ~/.gradle/gradle.properties
