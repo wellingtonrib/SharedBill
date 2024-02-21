@@ -3,7 +3,7 @@ name: Restore needed files
 runs:
   using: composite
   steps:
-    - name: Decode and create keystore file
+    - name: Restore keystore file
       run: echo "${{ inputs.keystore_file }}" | base64 --decode > ${GITHUB_WORKSPACE}/app/keystore.jks
       shell: bash
     - name: Restore gradle properties
