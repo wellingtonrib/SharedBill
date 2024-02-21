@@ -7,9 +7,11 @@ on:
       - 50-configure-cicd
 
 jobs:
-  build:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Setup environment
         uses: ./.github/actions/setup
       - name: Restore needed files
@@ -23,44 +25,18 @@ jobs:
           google_services_json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Build
         run: ./gradlew build
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Setup environment
-        uses: ./.github/actions/setup
-      - name: Restore needed files
-        uses: ./.github/actions/restore_files
-        with:
-          keystore_file: ${{ secrets.KEYSTORE_FILE }}
-          keystore_password: ${{ secrets.KEYSTORE_PASSWORD }}
-          signing_key_alias: ${{ secrets.SIGNING_KEY_ALIAS }}
-          signing_key_password: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          firebase_web_client_id: ${{ secrets.FIREBASE_WEB_CLIENT_ID }}
-          google_services_json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Run unit tests
         run: ./gradlew test --no-daemon --scan
-  deploy:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Setup environment
-        uses: ./.github/actions/setup
-      - name: Restore needed files
-        uses: ./.github/actions/restore_files
-        with:
-          keystore_file: ${{ secrets.KEYSTORE_FILE }}
-          keystore_password: ${{ secrets.KEYSTORE_PASSWORD }}
-          signing_key_alias: ${{ secrets.SIGNING_KEY_ALIAS }}
-          signing_key_password: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          firebase_web_client_id: ${{ secrets.FIREBASE_WEB_CLIENT_ID }}
-          google_services_json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Build release bundle
         run: ./gradlew bundleRelease
-      #- name: Deploy to Play Store
-      #  uses: r0adkll/upload-google-play@v1
-      #  with:
-      #    serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SECRET }}
-      #    packageName: br.com.jwar.sharedbill
-      #    releaseFiles: app/build/outputs/bundle/release/*.aab
-      #    track: internal
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build_and_test
+    steps:
+      - name: Deploy to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SECRET }}
+          packageName: br.com.jwar.sharedbill
+          releaseFiles: app/build/outputs/bundle/release/*.aab
+          track: internal
