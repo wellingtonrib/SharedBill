@@ -5,6 +5,7 @@ runs:
   steps:
     - name: Decode and create keystore file
       run: echo "${{ inputs.keystore_file }}" | base64 --decode > ${GITHUB_WORKSPACE}/app/keystore.jks
+      shell: bash
     - name: Restore gradle properties
       run: |
         mkdir -p ~/.gradle/
@@ -16,3 +17,4 @@ runs:
       shell: bash
     - name: Restore google services json
       run: echo "${{ inputs.google_services_json }}" | base64 --decode > app/google-services.json
+      shell: bash
