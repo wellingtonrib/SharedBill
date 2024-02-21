@@ -5,6 +5,7 @@ runs:
   steps:
     - name: Decode and create keystore file
       run: echo "${{ inputs.secrets.KEYSTORE_FILE }}" | base64 --decode > ${GITHUB_WORKSPACE}/app/keystore.jks
+      shell: bash
     - name: Restore gradle properties
       run: |
         mkdir -p ~/.gradle/
