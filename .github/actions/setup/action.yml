@@ -1,0 +1,14 @@
+name: Setup
+
+runs:
+  using: composite
+  steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: 17
+        distribution: 'zulu'
+    - name: Set up gradle
+      uses: gradle/actions/setup-gradle@v3
+    - name: Validate gradle wrapper
+      uses: gradle/wrapper-validation-action@v1

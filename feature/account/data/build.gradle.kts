@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     id("sharedbill.android.library")
     id("sharedbill.android.firebase")
@@ -8,10 +6,7 @@ plugins {
 
 android {
     defaultConfig {
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").reader())
-
-        buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"${properties.getProperty("FIREBASE_WEB_CLIENT_ID")}\"")
+        buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"${project.property("FIREBASE_WEB_CLIENT_ID").toString()}\"")
     }
 
     buildFeatures {

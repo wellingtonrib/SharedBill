@@ -1,25 +1,22 @@
-import org.jetbrains.kotlin.konan.properties.Properties
-
 plugins {
     id("sharedbill.android.application")
 }
 
 android {
     signingConfigs {
-        create("release") {
-            val properties = Properties().apply {
-                load(File("app/signing.properties").reader())
+        if (project.hasProperty("KEYSTORE_FILE")) {
+            create("release") {
+                storeFile = file(project.property("KEYSTORE_FILE").toString())
+                storePassword = project.property("KEYSTORE_PASSWORD").toString()
+                keyAlias = project.property("SIGNING_KEY_ALIAS").toString()
+                keyPassword = project.property("SIGNING_KEY_PASSWORD").toString()
             }
-            storeFile = File(properties.getProperty("storeFile"))
-            storePassword = properties.getProperty("storePassword")
-            keyPassword = properties.getProperty("keyPassword")
-            keyAlias = properties.getProperty("keyAlias")
         }
     }
     defaultConfig {
         applicationId = "br.com.jwar.sharedbill"
-        versionCode = 12
-        versionName = "1.0.4"
+        versionCode = 14
+        versionName = "1.0.5"
         testInstrumentationRunner = "br.com.jwar.sharedbill.testing.HiltTestRunner"
     }
 
@@ -27,7 +24,7 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("release")
+            signingConfigs.findByName("release")?.let { signingConfig = it }
         }
     }
 

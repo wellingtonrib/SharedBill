@@ -11,6 +11,8 @@ import br.com.jwar.sharedbill.groups.presentation.mappers.GroupToGroupUiModelMap
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
 import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
+import com.google.common.collect.ImmutableList
+import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -54,13 +56,14 @@ class GroupPaymentViewModelTest {
     }
 
     @Test
-    fun `onInit with Expense payment type should get group, map and update ui state`() = runTest {
+    fun `onInit with Expense payment type should update ui state`() = runTest {
         val groupId = UUID.randomUUID().toString()
         val paymentType = PaymentType.EXPENSE
         val group = Group()
         val firstMember = GroupMemberUiModel(UUID.randomUUID().toString())
         val secondMember = GroupMemberUiModel(UUID.randomUUID().toString())
         val members = ImmutableSet.of(firstMember, secondMember)
+        val paidTo = members.associateWith { 1 }
         val groupUiModel = GroupUiModel(id = groupId, members = members)
         val stateList = mutableListOf<PaymentContract.State>()
         val timeInMillis = 1000L
@@ -73,8 +76,6 @@ class GroupPaymentViewModelTest {
 
         viewModel.emitEvent { PaymentContract.Event.OnInit(groupId, paymentType) }
 
-        coVerify { getGroupByIdUseCase(groupId) }
-        verify { groupToGroupUiModelMapper.mapFrom(group) }
         with(viewModel.uiState.value) {
             assertEquals(groupUiModel, this.groupUiModel)
             assertFalse(this.isLoading)
@@ -97,7 +98,7 @@ class GroupPaymentViewModelTest {
                         assertEquals(firstMember, field.value)
                     }
                     is PaymentContract.Field.PaidToField -> {
-                        assertEquals(members, field.value)
+                        assertEquals(paidTo, field.value)
                     }
                 }
             }
@@ -105,13 +106,14 @@ class GroupPaymentViewModelTest {
     }
 
     @Test
-    fun `onInit with Settlement payment type should get group, map and update ui state`() = runTest {
+    fun `onInit with Settlement payment type should update ui state`() = runTest {
         val groupId = UUID.randomUUID().toString()
         val paymentType = PaymentType.SETTLEMENT
         val group = Group()
         val firstMember = GroupMemberUiModel(UUID.randomUUID().toString())
         val secondMember = GroupMemberUiModel(UUID.randomUUID().toString())
         val members = ImmutableSet.of(firstMember, secondMember)
+        val paidTo = ImmutableMap.of(secondMember, 1)
         val groupUiModel = GroupUiModel(id = groupId, members = members)
         val stateList = mutableListOf<PaymentContract.State>()
         val timeInMillis = 1000L
@@ -124,8 +126,6 @@ class GroupPaymentViewModelTest {
 
         viewModel.emitEvent { PaymentContract.Event.OnInit(groupId, paymentType) }
 
-        coVerify { getGroupByIdUseCase(groupId) }
-        verify { groupToGroupUiModelMapper.mapFrom(group) }
         with(viewModel.uiState.value) {
             assertEquals(groupUiModel, this.groupUiModel)
             assertFalse(this.isLoading)
@@ -151,7 +151,7 @@ class GroupPaymentViewModelTest {
                         assertTrue(field.visible)
                     }
                     is PaymentContract.Field.PaidToField -> {
-                        assertEquals(members, field.value)
+                        assertEquals(paidTo, field.value)
                         assertTrue(field.visible)
                     }
                 }
@@ -166,7 +166,7 @@ class GroupPaymentViewModelTest {
 
     @Test
     fun `onDescriptionChange should update Description field on state`() = runTest {
-        prepareScenario()
+        prepareScenario(isInitialized = true)
 
         viewModel.emitEvent { PaymentContract.Event.OnDescriptionChange("description") }
 
@@ -219,8 +219,11 @@ class GroupPaymentViewModelTest {
         stateList: MutableList<PaymentContract.State> = mutableListOf(),
         effectList: MutableList<PaymentContract.Effect> = mutableListOf(),
         groupResult: Result<Group> = Result.success(Group()),
-        groupUiModel: GroupUiModel = GroupUiModel(),
+        groupId: String = UUID.randomUUID().toString(),
+        paymentType: PaymentType = PaymentType.EXPENSE,
+        groupUiModel: GroupUiModel = GroupUiModel(id = groupId),
         timeInMillis: Long = 0,
+        isInitialized: Boolean = false,
     ) {
         coEvery { getGroupByIdUseCase(any(), any()) } returns groupResult
         coEvery { groupToGroupUiModelMapper.mapFrom(any()) } returns groupUiModel
@@ -234,6 +237,10 @@ class GroupPaymentViewModelTest {
         }
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.uiState.toList(stateList)
+        }
+
+        if (isInitialized) {
+            viewModel.emitEvent { PaymentContract.Event.OnInit(groupId, paymentType) }
         }
     }
 }

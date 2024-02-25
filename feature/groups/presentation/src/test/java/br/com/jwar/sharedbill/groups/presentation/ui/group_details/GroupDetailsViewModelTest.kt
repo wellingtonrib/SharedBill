@@ -1,6 +1,8 @@
 package br.com.jwar.sharedbill.groups.presentation.ui.group_details
 
+import br.com.jwar.sharedbill.core.utility.StringProvider
 import br.com.jwar.sharedbill.groups.domain.model.Group
+import br.com.jwar.sharedbill.groups.domain.usecases.DeletePaymentUseCase
 import br.com.jwar.sharedbill.groups.domain.usecases.GetGroupByIdStreamUseCase
 import br.com.jwar.sharedbill.groups.presentation.mappers.GroupToGroupUiModelMapper
 import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
@@ -30,10 +32,14 @@ internal class GroupDetailsViewModelTest {
 
     private val getGroupByIdStreamUseCase: GetGroupByIdStreamUseCase = mockk()
     private val groupToGroupUiModelMapper: GroupToGroupUiModelMapper = mockk()
+    private val deletePaymentUseCase: DeletePaymentUseCase = mockk()
+    private val stringProvider: StringProvider = mockk()
     private val viewModel: GroupDetailsViewModel by lazy {
         GroupDetailsViewModel(
             getGroupByIdStreamUseCase = getGroupByIdStreamUseCase,
             groupToGroupUiModelMapper = groupToGroupUiModelMapper,
+            deletePaymentUseCase = deletePaymentUseCase,
+            stringProvider = stringProvider,
         )
     }
 
@@ -99,6 +105,8 @@ internal class GroupDetailsViewModelTest {
             emit(groupResult)
         }
         every { groupToGroupUiModelMapper.mapFrom(any()) } returns groupUiModelResult
+        every { stringProvider.getString(any()) } returns "string"
+        coEvery { deletePaymentUseCase(any(), any(), any()) } returns Result.success(Unit)
 
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.uiState.toList(stateList)

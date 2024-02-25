@@ -1,0 +1,20 @@
+name: Restore needed files
+
+runs:
+  using: composite
+  steps:
+    - name: Restore keystore file
+      run: echo "${{ inputs.keystore_file }}" | base64 --decode > ${GITHUB_WORKSPACE}/app/keystore.jks
+      shell: bash
+    - name: Restore gradle properties
+      run: |
+        mkdir -p ~/.gradle/
+        echo "KEYSTORE_FILE=${GITHUB_WORKSPACE}/app/keystore.jks" >> ~/.gradle/gradle.properties
+        echo "KEYSTORE_PASSWORD=${{ inputs.keystore_password }}" >> ~/.gradle/gradle.properties
+        echo "SIGNING_KEY_ALIAS=${{ inputs.signing_key_alias }}" >> ~/.gradle/gradle.properties
+        echo "SIGNING_KEY_PASSWORD=${{ inputs.signing_key_password }}" >> ~/.gradle/gradle.properties
+        echo "FIREBASE_WEB_CLIENT_ID=${{ inputs.firebase_web_client_id }}" >> ~/.gradle/gradle.properties
+      shell: bash
+    - name: Restore google services json
+      run: echo "${{ inputs.google_services_json }}" | base64 --decode > app/google-services.json
+      shell: bash
