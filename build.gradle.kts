@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.dependency.analysis) apply true
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.kover) apply false
 }
 
 tasks.register("clean", Delete::class) {

@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins
 
+import br.com.jwar.sharedbill.buildlogic.conventionplugin.extensions.applyKoverDependenciesForSubProjects
 import br.com.jwar.sharedbill.buildlogic.conventionplugin.extensions.configureAndroid
 import br.com.jwar.sharedbill.buildlogic.conventionplugin.extensions.configureCompose
 import com.android.build.api.dsl.ApplicationExtension
@@ -24,12 +25,14 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                 apply("com.google.gms.google-services")
                 apply("com.google.firebase.crashlytics")
                 apply("sharedbill.android.detekt")
+                apply("sharedbill.android.kover")
             }
 
             extensions.configure<ApplicationExtension> {
                 defaultConfig.targetSdk = libs.findVersion("targetSdk").get().requiredVersion.toInt()
                 configureAndroid(this)
                 configureCompose(this)
+                applyKoverDependenciesForSubProjects()
             }
         }
     }

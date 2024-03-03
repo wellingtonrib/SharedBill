@@ -13,6 +13,7 @@ dependencies {
     compileOnly(libs.android.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
     compileOnly(libs.detekt.gradlePlugin)
+    compileOnly(libs.kover.gradlePlugin)
 }
 
 gradlePlugin {
@@ -44,6 +45,10 @@ gradlePlugin {
         register("androidDetekt") {
             id = "sharedbill.android.detekt"
             implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins.AndroidDetektConventionPlugin"
+        }
+        register("androidKover") {
+            id = "sharedbill.android.kover"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins.AndroidKoverConventionPlugin"
         }
     }
 }

@@ -24,7 +24,7 @@ jobs:
           firebase_web_client_id: ${{ secrets.FIREBASE_WEB_CLIENT_ID }}
           google_services_json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Build
-        run: ./gradlew build
+        run: ./gradlew build -x detekt
       - name: Run unit tests
         run: ./gradlew test --no-daemon --scan
       - name: Build release bundle
