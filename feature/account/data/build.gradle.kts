@@ -6,7 +6,8 @@ plugins {
 
 android {
     defaultConfig {
-        buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"${project.property("FIREBASE_WEB_CLIENT_ID").toString()}\"")
+        val firebaseWebClientId = project.findProperty("FIREBASE_WEB_CLIENT_ID")?.toString() ?: "FIREBASE_WEB_CLIENT_ID"
+        buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"$firebaseWebClientId\"")
     }
 
     buildFeatures {

@@ -43,6 +43,11 @@ internal fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, 
             resources.excludes.add("META-INF/LICENSE.md")
             resources.excludes.add("META-INF/LICENSE-notice.md")
         }
+
+        lint {
+            sarifReport = true
+            checkDependencies = true
+        }
     }
 }
 

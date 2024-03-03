@@ -23,6 +23,7 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                 apply("kotlin-kapt")
                 apply("com.google.gms.google-services")
                 apply("com.google.firebase.crashlytics")
+                apply("sharedbill.android.detekt")
             }
 
             extensions.configure<ApplicationExtension> {

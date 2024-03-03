@@ -1,0 +1,37 @@
+name: Build Analysis
+
+on:
+  pull_request:
+
+jobs:
+  static_analysis:
+    name: Static analysis
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup environment
+        uses: ./.github/actions/setup
+      - name: Run detekt
+        run: ./gradlew detekt reportMerge --continue --no-daemon
+      - name: Analyze detekt report
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: build/reports/detekt/merge.sarif
+          checkout_path: ${{ github.workspace }}
+      - name: Run lint
+        run: ./gradlew lint --continue --no-daemon
+      - name: Analyze lint report
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: app/build/reports/lint-results-debug.sarif
+          checkout_path: ${{ github.workspace }}
+          category: lint
+
