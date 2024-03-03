@@ -26,7 +26,8 @@ jobs:
           sarif_file: build/reports/detekt/merge.sarif
           checkout_path: ${{ github.workspace }}
       - name: Run lint
-        run: ./gradlew lint --continue --no-daemon
+        run: ./gradlew lint --continue
+        if: success() || failure()
       - name: Analyze lint report
         uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
