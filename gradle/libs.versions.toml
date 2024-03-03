@@ -28,6 +28,7 @@ targetSdk                  = "34"
 splashScreen               = "1.0.1"
 firebaseCrashlytics        = "2.9.9"
 firebaseCommonKtx          = "20.4.2"
+detekt                     = "1.23.1"
 
 [libraries]
 accompanist-navigation-animation        = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
@@ -79,6 +80,8 @@ kotlinx-coroutines-test                 = { module = "org.jetbrains.kotlinx:kotl
 mockk                                   = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-android                           = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 splashscreen                            = { group  = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
+detekt-formatting                       = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
+detekt-gradlePlugin                     = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 
 [bundles]
 androidTest                             = ["androidx-test-ext-junit", "androidx-test-espresso-core", "androidx-compose-ui-test-junit4", "hilt-android-testing", "androidx-runner", "mockk-android"]
@@ -95,3 +98,4 @@ hilt                                    = { id = "com.google.dagger.hilt.android
 kotlin-jvm                              = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 dependency-analysis                     = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
 firebase-crashlytics                    = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
+detekt                                  = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

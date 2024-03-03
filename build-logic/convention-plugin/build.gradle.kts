@@ -12,6 +12,7 @@ java {
 dependencies {
     compileOnly(libs.android.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
+    compileOnly(libs.detekt.gradlePlugin)
 }
 
 gradlePlugin {
@@ -39,6 +40,10 @@ gradlePlugin {
         register("androidHilt") {
             id = "sharedbill.android.hilt"
             implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins.AndroidHiltConventionPlugin"
+        }
+        register("androidDetekt") {
+            id = "sharedbill.android.detekt"
+            implementationClass = "br.com.jwar.sharedbill.buildlogic.conventionplugin.plugins.AndroidDetektConventionPlugin"
         }
     }
 }
