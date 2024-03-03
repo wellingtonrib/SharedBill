@@ -35,4 +35,30 @@ jobs:
           sarif_file: build/reports/lint/merge.sarif
           checkout_path: ${{ github.workspace }}
           category: lint
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup environment
+        uses: ./.github/actions/setup
+      - name: Restore needed files
+        uses: ./.github/actions/restore_files
+        with:
+          keystore_file: ${{ secrets.KEYSTORE_FILE }}
+          keystore_password: ${{ secrets.KEYSTORE_PASSWORD }}
+          signing_key_alias: ${{ secrets.SIGNING_KEY_ALIAS }}
+          signing_key_password: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          firebase_web_client_id: ${{ secrets.FIREBASE_WEB_CLIENT_ID }}
+          google_services_json: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      - name: Run unit tests
+        run: ./gradlew test --no-daemon
+      - name: Generate test reports
+        run: ./gradlew koverHtmlReportDebug
+      - name: Upload test reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: kover-report
+          path: app/build/reports/kover/htmlDebug/index.html
 
