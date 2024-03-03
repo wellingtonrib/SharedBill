@@ -46,6 +46,7 @@ internal fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, 
 
         lint {
             sarifReport = true
+            sarifOutput = file("$rootDir/build/reports/lint/merge.sarif")
             checkDependencies = true
         }
     }
