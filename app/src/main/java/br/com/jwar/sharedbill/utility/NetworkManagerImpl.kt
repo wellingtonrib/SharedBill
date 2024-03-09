@@ -1,4 +1,5 @@
 @file:Suppress("DEPRECATION")
+
 package br.com.jwar.sharedbill.utility
 
 import android.annotation.SuppressLint

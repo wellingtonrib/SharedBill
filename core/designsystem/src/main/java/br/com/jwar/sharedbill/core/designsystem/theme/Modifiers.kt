@@ -17,7 +17,8 @@ import androidx.compose.ui.composed
 fun Modifier.fillMaxWidthPaddingMedium() =
     composed { Modifier
         .fillMaxWidth()
-        .then(paddingMedium()) }
+        .then(paddingMedium())
+    }
 
 @Composable
 fun VerticalSpacerSmall() = Spacer(modifier = Modifier.verticalSpaceSmall())

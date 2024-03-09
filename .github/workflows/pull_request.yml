@@ -17,6 +17,15 @@ jobs:
           fetch-depth: 0
       - name: Setup environment
         uses: ./.github/actions/setup
+      - name: Restore needed files
+        uses: ./.github/actions/restore_files
+        with:
+          keystore_file: ${{ secrets.KEYSTORE_FILE }}
+          keystore_password: ${{ secrets.KEYSTORE_PASSWORD }}
+          signing_key_alias: ${{ secrets.SIGNING_KEY_ALIAS }}
+          signing_key_password: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          firebase_web_client_id: ${{ secrets.FIREBASE_WEB_CLIENT_ID }}
+          google_services_json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Run detekt
         run: ./gradlew detekt reportMerge --continue --no-daemon
       - name: Analyze detekt report
