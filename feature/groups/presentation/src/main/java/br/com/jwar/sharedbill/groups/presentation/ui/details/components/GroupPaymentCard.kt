@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissBackground
-import br.com.jwar.sharedbill.core.designsystem.components.swipeToDismissConfirm
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissDeleteAction
+import br.com.jwar.sharedbill.core.designsystem.components.swipeToDismissConfirm
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme

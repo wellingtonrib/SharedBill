@@ -15,9 +15,10 @@ import androidx.compose.ui.composed
 
 @SuppressLint("UnnecessaryComposedModifier")
 fun Modifier.fillMaxWidthPaddingMedium() =
-    composed { Modifier
-        .fillMaxWidth()
-        .then(paddingMedium())
+    composed {
+        Modifier
+            .fillMaxWidth()
+            .then(paddingMedium())
     }
 
 @Composable

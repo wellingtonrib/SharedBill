@@ -16,9 +16,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissBackground
-import br.com.jwar.sharedbill.core.designsystem.components.swipeToDismissConfirm
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissDeleteAction
 import br.com.jwar.sharedbill.core.designsystem.components.UserAvatar
+import br.com.jwar.sharedbill.core.designsystem.components.swipeToDismissConfirm
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerMedium
 import br.com.jwar.sharedbill.core.designsystem.theme.fillMaxWidthPaddingMedium

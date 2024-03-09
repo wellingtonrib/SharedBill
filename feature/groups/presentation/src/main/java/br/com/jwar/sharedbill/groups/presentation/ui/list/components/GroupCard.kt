@@ -20,9 +20,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissBackground
-import br.com.jwar.sharedbill.core.designsystem.components.swipeToDismissConfirm
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissDeleteAction
 import br.com.jwar.sharedbill.core.designsystem.components.SwipeToDismissLeaveAction
+import br.com.jwar.sharedbill.core.designsystem.components.swipeToDismissConfirm
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.paddingLarge
