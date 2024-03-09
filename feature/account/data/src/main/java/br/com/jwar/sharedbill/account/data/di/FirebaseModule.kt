@@ -21,7 +21,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class FirebaseModule {
-
     companion object {
         const val SIGN_IN_REQUEST = "sign_in_request"
         const val SIGN_UP_REQUEST = "sign_up_request"
@@ -50,7 +49,8 @@ class FirebaseModule {
                 .setSupported(true)
                 .setServerClientId(BuildConfig.FIREBASE_WEB_CLIENT_ID)
                 .setFilterByAuthorizedAccounts(true)
-                .build())
+                .build()
+        )
         .setAutoSelectEnabled(true)
         .build()
 
@@ -63,7 +63,8 @@ class FirebaseModule {
                 .setSupported(true)
                 .setServerClientId(BuildConfig.FIREBASE_WEB_CLIENT_ID)
                 .setFilterByAuthorizedAccounts(false)
-                .build())
+                .build()
+        )
         .build()
 
     @Provides

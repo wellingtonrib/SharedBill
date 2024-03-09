@@ -60,7 +60,10 @@ fun PaymentUiModel.getInfo() =
 fun PaymentUiModel.getMessage(group: GroupUiModel) =
     when {
         paymentType == PaymentType.REVERSE -> {
-            stringResource(R.string.message_payment_reverse, paidTo.joinToString(limit = 3, truncated = "...") { it.firstName })
+            stringResource(
+                R.string.message_payment_reverse,
+                paidTo.joinToString(limit = 3, truncated = "...") { it.firstName }
+            )
         }
         isReversed -> {
             stringResource(R.string.message_payment_reversed)
@@ -69,7 +72,10 @@ fun PaymentUiModel.getMessage(group: GroupUiModel) =
             stringResource(R.string.message_payment_detail_to_all, paidBy.firstName)
         }
         else -> {
-            stringResource(R.string.message_payment_detail, paidBy.firstName, paidTo.joinToString(limit = 3, truncated = "...") { it.firstName })
-
+            stringResource(
+                R.string.message_payment_detail,
+                paidBy.firstName,
+                paidTo.joinToString(limit = 3, truncated = "...") { it.firstName }
+            )
         }
     }

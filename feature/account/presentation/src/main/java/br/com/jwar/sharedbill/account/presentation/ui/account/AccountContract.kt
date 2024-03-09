@@ -6,7 +6,7 @@ import br.com.jwar.sharedbill.core.common.UiState
 import br.com.jwar.sharedbill.core.designsystem.model.UserUiModel
 
 class AccountContract {
-    sealed class Event: UiEvent {
+    sealed class Event : UiEvent {
         object OnInit : Event()
         object OnSignOutClick : Event()
         object OnContactClick : Event()
@@ -23,8 +23,8 @@ class AccountContract {
         val showAboutDialog: Boolean = false,
     ) : UiState
 
-    sealed class Effect: UiEffect {
-        object NavigateToAuth: Effect()
+    sealed class Effect : UiEffect {
+        object NavigateToAuth : Effect()
         object LaunchContactIntent : Effect()
         object LaunchToTermsIntent : Effect()
         object LaunchPrivacyIntent : Effect()

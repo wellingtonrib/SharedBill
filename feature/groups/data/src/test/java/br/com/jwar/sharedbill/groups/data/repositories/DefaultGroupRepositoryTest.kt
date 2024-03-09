@@ -151,6 +151,7 @@ internal class DefaultGroupRepositoryTest {
         coVerify { groupsDataSource.deleteGroup(groupId) }
     }
 
+    @Suppress("LongParameterList")
     private fun prepareScenario(
         groupsStreamResult: Flow<List<Group>> = flowOf(),
         groupByIdStreamResult: Flow<Group> = flowOf(),
@@ -176,5 +177,4 @@ internal class DefaultGroupRepositoryTest {
         coEvery { groupsDataSource.sendPayment(any()) } returns sendPaymentResult
         coEvery { groupsDataSource.deleteGroup(any()) } returns deleteGroupResult
     }
-
 }

@@ -24,7 +24,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.test.assertIs
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class FirebaseUserDataSourceTest {
 
@@ -78,7 +77,7 @@ internal class FirebaseUserDataSourceTest {
     }
 
     @Test
-    fun `saveUser should get firestore document from firebaseUserId and set user`() = runTest  {
+    fun `saveUser should get firestore document from firebaseUserId and set user`() = runTest {
         val user = FakeFactory.makeUser()
         val documentReference = mockk<DocumentReference>()
         prepareScenario(documentReference = documentReference)

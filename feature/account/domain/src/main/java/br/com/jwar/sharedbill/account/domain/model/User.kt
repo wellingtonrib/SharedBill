@@ -1,10 +1,10 @@
 package br.com.jwar.sharedbill.account.domain.model
 
-
 import androidx.annotation.Keep
 import com.google.firebase.firestore.Exclude
 
 @Keep
+@Suppress("MagicNumber")
 data class User(
     val id: String = "",
     val firebaseUserId: String = "",

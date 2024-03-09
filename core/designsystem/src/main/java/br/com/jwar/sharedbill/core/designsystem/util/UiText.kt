@@ -9,18 +9,18 @@ import androidx.compose.ui.res.stringResource
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 
 sealed class UiText {
-    data class DynamicString(val value: String): UiText()
-    class StringResource(@StringRes val resId: Int, vararg var args: Any): UiText()
+    data class DynamicString(val value: String) : UiText()
+    class StringResource(@StringRes val resId: Int, vararg var args: Any) : UiText()
 
     @Composable
-    fun asString() = when(this) {
+    fun asString() = when (this) {
         is DynamicString -> value
-        is StringResource -> stringResource(resId, *args)
+        is StringResource -> stringResource(resId, args)
     }
 
-    fun asString(context: Context) = when(this) {
+    fun asString(context: Context) = when (this) {
         is DynamicString -> value
-        is StringResource -> context.getString(resId, *args)
+        is StringResource -> context.getString(resId, args)
     }
 
     @Composable

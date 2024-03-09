@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import br.com.jwar.sharedbill.account.presentation.navigation.AUTH_ROUTE
 import br.com.jwar.sharedbill.account.presentation.navigation.accountNav
 import br.com.jwar.sharedbill.groups.presentation.navigation.groupsNav
-import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GROUP_LIST_ROUTE
+import br.com.jwar.sharedbill.groups.presentation.ui.list.GROUP_LIST_ROUTE
 
 @Composable
 @ExperimentalAnimationApi
@@ -41,6 +41,3 @@ fun NavGraph(
         )
     }
 }
-
-
-

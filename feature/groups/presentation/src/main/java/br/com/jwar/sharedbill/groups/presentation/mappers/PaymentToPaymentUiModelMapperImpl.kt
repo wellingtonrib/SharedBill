@@ -1,16 +1,16 @@
 package br.com.jwar.sharedbill.groups.presentation.mappers
 
-import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiModel
 import br.com.jwar.sharedbill.core.utility.extensions.toCurrency
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.model.Payment
 import br.com.jwar.sharedbill.groups.presentation.models.GroupMemberUiModel
+import br.com.jwar.sharedbill.groups.presentation.models.PaymentUiModel
 import com.google.common.collect.ImmutableSet
 import javax.inject.Inject
 
 class PaymentToPaymentUiModelMapperImpl @Inject constructor(
     private val userToUserUiModelMapper: UserToGroupMemberUiModelMapper
-): PaymentToPaymentUiModelMapper {
+) : PaymentToPaymentUiModelMapper {
     override fun mapFrom(from: Payment, group: Group) =
         PaymentUiModel(
             id = from.id,
@@ -25,9 +25,11 @@ class PaymentToPaymentUiModelMapperImpl @Inject constructor(
         )
 
     private fun mapPaidTo(from: Payment, group: Group): ImmutableSet<GroupMemberUiModel> {
-        return ImmutableSet.copyOf(from.paidTo.mapNotNull { (memberId, _) ->
-            mapMemberById(memberId, group)
-        })
+        return ImmutableSet.copyOf(
+            from.paidTo.mapNotNull { (memberId, _) ->
+                mapMemberById(memberId, group)
+            }
+        )
     }
 
     private fun mapMemberById(memberId: String, group: Group) =

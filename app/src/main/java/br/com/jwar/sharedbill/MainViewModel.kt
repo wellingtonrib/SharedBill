@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase
-): BaseViewModel<Event, State, Effect>() {
+) : BaseViewModel<Event, State, Effect>() {
     override fun getInitialState() = State.Initializing
     override fun handleEvent(event: Event) {
         when (event) {
@@ -28,5 +28,4 @@ class MainViewModel @Inject constructor(
             sendEffect { Effect.NavigateToAuth }
         }
     }
-
 }

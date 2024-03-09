@@ -14,8 +14,9 @@ class DeleteGroupUseCaseImpl @Inject constructor(
         val group = groupsRepository.getGroupById(groupId)
         val currentUser = userRepository.getCurrentUser()
 
-        if (currentUser.firebaseUserId != group.owner.firebaseUserId)
+        if (currentUser.firebaseUserId != group.owner.firebaseUserId) {
             throw GroupException.DeletingFromNonOwnerException
+        }
 
         groupsRepository.deleteGroup(groupId)
     }

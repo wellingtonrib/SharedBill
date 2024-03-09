@@ -19,7 +19,7 @@ class AuthViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase,
     private val signUpUseCase: SignUpUseCase,
     private val signInFirebaseUseCase: SignInFirebaseUseCase,
-): BaseViewModel<Event, State, Effect>() {
+) : BaseViewModel<Event, State, Effect>() {
 
     override fun getInitialState() = State.Idle
 

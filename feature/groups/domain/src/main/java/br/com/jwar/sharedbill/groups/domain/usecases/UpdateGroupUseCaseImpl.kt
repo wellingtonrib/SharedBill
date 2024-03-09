@@ -12,7 +12,6 @@ class UpdateGroupUseCaseImpl @Inject constructor(
 ) : UpdateGroupUseCase {
     override suspend fun invoke(groupId: String, title: String) = resultOf(exceptionHandler) {
         if (title.isBlank()) throw GroupException.InvalidTitle
-        
         groupRepository.updateGroup(groupId, title)
     }
 }

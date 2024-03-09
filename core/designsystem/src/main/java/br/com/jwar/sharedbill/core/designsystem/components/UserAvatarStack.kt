@@ -20,11 +20,6 @@ import br.com.jwar.sharedbill.core.designsystem.model.UserUiModel
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 
-sealed class AvatarItem {
-    data class UserAvatar(val user: UserUiModel) : AvatarItem()
-    data class NotShowingIndicator(val count: Int) : AvatarItem()
-}
-
 @Composable
 fun UserAvatarStack(
     modifier: Modifier = Modifier,
@@ -44,7 +39,11 @@ fun UserAvatarStack(
                 add(AvatarItem.NotShowingIndicator(usersNotShowing))
             }
         }
-    val with = if (avatarItems.size > 1) avatarSize.times(avatarItems.size) - overlap.times(avatarItems.size) else avatarSize
+    val with = if (avatarItems.size > 1) {
+        avatarSize.times(avatarItems.size) - overlap.times(avatarItems.size)
+    } else {
+        avatarSize
+    }
     val overlapPx = with(LocalDensity.current) { overlap.toPx() }
 
     Box(
@@ -52,7 +51,7 @@ fun UserAvatarStack(
     ) {
         avatarItems.forEachIndexed { index, item ->
             val offset = index * overlapPx
-            when(item) {
+            when (item) {
                 is AvatarItem.UserAvatar ->
                     UserAvatar(
                         modifier = Modifier.offset(x = offset.dp),
@@ -70,6 +69,11 @@ fun UserAvatarStack(
             }
         }
     }
+}
+
+sealed class AvatarItem {
+    data class UserAvatar(val user: UserUiModel) : AvatarItem()
+    data class NotShowingIndicator(val count: Int) : AvatarItem()
 }
 
 @Composable

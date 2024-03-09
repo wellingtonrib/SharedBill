@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
-class FakeGroupRepository @Inject constructor(): GroupRepository {
+class FakeGroupRepository @Inject constructor() : GroupRepository {
 
     private val groups = mutableListOf<Group>()
 

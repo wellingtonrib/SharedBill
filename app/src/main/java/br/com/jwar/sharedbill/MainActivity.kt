@@ -12,7 +12,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import br.com.jwar.sharedbill.MainContract.*
+import br.com.jwar.sharedbill.MainContract.Effect
+import br.com.jwar.sharedbill.MainContract.Event
+import br.com.jwar.sharedbill.MainContract.State
 import br.com.jwar.sharedbill.account.presentation.navigation.AUTH_ROUTE
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.navigation.NavGraph

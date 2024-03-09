@@ -9,7 +9,7 @@ import javax.inject.Inject
 class SendPaymentUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository,
     private val exceptionHandler: ExceptionHandler,
-): SendPaymentUseCase {
+) : SendPaymentUseCase {
     override suspend fun invoke(payment: Payment) = resultOf(exceptionHandler) {
         groupRepository.sendPayment(payment)
     }

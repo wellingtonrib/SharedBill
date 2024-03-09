@@ -49,39 +49,25 @@ class AuthViewModelTest {
     }
 
     @Test
-    fun `onSignIn failed should send ShowError effect`() = runTest {
-
-    }
+    fun `onSignIn failed should send ShowError effect`() = runTest {}
 
     @Test
-    fun `onSignUp succeeded should send SignedIn effect`() = runTest {
-
-    }
+    fun `onSignUp succeeded should send SignedIn effect`() = runTest {}
 
     @Test
-    fun `onSignUp failed should send ShowError effect`() = runTest {
-
-    }
+    fun `onSignUp failed should send ShowError effect`() = runTest {}
 
     @Test
-    fun `onSignInFirebase succeeded should send LoggedIn effect`() = runTest {
-
-    }
+    fun `onSignInFirebase succeeded should send LoggedIn effect`() = runTest {}
 
     @Test
-    fun `onSignInFirebase failed should send ShowError effect`() = runTest {
-
-    }
+    fun `onSignInFirebase failed should send ShowError effect`() = runTest {}
 
     @Test
-    fun `onSignInFirebaseFailed should set Idle state`() = runTest {
-
-    }
+    fun `onSignInFirebaseFailed should set Idle state`() = runTest {}
 
     @Test
-    fun `onPrivacyPolicyClick should send NavigateToPrivacyPolicy effect`() = runTest {
-
-    }
+    fun `onPrivacyPolicyClick should send NavigateToPrivacyPolicy effect`() = runTest {}
 
     private fun TestScope.prepareScenario(
         stateList: MutableList<AuthContract.State> = mutableListOf(),

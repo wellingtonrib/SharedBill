@@ -16,7 +16,7 @@ class FirebaseUserDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val firebaseUserToUserMapper: FirebaseUserToUserMapper,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-): UserDataSource {
+) : UserDataSource {
 
     companion object {
         const val USERS_REF = "users"

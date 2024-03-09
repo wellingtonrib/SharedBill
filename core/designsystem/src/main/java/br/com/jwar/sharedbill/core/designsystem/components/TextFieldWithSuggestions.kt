@@ -29,17 +29,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 
 @Composable
+@Suppress("LongParameterList")
 fun TextFieldWithSuggestions(
     modifier: Modifier = Modifier,
     imeAction: ImeAction = ImeAction.Next,
-    label: @Composable() (() -> Unit)? = null,
-    placeholder: @Composable() (() -> Unit)? = null,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
     text: String,
     suggestions: List<String>,
     showSuggestions: Boolean = false,
     isError: Boolean = false,
     maxLength: Int = Int.MAX_VALUE,
-    supportingText: @Composable() (() -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null,
     onValueChange: (TextFieldValue) -> Unit = {}
 ) {
     var textFieldValue by remember { mutableStateOf(TextFieldValue(text)) }
@@ -63,13 +64,13 @@ fun TextFieldWithSuggestions(
             },
             isError = isError,
             supportingText = supportingText ?: {
-                 if (maxLength < Int.MAX_VALUE) {
-                     Text(
-                         text = "${textFieldValue.text.length}/$maxLength",
-                         modifier = Modifier.fillMaxWidth(),
-                         textAlign = TextAlign.End,
-                     )
-                 }
+                if (maxLength < Int.MAX_VALUE) {
+                    Text(
+                        text = "${textFieldValue.text.length}/$maxLength",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.End,
+                    )
+                }
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 capitalization = KeyboardCapitalization.Sentences,

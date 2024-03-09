@@ -27,7 +27,7 @@ fun LoadingContent(
             .testTag(TestTags.LoadingContent)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CircularProgressIndicator()
             Text(text = message)

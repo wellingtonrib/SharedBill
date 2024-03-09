@@ -10,7 +10,7 @@ import javax.inject.Inject
 class AddMemberUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository,
     private val exceptionHandler: ExceptionHandler,
-): AddMemberUseCase {
+) : AddMemberUseCase {
     override suspend fun invoke(userName: String, groupId: String) = resultOf(exceptionHandler) {
         val userId = UUID.randomUUID().toString()
         groupRepository.addMember(

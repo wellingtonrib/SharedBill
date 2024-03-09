@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package br.com.jwar.sharedbill.utility
 
 import android.annotation.SuppressLint
@@ -28,19 +30,15 @@ class NetworkManagerImpl @Inject constructor(
     private fun isNetworkConnectedNewApi(connectivityManager: ConnectivityManager): Boolean {
         val network = connectivityManager.activeNetwork
         val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
-
-        return networkCapabilities != null &&
-                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
-                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+        return (networkCapabilities != null) && networkCapabilities.hasCapability(
+            NetworkCapabilities.NET_CAPABILITY_INTERNET
+        ) && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
 
     @SuppressLint("MissingPermission")
     private fun isNetworkConnectedOldApi(connectivityManager: ConnectivityManager): Boolean {
         val activeNetwork = connectivityManager.activeNetworkInfo
-
-        return activeNetwork != null &&
-                activeNetwork.isConnected &&
-                isNetworkWithInternetAccess(activeNetwork)
+        return activeNetwork != null && activeNetwork.isConnected && isNetworkWithInternetAccess(activeNetwork)
     }
 
     private fun isNetworkWithInternetAccess(networkInfo: NetworkInfo): Boolean {

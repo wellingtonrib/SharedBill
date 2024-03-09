@@ -2,7 +2,16 @@ package br.com.jwar.sharedbill.account.domain.di
 
 import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
 import br.com.jwar.sharedbill.account.domain.services.AuthService
-import br.com.jwar.sharedbill.account.domain.usecases.*
+import br.com.jwar.sharedbill.account.domain.usecases.GetCurrentUserUseCase
+import br.com.jwar.sharedbill.account.domain.usecases.GetCurrentUserUseCaseImpl
+import br.com.jwar.sharedbill.account.domain.usecases.SignInFirebaseUseCase
+import br.com.jwar.sharedbill.account.domain.usecases.SignInFirebaseUseCaseImpl
+import br.com.jwar.sharedbill.account.domain.usecases.SignInUseCase
+import br.com.jwar.sharedbill.account.domain.usecases.SignInUseCaseImpl
+import br.com.jwar.sharedbill.account.domain.usecases.SignOutUseCase
+import br.com.jwar.sharedbill.account.domain.usecases.SignOutUseCaseImpl
+import br.com.jwar.sharedbill.account.domain.usecases.SignUpUseCase
+import br.com.jwar.sharedbill.account.domain.usecases.SignUpUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

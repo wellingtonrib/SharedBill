@@ -39,7 +39,7 @@ fun ErrorContent(
             .fillMaxSize()
             .offset(y = (-60).dp),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             if (image != null) {
                 Image(

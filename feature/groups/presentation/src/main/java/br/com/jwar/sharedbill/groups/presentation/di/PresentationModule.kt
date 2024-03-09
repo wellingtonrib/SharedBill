@@ -14,7 +14,6 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 class PresentationModule {
-
     @Provides
     fun provideUserToGroupMemberUiModel(): UserToGroupMemberUiModelMapper =
         UserToGroupMemberUiModelMapperImpl()

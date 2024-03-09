@@ -25,6 +25,7 @@ fun PrivacyPolicy(onPrivacyClick: () -> Unit) {
     }
     Text(
         modifier = Modifier.clickable { onPrivacyClick() },
-        text = annotatedString, textAlign = TextAlign.Center
+        text = annotatedString,
+        textAlign = TextAlign.Center
     )
 }

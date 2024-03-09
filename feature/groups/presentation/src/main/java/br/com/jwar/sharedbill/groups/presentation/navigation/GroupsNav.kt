@@ -5,11 +5,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
-import br.com.jwar.sharedbill.groups.presentation.ui.group_details.GroupDetailsRoute
-import br.com.jwar.sharedbill.groups.presentation.ui.group_edit.GroupEditRoute
-import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GROUP_LIST_ROUTE
-import br.com.jwar.sharedbill.groups.presentation.ui.group_list.GroupListRoute
-import br.com.jwar.sharedbill.groups.presentation.ui.group_payment.PaymentRoute
+import br.com.jwar.sharedbill.groups.presentation.ui.details.GroupDetailsRoute
+import br.com.jwar.sharedbill.groups.presentation.ui.edit.GroupEditRoute
+import br.com.jwar.sharedbill.groups.presentation.ui.list.GROUP_LIST_ROUTE
+import br.com.jwar.sharedbill.groups.presentation.ui.list.GroupListRoute
+import br.com.jwar.sharedbill.groups.presentation.ui.payment.PaymentRoute
 
 const val GROUP_ID_ARG = "groupId"
 const val PAYMENT_TYPE_ARG = "paymentType"

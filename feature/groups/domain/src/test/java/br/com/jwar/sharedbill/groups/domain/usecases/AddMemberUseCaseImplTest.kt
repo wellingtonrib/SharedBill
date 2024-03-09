@@ -2,18 +2,17 @@ package br.com.jwar.sharedbill.groups.domain.usecases
 
 import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
-import br.com.jwar.sharedbill.groups.domain.usecases.AddMemberUseCaseImpl
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
-import java.util.UUID
-import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import java.util.UUID
+import kotlin.test.assertEquals
 
 internal class AddMemberUseCaseImplTest {
 

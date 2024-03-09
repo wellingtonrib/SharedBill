@@ -15,7 +15,7 @@ import br.com.jwar.sharedbill.core.designsystem.R
 import kotlinx.coroutines.launch
 
 @Composable
-fun SwipeToDismissConfirm(
+fun swipeToDismissConfirm(
     title: String = stringResource(R.string.label_confirm),
     text: String = stringResource(R.string.message_confirm_action),
     onConfirm: () -> Unit = {},
@@ -33,7 +33,6 @@ fun SwipeToDismissConfirm(
     )
 
     if (confirmState.value) {
-
         fun dismiss() {
             onDismiss()
             scope.launch { dismissState.reset() }
@@ -46,7 +45,10 @@ fun SwipeToDismissConfirm(
             text = { Text(text) },
             confirmButton = {
                 Button(
-                    onClick = { onConfirm(); dismiss() }
+                    onClick = {
+                        onConfirm()
+                        dismiss()
+                    }
                 ) {
                     Text(stringResource(R.string.label_yes))
                 }
