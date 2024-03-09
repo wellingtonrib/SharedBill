@@ -114,7 +114,7 @@ fun GroupsDetailsContent(
                 }
             } else {
                 Column(
-                    modifier = Modifier.padding(horizontal = AppTheme.dimens.space_8),
+                    modifier = Modifier.padding(horizontal = AppTheme.dimens.space8),
                 ) {
                     SegmentedControl(
                         modifier = Modifier.fillMaxWidth(),

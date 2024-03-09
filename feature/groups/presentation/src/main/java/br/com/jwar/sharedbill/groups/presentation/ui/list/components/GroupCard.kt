@@ -75,7 +75,7 @@ fun GroupCard(
                         text = group.title.ifEmpty { stringResource(R.string.label_unnamed) },
                         style = AppTheme.typo.titleMedium
                     )
-                    Spacer(modifier = Modifier.height(AppTheme.dimens.space_2))
+                    Spacer(modifier = Modifier.height(AppTheme.dimens.space2))
                     Text(
                         text = stringResource(R.string.label_total_spent, group.total),
                         style = AppTheme.typo.bodyMedium

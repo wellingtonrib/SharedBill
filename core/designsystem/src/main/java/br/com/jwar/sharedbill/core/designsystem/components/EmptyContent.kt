@@ -39,7 +39,7 @@ fun EmptyContent(
         modifier = modifier
             .testTag(TestTags.EmptyContent)
             .fillMaxSize()
-            .padding(AppTheme.dimens.space_8)
+            .padding(AppTheme.dimens.space8)
             .offset(y = (-60).dp),
         contentAlignment = Alignment.Center
     ) {

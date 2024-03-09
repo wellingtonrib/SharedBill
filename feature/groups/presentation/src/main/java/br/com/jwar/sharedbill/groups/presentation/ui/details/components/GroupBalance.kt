@@ -25,14 +25,14 @@ fun GroupBalance(
 
     LazyColumn(
         modifier = modifier.testTag(TestTags.BalanceList),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space4),
     ) {
         items(group.balance.entries.toList()) { entry ->
             GroupMemberBalanceCard(entry)
         }
         item {
             Text(
-                modifier = Modifier.padding(vertical = AppTheme.dimens.space_8),
+                modifier = Modifier.padding(vertical = AppTheme.dimens.space8),
                 text = stringResource(R.string.label_total_spent, group.total),
                 style = AppTheme.typo.titleMedium
             )

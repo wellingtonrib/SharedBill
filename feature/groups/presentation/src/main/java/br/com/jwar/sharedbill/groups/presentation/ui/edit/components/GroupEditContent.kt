@@ -85,7 +85,7 @@ fun GroupEditContent(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(start = AppTheme.dimens.space_8, end = AppTheme.dimens.space_8)
+                .padding(start = AppTheme.dimens.space8, end = AppTheme.dimens.space8)
                 .fillMaxSize()
         ) {
             TextFieldWithSuggestions(
@@ -100,13 +100,13 @@ fun GroupEditContent(
                 onGroupUpdated(group.copy(title = newValue.text))
             }
             Text(
-                modifier = Modifier.padding(vertical = AppTheme.dimens.space_8),
+                modifier = Modifier.padding(vertical = AppTheme.dimens.space8),
                 text = stringResource(R.string.label_group_members),
                 style = AppTheme.typo.titleMedium,
             )
             LazyColumn(
                 state = listState,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space4),
             ) {
                 items(group.members.asList()) { member ->
                     GroupMemberCard(

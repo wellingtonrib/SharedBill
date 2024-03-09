@@ -38,7 +38,7 @@ fun PaymentPaidToField(
             modifier = modifier.fillMaxWidth(),
         ) {
             Text(
-                modifier = Modifier.padding(top = AppTheme.dimens.space_4),
+                modifier = Modifier.padding(top = AppTheme.dimens.space4),
                 text = if (isMultiSelect) {
                     stringResource(R.string.label_payment_divided_by)
                 } else {
@@ -47,7 +47,7 @@ fun PaymentPaidToField(
             )
             LazyColumn(
                 modifier = Modifier
-                    .padding(start = AppTheme.dimens.space_4, top = AppTheme.dimens.space_4),
+                    .padding(start = AppTheme.dimens.space4, top = AppTheme.dimens.space4),
             ) {
                 if (isMultiSelect) {
                     items(options.asList()) { member ->
@@ -69,7 +69,7 @@ fun PaymentPaidToField(
                                 }
                             )
                             Text(
-                                modifier = Modifier.padding(end = AppTheme.dimens.space_4),
+                                modifier = Modifier.padding(end = AppTheme.dimens.space4),
                                 text = sharedValue[member] ?: "-"
                             )
                         }

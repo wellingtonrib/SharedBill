@@ -146,7 +146,7 @@ fun GroupListContent(
                 LazyColumn(
                     state = groupListState,
                     modifier = Modifier.paddingMedium(),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space4),
                     content = {
                         items(groups) { group ->
                             GroupCard(group, onGroupClick, onGroupDelete, onGroupLeave)

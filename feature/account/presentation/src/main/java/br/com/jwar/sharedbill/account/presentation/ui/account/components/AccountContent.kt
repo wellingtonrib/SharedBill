@@ -52,15 +52,15 @@ fun AccountContent(
             .navigationBarsPadding()
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_10)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space10)
     ) {
         UserCard(
             user = state.uiModel,
             avatarSize = 80.dp,
         )
         Column(
-            modifier = Modifier.padding(horizontal = AppTheme.dimens.space_8),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4),
+            modifier = Modifier.padding(horizontal = AppTheme.dimens.space8),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space4),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             AccountActionCard(

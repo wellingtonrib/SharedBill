@@ -52,7 +52,7 @@ private fun NewPaymentGroupedButtons(
 
     Column(
         horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space4)
     ) {
         if (actionButtonsVisible) {
             NewExpenseButton(onNewPaymentClick)

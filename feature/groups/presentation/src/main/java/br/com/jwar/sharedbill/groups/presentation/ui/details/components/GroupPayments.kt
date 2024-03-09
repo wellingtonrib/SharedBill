@@ -44,7 +44,7 @@ fun GroupPayments(
     LazyColumn(
         modifier = modifier.testTag(TestTags.PaymentList),
         state = listState,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space_4)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space4)
     ) {
         items(group.payments.asList()) { payment ->
             GroupPaymentCard(

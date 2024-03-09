@@ -57,7 +57,7 @@ fun PaymentPaidByField(
             verticalAlignment = Alignment.Top
         ) {
             Text(
-                modifier = Modifier.padding(top = AppTheme.dimens.space_4),
+                modifier = Modifier.padding(top = AppTheme.dimens.space4),
                 text = stringResource(R.string.label_payment_paid_by)
             )
             HorizontalSpacerMedium()

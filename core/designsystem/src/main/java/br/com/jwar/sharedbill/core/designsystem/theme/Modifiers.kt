@@ -40,55 +40,55 @@ fun HorizontalSpacerMedium() = Spacer(modifier = Modifier.horizontalSpaceMedium(
 fun HorizontalSpacerLarge() = Spacer(modifier = Modifier.horizontalSpaceLarge())
 
 fun Modifier.verticalSpaceSmall() =
-    composed { composed { then(height(AppTheme.dimens.space_6)) } }
+    composed { composed { then(height(AppTheme.dimens.space6)) } }
 
 fun Modifier.verticalSpaceMedium() =
-    composed { then(height(AppTheme.dimens.space_8)) }
+    composed { then(height(AppTheme.dimens.space8)) }
 
 fun Modifier.verticalSpaceLarge() =
-    composed { then(height(AppTheme.dimens.space_10)) }
+    composed { then(height(AppTheme.dimens.space10)) }
 
 fun Modifier.horizontalSpaceSmall() =
-    composed { then(width(AppTheme.dimens.space_6)) }
+    composed { then(width(AppTheme.dimens.space6)) }
 
 fun Modifier.horizontalSpaceMedium() =
-    composed { then(width(AppTheme.dimens.space_8)) }
+    composed { then(width(AppTheme.dimens.space8)) }
 
 fun Modifier.horizontalSpaceLarge() =
-    composed { then(width(AppTheme.dimens.space_10)) }
+    composed { then(width(AppTheme.dimens.space10)) }
 
 fun Modifier.paddingSmall() =
-    composed { composed { then(padding(AppTheme.dimens.space_4)) } }
+    composed { composed { then(padding(AppTheme.dimens.space4)) } }
 
 fun Modifier.paddingMedium() =
-    composed { then(padding(AppTheme.dimens.space_8)) }
+    composed { then(padding(AppTheme.dimens.space8)) }
 
 fun Modifier.paddingLarge() =
-    composed { then(padding(AppTheme.dimens.space_10)) }
+    composed { then(padding(AppTheme.dimens.space10)) }
 
 fun Modifier.verticalPaddingSmall() =
-    composed { then(padding(top = AppTheme.dimens.space_4, bottom = AppTheme.dimens.space_4)) }
+    composed { then(padding(top = AppTheme.dimens.space4, bottom = AppTheme.dimens.space4)) }
 
 fun Modifier.verticalPaddingMedium() =
-    composed { composed { then(padding(top = AppTheme.dimens.space_8, bottom = AppTheme.dimens.space_8)) } }
+    composed { composed { then(padding(top = AppTheme.dimens.space8, bottom = AppTheme.dimens.space8)) } }
 
 fun Modifier.verticalPaddingLarge() =
-    composed { then(padding(top = AppTheme.dimens.space_10, bottom = AppTheme.dimens.space_10)) }
+    composed { then(padding(top = AppTheme.dimens.space10, bottom = AppTheme.dimens.space10)) }
 
 fun Modifier.horizontalPaddingSmall() =
-    composed { then(padding(start = AppTheme.dimens.space_4, end = AppTheme.dimens.space_4)) }
+    composed { then(padding(start = AppTheme.dimens.space4, end = AppTheme.dimens.space4)) }
 
 fun Modifier.horizontalPaddingMedium() =
-    composed { then(padding(start = AppTheme.dimens.space_8, end = AppTheme.dimens.space_8)) }
+    composed { then(padding(start = AppTheme.dimens.space8, end = AppTheme.dimens.space8)) }
 
 fun Modifier.horizontalPaddingLarge() =
-    composed { then(padding(start = AppTheme.dimens.space_10, end = AppTheme.dimens.space_10)) }
+    composed { then(padding(start = AppTheme.dimens.space10, end = AppTheme.dimens.space10)) }
 
 fun Modifier.sizeSmall() =
-    composed { then(size(AppTheme.dimens.size_1)) }
+    composed { then(size(AppTheme.dimens.size1)) }
 
 fun Modifier.sizeMedium() =
-    composed { then(size(AppTheme.dimens.size_2)) }
+    composed { then(size(AppTheme.dimens.size2)) }
 
 fun Modifier.sizeLarge() =
-    composed { then(size(AppTheme.dimens.size_3)) }
+    composed { then(size(AppTheme.dimens.size3)) }
