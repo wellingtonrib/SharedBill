@@ -1,10 +1,10 @@
 package br.com.jwar.sharedbill.groups.presentation.mappers
 
-import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
 import br.com.jwar.sharedbill.core.utility.extensions.toBigDecimalOrZero
 import br.com.jwar.sharedbill.core.utility.extensions.toCurrency
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.model.PaymentType
+import br.com.jwar.sharedbill.groups.presentation.models.GroupUiModel
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import javax.inject.Inject
@@ -52,7 +52,9 @@ class GroupToGroupUiModelMapperImpl @Inject constructor(
             val member = from.findMemberById(it.key)
             if (member != null) {
                 userToGroupMemberUiModelMapper.mapFrom(member) to it.value.toBigDecimalOrZero()
-            } else null
-        }.associateBy({it.first}, {it.second})
+            } else {
+                null
+            }
+        }.associateBy({ it.first }, { it.second })
     )
 }

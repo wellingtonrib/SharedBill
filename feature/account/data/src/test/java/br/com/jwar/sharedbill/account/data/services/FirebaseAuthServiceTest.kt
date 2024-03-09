@@ -38,12 +38,14 @@ internal class FirebaseAuthServiceTest {
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
 
-    private val firebaseAuth: FirebaseAuth = mockk()
-    private val signInClient: SignInClient = mockk()
     @Named(SIGN_IN_REQUEST)
     private val signInRequest: BeginSignInRequest = mockk()
+
     @Named(SIGN_UP_REQUEST)
     private val signUpRequest: BeginSignInRequest = mockk()
+
+    private val firebaseAuth: FirebaseAuth = mockk()
+    private val signInClient: SignInClient = mockk()
     private val firebaseUserToUserMapper: FirebaseUserToUserMapper = mockk()
     private val userRepository: UserRepository = mockk()
 
@@ -107,6 +109,7 @@ internal class FirebaseAuthServiceTest {
         verify { firebaseAuth.signOut() }
     }
 
+    @Suppress("LongParameterList")
     private fun prepareScenario(
         beginSignInResult: BeginSignInResult = mockk(),
         beginSignInResultTask: Task<BeginSignInResult> = Tasks.forResult(beginSignInResult),

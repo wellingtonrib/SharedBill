@@ -55,4 +55,3 @@ class DeleteGroupUseCaseImplTest {
         coEvery { groupRepository.deleteGroup(any()) } returns Unit
     }
 }
-

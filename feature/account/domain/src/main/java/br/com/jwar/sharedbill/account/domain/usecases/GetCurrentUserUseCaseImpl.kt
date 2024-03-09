@@ -1,12 +1,12 @@
 package br.com.jwar.sharedbill.account.domain.usecases
 
-import br.com.jwar.sharedbill.core.utility.extensions.resultOf
 import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
+import br.com.jwar.sharedbill.core.utility.extensions.resultOf
 import javax.inject.Inject
 
 class GetCurrentUserUseCaseImpl @Inject constructor(
     private val userRepository: UserRepository
-): GetCurrentUserUseCase {
+) : GetCurrentUserUseCase {
     override suspend fun invoke() = resultOf {
         userRepository.getCurrentUser()
     }

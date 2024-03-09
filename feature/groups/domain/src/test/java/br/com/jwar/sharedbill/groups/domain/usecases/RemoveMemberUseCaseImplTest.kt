@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import java.util.UUID
 import kotlin.test.assertIs
 
 @ExperimentalCoroutinesApi
@@ -28,7 +29,7 @@ class RemoveMemberUseCaseImplTest {
         val groupId = "1"
         val ownerId = "1"
         val userId = "2"
-        val group = createGroupWithMembers(groupId, listOf(ownerId,userId))
+        val group = createGroupWithMembers(groupId, listOf(ownerId, userId))
         prepareScenario(group)
 
         val result = removeMemberUseCase.invoke(userId, groupId)
@@ -64,9 +65,9 @@ class RemoveMemberUseCaseImplTest {
     @Test
     fun `invoke should throw RemovingMemberWithNonZeroBalanceException when member has non-zero balance`() =
         runTest {
-            val groupId = "1"
-            val ownerId = "1"
-            val userId = "2"
+            val groupId = UUID.randomUUID().toString()
+            val ownerId = UUID.randomUUID().toString()
+            val userId = UUID.randomUUID().toString()
             val group = createGroupWithMembersAndBalance(
                 groupId = groupId,
                 balance = mapOf(ownerId to "0", userId to "10")

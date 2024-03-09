@@ -43,7 +43,6 @@ fun AccountContent(
     onAboutClick: () -> Unit = {},
     onTermsClick: () -> Unit = {},
     onPrivacyClick: () -> Unit = {},
-    onRateUsClick: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier

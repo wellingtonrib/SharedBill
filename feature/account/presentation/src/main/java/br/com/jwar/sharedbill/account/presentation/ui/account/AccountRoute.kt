@@ -25,10 +25,8 @@ fun AccountRoute(
         onSignOutClick = { viewModel.emitEvent { Event.OnSignOutClick } },
         onContactClick = { viewModel.emitEvent { Event.OnContactClick } },
         onAboutClick = { viewModel.emitEvent { Event.OnAboutClick } },
-        onRateUsClick = { viewModel.emitEvent { Event.OnRateUsClick } },
         onTermsClick = { viewModel.emitEvent { Event.OnTermsClick } },
-        onPrivacyClick = { viewModel.emitEvent { Event.OnPrivacyClick } },
-    )
+    ) { viewModel.emitEvent { Event.OnPrivacyClick } }
 
     LaunchedEffect(Unit) {
         viewModel.emitEvent { Event.OnInit }
@@ -54,7 +52,3 @@ fun AccountRoute(
         }
     }
 }
-
-
-
-

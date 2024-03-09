@@ -25,7 +25,6 @@ import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
-import br.com.jwar.sharedbill.core.designsystem.theme.paddingMedium
 import br.com.jwar.sharedbill.testing.TestTags
 
 @Composable
@@ -43,7 +42,7 @@ fun EmptyContent(
             .padding(AppTheme.dimens.space_8)
             .offset(y = (-60).dp),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             if (image != null) {
                 Image(
@@ -63,16 +62,13 @@ fun EmptyContent(
     }
 }
 
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
 fun PreviewEmptyContent() {
     SharedBillTheme {
         Scaffold {
-            EmptyContent(action = "Add something") {
-
-            }
+            EmptyContent(action = "Add something") {}
         }
     }
 }

@@ -7,23 +7,23 @@ import br.com.jwar.sharedbill.core.common.UiState
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 
 class AuthContract {
-    sealed class Event: UiEvent {
+    sealed class Event : UiEvent {
         object OnRequestSignIn : Event()
         object OnRequestSignUp : Event()
         class OnRequestSignInFirebase(val data: Intent?) : Event()
         object OnRequestSignInFirebaseFailed : Event()
-        object OnPrivacyPolicyClick: Event()
+        object OnPrivacyPolicyClick : Event()
     }
 
     sealed class State : UiState {
-        object Loading: State()
-        object Idle: State()
+        object Loading : State()
+        object Idle : State()
     }
 
-    sealed class Effect: UiEffect {
+    sealed class Effect : UiEffect {
         object LoggedIn : Effect()
-        class SignedIn(val signInResult: BeginSignInResult): Effect()
-        class ShowError(val message: String): Effect()
+        class SignedIn(val signInResult: BeginSignInResult) : Effect()
+        class ShowError(val message: String) : Effect()
         object LaunchPrivacyPolicyIntent : Effect()
     }
 }

@@ -24,6 +24,4 @@ class CreateGroupUseCaseImpl @Inject constructor(
         )
         groupRepository.createGroup(group)
     }
-
 }
-

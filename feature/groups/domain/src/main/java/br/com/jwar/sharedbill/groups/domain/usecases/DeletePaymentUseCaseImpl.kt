@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class DeletePaymentUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository,
-): DeletePaymentUseCase {
+) : DeletePaymentUseCase {
     override suspend fun invoke(
         paymentId: String,
         groupId: String,

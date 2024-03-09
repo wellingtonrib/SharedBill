@@ -1,6 +1,5 @@
 package br.com.jwar.sharedbill.groups.domain.usecases
 
-import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.groups.domain.model.Payment
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository

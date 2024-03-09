@@ -4,14 +4,19 @@ import android.app.Activity
 import android.graphics.Color
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+private const val MAX_SCREEN_WIDTH = 360
 
 @Composable
 fun SharedBillTheme(
@@ -30,7 +35,7 @@ fun SharedBillTheme(
     }
 
     val configuration = LocalConfiguration.current
-    val dimens = if (configuration.screenWidthDp <= 360) SmallDimens else DefaultDimens
+    val dimens = if (configuration.screenWidthDp <= MAX_SCREEN_WIDTH) SmallDimens else DefaultDimens
     val typography = DefaultTypography
 
     val view = LocalView.current

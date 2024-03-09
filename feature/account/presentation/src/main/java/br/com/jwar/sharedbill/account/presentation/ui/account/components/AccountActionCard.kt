@@ -40,7 +40,7 @@ fun AccountActionCard(
                 contentDescription = null
             )
             Text(
-                modifier =  Modifier.weight(1f),
+                modifier = Modifier.weight(1f),
                 text = title,
                 style = AppTheme.typo.titleMedium
             )
@@ -52,7 +52,6 @@ fun AccountActionCard(
         }
     }
 }
-
 
 @Composable
 @Preview

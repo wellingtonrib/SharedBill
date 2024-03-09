@@ -1,7 +1,7 @@
 package br.com.jwar.sharedbill.groups.data.repositories
 
-import br.com.jwar.sharedbill.groups.data.datasources.GroupsDataSource
 import br.com.jwar.sharedbill.account.domain.model.User
+import br.com.jwar.sharedbill.groups.data.datasources.GroupsDataSource
 import br.com.jwar.sharedbill.groups.domain.model.Group
 import br.com.jwar.sharedbill.groups.domain.model.Payment
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class DefaultGroupRepository @Inject constructor(
     private val groupsDataSource: GroupsDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-): GroupRepository {
+) : GroupRepository {
 
     override suspend fun getGroupsStream(): Flow<List<Group>> =
         groupsDataSource.getGroupsStream().flowOn(ioDispatcher)

@@ -24,13 +24,16 @@ import br.com.jwar.sharedbill.core.designsystem.R
 import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.HorizontalSpacerSmall
 
+private const val DEFAULT_ICON_SCALE = 0.8f
+private const val DISMISS_ICON_SCALE = 1.2f
+
 @Composable
 fun SwipeToDismissBackground(
     action: SwipeToDismissAction,
     dismissState: DismissState
 ) {
     val scale by animateFloatAsState(
-        if (dismissState.targetValue == DismissValue.Default) 0.8f else 1.2f
+        if (dismissState.targetValue == DismissValue.Default) DEFAULT_ICON_SCALE else DISMISS_ICON_SCALE
     )
     Row(
         modifier = Modifier
@@ -43,7 +46,7 @@ fun SwipeToDismissBackground(
         HorizontalSpacerSmall()
         Icon(
             imageVector = action.iconRes,
-            contentDescription =stringResource(id = action.descriptionRes),
+            contentDescription = stringResource(id = action.descriptionRes),
             modifier = Modifier.scale(scale),
             tint = AppTheme.colors.onPrimary
         )
@@ -63,11 +66,11 @@ class SwipeToDismissDeleteAction(
     override val iconRes: ImageVector = Icons.Default.Delete,
     override val descriptionRes: Int = R.string.description_delete,
     override val action: () -> Unit = {}
-): SwipeToDismissAction
+) : SwipeToDismissAction
 
 class SwipeToDismissLeaveAction(
     override val textRes: Int = R.string.label_leave,
     override val iconRes: ImageVector = Icons.Default.ExitToApp,
     override val descriptionRes: Int = R.string.description_leave,
     override val action: () -> Unit = {}
-): SwipeToDismissAction
+) : SwipeToDismissAction

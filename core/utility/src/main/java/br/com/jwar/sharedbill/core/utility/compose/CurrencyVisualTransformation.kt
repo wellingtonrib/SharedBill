@@ -7,6 +7,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import java.lang.Integer.max
 import java.text.DecimalFormat
 
+@Suppress("MagicNumber")
 class CurrencyVisualTransformation(
     private val fixedCursorAtTheEnd: Boolean = true,
     private val numberOfDecimals: Int = 2

@@ -1,5 +1,6 @@
 package br.com.jwar.sharedbill.groups.data.datasources
 
+import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.core.utility.NetworkManager
 import br.com.jwar.sharedbill.groups.data.datasources.FirebaseGroupsDataSource.Companion.GROUPS_REF
 import br.com.jwar.sharedbill.groups.data.datasources.FirebaseGroupsDataSource.Companion.GROUP_FIREBASE_MEMBERS_IDS_FIELD
@@ -21,7 +22,9 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 import io.mockk.coEvery
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -39,12 +42,14 @@ internal class FirebaseGroupsDataSourceTest {
     private val firebaseAuth: FirebaseAuth = mockk()
     private val firestore: FirebaseFirestore = mockk()
     private val networkManager: NetworkManager = mockk()
+    private val exceptionHandler: ExceptionHandler = mockk()
 
     private val firebaseGroupsDataSource = FirebaseGroupsDataSource(
         firebaseAuth = firebaseAuth,
         firestore = firestore,
         networkManager = networkManager,
-        ioDispatcher = coroutineRule.dispatcher
+        ioDispatcher = coroutineRule.dispatcher,
+        exceptionHandler = exceptionHandler
     )
 
     @Test
@@ -259,6 +264,7 @@ internal class FirebaseGroupsDataSourceTest {
         )
     }
 
+    @Suppress("LongParameterList")
     private fun prepareScenario(
         isConnected: Boolean = true,
         firebaseUser: FirebaseUser = mockk(),
@@ -281,7 +287,10 @@ internal class FirebaseGroupsDataSourceTest {
         every { firebaseAuth.currentUser } returns firebaseUser
         every { firebaseUser.uid } returns firebaseUserUid
         every { firestore.collection(GROUPS_REF) } returns groupsCollectionReference
-        every { groupsCollectionReference.whereArrayContains(GROUP_FIREBASE_MEMBERS_IDS_FIELD, firebaseUserUid) } returns groupsQuery
+        every {
+            groupsCollectionReference
+                .whereArrayContains(GROUP_FIREBASE_MEMBERS_IDS_FIELD, firebaseUserUid)
+        } returns groupsQuery
         every { groupsQuery.whereEqualTo(GROUP_ID_FIELD, groupId) } returns groupsQuery
         coEvery { groupsQuery.get(any()) } returns groupsQueryTask
         coEvery { groupsQueryTask.isSuccessful } returns true
@@ -292,7 +301,9 @@ internal class FirebaseGroupsDataSourceTest {
         coEvery { groupsQuerySnapshot.documents } returns groupsSnapshots
         coEvery { groupsSnapshot.toObject(Group::class.java) } returns group
         every { firestore.collection(UNPROCESSED_PAYMENTS_REF) } returns unprocessedPaymentsCollection
-        every { unprocessedPaymentsCollection.whereEqualTo(PAYMENT_GROUP_ID_FIELD, groupId) } returns unprocessedPaymentsQuery
+        every {
+            unprocessedPaymentsCollection.whereEqualTo(PAYMENT_GROUP_ID_FIELD, groupId)
+        } returns unprocessedPaymentsQuery
         coEvery { unprocessedPaymentsQuery.get() } returns unprocessedPaymentsQueryTask
         coEvery { unprocessedPaymentsQueryTask.isSuccessful } returns true
         coEvery { unprocessedPaymentsQueryTask.isComplete } returns true
@@ -300,5 +311,6 @@ internal class FirebaseGroupsDataSourceTest {
         coEvery { unprocessedPaymentsQueryTask.result } returns unprocessedPaymentsSnapshot
         coEvery { unprocessedPaymentsQueryTask.exception } returns null
         coEvery { unprocessedPaymentsSnapshot.toObjects(Payment::class.java) } returns unprocessedPayments
+        every { exceptionHandler.recordException(any()) } just runs
     }
 }

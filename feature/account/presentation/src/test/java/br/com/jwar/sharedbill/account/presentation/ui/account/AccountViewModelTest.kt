@@ -1,14 +1,17 @@
 package br.com.jwar.sharedbill.account.presentation.ui.account
 
-
 import br.com.jwar.sharedbill.account.domain.exceptions.UserException
 import br.com.jwar.sharedbill.account.domain.model.User
-import br.com.jwar.sharedbill.account.domain.usecases.*
+import br.com.jwar.sharedbill.account.domain.usecases.GetCurrentUserUseCase
+import br.com.jwar.sharedbill.account.domain.usecases.SignOutUseCase
 import br.com.jwar.sharedbill.account.presentation.mappers.UserToUserUiModelMapper
 import br.com.jwar.sharedbill.core.designsystem.model.UserUiModel
 import br.com.jwar.sharedbill.testing.CoroutinesTestRule
-import io.mockk.*
-import kotlin.test.assertEquals
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
@@ -17,6 +20,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)

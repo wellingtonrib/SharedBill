@@ -43,5 +43,4 @@ class GetGroupByIdUseCaseImplTest {
 
         assertEquals(Result.failure<Group>(exception), result)
     }
-
 }

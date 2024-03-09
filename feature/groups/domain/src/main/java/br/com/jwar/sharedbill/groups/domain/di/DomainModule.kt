@@ -1,7 +1,8 @@
+@file:Suppress("WildcardImport", "NoWildcardImports")
+
 package br.com.jwar.sharedbill.groups.domain.di
 
 import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
-import br.com.jwar.sharedbill.account.domain.usecases.*
 import br.com.jwar.sharedbill.core.utility.ExceptionHandler
 import br.com.jwar.sharedbill.groups.domain.repositories.GroupRepository
 import br.com.jwar.sharedbill.groups.domain.usecases.*

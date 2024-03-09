@@ -8,7 +8,7 @@ import javax.inject.Inject
 class LeaveGroupUseCaseImpl @Inject constructor(
     private val groupsRepository: GroupRepository,
     private val removeMemberUseCase: RemoveMemberUseCase
-): LeaveGroupUseCase {
+) : LeaveGroupUseCase {
     override suspend fun invoke(groupId: String) = resultOf {
         val group = groupsRepository.getGroupById(groupId)
         val currentUser = group.findCurrentUser()

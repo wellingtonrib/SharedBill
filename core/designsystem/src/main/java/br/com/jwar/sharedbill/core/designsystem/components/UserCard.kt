@@ -32,7 +32,7 @@ fun UserCard(
 
 @Preview(showBackground = true)
 @Composable
-fun Preview_() {
+fun PreviewUserCard() {
     SharedBillTheme {
         UserCard(user = UserUiModel.sample())
     }

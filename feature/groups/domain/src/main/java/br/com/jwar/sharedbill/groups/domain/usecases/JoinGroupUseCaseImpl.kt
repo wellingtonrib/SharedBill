@@ -11,7 +11,7 @@ class JoinGroupUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository,
     private val userRepository: UserRepository,
     private val exceptionHandler: ExceptionHandler,
-): JoinGroupUseCase {
+) : JoinGroupUseCase {
     override suspend fun invoke(inviteCode: String) = resultOf(exceptionHandler) {
         val group = groupRepository.getGroupByInviteCode(inviteCode)
         val invitedUser = group.members.firstOrNull { it.inviteCode == inviteCode }

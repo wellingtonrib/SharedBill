@@ -5,7 +5,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.jwar.sharedbill.account.presentation.ui.auth.AuthContract.State
-import br.com.jwar.sharedbill.account.presentation.ui.auth.AuthContract.State.*
+import br.com.jwar.sharedbill.account.presentation.ui.auth.AuthContract.State.Idle
+import br.com.jwar.sharedbill.account.presentation.ui.auth.AuthContract.State.Loading
 import br.com.jwar.sharedbill.account.presentation.ui.auth.components.AuthContent
 import br.com.jwar.sharedbill.core.designsystem.components.LoadingContent
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
@@ -16,7 +17,7 @@ fun AuthScreen(
     onSignInClick: () -> Unit = {},
     onPrivacyClick: () -> Unit = {},
 ) {
-    when(state) {
+    when (state) {
         is Loading -> LoadingContent()
         is Idle -> AuthContent(onSignInClick, onPrivacyClick)
     }

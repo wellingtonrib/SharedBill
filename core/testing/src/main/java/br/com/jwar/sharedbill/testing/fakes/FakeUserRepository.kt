@@ -6,7 +6,7 @@ import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
 import java.util.UUID
 import javax.inject.Inject
 
-class FakeUserRepository @Inject constructor(): UserRepository {
+class FakeUserRepository @Inject constructor() : UserRepository {
 
     private var user: User? = null
 
@@ -21,5 +21,4 @@ class FakeUserRepository @Inject constructor(): UserRepository {
     override suspend fun createUser(userName: String) {
         this.user = User(id = UUID.randomUUID().toString(), name = userName)
     }
-
 }

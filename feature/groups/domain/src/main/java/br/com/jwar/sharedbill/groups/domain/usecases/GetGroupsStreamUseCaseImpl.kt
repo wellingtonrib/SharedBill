@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
+@Suppress("TooGenericExceptionCaught")
 class GetGroupsStreamUseCaseImpl @Inject constructor(
     private val groupRepository: GroupRepository,
     private val exceptionHandler: ExceptionHandler

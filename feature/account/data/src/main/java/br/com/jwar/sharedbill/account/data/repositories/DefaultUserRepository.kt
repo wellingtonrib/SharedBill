@@ -5,9 +5,9 @@ import br.com.jwar.sharedbill.account.domain.model.User
 import br.com.jwar.sharedbill.account.domain.repositories.UserRepository
 import javax.inject.Inject
 
-class DefaultUserRepository @Inject  constructor(
+class DefaultUserRepository @Inject constructor(
     private val userDataSource: UserDataSource,
-): UserRepository {
+) : UserRepository {
 
     override suspend fun getCurrentUser() = userDataSource.getCurrentUser()
 

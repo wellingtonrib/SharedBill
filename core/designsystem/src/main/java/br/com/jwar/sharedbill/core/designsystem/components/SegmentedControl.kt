@@ -34,6 +34,7 @@ import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
  * onItemSelection : Get selected item index
  */
 @Composable
+@Suppress("LongParameterList", "LongMethod")
 fun SegmentedControl(
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
@@ -42,7 +43,7 @@ fun SegmentedControl(
     useFixedWidth: Boolean = true,
     colorScheme: ColorScheme = MaterialTheme.colorScheme,
     itemWidth: Dp = 120.dp,
-    cornerRadius : Int = 50,
+    cornerRadius: Int = 50,
     onItemSelection: (selectedItemIndex: Int) -> Unit
 ) {
     Row(
@@ -65,15 +66,17 @@ fun SegmentedControl(
                                 .zIndex(if (selectedIndex == 0) 1f else 0f)
                         }
                     } else -> {
-                        if (useFixedWidth)
+                        if (useFixedWidth) {
                             Modifier
                                 .width(itemWidth)
                                 .offset((-1 * index).dp, 0.dp)
                                 .zIndex(if (selectedIndex == index) 1f else 0f)
-                        else Modifier
-                            .wrapContentSize()
-                            .offset((-1 * index).dp, 0.dp)
-                            .zIndex(if (selectedIndex == index) 1f else 0f)
+                        } else {
+                            Modifier
+                                .wrapContentSize()
+                                .offset((-1 * index).dp, 0.dp)
+                                .zIndex(if (selectedIndex == index) 1f else 0f)
+                        }
                     }
                 },
                 onClick = {
@@ -101,16 +104,15 @@ fun SegmentedControl(
                     /**
                      * middle button
                      */
-                    else -> RoundedCornerShape(
-                        topStartPercent = 0,
-                        topEndPercent = 0,
-                        bottomStartPercent = 0,
-                        bottomEndPercent = 0
-                    )
+                    else ->
+                        RoundedCornerShape(
+                            topStartPercent = 0,
+                            topEndPercent = 0,
+                            bottomStartPercent = 0,
+                            bottomEndPercent = 0
+                        )
                 },
-                border = BorderStroke(
-                    1.dp, colorScheme.outline
-                ),
+                border = BorderStroke(1.dp, colorScheme.outline),
                 colors = if (selectedIndex == index) {
                     /**
                      * selected colors

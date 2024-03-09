@@ -36,12 +36,6 @@ import br.com.jwar.sharedbill.core.designsystem.theme.AppTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.SharedBillTheme
 import br.com.jwar.sharedbill.core.designsystem.theme.VerticalSpacerMedium
 
-data class OnBoardingItem(
-    val imageRes: Int,
-    val titleRes: Int,
-    val messageRes: Int,
-)
-
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 fun ColumnScope.Onboarding(
@@ -145,12 +139,16 @@ fun Indicator(isSelected: Boolean) {
             .width(width.value)
             .clip(CircleShape)
             .background(
-                color = if (isSelected) AppTheme.colors.primary else Color(0XFFF8E2E7)
+                color = if (isSelected) AppTheme.colors.primary else Color.Gray
             )
-    ) {
-
-    }
+    ) {}
 }
+
+data class OnBoardingItem(
+    val imageRes: Int,
+    val titleRes: Int,
+    val messageRes: Int,
+)
 
 @Preview
 @Composable

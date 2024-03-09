@@ -34,6 +34,8 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+private const val SHOW_SIDE_BUTTONS_DELAY_IN_MILLIS = 2000L
+
 @Composable
 fun WeightWitText(
     modifier: Modifier = Modifier,
@@ -51,7 +53,7 @@ fun WeightWitText(
         shouldShowSideButtons = true
         scope.coroutineContext.cancelChildren()
         scope.launch {
-            delay(2000)
+            delay(SHOW_SIDE_BUTTONS_DELAY_IN_MILLIS)
             shouldShowSideButtons = false
         }
     }
@@ -107,9 +109,7 @@ fun PreviewPaymentPaidToField() {
         WeightWitText(
             text = "Test",
             weight = 0,
-        ) {
-
-        }
+        ) {}
     }
 }
 
@@ -120,8 +120,6 @@ fun PreviewPaymentPaidToFieldDarkMode() {
         WeightWitText(
             text = "Test",
             weight = 0,
-        ) {
-
-        }
+        ) {}
     }
 }

@@ -20,6 +20,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 
+@Suppress("LongParameterList")
 class FirebaseAuthService @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private var signInClient: SignInClient,
@@ -30,7 +31,7 @@ class FirebaseAuthService @Inject constructor(
     private var firebaseUserToUserMapper: FirebaseUserToUserMapper,
     private var userRepository: UserRepository,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-): AuthService {
+) : AuthService {
 
     override suspend fun signIn(): BeginSignInResult =
         withContext(ioDispatcher) {
@@ -46,7 +47,8 @@ class FirebaseAuthService @Inject constructor(
         withContext(ioDispatcher) {
             val signInCredential = signInClient.getSignInCredentialFromIntent(data)
             val authCredential = GoogleAuthProvider.getCredential(signInCredential.googleIdToken, null)
-            val authResult = firebaseAuth.signInWithCredential(authCredential).await() ?: throw AuthException.SignInFirebaseException
+            val authResult = firebaseAuth.signInWithCredential(authCredential).await()
+                ?: throw AuthException.SignInFirebaseException
             val firebaseUser = authResult.user ?: throw UserNotFoundException
             val domainUser = firebaseUserToUserMapper.mapFrom(firebaseUser)
             userRepository.saveUser(domainUser)

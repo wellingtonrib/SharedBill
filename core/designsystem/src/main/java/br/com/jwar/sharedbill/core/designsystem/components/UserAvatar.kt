@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -86,6 +86,7 @@ fun String.initials() = this.trim().split(" ").let {
 }
 
 @ColorInt
+@Suppress("MagicNumber")
 fun String.toHslColor(saturation: Float = 0.5f, lightness: Float = 0.4f): Int {
     val hue = fold(0) { acc, char -> char.code + acc * 37 } % 360
     return ColorUtils.HSLToColor(floatArrayOf(hue.absoluteValue.toFloat(), saturation, lightness))
@@ -94,8 +95,8 @@ fun String.toHslColor(saturation: Float = 0.5f, lightness: Float = 0.4f): Int {
 @Composable
 fun Dp.toSp(): TextUnit {
     val fontScale = LocalConfiguration.current.fontScale
-    val scaledDensity = LocalContext.current.resources.displayMetrics.scaledDensity
-    return (value / scaledDensity / fontScale).sp
+    val scaledDensity = LocalDensity.current
+    return (value / scaledDensity.density / fontScale).sp
 }
 
 @Preview(showBackground = true)

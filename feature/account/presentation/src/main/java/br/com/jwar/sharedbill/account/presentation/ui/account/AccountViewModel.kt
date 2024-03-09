@@ -19,7 +19,7 @@ class AccountViewModel @Inject constructor(
     private val signOutUseCase: SignOutUseCase,
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val userToUserUiModelMapper: UserToUserUiModelMapper,
-): BaseViewModel<Event, State, Effect>() {
+) : BaseViewModel<Event, State, Effect>() {
 
     override fun getInitialState() = State(isLoading = true)
 
