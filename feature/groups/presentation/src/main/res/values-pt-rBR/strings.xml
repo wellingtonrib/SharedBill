@@ -35,7 +35,7 @@
     <string name="label_payment_created_at">Criado em</string>
     <string name="label_payment_created_by">Criado por</string>
     <string name="label_payment_refund">Estorno</string>
-    <string name="label_joined">Ingressado</string>
+    <string name="label_joined">Entrou</string>
     <string name="label_account">Conta</string>
     <string name="label_unnamed">Sem nome</string>
     <string name="label_share_invite_code">Compartilhar código de convite</string>
