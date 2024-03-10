@@ -1,5 +1,28 @@
 name: Restore needed files
 
+description: |
+  This action restores the keystore file, the google services json file and the gradle properties needed to build the app.
+
+inputs:
+  keystore_file:
+    description: 'The keystore file encoded in base64'
+    required: true
+  keystore_password:
+    description: 'The keystore password'
+    required: true
+  signing_key_alias:
+    description: 'The signing key alias'
+    required: true
+  signing_key_password:
+    description: 'The signing key password'
+    required: true
+  firebase_web_client_id:
+    description: 'The firebase web client id'
+    required: true
+  google_services_json:
+    description: 'The google services json file encoded in base64'
+    required: true
+
 runs:
   using: composite
   steps:
