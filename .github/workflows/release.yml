@@ -52,3 +52,10 @@ jobs:
           packageName: br.com.jwar.sharedbill
           releaseFiles: '${{ github.workspace }}/app-release.aab'
           track: internal
+      - name: Create tag
+        run: |
+          VERSION_NAME=$(./gradlew -q printVersionName)
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git tag $VERSION_NAME
+          git push origin $VERSION_NAME

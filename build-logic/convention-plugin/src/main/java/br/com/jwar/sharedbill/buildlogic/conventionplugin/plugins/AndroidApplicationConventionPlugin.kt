@@ -34,6 +34,13 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                 configureCompose(this)
                 applyKoverDependenciesForSubProjects()
             }
+
+            tasks.register("printVersionName") {
+                doLast {
+                    val versionName = project.extensions.getByType<com.android.build.gradle.BaseExtension>().defaultConfig.versionName
+                    println(versionName)
+                }
+            }
         }
     }
 }
