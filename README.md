@@ -2,7 +2,7 @@
 
 Shared Bills is a mobile application designed to help users organize group expenses, split bills, and make settlements effortlessly with friends, family, or roommates.
 
-## Screenshots
+## Screenshots 📱
 <p float="left">
   <img src="screenshots/groups.png" alt="Screenshot 1" width="200" />
   <img src="screenshots/payments.png" alt="Screenshot 2" width="200" />
@@ -10,20 +10,20 @@ Shared Bills is a mobile application designed to help users organize group expen
   <img src="screenshots/balance.png" alt="Screenshot 4" width="200" />
 </p>
 
-## Features
+## Features ✨
 - **Group Expense Management:** Create and manage groups for different occasions.
 - **Smart Bill Splitting:** Split bills equally, by percentage, or with custom amounts.
 - **Effortless Settlements:** Quickly settle debts and outstanding balances among group members.
 - **Expense History and Analytics:** Gain insights into your spending patterns.
 
-## Usage
+## Usage 📒
 1. Login with Google: Users log in using their Google credentials.
 2. Create or Join a Group: Start by creating a new expense group or joining an existing one.
 3. Add Expenses: Add and categorize expenses within the group.
 4. Split Bills: Use various methods to split bills among group members.
 5. Settle Balances: Settle outstanding balances and track payments.
 
-## Built with
+## Built with 🛠️
 - [Kotlin](https://kotlinlang.org/) - First-class and official programming language for Android development.
 - Kotlin coroutines - Library for writing asynchronous code sequentially and concurrently.
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) - Android’s modern toolkit for building native UI.
@@ -37,17 +37,17 @@ Shared Bills is a mobile application designed to help users organize group expen
 - [Github Actions](https://github.com/features/actions) - Automation for workflows to build, test, and deploy GitHub projects.
 
 
-## Contributing
+## Contributing 🤝
 We welcome contributions! Follow these steps to contribute:
 
-### Getting started
+### Getting started 🏁
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature/your-feature`).
 3. Commit your changes (`git commit -m 'Add some feature'`).
 4. Push to the branch (`git push origin feature/your-feature`).
 5. Open a Pull Request.
 
-### Installation
+### Installation ⚙️
 1. Clone the repository:
    ```sh
    git clone https://github.com/wellingtonrib/SharedBill.git
@@ -58,23 +58,23 @@ We welcome contributions! Follow these steps to contribute:
 6. Sync the project with Gradle files.
 7. Build and run the project on an Android device or emulator.
 
-### Project TODOS
+### Project TODOS ✅
 https://github.com/users/wellingtonrib/projects/1
 
-## Contact
+## Contact 📫
 Developed by Wellington Ribeiro. If you have any questions or feedback, feel free to reach out at [wellington.rib@gmail.com](mailto:wellington.rib@gmail.com).
 
-## Acknowledgements
+## Acknowledgements 🫡
 Thanks to the open-source community for various libraries and tools used in this project.
 
-## Support
+## Support 🎗️
 If you like this project, please give it a ⭐️! Contributions and suggestions are welcome.
 
-## License
+## License 🔑
 This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International Public License. You may share and adapt the material as long as you give appropriate credit, provide a link to the license, and indicate if changes were made. You may not use the material for commercial purposes.
 For more details, please refer to the [LICENSE](LICENSE) file.
 
-## Download
+## Download 📲
 Get the Shared Bills app on Google Play!
 
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" width="300">
